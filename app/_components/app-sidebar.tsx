@@ -1,26 +1,24 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { usePathname } from "next/navigation";
+import {useTranslation} from 'react-i18next'
+import Link from "next/link";
 
-import
-	{
-		House,
-		Archive,
-		UserRoundCog,
-		Pencil,
-		TrendingUpDown,
-		Eye,
-		SquareUserRound,
-		UsersRound,
-		HeartHandshake,
-		Bell,
-		LifeBuoy,
-		User
-	} from 'lucide-react'
+import {
+	House,
+	Archive,
+	ShieldCheck,
+	Pencil,
+	TrendingUpDown,
+	Eye,
+	SquareUserRound,
+	UsersRound,
+	HeartHandshake,
+	Bell,
+	LifeBuoy,
+} from "lucide-react";
 
-import
-	{
+import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
@@ -30,104 +28,118 @@ import
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "@/app/_components/ui/sidebar"
- 
+} from "@/app/_components/ui/sidebar";
+
+import { NavUser } from '@/app/_components/nav-user'
+// import {TransitionLink} from '@/app/_components/transition-link'
+
 // Menu items.
 
 type SidebarItem = {
-	title: string
-	url: string
-	icon: React.ElementType
-}
+	title: string;
+	url: string;
+	icon: React.ElementType;
+};
 
 const items: SidebarItem[] = [
 	{
-		title: "الصفحة الرئيسية",
+		title: "common:sidebar.home",
 		url: "/",
 		icon: House,
 	},
 	{
-		title: "ادارة الاقتراع",
+		title: "common:sidebar.pollingManagement",
 		url: "/polling-management",
 		icon: Archive,
 	},
 	{
-		title: "مدراء المحافظات",
+		title: "common:sidebar.stateManagment",
 		url: "/state-mangers",
-		icon: UserRoundCog,
+		icon: ShieldCheck,
 	},
 	{
-		title: "النتائج الانتخابية",
+		title: "common:sidebar.electionResults",
 		url: "/election-results",
 		icon: TrendingUpDown,
 	},
 	{
-		title: "مدخلين البيانات",
+		title: "common:sidebar.dataEntries",
 		url: "/data-entries",
 		icon: Pencil,
 	},
 	{
-		title: "المراقبين",
+		title: "common:sidebar.observers",
 		url: "/observers",
 		icon: Eye,
 	},
 	{
-		title: "المرشحين",
-		url: "/logout",
+		title: "common:sidebar.candidates",
+		url: "/candidates",
 		icon: SquareUserRound,
 	},
 	{
-		title: "ادارة المستخدمين",
+		title: "common:sidebar.userManagement",
 		url: "/logout",
 		icon: UsersRound,
 	},
 	{
-		title: "القاعدة الانتخابية",
+		title: "common:sidebar.electionBase",
 		url: "/election-base",
 		icon: HeartHandshake,
 	},
 	{
-		title: "الاشعارات",
+		title: "common:sidebar.notifications",
 		url: "/logout",
 		icon: Bell,
 	},
 	{
-		title: "ادارة الشكاوى",
+		title: "common:sidebar.issues",
 		url: "/logout",
 		icon: LifeBuoy,
 	},
-]
- 
-export const AppSidebar = () =>
-{
-	const pathname = usePathname()
-	
+];
+
+export const AppSidebar = () => {
+	const pathname = usePathname();
+	const { t, i18n } = useTranslation();
+	const currentLanguage = i18n.language;
+	const user = {
+		name: 'ممثل كيان جديد',
+		email: '07827131748',
+		avatar: 'test'
+	}
 	return (
-	  <Sidebar collapsible='icon' side='right'>
-		 <SidebarHeader />
-		 <SidebarContent>
-			<SidebarGroup>
+		<Sidebar collapsible="icon" side={currentLanguage === "ar" ? "right" : "left"}>
+			<SidebarHeader />
+			<SidebarContent>
+				<SidebarGroup>
 					<SidebarGroupLabel>Main</SidebarGroupLabel>
 					<SidebarContent>
 						<SidebarMenu>
-							{ items.map( ( item, index ) => (
+							{items.map((item, index) => (
 								<SidebarMenuItem key={index}>
 									<SidebarMenuButton asChild>
-										<Link className={`${pathname === item.url ? 'bg-slate-400/20' : ''} hover:bg-slate-200/20`} href={ item.url }>
-											<item.icon color='blue' />
-											<span>{ item.title }</span>
+										<Link
+											className={`${
+												pathname === item.url
+													? "bg-slate-400/20"
+													: ""
+											} hover:bg-slate-200/20`}
+											href={item.url}
+										>
+											<item.icon color="blue" />
+											<span>{t(item.title)}</span>
 										</Link>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}
 						</SidebarMenu>
 					</SidebarContent>
-			</SidebarGroup>
-		 </SidebarContent>
+				</SidebarGroup>
+			</SidebarContent>
 			<SidebarFooter>
-					<User/>
-		 </SidebarFooter>
-	  </Sidebar>
-	)
- }
- 
+				<NavUser user={user} />
+			</SidebarFooter>
+		</Sidebar>
+	);
+};

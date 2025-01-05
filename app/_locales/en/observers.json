@@ -1,0 +1,16 @@
+{
+	"searchForObserversInput": "Search for observer",
+	"filterAction": "Filter",
+	"table": {
+		"header": {
+			"observerPhoto": "Observer Photo",
+			"name": "Name",
+			"phoneNumber": "Phone Number",
+			"gender": "Gender",
+			"dataEntry": "Data Entry",
+			"governorate": "Governorate",
+			"pollingCenter": "Polling Center",
+			"stationNumber": "Station Number"
+		}
+	}
+}

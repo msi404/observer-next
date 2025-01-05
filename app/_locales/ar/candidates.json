@@ -1,0 +1,14 @@
+{
+	"searchForCandidatesInput": "ابحث عن مدخلين بيانات",
+	"filterAction": "تصفية",
+	"createAction": "اضافة",
+	"table": {
+		"header": {
+			"name": "الاسم",
+			"phoneNumber": "رقم الهاتف",
+			"candidateNumber": "رقم المرشح",
+			"party": "اسم الكيان",
+			"governorate": "المحافظة"
+		}
+	}
+}

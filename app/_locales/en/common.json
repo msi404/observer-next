@@ -1,0 +1,15 @@
+{
+	"sidebar": {
+		"home": "Home",
+		"pollingManagement": "Polling Management",
+		"stateManagment": "State Managment",
+		"electionResults": "Election Results",
+		"dataEntries": "Data Entries",
+		"observers": "Observers",
+		"candidates": "Candidates",
+		"userManagement": "Users Managment",
+		"electionBase": "Election Base",
+		"notifications": "Notifications",
+		"issues": "Issue"
+	}
+}

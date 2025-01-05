@@ -1,0 +1,35 @@
+{
+	"confirmedVoters": {
+		"tabTitle": "الناخبين المؤكدين",
+		"searchForConfirmedVotersInput": "ابحث عن الناخبين المؤكدين",
+		"filterAction": "تصفية",
+		"table": {
+			"header": {
+				"name": "الاسم",
+				"address": "العنوان",
+				"governorate": "المحافظة",
+				"pollingCenter": "مركز الاقتراع",
+				"dataEntry": "مدخل البيانات",
+				"candidateName": "اسم المرشح",
+				"candidateNumber":"زقم المرشح",
+				"cardPhoto": "صورة البطاقة"
+			}
+		}
+	},
+	
+	"possibleVoters": {
+		"tabTitle": "الناخبين المحتملين",
+		"searchForPossibleVotersInput": "ابحث عن الناخبين المحتملين",
+		"filterAction": "تصفية",
+		"table": {
+			"header": {
+				"name": "الاسم",
+				"address": "العنوان",
+				"governorate": "المحافظة",
+				"pollingCenter": "مركز الاقتراع",
+				"dataEntry": "مدخل البيانات",
+				"candidateName": "اسم المرشح"
+			}
+		}
+	}
+}

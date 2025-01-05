@@ -1,0 +1,13 @@
+{
+	"searchForDataEntriesInput": "ابحث عن مدخلين بيانات",
+	"filterAction": "تصفية",
+	"table": {
+		"header": {
+			"name": "الاسم الكامل",
+			"phoneNumber": "رقم الهاتف",
+			"party": "اسم الكيان",
+			"governorate": "المحافظة",
+			"governorateManger": "مدير المحافظة"
+		}
+	}
+}

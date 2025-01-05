@@ -1,0 +1,15 @@
+{
+	"sidebar": {
+		"home": "الرئيسية",
+		"pollingManagement": "إدارة الاقتراع",
+		"stateManagment": "إدارة المحافظات",
+		"electionResults": "نتائج الانتخابات",
+		"dataEntries": "مدخلين البيانات",
+		"observers": "المراقبين",
+		"candidates": "المرشحين",
+		"userManagement": "إدارة المستخدمين",
+		"electionBase": "قاعدة الانتخابية",
+		"notifications": "الإشعارات",
+		"issues": "الشكاوى"
+	}
+}

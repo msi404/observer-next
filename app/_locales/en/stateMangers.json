@@ -1,0 +1,15 @@
+{
+	"actions": {
+	"searchByNameInput": "Search for governorate manger",
+	"filterAction": "Filter",
+	"addAction": "Create"
+	},
+	"table": {
+		"header": {
+			"name": "Name",
+			"phoneNumber": "Phone Number",
+			"governorate": "Governorate",
+			"party": "Party"
+		}
+	}
+}
