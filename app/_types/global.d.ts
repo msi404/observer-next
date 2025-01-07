@@ -1,4 +1,3 @@
-
 type ConfirmedVoters = {
 	name: string;
 	address: string;

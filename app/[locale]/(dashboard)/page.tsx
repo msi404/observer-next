@@ -1,122 +1,201 @@
-'use client'
-import { useMemo, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import {useDataEntryQuery} from '@/app/_services/fetchApi'
+"use client";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/app/_lib/features/auth/authSlice";
 
-import
-{
-  UsersRound,
-  Eye,
-  Codesandbox,
-  Vote,
-  Building2,
-  Pencil,
-  UserRoundCheck,
-  UserRoundSearch,
-} from 'lucide-react'
+import {
+	useSuperAdminStatisticsQuery,
+	useStatisticsQuery,
+} from "@/app/_services/fetchApi";
+import { hasPermission } from "@/app/_auth/auth-rbac";
 
-import { type ChartConfig} from '@/app/_components/ui/chart'
+import {
+	UsersRound,
+	Eye,
+	Codesandbox,
+	Vote,
+	Building2,
+	Pencil,
+	UserRoundCheck,
+	UserRoundSearch,
+} from "lucide-react";
 
-import { DataCard } from '@/app/_components/data-card'
-import { Container } from '@/app/_components/container'
-import { PiChart } from '@/app/_components/pi-chart'
-import {BasicChart} from '@/app/_components/basic-chart'
+import { type ChartConfig } from "@/app/_components/ui/chart";
+import { DataCard } from "@/app/_components/data-card";
+import { Container } from "@/app/_components/container";
+import { PiChart } from "@/app/_components/pi-chart";
+import { BasicChart } from "@/app/_components/basic-chart";
 
-import
-  {
-    issuesChartData,
-    candidatesActivitiesData,
-    observersPerStateData
-  } from '@/app/utils/faker'
+import {
+	issuesChartData,
+	candidatesActivitiesData,
+	observersPerStateData,
+} from "@/app/utils/faker";
 
+const Home = () => {
+	const user = useSelector(selectUser);
+	const {
+		data: stats,
+		isLoading: isStatsLoading,
+		error: statsError,
+	} = useStatisticsQuery("");
+	const {
+		data: adminStats,
+		isLoading: isAdminStatsLoading,
+		error: adminStatsError,
+	} = useSuperAdminStatisticsQuery("");
 
-const Home = () =>
-{ 
-  const {data, error, isLoading} = useDataEntryQuery('')
-  const { t } = useTranslation()
-  
-  const totalIssues = useMemo(() => {
-    return issuesChartData.reduce((acc, curr) => acc + curr.total, 0)
-  }, [] )
+	const { t } = useTranslation();
 
-  const candidatesActivitiesChartConfig = {
-    candidatesActivities: {
-      label: t('home:charts.candidatesActivities.tooltips.label'),
-      color: "hsl(var(--chart-1))",
-    },
-  } satisfies ChartConfig
-  
-  const observersPerStateChartConfig = {
-    numberOfObservers: {
-      label: t('home:charts.ObserverByState.tooltips.label'),
-      color: "hsl(var(--chart-1))",
-    },
-  } satisfies ChartConfig
+	const totalIssues = useMemo(() => {
+		return issuesChartData.reduce((acc, curr) => acc + curr.total, 0);
+	}, []);
 
-  const issuesChartConfig = {
-    closed: {
-      label: t('home:charts.issuesNumber.tooltips.closed'),
-      color: "hsl(var(--chart-1))",
-    },
-    opened: {
-      label: t('home:charts.issuesNumber.tooltips.opened'),
-      color: "hsl(var(--chart-2))",
-    },
-  } satisfies ChartConfig
+	const candidatesActivitiesChartConfig = {
+		candidatesActivities: {
+			label: t("home:charts.candidatesActivities.tooltips.label"),
+			color: "hsl(var(--chart-1))",
+		},
+	} satisfies ChartConfig;
 
-  useEffect( () =>
-  {
-    if ( !isLoading && !error )
-    {
-      console.log(data);
-    }
-  }, [data, error, isLoading])
-  
-  return (
-    <Container className='space-y-6'>
-      <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-        <DataCard total={17} description={t('home:cards.totalOfCandidates')} icon={<UsersRound />} />
-        <DataCard total={44} description={t('home:cards.totalOfObservers')} icon={<Eye />} />
-        <DataCard total={3} description={t('home:cards.totalOfEntities')} icon={<Codesandbox />} />
-        <DataCard total={0} description={t('home:cards.totalOfPollingCenters')} icon={<Vote />} />
-        <DataCard total={0} description={t('home:cards.totalOfStations')} icon={<Building2 />} />
-        <DataCard total={0} description={t('home:cards.totalOfDataEntries')} icon={<Pencil />} />
-        <DataCard total={0} description={t('home:cards.totalOfConfirmedVoters')} icon={<UserRoundCheck />} />
-        <DataCard total={0} description={t('home:cards.totalOfPossibleVoters')} icon={<UserRoundSearch />} />
-      </section>
-      <section className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+	const observersPerStateChartConfig = {
+		numberOfObservers: {
+			label: t("home:charts.ObserverByState.tooltips.label"),
+			color: "hsl(var(--chart-1))",
+		},
+	} satisfies ChartConfig;
 
-        <BasicChart
-          chartData={ candidatesActivitiesData }
-          chartConfig={ candidatesActivitiesChartConfig }
-          dataKey='month'
-          nameKey='candidatesActivities'
-          title={t('home:charts.candidatesActivities.title')}
-          description={t('home:charts.candidatesActivities.description')} />
+	const issuesChartConfig = {
+		closed: {
+			label: t("home:charts.issuesNumber.tooltips.closed"),
+			color: "hsl(var(--chart-1))",
+		},
+		opened: {
+			label: t("home:charts.issuesNumber.tooltips.opened"),
+			color: "hsl(var(--chart-2))",
+		},
+	} satisfies ChartConfig;
 
-        <PiChart
-          total={ totalIssues }
-          chartConfig={ issuesChartConfig }
-          chartData={ issuesChartData }
-          dataKey='total'
-          nameKey='type'
-          title={t('home:charts.issuesNumber.title')}
-          description={t('home:charts.issuesNumber.description')}
-          lable={t('home:charts.issuesNumber.label')} />
-      </section>
-      <section>
-        <BasicChart
-          chartData={ observersPerStateData }
-          chartConfig={ observersPerStateChartConfig }
-          formatLabel={false}
-          dataKey='governorate'
-          nameKey='numberOfObservers'
-          title={t('home:charts.ObserverByState.title')}
-          description={t('home:charts.ObserverByState.description')} />
+	return (
+		<Container className="space-y-6">
+			<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				{hasPermission(user, "view:total-candidates") && (
+					<DataCard
+						isLoading={isAdminStatsLoading}
+						total={adminStats?.result.candidateCount}
+						description={t("home:cards.totalOfCandidates")}
+						icon={<UsersRound />}
+					/>
+				)}
 
-      </section>
-    </Container>
-  )
+				{hasPermission(user, "view:total-observers") && (
+					<DataCard
+						isLoading={isAdminStatsLoading}
+						total={adminStats?.result.observerCount}
+						description={t("home:cards.totalOfObservers")}
+						icon={<Eye />}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-entities") && (
+					<DataCard
+						isLoading={isAdminStatsLoading}
+						total={adminStats?.result.electionEntityCount}
+						description={t("home:cards.totalOfEntities")}
+						icon={<Codesandbox />}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-polling-centers") && (
+					<DataCard
+						isLoading={isAdminStatsLoading}
+						total={adminStats?.result.pollingCenterCount}
+						description={t("home:cards.totalOfPollingCenters")}
+						icon={<Vote />}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-centers") && (
+					<DataCard
+						isLoading={isAdminStatsLoading}
+						total={adminStats?.result.stationCount}
+						description={t("home:cards.totalOfStations")}
+						icon={<Building2 />}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-data-entries") && (
+					<DataCard
+						isLoading={isAdminStatsLoading}
+						total={adminStats?.result.stationCount}
+						description={t("home:cards.totalOfDataEntries")}
+						icon={<Pencil />}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-comfirmed-voters") && (
+					<DataCard
+						isLoading={isStatsLoading}
+						total={stats?.result.voterConfirmed}
+						description={t("home:cards.totalOfConfirmedVoters")}
+						icon={<UserRoundCheck />}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-possible-voters") && (
+					<DataCard
+						isLoading={isStatsLoading}
+						total={stats?.result.voterPotential}
+						description={t("home:cards.totalOfPossibleVoters")}
+						icon={<UserRoundSearch />}
+					/>
+				)}
+			</section>
+			<section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				{hasPermission(user, "view:candidate-activity-chart") && (
+					<BasicChart
+						chartData={candidatesActivitiesData}
+						chartConfig={candidatesActivitiesChartConfig}
+						dataKey="month"
+						nameKey="candidatesActivities"
+						title={t("home:charts.candidatesActivities.title")}
+						description={t(
+							"home:charts.candidatesActivities.description"
+						)}
+					/>
+				)}
+
+				{hasPermission(user, "view:total-issues-chart") && (
+					<PiChart
+						total={totalIssues}
+						chartConfig={issuesChartConfig}
+						chartData={issuesChartData}
+						dataKey="total"
+						nameKey="type"
+						title={t("home:charts.issuesNumber.title")}
+						description={t("home:charts.issuesNumber.description")}
+						lable={t("home:charts.issuesNumber.label")}
+					/>
+				)}
+			</section>
+			<section>
+				{hasPermission(user, "view:observer-by-state-chart") && (
+					<BasicChart
+						chartData={observersPerStateData}
+						chartConfig={observersPerStateChartConfig}
+						formatLabel={false}
+						dataKey="governorate"
+						nameKey="numberOfObservers"
+						title={t("home:charts.ObserverByState.title")}
+						description={t(
+							"home:charts.ObserverByState.description"
+						)}
+					/>
+				)}
+			</section>
+		</Container>
+	);
 };
 
 export default Home;

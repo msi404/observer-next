@@ -1,35 +1,48 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { type RootState } from '@/app/_lib/store';
-import { type PayloadAction } from '@reduxjs/toolkit';
+import { authApi } from '@/app/_services/authApi'
+import { type User } from '@/app/_auth/auth-rbac'
 
-export interface AuthState
-{
-	token: string
+const userState: User = {
+	userName: null,
+	fullName: null,
+	role: null,
+	token: null
 }
 
-const initialState: AuthState = {
-	token: ''
+const user = JSON.parse( localStorage.getItem( 'user' ) || JSON.stringify(userState) ) 
+	
+const initialState: User = {
+	userName: user?.userName,
+	fullName: user?.fullName,
+	role: user?.role,
+	token: user?.token
 };
 
 export const authSlice = createSlice( {
 	name: 'auth',
 	initialState,
 	reducers: {
-		login: ( state, action: PayloadAction<string>) =>
+		logout: (state) =>
 		{
-			state.token = action.payload
-		},
-		logout: ( state ) =>
-		{
-			state.token = ''
+			localStorage.removeItem( 'user' )
+			state.fullName = null
+			state.userName = null
+			state.role = null
+			state.token = null
 		},
 	},
-	// extraReducers: ( builder ) =>
-	// {
-	// 	builder.addCase
-	// }
+	extraReducers: ( builder ) =>
+	{
+		builder.addMatcher( authApi.endpoints.login.matchFulfilled, ( _state, { payload } ) =>
+		{
+			localStorage.setItem( "user", JSON.stringify(payload.result) );
+			return payload
+		} )
+	}
 } );
 
-export const selectToken = (state: RootState) => state.auth.token
-export const {login, logout} = authSlice.actions
+export const selectToken = ( state: RootState ) => state.auth.token
+export const selectUser = (state: RootState) => state.auth
+export const {logout} = authSlice.actions
 export default authSlice.reducer

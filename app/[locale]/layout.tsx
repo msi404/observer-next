@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Rubik, Inter } from "next/font/google";
+import { Inter, Tajawal } from "next/font/google";
 import {dir} from "i18next";
 
 import { i18nConfig } from '@/app/_config/i18nConfig'
@@ -13,8 +13,9 @@ const inter = Inter({
   subsets: ["latin"],
 } );
 
-const rubik = Rubik({
-  variable: "--font-rubik",
+const tajawal = Tajawal({
+  variable: "--font-tajawal",
+  weight: [  '500', '700', '800', '900'],
   subsets: ["arabic"],
 } );
 
@@ -39,17 +40,18 @@ export function generateStaticParams() {
 
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }> )
 {
+  const {locale} = await params
   const {resources} = await initTranslations(locale, i18Namespaces);
   return (
-    <html lang={locale} dir={dir(locale)}>
+    <html lang={ locale } dir={ dir( locale ) }>
       <body
-        className={`${rubik.className} ${inter.className} antialiased`}
+        className={`${tajawal.className} ${inter.className} antialiased`}
       >
         <Providers locale={locale} namespaces={i18Namespaces} resources={resources}>
               <main className="w-full">{ children }</main>

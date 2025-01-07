@@ -1,72 +1,106 @@
-import { tatweerApi } from '@/app/_services/api';
+import { tatweerApi } from "@/app/_services/api";
 
-const fetchDataApi = tatweerApi.injectEndpoints( {
-	endpoints: ( build ) => ( {
-		electoralEntityAdmin: build.query( {
-			query: () => 'ElectoralEntity/Gets'
-		} ),
-		governorateAdmin: build.query( {
-			query: () => 'GovernorateAdmin/Gets'
-		} ),
-		dataEntry: build.query( {
-			query: () => 'DataEntry/Gets'
-		} ),
-		electoralEntity: build.query( {
-			query: () => 'ElectoralEntity/Gets'
+const fetchDataApi = tatweerApi.injectEndpoints({
+	endpoints: builder => ({
+		profile: builder.query({
+			query: () => "User/GetProfile",
 		}),
-		governorate: build.query( {
-			query: () => 'Governorate/Gets'
+		electoralEntityAdminProfile: builder.query({
+			query: () => "ElectoralEntityAdmin/GetProfile",
 		}),
-		candidate: build.query( {
-			query: () => 'Candidate/Gets'
-		} ),
-		candidateProfile: build.query( {
-			query: () => 'Candidate/GetProfile'
+		electoralEntityAdmin: builder.query({
+			query: () => "ElectoralEntity/Gets",
 		}),
-		registrationCenter: build.query( {
-			query: () => 'RegistrationCenter/Gets'
-		} ),
-		statistics: build.query( {
-			query: () => '"Dashborad/GetStatistics'
-		} ),
-		complaintStatistics: build.query( {
-			query: () => 'Dashborad/GetComplaintStatistics'
-		} ),
-		governorateStatistics: build.query( {
-			query: () => 'Dashborad/GetGovernorateStatistics'
+		governorateAdmin: builder.query({
+			query: () => "GovernorateAdmin/Gets",
 		}),
-		governorateObserverStatistic: build.query( {
-			query: () => 'HomePage/GovernorateObserverStatistic'
-		} ),
-		ageVoterStatistic: build.query( {
-			query: () => 'HomePage/AgeVoterStatistic'
+		dataEntry: builder.query({
+			query: () => "DataEntry/Gets",
 		}),
-		candidateStatistics: build.query( {
-			query: () => 'Dashborad/CandidateStatistics'
-		} ),
-		electionResultsStatistic: build.query( {
-			query: () => 'ElectionResults/Statistic'
-		} ),
-		electionResults: build.query( {
-			query: () => 'ElectionResults/Gets'
+		electoralEntity: builder.query({
+			query: () => "ElectoralEntity/Gets",
 		}),
-		observer: build.query( {
-			query: () => 'Observer/Gets'
-		} ),
-		voter: build.query( {
-			query: () => 'Voter/Gets'
+		governorate: builder.query({
+			query: () => "Governorate/Gets",
 		}),
-		post: build.query( {
-			query: () => 'Post/Gets'
-		} ),
-		complaint: build.query( {
-			query: () => 'Complaint/Gets'
+		candidate: builder.query({
+			query: () => "Candidate/Gets",
 		}),
-		notifications: build.query( {
-			query: () => 'Notifications/Gets'
-		})
-	} ),
-	overrideExisting: false
-} );
+		candidateProfile: builder.query({
+			query: () => "Candidate/GetProfile",
+		}),
+		registrationCenter: builder.query({
+			query: () => "RegistrationCenter/Gets",
+		}),
+		superAdminStatistics: builder.query({
+			query: () => "HomePage/SupperAdminStatistic",
+		}),
+		statistics: builder.query({
+			query: () => "Dashborad/GetStatistics",
+		}),
+		complaintStatistics: builder.query({
+			query: () => "Dashborad/GetComplaintStatistics",
+		}),
+		governorateStatistics: builder.query({
+			query: () => "Dashborad/GetGovernorateStatistics",
+		}),
+		governorateObserverStatistic: builder.query({
+			query: () => "HomePage/GovernorateObserverStatistic",
+		}),
+		ageVoterStatistic: builder.query({
+			query: () => "HomePage/AgeVoterStatistic",
+		}),
+		candidateStatistics: builder.query({
+			query: () => "Dashborad/CandidateStatistics",
+		}),
+		electionResultsStatistic: builder.query({
+			query: () => "ElectionResults/Statistic",
+		}),
+		electionResults: builder.query({
+			query: () => "ElectionResults/Gets",
+		}),
+		observer: builder.query({
+			query: () => "Observer/Gets",
+		}),
+		voter: builder.query({
+			query: () => "Voter/Gets",
+		}),
+		post: builder.query({
+			query: () => "Post/Gets",
+		}),
+		complaint: builder.query({
+			query: () => "Complaint/Gets",
+		}),
+		notifications: builder.query({
+			query: () => "Notifications/Gets",
+		}),
+	}),
+	overrideExisting: false,
+});
 
-export const {useDataEntryQuery} = fetchDataApi
+export const {
+	useProfileQuery,
+	useElectoralEntityAdminProfileQuery,
+	useElectoralEntityAdminQuery,
+	useGovernorateAdminQuery,
+	useDataEntryQuery,
+	useElectoralEntityQuery,
+	useGovernorateQuery,
+	useCandidateQuery,
+	useCandidateProfileQuery,
+	useRegistrationCenterQuery,
+	useSuperAdminStatisticsQuery,
+	useStatisticsQuery,
+	useComplaintStatisticsQuery,
+	useGovernorateStatisticsQuery,
+	useGovernorateObserverStatisticQuery,
+	useAgeVoterStatisticQuery,
+	useCandidateStatisticsQuery,
+	useElectionResultsStatisticQuery,
+	useElectionResultsQuery,
+	useObserverQuery,
+	useVoterQuery,
+	usePostQuery,
+	useComplaintQuery,
+	useNotificationsQuery,
+} = fetchDataApi;

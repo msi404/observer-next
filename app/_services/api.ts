@@ -1,7 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {type RootState} from '@/app/_lib/store'
 
 export const tatweerApi = createApi( {
 	reducerPath: 'tatweerApi',
-	baseQuery: fetchBaseQuery( { baseUrl: 'https://observer-api.tatweer-dev.com/api/' } ),
+	baseQuery: fetchBaseQuery( {
+		baseUrl: process.env.API_URL,
+		prepareHeaders: ( headers, { getState } ) =>
+		{
+			const token = ( getState() as RootState ).auth.token
+			if ( token )
+			{
+				headers.set('Authorization', `Bearer ${token}`)
+			}
+			return headers
+		}
+	} ),
 	endpoints: () => ({})
 	})

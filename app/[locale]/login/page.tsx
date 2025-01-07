@@ -1,3 +1,7 @@
+'use client'
+import { redirect } from 'next/navigation';
+import { useSelector } from 'react-redux'
+import { selectToken } from '@/app/_lib/features/auth/authSlice'
 import { Fingerprint, Atom } from "lucide-react"
 
 import { Container } from '@/app/_components/container';
@@ -5,6 +9,9 @@ import {LoginForm} from '@/app/_components/login-form'
 
 const SignInPage = () =>
 {
+	const token = useSelector( selectToken )
+
+	if (token) return redirect('/')
 	return (
 		<div className="grid min-h-svh lg:grid-cols-2">
 			<div className="flex flex-col gap-4 p-6 md:p-10">
