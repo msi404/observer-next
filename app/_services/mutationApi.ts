@@ -36,6 +36,13 @@ const mutationApi = tatweerApi.injectEndpoints({
 				method: "POST",
 				body: dto,
 			}),
+		} ),
+		createPost: builder.mutation( {
+			query: dto => ( {
+				url: 'Post/Add',
+				method: 'POST',
+				body: dto
+			})
 		}),
 		deleteElectoralEntity: builder.mutation({
 			query: dto => ({
@@ -62,7 +69,14 @@ const mutationApi = tatweerApi.injectEndpoints({
 				method: "PUT",
 				body: dto.body
 			}),
-		}),
+		} ),
+		uploadFile: builder.mutation( {
+			query: dto => ( {
+				url: 'File/Add',
+				method: 'POST',
+				body: dto
+			})
+		})
 	}),
 	overrideExisting: false,
 });
@@ -75,4 +89,6 @@ export const {
 	useCreateRegistrationCenterMutation,
 	useDeleteElectoralEntityMutation,
 	useUpdateElectoralEntityMutation,
+	useCreatePostMutation,
+	useUploadFileMutation
 } = mutationApi;

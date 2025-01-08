@@ -9,7 +9,7 @@ import {Button} from '@/app/_components/ui/button'
 import { Container } from "@/app/_components/container";
 import { DataTable } from "@/app/_components/data-table";
 import { BasicDialog } from "@/app/_components/basicDialog";
-
+import {DataTableColumnHeader} from '@/app/_components/table-header'
 import { stateManagersData } from "@/app/utils/faker";
 
 const stateMangers: StateMangers[] = stateManagersData;
@@ -20,7 +20,9 @@ const StateMangersPage = () => {
 	const stateMangersColumns: ColumnDef<StateMangersHeader>[] = [
 		{
 			accessorKey: "name",
-			header: t("stateMangers:table.header.name"),
+			header: ( { column } ) => (
+				<DataTableColumnHeader column={column} title={t("stateMangers:table.header.name")} />
+			),
 		},
 		{
 			accessorKey: "phoneNumber",

@@ -1,12 +1,16 @@
 "use client";
 import { type ReactNode, useState } from "react";
+
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
+	type SortingState,
 	getFilteredRowModel,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
+	getPaginationRowModel,
+	getSortedRowModel
 } from "@tanstack/react-table";
 
 import {
@@ -17,17 +21,17 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/app/_components/ui/table";
+
 import { Card, CardContent } from "@/app/_components/ui/card";
-
 import { Input } from "@/app/_components/ui/input";
-
+import {DataTablePagination} from '@/app/_components/table-pagination'
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	searchTerm?: string;
 	searchPlaceholder?: string;
-	primaryAction?: ReactNode
-	secondaryAction?: ReactNode
+	primaryAction?: ReactNode;
+	secondaryAction?: ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -38,15 +42,20 @@ export function DataTable<TData, TValue>({
 	primaryAction,
 }: DataTableProps<TData, TValue>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
+	const [ sorting, setSorting ] = useState<SortingState>( [] )
+	
 	const table = useReactTable({
 		data,
 		columns,
 		onColumnFiltersChange: setColumnFilters,
 		getCoreRowModel: getCoreRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		onSortingChange: setSorting,
+		getSortedRowModel: getSortedRowModel(),
 		state: {
 			columnFilters,
+			sorting
 		},
 	});
 
@@ -70,7 +79,7 @@ export function DataTable<TData, TValue>({
 							placeholder={searchPlaceholder}
 						/>
 					)}
-						{primaryAction}
+					{primaryAction}
 				</div>
 				{/* {secondaryActionTitle && secondaryActionIcon && (
 					<div className="w-full lg:w-2/3 justify-end flex flex-col lg:flex-row gap-5">
@@ -136,6 +145,7 @@ export function DataTable<TData, TValue>({
 						)}
 					</TableBody>
 				</Table>
+				<DataTablePagination className="mt-12" table={table}/>
 			</CardContent>
 		</Card>
 	);
