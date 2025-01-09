@@ -14,9 +14,9 @@ import {
 	TabsTrigger,
 } from "@/app/_components/ui/tabs";
 import { DataTable } from "@/app/_components/data-table";
-import { BasicDialog } from "@/app/_components/basicDialog";
-
-import { possibleVotersData, confirmedVotersData } from "@/app/utils/faker";
+import { BasicDialog } from "@/app/_components/basic-dialog";
+import {DataTableColumnHeader} from '@/app/_components/table-header'
+import { possibleVotersData, confirmedVotersData } from "@/app/_utils/faker";
 import Placeholder from "@/app/_assets/images/placeholder.png";
 
 const possibleVoters: PossibleVoters[] = possibleVotersData;
@@ -30,7 +30,9 @@ const ElectionBasePage = () =>
 	const possibleVotersColumns: ColumnDef<PossibleVotersHeader>[] = [
 		{
 			accessorKey: "name",
-			header: t("electionBase:possibleVoters.table.header.name"),
+			header: ( { column } ) => (
+				<DataTableColumnHeader column={ column } title={t("electionBase:possibleVoters.table.header.name")} />
+			),
 		},
 		{
 			accessorKey: "address",
@@ -58,7 +60,9 @@ const ElectionBasePage = () =>
 const confirmedVotersColumns: ColumnDef<ConfirmedVotersHeader>[] = [
 	{
 		accessorKey: "name",
-		header: t("electionBase:confirmedVoters.table.header.name"),
+		header: ( { column } ) => (
+			<DataTableColumnHeader column={column} title={t("electionBase:confirmedVoters.table.header.name")} />
+		),
 	},
 	{
 		accessorKey: "address",

@@ -16,7 +16,7 @@ import {
 	FormLabel,
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
-import { loginSchema } from "@/app/schema/login";
+import { loginSchema } from "@/app/_schema/login";
 import { Spinner } from "@/app/_components/spinner";
 
 export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
@@ -102,13 +102,10 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 						type="submit"
 						className="w-full flex justify-center items-center"
 					>
-						{isLoading ? (
-							<div className=" scale-125">
+						تسجيل الدخول
+						{isLoading && <div className=" scale-125">
 								<Spinner />
-							</div>
-						) : (
-							"تسجيل الدخول"
-						)}
+						</div> }
 					</Button>
 				</form>
 			</Form>

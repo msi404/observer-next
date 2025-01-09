@@ -9,8 +9,8 @@ import { Input } from '@/app/_components/ui/input'
 import {Button} from '@/app/_components/ui/button'
 import { Container } from "@/app/_components/container";
 import { DataTable } from "@/app/_components/data-table";
-import { BasicDialog } from "@/app/_components/basicDialog";
-import { observersData } from "@/app/utils/faker";
+import { BasicDialog } from "@/app/_components/basic-dialog";
+import { observersData } from "@/app/_utils/faker";
 import Placeholder from "@/app/_assets/images/placeholder.png";
 
 const observers: Observer[] = observersData;

@@ -8,7 +8,7 @@ import { Container } from "@/app/_components/container";
 import { DataCard } from "@/app/_components/data-card";
 import { DataTable } from "@/app/_components/data-table";
 
-import { electionResultsData } from "@/app/utils/faker";
+import { electionResultsData } from "@/app/_utils/faker";
 import Placeholder from "@/app/_assets/images/placeholder.png";
 
 const electionResults: ElectionResult[] = electionResultsData;

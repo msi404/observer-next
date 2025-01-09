@@ -26,6 +26,8 @@ const ROLES = {
     "view:total-comfirmed-voters",
     "view:total-possible-voters",
     "view:observer-by-state-chart",
+    "fetch:GetStatistics",
+    "fetch:SupperAdminStatistic"
   ],
 
   1: [
@@ -48,6 +50,7 @@ const ROLES = {
     "view:candidate-activity-chart",
     "view:total-issues-chart",
     "view:observer-by-state-chart",
+    "fetch:GetStatistics",
   ],
 
   2: [
@@ -64,13 +67,12 @@ const ROLES = {
   ],
 
   3: [ "view:home",
-    "view:polling-management",
-    "view:state-mangement",
-    "view:election-results",
-    "view:data-entries",
     "view:observers",
     "view:election-base",
     "view:notifications",
+    "view:total-observers",
+    "view:total-comfirmed-voters",
+    "view:total-possible-voters",
    ],
   
   4: [ "view:home",

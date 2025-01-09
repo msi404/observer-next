@@ -7,9 +7,9 @@ import { Input } from '@/app/_components/ui/input'
 import {Button} from '@/app/_components/ui/button'
 import { Container } from "@/app/_components/container";
 import { DataTable } from "@/app/_components/data-table";
-import { BasicDialog } from "@/app/_components/basicDialog";
+import { BasicDialog } from "@/app/_components/basic-dialog";
 
-import { dataEntriesData } from "@/app/utils/faker";
+import { dataEntriesData } from "@/app/_utils/faker";
 
 const dataEntries: DataEntry[] = dataEntriesData;
 

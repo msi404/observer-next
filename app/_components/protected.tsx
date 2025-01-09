@@ -8,7 +8,8 @@ export const Protected = ({children}: {children: ReactNode}) =>
 {
 	const token = useSelector( selectToken )
 	
-	if ( !token ) return redirect( '/login' )
+
+		if ( !token ) return redirect( '/login' )
 	
 	return (
 		<Fragment>

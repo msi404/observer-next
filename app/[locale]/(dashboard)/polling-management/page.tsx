@@ -1,7 +1,6 @@
 import { Container } from "@/app/_components/container";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Input } from "@/app/_components/ui/input";
-import {Editor} from '@/app/_components/editor'
 const PollingManagementPage = () => {
 	return (
 		<Container>
@@ -12,9 +11,6 @@ const PollingManagementPage = () => {
 						type="text"
 						placeholder="البحث عن مدير الحالة"
 					/>
-				</CardContent>
-				<CardContent>
-					<Editor />
 				</CardContent>
 			</Card>
 		</Container>

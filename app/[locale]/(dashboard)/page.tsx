@@ -3,13 +3,8 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/app/_lib/features/auth/authSlice";
-
-import {
-	useSuperAdminStatisticsQuery,
-	useStatisticsQuery,
-} from "@/app/_services/fetchApi";
 import { hasPermission } from "@/app/_auth/auth-rbac";
-
+import {useStats} from '@/app/_hooks/use-stats'
 import {
 	UsersRound,
 	Eye,
@@ -31,21 +26,12 @@ import {
 	issuesChartData,
 	candidatesActivitiesData,
 	observersPerStateData,
-} from "@/app/utils/faker";
+} from "@/app/_utils/faker";
 
-const Home = () => {
+const Home = () =>
+{
+	const {stats, isLoading} = useStats()
 	const user = useSelector(selectUser);
-	const {
-		data: stats,
-		isLoading: isStatsLoading,
-		error: statsError,
-	} = useStatisticsQuery("");
-	const {
-		data: adminStats,
-		isLoading: isAdminStatsLoading,
-		error: adminStatsError,
-	} = useSuperAdminStatisticsQuery("");
-
 	const { t } = useTranslation();
 
 	const totalIssues = useMemo(() => {
@@ -82,8 +68,8 @@ const Home = () => {
 			<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{hasPermission(user, "view:total-candidates") && (
 					<DataCard
-						isLoading={isAdminStatsLoading}
-						total={adminStats?.result.candidateCount}
+						isLoading={isLoading}
+						total={stats.candidateCount}
 						description={t("home:cards.totalOfCandidates")}
 						icon={<UsersRound />}
 					/>
@@ -91,8 +77,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-observers") && (
 					<DataCard
-						isLoading={isAdminStatsLoading}
-						total={adminStats?.result.observerCount}
+						isLoading={isLoading}
+						total={stats.observerCount}
 						description={t("home:cards.totalOfObservers")}
 						icon={<Eye />}
 					/>
@@ -100,8 +86,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-entities") && (
 					<DataCard
-						isLoading={isAdminStatsLoading}
-						total={adminStats?.result.electionEntityCount}
+						isLoading={isLoading}
+						total={stats.electionEntityCount}
 						description={t("home:cards.totalOfEntities")}
 						icon={<Codesandbox />}
 					/>
@@ -109,8 +95,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-polling-centers") && (
 					<DataCard
-						isLoading={isAdminStatsLoading}
-						total={adminStats?.result.pollingCenterCount}
+						isLoading={isLoading}
+						total={stats.pollingCenterCount}
 						description={t("home:cards.totalOfPollingCenters")}
 						icon={<Vote />}
 					/>
@@ -118,8 +104,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-centers") && (
 					<DataCard
-						isLoading={isAdminStatsLoading}
-						total={adminStats?.result.stationCount}
+						isLoading={isLoading}
+						total={stats.stationCount}
 						description={t("home:cards.totalOfStations")}
 						icon={<Building2 />}
 					/>
@@ -127,8 +113,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-data-entries") && (
 					<DataCard
-						isLoading={isAdminStatsLoading}
-						total={adminStats?.result.stationCount}
+						isLoading={isLoading}
+						total={stats.stationCount}
 						description={t("home:cards.totalOfDataEntries")}
 						icon={<Pencil />}
 					/>
@@ -136,8 +122,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-comfirmed-voters") && (
 					<DataCard
-						isLoading={isStatsLoading}
-						total={stats?.result.voterConfirmed}
+						isLoading={isLoading}
+						total={stats.voterConfirmed}
 						description={t("home:cards.totalOfConfirmedVoters")}
 						icon={<UserRoundCheck />}
 					/>
@@ -145,8 +131,8 @@ const Home = () => {
 
 				{hasPermission(user, "view:total-possible-voters") && (
 					<DataCard
-						isLoading={isStatsLoading}
-						total={stats?.result.voterPotential}
+						isLoading={isLoading}
+						total={stats.voterPotential}
 						description={t("home:cards.totalOfPossibleVoters")}
 						icon={<UserRoundSearch />}
 					/>
