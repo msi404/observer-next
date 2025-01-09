@@ -21,7 +21,6 @@ import { DataCard } from "@/app/_components/data-card";
 import { Container } from "@/app/_components/container";
 import { PiChart } from "@/app/_components/pi-chart";
 import { BasicChart } from "@/app/_components/basic-chart";
-
 import {
 	issuesChartData,
 	candidatesActivitiesData,

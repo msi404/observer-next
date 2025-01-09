@@ -15,7 +15,7 @@ const inter = Inter({
 
 const tajawal = Tajawal({
   variable: "--font-tajawal",
-  weight: [  '500', '700', '800', '900'],
+  weight: [ '700', '800', '900'],
   subsets: ["arabic"],
 } );
 
