@@ -22,13 +22,13 @@ export const useStats = () => {
 	const user = useSelector(selectUser);
 	const [stats, setStats] = useState(initialStats);
 	const [isLoading, setIsLoading] = useState(true);
-	const { data: statistics, isLoading: isStatsLoading } =
+	const { data: statistics, isLoading: isStatsLoading, isError: isStatsError } =
 		useStatisticsQuery("");
-	const { data: adminStatistics, isLoading: isAdminStatsLoading } =
+	const { data: adminStatistics, isLoading: isAdminStatsLoading, isError: isAdminStatsError } =
 		useSuperAdminStatisticsQuery("");
 
 	useEffect(() => {
-		if (!isStatsLoading && hasPermission(user, "fetch:GetStatistics")) {
+		if (!isStatsLoading && !isStatsError && hasPermission(user, "fetch:GetStatistics")) {
 			setStats(prev => ({
 				...prev,
 				...statistics.result,
@@ -36,7 +36,7 @@ export const useStats = () => {
 			setIsLoading(false);
 		}
 		if (
-			!isAdminStatsLoading &&
+			!isAdminStatsLoading && !isAdminStatsError &&
 			hasPermission(user, "fetch:SupperAdminStatistic")
 		) {
 			setStats(prev => ({
