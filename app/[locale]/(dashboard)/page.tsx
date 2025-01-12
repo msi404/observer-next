@@ -1,51 +1,64 @@
 'use client';
+
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/auth/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import {useDataCards} from '@/app/_hooks/use-data-cards'
+import { useDataCards } from '@/app/_hooks/use-data-cards';
+import { useChartsConfig } from '@/app/_hooks/use-charts-config';
+
 import { DataCard } from '@/app/_components/data-card';
 import { CardSkeleton } from '@/app/_components/card-skeleton';
 import { Container } from '@/app/_components/container';
 import { PiChart } from '@/app/_components/pi-chart';
 import { BasicChart } from '@/app/_components/basic-chart';
+import { Show } from '@/app/_components/show';
+import { For } from '@/app/_components/for';
+
 import {
   issuesChartData,
   candidatesActivitiesData,
-  observersPerStateData
+  observersPerStateData,
 } from '@/app/_utils/faker';
-import { Show } from '@/app/_components/show';
-import {For} from '@/app/_components/for'
-import { useChartsConfig } from '@/app/_hooks/use-charts-config';
 
 const Home = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();
-  const {dataCards} = useDataCards()
+  const { dataCards } = useDataCards();
+
   const {
     candidatesActivitiesChartConfig,
     observersPerStateChartConfig,
-    issuesChartConfig
+    issuesChartConfig,
   } = useChartsConfig();
+
   const totalIssues = useMemo(() => {
     return issuesChartData.reduce((acc, curr) => acc + curr.total, 0);
-  }, [] );
+  }, []);
 
   return (
     <Container className="space-y-6">
+      {/* Data Cards Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <For each={dataCards}>
-          {( item, index ) => (
-            <Show when={item.permission} fallback={<CardSkeleton />} key={index}>
+          {(item, index) => (
+            <Show
+              when={item.permission}
+              fallback={<CardSkeleton />}
+              key={index}
+            >
               <DataCard
                 icon={item.icon}
                 description={t(item.description)}
-                total={ item.total } />
+                total={item.total}
+              />
             </Show>
           )}
         </For>
       </section>
+
+      {/* Charts Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Show when={hasPermission(user, 'view:candidate-activity-chart')}>
           <BasicChart
@@ -57,6 +70,7 @@ const Home = () => {
             description={t('home:charts.candidatesActivities.description')}
           />
         </Show>
+
         <Show when={hasPermission(user, 'view:total-issues-chart')}>
           <PiChart
             total={totalIssues}
@@ -66,10 +80,12 @@ const Home = () => {
             nameKey="type"
             title={t('home:charts.issuesNumber.title')}
             description={t('home:charts.issuesNumber.description')}
-            lable={t('home:charts.issuesNumber.label')}
+            label={t('home:charts.issuesNumber.label')}
           />
         </Show>
       </section>
+
+      {/* Observers by State Chart */}
       <section>
         <Show when={hasPermission(user, 'view:observer-by-state-chart')}>
           <BasicChart

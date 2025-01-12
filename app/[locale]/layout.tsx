@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Tajawal } from "next/font/google";
+import { Inter, Noto_Kufi_Arabic } from "next/font/google";
 import {dir} from "i18next";
 
 import { i18nConfig } from '@/app/_config/i18nConfig'
@@ -13,9 +13,8 @@ const inter = Inter({
   subsets: ["latin"],
 } );
 
-const tajawal = Tajawal({
+const noto = Noto_Kufi_Arabic({
   variable: "--font-tajawal",
-  weight: [ '700', '800', '900'],
   subsets: ["arabic"],
 } );
 
@@ -51,7 +50,7 @@ export default async function RootLayout({
   return (
     <html lang={ locale } dir={ dir( locale ) }>
       <body
-        className={`${tajawal.className} ${inter.className} antialiased`}
+        className={`${noto.className} ${inter.className} antialiased`}
       >
         <Providers locale={locale} namespaces={i18Namespaces} resources={resources}>
               <main className="w-full">{ children }</main>

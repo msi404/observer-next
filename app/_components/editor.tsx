@@ -1,31 +1,59 @@
-'use client'
-import {useEffect, useState} from 'react'
-import '@blocknote/core/fonts/inter.css';
-import "@blocknote/shadcn/style.css";
-import { BlockNoteView } from '@blocknote/shadcn';
-import { useCreateBlockNote, FormattingToolbar } from '@blocknote/react';
+'use client';
+import { useDispatch } from 'react-redux'
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import {setEditor} from '@/app/_lib/features/editorSlice'
 
 export const Editor = () =>
 {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [markdown, setMarkdown] = useState<string>('')
-	const editor = useCreateBlockNote()
-	useEffect( () =>
-	{
-		const convertToMarkdown = async () =>
+	const dispatch = useDispatch()
+	const editor = useEditor( {
+		onCreate ( {editor} )
 		{
-			const markdown = await editor.blocksToMarkdownLossy( editor.document )
-			setMarkdown( markdown )
+			dispatch(setEditor(editor))
+		},
+		onDestroy ()
+		{
+			dispatch(setEditor(null))
+		},
+		onUpdate ( {editor} )
+		{
+			dispatch(setEditor(editor))
+		},
+		onSelectionUpdate ( {editor} )
+		{
+			dispatch(setEditor(editor))
+		},
+		onTransaction ( {editor} )
+		{
+			dispatch(setEditor(editor))
+		},
+		onFocus ( {editor} )
+		{
+			dispatch(setEditor(editor))
+		},
+		onBlur ( {editor} )
+		{
+			dispatch(setEditor(editor))
+		},
+		onContentError ( {editor} )
+		{
+			dispatch(setEditor(editor))
+		},
+		extensions: [ StarterKit ],
+		content: '<p>مرحبا، بالعالم</p>',
+		editorProps: {
+			attributes: {
+				style: "padding-left: 56px; padding-right: 56px;",
+				class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-w-[1054px] min-h-[816px] pt-10 pr-14 pb-10 cursor-text'
+			}
 		}
-		convertToMarkdown()
-	}, [editor])
+	})
 	return (
-		<BlockNoteView
-			slashMenu={false}
-			sideMenu={false}
-			formattingToolbar={false}
-			editor={ editor }>
-			<FormattingToolbar />
-			</BlockNoteView>
+		<div className='size-full overflow-x-auto bg-[#F9F8FD] px-4 print:p-0 print:bg-white print:overflow-visible'>
+			<div className='min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0'>
+			<EditorContent editor={editor}/>
+			</div>
+		</div>
 	)
 }

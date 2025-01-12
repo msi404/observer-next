@@ -22,7 +22,7 @@ import {
 interface PiChartProps {
 	title: string;
 	description: string;
-	lable: string;
+	label: string;
 	chartConfig: ChartConfig;
 	chartData: unknown[];
 	total: number;
@@ -33,7 +33,7 @@ interface PiChartProps {
 export const PiChart: FC<PiChartProps> = ({
 	title,
 	description,
-	lable,
+	label,
 	chartConfig,
 	chartData,
 	total,
@@ -89,7 +89,7 @@ export const PiChart: FC<PiChartProps> = ({
 													y={(viewBox.cy || 0) + 24}
 													className="fill-muted-foreground"
 												>
-													{lable}
+													{label}
 												</tspan>
 											</text>
 										);
