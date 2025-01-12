@@ -25,6 +25,7 @@ import { NavUser } from "@/app/_components/nav-user";
 import {NavUserSkeleton} from '@/app/_components/nav-user-skeleton'
 import {Show} from '@/app/_components/show'
 import { For } from '@/app/_components/for'
+import {Dynamic} from '@/app/_components/dynamic'
 
 export const AppSidebar = () => {
 	// const { data, isLoading } = useProfileQuery("");
@@ -57,7 +58,7 @@ export const AppSidebar = () => {
 												} hover:bg-slate-200/20`}
 												href={item.url}
 											>
-												<item.icon className='mx-2' size={50} />
+												<Dynamic component={item.icon} className='mx-2' size={50} />
 												<span>{t(item.title)}</span>
 											</Link>
 										</SidebarMenuButton>

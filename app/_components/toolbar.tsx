@@ -18,7 +18,8 @@ import {
   DropdownMenuContent
 } from '@/app/_components/ui/dropdown-menu';
 import { Separator } from '@/app/_components/ui/separator';
-import {type Level} from '@tiptap/extension-heading'
+import { type Level } from '@tiptap/extension-heading'
+import {Dynamic} from '@/app/_components/dynamic'
 
 interface ToolbarButtonProps {
   onClick?: () => void;
@@ -39,7 +40,7 @@ const ToolbarButton: FC<ToolbarButtonProps> = ({
         isActive && 'bg-neutral-200/80'
       )}
     >
-      <Icon className="size-4" />
+      <Dynamic component={Icon} className="size-4" />
     </button>
   );
 };

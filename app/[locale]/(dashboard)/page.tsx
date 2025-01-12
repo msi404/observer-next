@@ -15,7 +15,6 @@ import { PiChart } from '@/app/_components/pi-chart';
 import { BasicChart } from '@/app/_components/basic-chart';
 import { Show } from '@/app/_components/show';
 import { For } from '@/app/_components/for';
-
 import {
   issuesChartData,
   candidatesActivitiesData,
