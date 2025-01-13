@@ -14,7 +14,7 @@ export const DataCard: FC<{
 	description: string;
 }> = ({ icon, total, description}) => {
 	return (
-		<Card className="flex justify-between items-center">
+			<Card className="flex justify-between items-center">
 			<CardHeader>
 				<CardTitle className="text-3xl">{total}</CardTitle>
 				<CardDescription>{description}</CardDescription>

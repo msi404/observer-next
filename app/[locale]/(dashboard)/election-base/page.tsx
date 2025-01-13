@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import { Filter } from "lucide-react";
-
+import {motion, AnimatePresence} from 'motion/react'
 import { Input } from "@/app/_components/ui/input";
 import { Button } from "@/app/_components/ui/button";
 import { Container } from "@/app/_components/container";
@@ -90,7 +90,7 @@ const ElectionBasePage = () => {
     <Container>
       <Tabs defaultValue="political-entities">
         <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="political-entities">
+          <TabsTrigger className="w-full" value="political-entities">
             {t("electionBase:confirmedVoters.tabTitle")}
           </TabsTrigger>
           <TabsTrigger value="electoral-distribution">
@@ -98,6 +98,7 @@ const ElectionBasePage = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="political-entities">
+          <motion.div initial={{x: -300}} animate={{x: 0, transition: {damping: 0, ease: 'easeOut'}}}>
           <DataTable
             searchPlaceholder={t("electionBase:confirmedVoters.searchForConfirmedVotersInput")}
             searchTerm="name"
@@ -105,8 +106,10 @@ const ElectionBasePage = () => {
             columns={confirmedVotersColumns}
             data={confirmedVoters}
           />
+          </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
+          <motion.div initial={{x: 300}} animate={{x: 0, transition: {damping: 0, ease: 'easeOut'}}}>
           <DataTable
             searchPlaceholder={t("electionBase:possibleVoters.searchForPossibleVotersInput")}
             searchTerm="name"
@@ -114,6 +117,7 @@ const ElectionBasePage = () => {
             columns={possibleVotersColumns}
             data={possibleVoters}
           />
+          </motion.div>
         </TabsContent>
       </Tabs>
     </Container>

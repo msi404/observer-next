@@ -43,9 +43,11 @@ const Home = () => {
         <For each={dataCards}>
           {(item, index) => (
             <Show
-              when={item.permission}
+              key={ index }
               fallback={<CardSkeleton />}
-              key={index}
+              when={ !item.isLoading }>
+            <Show
+              when={item.permission}
             >
               <DataCard
                 icon={item.icon}
@@ -53,6 +55,7 @@ const Home = () => {
                 total={item.total}
               />
             </Show>
+           </Show>
           )}
         </For>
       </section>
