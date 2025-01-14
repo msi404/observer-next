@@ -8,6 +8,7 @@ import {useReactTable, getCoreRowModel,type ColumnDef} from '@tanstack/react-tab
 import { Container } from "@/app/_components/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 
+import {DataTableColumnHeader} from '@/app/_components/table-header'
 import { DynamicTable } from '@/app/_components/dynamic-table'
 
 import { confirmedVotersData } from "@/app/_utils/faker";
@@ -19,58 +20,39 @@ const ElectionBasePage = () =>
 
   const confirmedVotrs: ConfirmedVoters[] = confirmedVotersData;
   
-  const confirmedVotrsColumns: ColumnDef<ConfirmedVotersHeader>[] = [
+  const confirmedVotersColumns: ColumnDef<ConfirmedVotersHeader>[] = [
     {
       accessorKey: "name",
-      header: t('electionBase:confirmedVoters.table.header.name'),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("electionBase:confirmedVoters.table.header.name")} />
+      ),
     },
-    {
-      accessorKey: "address",
-      header: t('electionBase:confirmedVoters.table.header.address'),
-    },
-    {
-      accessorKey: "state",
-      header: t("electionBase:confirmedVoters.table.header.governorate"),
-    },
-    {
-      accessorKey: "pollingCenter",
-      header: t("electionBase:confirmedVoters.table.header.pollingCenter"),
-    },
-    {
-      accessorKey: "dataEntry",
-      header: t("electionBase:confirmedVoters.table.header.dataEntry"),
-    },
-    {
-      accessorKey: "candidate",
-      header: t("electionBase:confirmedVoters.table.header.candidateName"),
-    },
-    {
-      accessorKey: "candidateNumber",
-      header: t("electionBase:confirmedVoters.table.header.candidateNumber"),
-    },
+    { accessorKey: "address", header: t("electionBase:confirmedVoters.table.header.address") },
+    { accessorKey: "state", header: t("electionBase:confirmedVoters.table.header.governorate") },
+    { accessorKey: "pollingCenter", header: t("electionBase:confirmedVoters.table.header.pollingCenter") },
+    { accessorKey: "dataEntry", header: t("electionBase:confirmedVoters.table.header.dataEntry") },
+    { accessorKey: "candidate", header: t("electionBase:confirmedVoters.table.header.candidateName") },
+    { accessorKey: "candidateNumber", header: t("electionBase:confirmedVoters.table.header.candidateNumber") },
     {
       accessorKey: "cardPhoto",
-      header: t( "electionBase:confirmedVoters.table.header.cardPhoto" ),
-      cell: ({ row }) => {
-        const photoUrl = row.getValue("cardPhoto") as string;
-        return (
-          <Image
-            placeholder="blur"
-            blurDataURL={Placeholder.blurDataURL}
-            width={48}
-            height={48}
-            src={photoUrl}
-            alt={t("observers:table.alt.observerPhoto")}
-            className="w-12 h-12 rounded-full"
-          />
-        );
-      },
+      header: t("electionBase:confirmedVoters.table.header.cardPhoto"),
+      cell: ({ row }) => (
+        <Image
+          placeholder="blur"
+          blurDataURL={Placeholder.blurDataURL}
+          width={48}
+          height={48}
+          src={row.getValue("cardPhoto") as string}
+          alt="صورة البطاقة"
+          className="w-12 h-12 rounded-lg"
+        />
+      ),
     },
   ];
 
    const table = useReactTable({
     data: confirmedVotrs,
-    columns: confirmedVotrsColumns,
+    columns: confirmedVotersColumns,
     getCoreRowModel: getCoreRowModel(),
   });
   return (
