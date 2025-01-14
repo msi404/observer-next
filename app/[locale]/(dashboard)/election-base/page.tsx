@@ -1,91 +1,78 @@
 "use client";
 
-import { useTranslation } from "react-i18next";
-import Image from "next/image";
-import { ColumnDef } from "@tanstack/react-table";
-import { Filter } from "lucide-react";
-import {motion, AnimatePresence} from 'motion/react'
-import { Input } from "@/app/_components/ui/input";
-import { Button } from "@/app/_components/ui/button";
+import Image from 'next/image'
+import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
+import {useReactTable, getCoreRowModel,type ColumnDef} from '@tanstack/react-table'
+
 import { Container } from "@/app/_components/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
-import { DataTable } from "@/app/_components/data-table";
-import { BasicDialog } from "@/app/_components/basic-dialog";
-import { DataTableColumnHeader } from "@/app/_components/table-header";
-import { possibleVotersData, confirmedVotersData } from "@/app/_utils/faker";
+
+import { DynamicTable } from '@/app/_components/dynamic-table'
+
+import { confirmedVotersData } from "@/app/_utils/faker";
 import Placeholder from "@/app/_assets/images/placeholder.png";
 
-const possibleVoters: PossibleVoters[] = possibleVotersData;
-const confirmedVoters: ConfirmedVoters[] = confirmedVotersData;
+const ElectionBasePage = () =>
+{
+  const { t } = useTranslation()
 
-const ElectionBasePage = () => {
-  const { t } = useTranslation();
-
-  const possibleVotersColumns: ColumnDef<PossibleVotersHeader>[] = [
+  const confirmedVotrs: ConfirmedVoters[] = confirmedVotersData;
+  
+  const confirmedVotrsColumns: ColumnDef<ConfirmedVotersHeader>[] = [
     {
       accessorKey: "name",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("electionBase:possibleVoters.table.header.name")} />
-      ),
+      header: t('electionBase:confirmedVoters.table.header.name'),
     },
-    { accessorKey: "address", header: t("electionBase:possibleVoters.table.header.address") },
-    { accessorKey: "state", header: t("electionBase:possibleVoters.table.header.governorate") },
-    { accessorKey: "pollingCenter", header: t("electionBase:possibleVoters.table.header.pollingCenter") },
-    { accessorKey: "dataEntry", header: t("electionBase:possibleVoters.table.header.dataEntry") },
-    { accessorKey: "candidate", header: t("electionBase:possibleVoters.table.header.candidateName") },
-  ];
-
-  const confirmedVotersColumns: ColumnDef<ConfirmedVotersHeader>[] = [
     {
-      accessorKey: "name",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t("electionBase:confirmedVoters.table.header.name")} />
-      ),
+      accessorKey: "address",
+      header: t('electionBase:confirmedVoters.table.header.address'),
     },
-    { accessorKey: "address", header: t("electionBase:confirmedVoters.table.header.address") },
-    { accessorKey: "state", header: t("electionBase:confirmedVoters.table.header.governorate") },
-    { accessorKey: "pollingCenter", header: t("electionBase:confirmedVoters.table.header.pollingCenter") },
-    { accessorKey: "dataEntry", header: t("electionBase:confirmedVoters.table.header.dataEntry") },
-    { accessorKey: "candidate", header: t("electionBase:confirmedVoters.table.header.candidateName") },
-    { accessorKey: "candidateNumber", header: t("electionBase:confirmedVoters.table.header.candidateNumber") },
+    {
+      accessorKey: "state",
+      header: t("electionBase:confirmedVoters.table.header.governorate"),
+    },
+    {
+      accessorKey: "pollingCenter",
+      header: t("electionBase:confirmedVoters.table.header.pollingCenter"),
+    },
+    {
+      accessorKey: "dataEntry",
+      header: t("electionBase:confirmedVoters.table.header.dataEntry"),
+    },
+    {
+      accessorKey: "candidate",
+      header: t("electionBase:confirmedVoters.table.header.candidateName"),
+    },
+    {
+      accessorKey: "candidateNumber",
+      header: t("electionBase:confirmedVoters.table.header.candidateNumber"),
+    },
     {
       accessorKey: "cardPhoto",
-      header: t("electionBase:confirmedVoters.table.header.cardPhoto"),
-      cell: ({ row }) => (
-        <Image
-          placeholder="blur"
-          blurDataURL={Placeholder.blurDataURL}
-          width={48}
-          height={48}
-          src={row.getValue("cardPhoto") as string}
-          alt="صورة البطاقة"
-          className="w-12 h-12 rounded-lg"
-        />
-      ),
+      header: t( "electionBase:confirmedVoters.table.header.cardPhoto" ),
+      cell: ({ row }) => {
+        const photoUrl = row.getValue("cardPhoto") as string;
+        return (
+          <Image
+            placeholder="blur"
+            blurDataURL={Placeholder.blurDataURL}
+            width={48}
+            height={48}
+            src={photoUrl}
+            alt={t("observers:table.alt.observerPhoto")}
+            className="w-12 h-12 rounded-full"
+          />
+        );
+      },
     },
   ];
 
-  const renderFilterDialog = () => (
-    <BasicDialog
-      buttonLabel={t("stateMangers:actions.filterAction")}
-      buttonIcon={<Filter />}
-      title="تصفية العناصر"
-      description="تصفية العناصر حسب المعطيات الاتية"
-      primaryAction={<Button>تصفية</Button>}
-      secondaryAction={<Button variant="outline">الغاء</Button>}
-    >
-      {[...Array(5)].map((_, index) => (
-        <div className="grid grid-cols-1 items-center gap-4" key={index}>
-          <Input
-            id={index === 4 ? "username" : "name"}
-            placeholder={index === 4 ? "المحافظة" : "الاسم"}
-            className="col-span-3"
-          />
-        </div>
-      ))}
-    </BasicDialog>
-  );
-
+   const table = useReactTable({
+    data: confirmedVotrs,
+    columns: confirmedVotrsColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <Container>
       <Tabs defaultValue="political-entities">
@@ -99,25 +86,11 @@ const ElectionBasePage = () => {
         </TabsList>
         <TabsContent value="political-entities">
           <motion.div initial={{x: -300}} animate={{x: 0, transition: {damping: 0, ease: 'easeOut'}}}>
-          <DataTable
-            searchPlaceholder={t("electionBase:confirmedVoters.searchForConfirmedVotersInput")}
-            searchTerm="name"
-            primaryAction={renderFilterDialog()}
-            columns={confirmedVotersColumns}
-            data={confirmedVoters}
-          />
+            <DynamicTable table={table} />
           </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
-          <motion.div initial={{x: 300}} animate={{x: 0, transition: {damping: 0, ease: 'easeOut'}}}>
-          <DataTable
-            searchPlaceholder={t("electionBase:possibleVoters.searchForPossibleVotersInput")}
-            searchTerm="name"
-            primaryAction={renderFilterDialog()}
-            columns={possibleVotersColumns}
-            data={possibleVoters}
-          />
-          </motion.div>
+
         </TabsContent>
       </Tabs>
     </Container>
