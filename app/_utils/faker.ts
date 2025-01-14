@@ -127,7 +127,7 @@ return governorates.map(governorate => ({
 }
 
 export const possibleVotersData = faker.helpers.multiple( createRandomPossibleVoter, { count: 10 } );
-export const confirmedVotersData = faker.helpers.multiple( createRandomConfirmedVoter, { count: 100 } );
+export const confirmedVotersData = faker.helpers.multiple( createRandomConfirmedVoter, { count: 10 } );
 export const stateManagersData = faker.helpers.multiple( createRandomStateManger, { count: 40 } );
 export const electionResultsData = faker.helpers.multiple( createRandomElectionResults, { count: 10 } );
 export const dataEntriesData = faker.helpers.multiple( createRandomDataEntry, { count: 10 } );

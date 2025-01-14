@@ -1,5 +1,5 @@
 'use client';
-import {type FC, useState} from 'react'
+import {type FC} from 'react'
 
 import
 	{
@@ -16,7 +16,6 @@ import
 		TableRow,
 } from '@/app/_components/ui/table';
 
-import { Card, CardContent } from '@/app/_components/ui/card'
 import { For } from '@/app/_components/for'
 import { Show } from '@/app/_components/show'
 
@@ -28,8 +27,6 @@ interface DynamicTableProps
 export const DynamicTable: FC<DynamicTableProps> = ({table}) =>
 {
 	return (
-		<Card className='p-4'>
-			<CardContent>
 				<Table>
 					<TableHeader>
 						<For each={table.getHeaderGroups()}>
@@ -37,7 +34,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({table}) =>
 								<TableRow key={headerGroup.id}>
 									<For each={headerGroup.headers}>
 										{ ( header: any ) => (
-											<TableHead key={header.id}>
+											<TableHead className='text-start' key={header.id}>
 												<Show when={!header.isPlaceholder} fallback={null}>
 													{flexRender(header.column.columnDef.header, header.getContext())}
 												</Show>
@@ -52,7 +49,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({table}) =>
 						<Show when={table.getRowModel().rows?.length} fallback={null}>
 							<For each={table.getRowModel().rows}>
 								{ ( row: any ) => (
-									<TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+									<TableRow className='even:bg-slate-50 dark:even:bg-slate-900 rounded-lg border-none' key={row.id} data-state={row.getIsSelected() && "selected"}>
 										<For each={row.getVisibleCells()}>
 											{ ( cell: any ) => (
 												<TableCell key={cell.id}>
@@ -66,7 +63,5 @@ export const DynamicTable: FC<DynamicTableProps> = ({table}) =>
 						</Show>
 					</TableBody>
 				</Table>
-			</CardContent>
-		</Card>
 	)
 }
