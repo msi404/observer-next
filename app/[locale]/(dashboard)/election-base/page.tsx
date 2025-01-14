@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/_components/ui/t
 
 import {DataTableColumnHeader} from '@/app/_components/table-header'
 import { DynamicTable } from '@/app/_components/dynamic-table'
-
+import {DataTable} from '@/app/_components/data-table'
 import { confirmedVotersData } from "@/app/_utils/faker";
 import Placeholder from "@/app/_assets/images/placeholder.png";
 
@@ -68,7 +68,8 @@ const ElectionBasePage = () =>
         </TabsList>
         <TabsContent value="political-entities">
           <motion.div initial={{x: -300}} animate={{x: 0, transition: {damping: 0, ease: 'easeOut'}}}>
-            <DynamicTable table={table} />
+            <DynamicTable table={ table } />
+            <DataTable data={confirmedVotrs} columns={confirmedVotersColumns} />
           </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
