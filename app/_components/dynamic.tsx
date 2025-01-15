@@ -1,7 +1,7 @@
-import React, {type ComponentType, isValidElement, type JSX } from "react";
+import React, {type ComponentType, type ReactElement, isValidElement, type JSX } from "react";
 
 interface DynamicProps<T = any> {
-  component: ComponentType<T> | keyof JSX.IntrinsicElements | null; // Accepts React components or HTML tags
+  component: ComponentType<T> | keyof JSX.IntrinsicElements | ReactElement | null; // Accepts React components or HTML tags
   [key: string]: any; // Allow additional props
 }
 

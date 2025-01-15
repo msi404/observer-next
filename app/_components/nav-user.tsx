@@ -38,8 +38,9 @@ export const NavUser = ({
   const dispatch = useDispatch();
   const { isMobile } = useSidebar();
 
-  const onLogoutClick = () => {
-    dispatch(logout());
+  const onLogoutClick = () =>
+  {
+    dispatch( logout() );
   };
 
   return (

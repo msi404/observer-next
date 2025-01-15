@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -7,8 +7,10 @@ import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   type ColumnDef,
-  type ColumnFiltersState
+  type ColumnFiltersState,
+  type Table
 } from '@tanstack/react-table';
 
 import { Container } from '@/app/_components/container';
@@ -20,11 +22,73 @@ import {
   TabsTrigger
 } from '@/app/_components/ui/tabs';
 import { Input } from '@/app/_components/ui/input';
-
+import { Button } from '@/app/_components/ui/button';
+import { BasicDialog } from '@/app/_components/basic-dialog';
 import { DataTableColumnHeader } from '@/app/_components/table-header';
 import { DynamicTable } from '@/app/_components/dynamic-table';
+import { DataTablePagination } from '@/app/_components/table-pagination';
 import { confirmedVotersData, possibleVotersData } from '@/app/_utils/faker';
 import Placeholder from '@/app/_assets/images/placeholder.png';
+import { Dynamic } from '@/app/_components/dynamic';
+import { Show } from '@/app/_components/show';
+import { Filter } from 'lucide-react';
+
+interface Filter { id: string; value: string; }
+
+const useDialog = (table: Table<any>) => {
+  const [filters, setFilters] = useState<Filter[]>([]);
+  const [open, setOpen] = useState(false);
+
+  const applyFilters = useCallback(() => {
+    table.setColumnFilters(filters);
+    setOpen(false);
+    setFilters([]);
+  }, [table, filters]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') applyFilters();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [applyFilters]);
+
+  const DialogComponent = useMemo(() => (
+    <BasicDialog
+      open={open}
+      onOpenChange={setOpen}
+      buttonLabel="تصفية"
+      buttonIcon={<Filter />}
+      title="تصفية"
+      description="تصفية"
+      primaryAction={<Button type="submit" onClick={applyFilters}>تصفية</Button>}
+      secondaryAction={<Button variant="outline">الغاء</Button>}
+    >
+        <Input
+          placeholder="العنوان"
+          onChange={(event) =>
+            setFilters(() => [
+              ...filters,
+              { id: 'address', value: event.target.value }
+            ])
+          }
+        />
+        <Input
+          placeholder="المحافظة"
+          onChange={(event) =>
+            setFilters(() => [
+              ...filters,
+              { id: 'state', value: event.target.value }
+            ])
+          }
+        />
+        <Input placeholder="مركز الاقتراع" />
+        <Input placeholder="مدخل البيانات" />
+    </BasicDialog>
+  ), [applyFilters, filters, open]);
+
+  return DialogComponent;
+};
 
 const ElectionBasePage = () => {
   const [confirmedVotersColumnFilter, setConfirmedVotersColumnFilter] =
@@ -35,6 +99,38 @@ const ElectionBasePage = () => {
 
   const confirmedVotrs: ConfirmedVoters[] = confirmedVotersData;
   const possibleVotrs: PossibleVoters[] = possibleVotersData;
+
+  const possibleVotersColumns: ColumnDef<PossibleVotersHeader>[] = [
+    {
+      accessorKey: 'name',
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t('electionBase:possibleVoters.table.header.name')}
+        />
+      )
+    },
+    {
+      accessorKey: 'address',
+      header: t('electionBase:possibleVoters.table.header.address')
+    },
+    {
+      accessorKey: 'state',
+      header: t('electionBase:possibleVoters.table.header.governorate')
+    },
+    {
+      accessorKey: 'pollingCenter',
+      header: t('electionBase:possibleVoters.table.header.pollingCenter')
+    },
+    {
+      accessorKey: 'dataEntry',
+      header: t('electionBase:possibleVoters.table.header.dataEntry')
+    },
+    {
+      accessorKey: 'candidate',
+      header: t('electionBase:possibleVoters.table.header.candidateName')
+    }
+  ];
 
   const confirmedVotersColumns: ColumnDef<ConfirmedVotersHeader>[] = [
     {
@@ -92,11 +188,30 @@ const ElectionBasePage = () => {
     columns: confirmedVotersColumns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setConfirmedVotersColumnFilter,
     state: {
       columnFilters: confirmedVotersColumnFilter
     }
   });
+  const possibleVotersTable = useReactTable({
+    data: possibleVotrs,
+    columns: possibleVotersColumns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setPossibledVotersColumnFilter,
+    state: {
+      columnFilters: possibleVotersColumnFilter
+    }
+  });
+
+  const clearConfirmedVotersFilters = () => {
+    confirmedVotersTable.setColumnFilters([]);
+  };
+  const clearPossibleVotersFilters = () => {
+    possibleVotersTable.setColumnFilters([]);
+  };
   return (
     <Container>
       <Tabs defaultValue="political-entities">
@@ -130,16 +245,29 @@ const ElectionBasePage = () => {
                     type="text"
                     placeholder="ابحث عن ناخبين مؤكدين"
                   />
+                  <Dynamic component={useDialog(confirmedVotersTable)} />
+                  <Show when={confirmedVotersColumnFilter.length > 0}>
+                    <Button
+                      onClick={clearConfirmedVotersFilters}
+                      variant="ghost"
+                    >
+                      الغاء التصفية
+                    </Button>
+                  </Show>
                 </div>
               </CardContent>
               <CardContent>
                 <DynamicTable table={confirmedVotersTable} />
+                <DataTablePagination
+                  className="mt-12"
+                  table={confirmedVotersTable}
+                />
               </CardContent>
             </Card>
           </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
-        <motion.div
+          <motion.div
             initial={{ x: 300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
@@ -148,22 +276,35 @@ const ElectionBasePage = () => {
                 <div className="lg:w-1/2 flex flex-col lg:flex-row gap-5">
                   <Input
                     value={
-                      (confirmedVotersTable
+                      (possibleVotersTable
                         .getColumn('name')
                         ?.getFilterValue() as string) ?? ''
                     }
                     onChange={(event) =>
-                      confirmedVotersTable
+                      possibleVotersTable
                         .getColumn('name')
                         ?.setFilterValue(event.target.value)
                     }
                     type="text"
-                    placeholder="ابحث عن ناخبين مؤكدين"
+                    placeholder="ابحث عن ناخبين محتملين"
                   />
+                  <Dynamic component={useDialog(possibleVotersTable)} />
+                  <Show when={possibleVotersColumnFilter.length > 0}>
+                    <Button
+                      onClick={clearPossibleVotersFilters}
+                      variant="ghost"
+                    >
+                      الغاء التصفية
+                    </Button>
+                  </Show>
                 </div>
               </CardContent>
               <CardContent>
-                <DynamicTable table={confirmedVotersTable} />
+                <DynamicTable table={possibleVotersTable} />
+                <DataTablePagination
+                  className="mt-12"
+                  table={possibleVotersTable}
+                />
               </CardContent>
             </Card>
           </motion.div>

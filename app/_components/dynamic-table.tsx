@@ -46,7 +46,14 @@ export const DynamicTable: FC<DynamicTableProps> = ({table}) =>
 						</For>
 					</TableHeader>
 					<TableBody>
-						<Show when={table.getRowModel().rows?.length} fallback={null}>
+						<Show when={table.getRowModel().rows?.length > 0} fallback={<TableRow>
+								<TableCell
+									colSpan={10}
+									className="h-24 text-center"
+								>
+									لا يوجد بيانات
+								</TableCell>
+				</TableRow>}>
 							<For each={table.getRowModel().rows}>
 								{ ( row: any ) => (
 									<TableRow className='even:bg-slate-50 dark:even:bg-slate-900 rounded-lg border-none' key={row.id} data-state={row.getIsSelected() && "selected"}>

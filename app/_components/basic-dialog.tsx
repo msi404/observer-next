@@ -10,11 +10,14 @@ import {
   DialogTrigger,
 } from "@/app/_components/ui/dialog"
 import { Separator } from '@/app/_components/ui/separator'
+import { DialogClose } from '@radix-ui/react-dialog';
 
 type BasicDialog = {
   buttonLabel: string
   buttonIcon?: ReactNode
   title: string
+  open: boolean
+  onOpenChange: any, 
   description: string
   primaryAction: ReactNode
   secondaryAction: ReactNode
@@ -25,13 +28,15 @@ export const BasicDialog: FC<BasicDialog> = ( {
   buttonLabel,
   buttonIcon,
   title,
+  open,
+  onOpenChange,
   description,
   primaryAction,
   secondaryAction,
   children } ) =>
 {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button className="lg:w-1/4">{ buttonLabel } {buttonIcon}</Button>
       </DialogTrigger>
@@ -51,7 +56,9 @@ export const BasicDialog: FC<BasicDialog> = ( {
         <DialogFooter>
           <div className='flex justify-between w-full'>
             {primaryAction}
+            <DialogClose asChild aria-label='Close'>
             {secondaryAction}
+            </DialogClose>
           </div>
         </DialogFooter>
       </DialogContent>

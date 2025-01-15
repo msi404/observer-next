@@ -36,7 +36,7 @@ export const authSlice = createSlice( {
 	{
 		builder.addMatcher( authApi.endpoints.login.matchFulfilled, ( _state, { payload } ) =>
 		{
-			localStorage.setItem( "user", JSON.stringify(payload.result) );
+			localStorage.setItem( "user", JSON.stringify( payload.result ) );
 			return payload
 		} )
 	}

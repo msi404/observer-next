@@ -54,8 +54,14 @@ export const AppSidebar = () => {
                   >
                     <SidebarMenuItem>
                       <motion.div
-                        whileHover={{ scale: 1.1, transition: { damping: 0 } }}
-                        whileTap={{ scale: 0.95, transition: { damping: 0 } }}
+                        whileHover={{
+                          scale: 1.1,
+                          transition: {
+                            damping: 0,
+                            ease: 'linear',
+                            duration: 0.2
+                          }
+                        }}
                       >
                         <SidebarMenuButton size="lg" asChild>
                           <Link
