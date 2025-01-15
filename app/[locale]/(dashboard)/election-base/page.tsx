@@ -35,7 +35,7 @@ import { Filter } from 'lucide-react';
 
 interface Filter { id: string; value: string; }
 
-const useDialog = (table: Table<any>) => {
+const useConfirmedVotersDialog = (table: Table<any>) => {
   const [filters, setFilters] = useState<Filter[]>([]);
   const [open, setOpen] = useState(false);
 
@@ -60,7 +60,84 @@ const useDialog = (table: Table<any>) => {
       buttonLabel="تصفية"
       buttonIcon={<Filter />}
       title="تصفية"
-      description="تصفية"
+      description="ادخل المعطيات الاتية لتصفية العناصر"
+      primaryAction={<Button type="submit" onClick={applyFilters}>تصفية</Button>}
+      secondaryAction={<Button variant="outline">الغاء</Button>}
+    >
+        <Input
+          placeholder="العنوان"
+          onChange={(event) =>
+            setFilters(() => [
+              ...filters,
+              { id: 'address', value: event.target.value }
+            ])
+          }
+        />
+        <Input
+          placeholder="المحافظة"
+          onChange={(event) =>
+            setFilters(() => [
+              ...filters,
+              { id: 'state', value: event.target.value }
+            ])
+          }
+        />
+      <Input placeholder="مركز الاقتراع"
+        onChange={ ( event ) => 
+          setFilters( () => [
+            ...filters, 
+            {id: 'pollingCenter', value: event.target.value}
+          ])
+        }
+      />
+      <Input placeholder="مدخل البيانات"
+        onChange={ ( event ) => 
+          setFilters( () => [
+            ...filters,
+            {id: 'dataEntry', value: event.target.value}
+          ])
+        }
+      />
+      <Input placeholder="المرشح"
+        onChange={ ( event ) => 
+          setFilters( () => [
+            ...filters,
+            {id: 'candidate', value: event.target.value}
+          ])
+        }
+      />
+    </BasicDialog>
+  ), [applyFilters, filters, open]);
+
+  return DialogComponent;
+};
+
+const usePossibleVotersDialog = (table: Table<any>) => {
+  const [filters, setFilters] = useState<Filter[]>([]);
+  const [open, setOpen] = useState(false);
+
+  const applyFilters = useCallback(() => {
+    table.setColumnFilters(filters);
+    setOpen(false);
+    setFilters([]);
+  }, [table, filters]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') applyFilters();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [applyFilters]);
+
+  const DialogComponent = useMemo(() => (
+    <BasicDialog
+      open={open}
+      onOpenChange={setOpen}
+      buttonLabel="تصفية"
+      buttonIcon={<Filter />}
+      title="تصفية"
+      description="ادخل المعطيات الاتية لتصفية العناصر"
       primaryAction={<Button type="submit" onClick={applyFilters}>تصفية</Button>}
       secondaryAction={<Button variant="outline">الغاء</Button>}
     >
@@ -84,6 +161,7 @@ const useDialog = (table: Table<any>) => {
         />
         <Input placeholder="مركز الاقتراع" />
         <Input placeholder="مدخل البيانات" />
+        <Input placeholder="المرشح" />
     </BasicDialog>
   ), [applyFilters, filters, open]);
 
@@ -245,15 +323,15 @@ const ElectionBasePage = () => {
                     type="text"
                     placeholder="ابحث عن ناخبين مؤكدين"
                   />
-                  <Dynamic component={useDialog(confirmedVotersTable)} />
-                  <Show when={confirmedVotersColumnFilter.length > 0}>
+                  <Dynamic component={ useConfirmedVotersDialog( confirmedVotersTable ) } />
+                    <Show when={ confirmedVotersColumnFilter.length > 0 }>
                     <Button
                       onClick={clearConfirmedVotersFilters}
                       variant="ghost"
                     >
                       الغاء التصفية
                     </Button>
-                  </Show>
+                    </Show>
                 </div>
               </CardContent>
               <CardContent>
@@ -288,7 +366,7 @@ const ElectionBasePage = () => {
                     type="text"
                     placeholder="ابحث عن ناخبين محتملين"
                   />
-                  <Dynamic component={useDialog(possibleVotersTable)} />
+                  <Dynamic component={usePossibleVotersDialog(possibleVotersTable)} />
                   <Show when={possibleVotersColumnFilter.length > 0}>
                     <Button
                       onClick={clearPossibleVotersFilters}

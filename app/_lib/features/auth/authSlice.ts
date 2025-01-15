@@ -15,7 +15,7 @@ const user = JSON.parse( localStorage.getItem( 'user' ) || JSON.stringify(userSt
 const initialState: User = {
 	userName: user?.userName,
 	fullName: user?.fullName,
-	role: user?.role,
+	role: user.role,
 	token: user?.token
 };
 
@@ -25,7 +25,7 @@ export const authSlice = createSlice( {
 	reducers: {
 		logout: (state) =>
 		{
-			localStorage.removeItem( 'user' )
+			localStorage.removeItem( 'userData' )
 			state.fullName = null
 			state.userName = null
 			state.role = null

@@ -41,7 +41,7 @@ type PossibleVotersHeader = {
 type Candidate = {
 	name: string;
 	phoneNumber: string;
-	candidateNumber: number;
+	candidateNumber: string;
 	entityName: string;
 	state: string;
 };
@@ -49,7 +49,7 @@ type Candidate = {
 type CandidatesHeader = {
 	name: string;
 	phoneNumber: string;
-	candidateNumber: number;
+	candidateNumber: string;
 	entityName: string;
 	state: string;
 };

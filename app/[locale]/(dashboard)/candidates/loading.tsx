@@ -24,7 +24,7 @@ const Loading = () => {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								{ Array.from( { length: 4 } ).map( (_, index ) => (
+								{ Array.from( { length: 4 } ).map( () => (
 								<TableHead>
 								<Skeleton className="h-4 w-16"/>
 							</TableHead>
@@ -32,8 +32,8 @@ const Loading = () => {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-						{ Array.from( { length: 10 } ).map( () => (
-								<TableRow>
+						{ Array.from( { length: 10 } ).map( (_, index) => (
+								<TableRow key={index}>
 								{ Array.from( { length: 4 } ).map( () => (
 									<TableCell>
 										<Skeleton className="h-5 w-20"/>

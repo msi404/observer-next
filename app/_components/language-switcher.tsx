@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import {Switch} from '@/app/_components/ui/switch'
+
 import { useToast } from "@/app/_hooks/use-toast";
 import { i18nConfig } from "@/app/_config/i18nConfig";
 import { Label } from "@/app/_components/ui/label";
-import { Switch } from "@/app/_components/ui/switch";
 
 export const LanguageSwitcher: FC = () => {
 	const { toast } = useToast();
@@ -65,8 +66,6 @@ export const LanguageSwitcher: FC = () => {
 			<Switch
 				id="language"
 				onChange={handleChange}
-				onClick={handleChange}
-				checked={isLanguage}
 			/>
 		</div>
 	);

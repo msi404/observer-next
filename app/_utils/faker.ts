@@ -77,7 +77,7 @@ const createRandomCandidate = () =>
 	return {
 		name: faker.person.fullName(),
 		phoneNumber: faker.phone.number(),
-		candidateNumber: faker.number.int( { min: 1, max: 100 } ),
+		candidateNumber: faker.number.int( { min: 1, max: 100 } ).toString(),
 		entityName: faker.company.name(),
 		state: faker.location.state(),
 	}
