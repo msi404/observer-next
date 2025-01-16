@@ -40,7 +40,7 @@ export const BasicDialog: FC<BasicDialog> = ( {
       <DialogTrigger asChild>
         <Button className="lg:w-1/4">{ buttonLabel } {buttonIcon}</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[425px] max-h-[100%] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
@@ -51,7 +51,7 @@ export const BasicDialog: FC<BasicDialog> = ( {
           { children }
         </div>
         <div className=' relative'>
-        <Separator className='absolute bottom-1/4 left-1/2 right-1/2 translate-x-1/2 w-screen'/>
+        <Separator className='absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen'/>
         </div>
         <DialogFooter>
           <div className='flex justify-between w-full'>

@@ -8,9 +8,11 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   type ColumnDef,
   type ColumnFiltersState,
-  type Table
+  type Table,
+  type SortingState,
 } from '@tanstack/react-table';
 
 import { Container } from '@/app/_components/container';
@@ -30,13 +32,105 @@ import { DataTablePagination } from '@/app/_components/table-pagination';
 import { confirmedVotersData, possibleVotersData } from '@/app/_utils/faker';
 import Placeholder from '@/app/_assets/images/placeholder.png';
 import { Dynamic } from '@/app/_components/dynamic';
+import {Dropzone} from '@/app/_components/dropzone'
 import { Show } from '@/app/_components/show';
-import { Filter } from 'lucide-react';
+import { Filter, FilePlus } from 'lucide-react';
+import {Combobox} from '@/app/_components/combobox'
 
 interface Filter { id: string; value: string; }
 
+const governorates = [
+  { label: "بغداد", value: "بغداد" },
+  { label: "البصرة", value: "البصرة" },
+  { label: "نينوى", value: "نينوى" },
+  { label: "أربيل", value: "أربيل" },
+  { label: "السليمانية", value: "السليمانية" },
+  { label: "دهوك", value: "دهوك" },
+  { label: "كركوك", value: "كركوك" },
+  { label: "النجف", value: "النجف" },
+  { label: "كربلاء", value: "كربلاء" },
+  { label: "بابل", value: "بابل" },
+  { label: "الأنبار", value: "الأنبار" },
+  { label: "ديالى", value: "ديالى" },
+  { label: "واسط", value: "واسط" },
+  { label: "ميسان", value: "ميسان" },
+  { label: "ذي قار", value: "ذي قار" },
+  { label: "المثنى", value: "المثنى" },
+  { label: "القادسية", value: "القادسية" },
+  { label: "صلاح الدين", value: "صلاح الدين" }
+];
+
+const useAddConfirmedVoterDialog = () => {
+  const [open, setOpen] = useState(false);
+
+  const DialogComponent = useMemo( () => (
+    <BasicDialog
+      open={open}
+      onOpenChange={setOpen}
+      buttonLabel="اضافة"
+      buttonIcon={<FilePlus />}
+      title="اضافة ناخب مؤكد"
+      description="ادخل المعطيات الاتية لاضافة عنصر"
+      primaryAction={<Button type="submit">اضافة</Button>}
+      secondaryAction={<Button variant="outline">الغاء</Button>}
+    >
+        <Input
+          placeholder="اسم الناخب الثلاثي"/>
+        <Input
+          placeholder="العنوان"/>
+        <Input
+          placeholder="تاريخ الميلاد"/>
+        <Input
+          placeholder="رقم الناخب"/>
+        <Input
+          placeholder="الجنس"/>
+        <Input
+          placeholder="المركز"/>
+        <Input
+          placeholder="المرشح"/>
+       
+    </BasicDialog>
+  ), [open]);
+
+  return DialogComponent;
+};
+const useAddPossibleVoterDialog = () => {
+  const [open, setOpen] = useState(false);
+
+  const DialogComponent = useMemo( () => (
+    <BasicDialog
+      open={open}
+      onOpenChange={setOpen}
+      buttonLabel="اضافة"
+      buttonIcon={<FilePlus />}
+      title="اضافة ناخب محتمل"
+      description="ادخل المعطيات الاتية لاضافة عنصر"
+      primaryAction={<Button type="submit">اضافة</Button>}
+      secondaryAction={<Button variant="outline">الغاء</Button>}
+    >
+        <Input
+          placeholder="اسم الناخب الثلاثي"/>
+        <Input
+          placeholder="العنوان"/>
+        <Input
+          placeholder="تاريخ الميلاد"/>
+        <Input
+          placeholder="رقم الناخب"/>
+        <Input
+          placeholder="الجنس"/>
+        <Input
+          placeholder="المركز"/>
+        <Input
+          placeholder="المرشح"/>
+       <Dropzone />
+    </BasicDialog>
+  ), [open]);
+
+  return DialogComponent;
+};
+
 const useConfirmedVotersDialog = (table: Table<any>) => {
-  const [filters, setFilters] = useState<Filter[]>([]);
+  const [ filters, setFilters ] = useState<Filter[]>( [] );
   const [open, setOpen] = useState(false);
 
   const applyFilters = useCallback(() => {
@@ -72,7 +166,8 @@ const useConfirmedVotersDialog = (table: Table<any>) => {
               { id: 'address', value: event.target.value }
             ])
           }
-        />
+      />
+        <Combobox options={governorates} setSelect={() => console.log('object')} label='المحافظة'/>
         <Input
           placeholder="المحافظة"
           onChange={(event) =>
@@ -172,8 +267,11 @@ const ElectionBasePage = () => {
   const [confirmedVotersColumnFilter, setConfirmedVotersColumnFilter] =
     useState<ColumnFiltersState>([]);
   const [possibleVotersColumnFilter, setPossibledVotersColumnFilter] =
-    useState<ColumnFiltersState>([]);
+    useState<ColumnFiltersState>( [] );
+  const [ confirmedVotersSorting, setConfirmedVotersSorting ] = useState<SortingState>( [] )
+  const [ possibleVotersSorting, setPossibleVotersSorting ] = useState<SortingState>( [] )
   const { t } = useTranslation();
+
 
   const confirmedVotrs: ConfirmedVoters[] = confirmedVotersData;
   const possibleVotrs: PossibleVoters[] = possibleVotersData;
@@ -206,7 +304,12 @@ const ElectionBasePage = () => {
     },
     {
       accessorKey: 'candidate',
-      header: t('electionBase:possibleVoters.table.header.candidateName')
+      header:({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t( 'electionBase:possibleVoters.table.header.candidateName' )}
+        />
+      )
     }
   ];
 
@@ -238,7 +341,12 @@ const ElectionBasePage = () => {
     },
     {
       accessorKey: 'candidate',
-      header: t('electionBase:confirmedVoters.table.header.candidateName')
+      header:( { column } ) => (
+        <DataTableColumnHeader
+          column={ column }
+          title={t( 'electionBase:confirmedVoters.table.header.candidateName' )}
+        />
+      )
     },
     {
       accessorKey: 'candidateNumber',
@@ -268,8 +376,11 @@ const ElectionBasePage = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setConfirmedVotersColumnFilter,
+    onSortingChange: setConfirmedVotersSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
-      columnFilters: confirmedVotersColumnFilter
+      columnFilters: confirmedVotersColumnFilter,
+      sorting: confirmedVotersSorting
     }
   });
   const possibleVotersTable = useReactTable({
@@ -279,8 +390,11 @@ const ElectionBasePage = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setPossibledVotersColumnFilter,
+    onSortingChange: setPossibleVotersSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
-      columnFilters: possibleVotersColumnFilter
+      columnFilters: possibleVotersColumnFilter,
+      sorting: possibleVotersSorting
     }
   });
 
@@ -333,6 +447,7 @@ const ElectionBasePage = () => {
                     </Button>
                     </Show>
                 </div>
+                <Dynamic component={useAddConfirmedVoterDialog()}/>
               </CardContent>
               <CardContent>
                 <DynamicTable table={confirmedVotersTable} />
@@ -376,6 +491,7 @@ const ElectionBasePage = () => {
                     </Button>
                   </Show>
                 </div>
+                <Dynamic component={useAddPossibleVoterDialog()}/>
               </CardContent>
               <CardContent>
                 <DynamicTable table={possibleVotersTable} />

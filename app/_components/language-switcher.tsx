@@ -65,7 +65,9 @@ export const LanguageSwitcher: FC = () => {
 			</Label>
 			<Switch
 				id="language"
-				onChange={handleChange}
+				onChange={ handleChange }
+				checked={ isLanguage }
+				onClick={handleChange}
 			/>
 		</div>
 	);
