@@ -5,7 +5,7 @@ import { selectToken } from '@/app/_lib/features/auth/authSlice'
 import { Fingerprint, Atom } from "lucide-react"
 
 import { Container } from '@/app/_components/container';
-import {LoginForm} from '@/app/_components/login-form'
+import { LoginForm } from '@/app/_components/login-form'
 
 const SignInPage = () =>
 {

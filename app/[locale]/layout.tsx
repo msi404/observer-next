@@ -31,6 +31,22 @@ const i18Namespaces = [
 export const metadata: Metadata = {
   title: "برنامج المراقب",
   description: "برنامج المراقب الخاص بادارة العملية الانتخابية.",
+  generator: "Next.js",
+  manifest: "/manifest.json",
+  keywords: ["nextjs", "next14", "pwa", "next-pwa"],
+  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
+  authors: [
+    {
+      name: "Ismail Salah",
+      url: "www.linkedin.com/in/ismail-junior-60b876247",
+    },
+  ],
+  viewport:
+    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
+  icons: [
+    { rel: "apple-touch-icon", url: "icons/next.svg" },
+    { rel: "icon", url: "icons/next.svg" },
+  ],
 };
 
 export function generateStaticParams() {
@@ -53,8 +69,8 @@ export default async function RootLayout({
         className={`${noto.className} ${inter.className} antialiased`}
       >
         <Providers locale={locale} namespaces={i18Namespaces} resources={resources}>
-              <main className="w-full">{ children }</main>
-              <Toaster />
+          <main className="w-full">{ children }</main>
+          <Toaster />
        </Providers>
       </body>
     </html>

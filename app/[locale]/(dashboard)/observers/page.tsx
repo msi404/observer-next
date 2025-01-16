@@ -53,6 +53,8 @@ const ObserversPage = () => {
         searchTerm="name"
         primaryAction={
           <BasicDialog
+          open
+          onOpenChange={() => console.log('test')}
             buttonLabel={t("stateMangers:actions.filterAction")}
             buttonIcon={<Filter />}
             title={t("observers:dialog.filterTitle")}

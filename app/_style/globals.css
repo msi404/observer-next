@@ -6,6 +6,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.rdp-vhidden {
+  @apply hidden;
+}
+
 @layer base {
 
   @layer base {

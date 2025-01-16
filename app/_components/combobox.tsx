@@ -1,5 +1,5 @@
 'use client';
-import { type FC, type ReactNode ,useState } from 'react';
+import { type FC ,useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/app/_lib/utils';
 import { Button } from '@/app/_components/ui/button';
@@ -21,12 +21,11 @@ import
 } from '@/app/_components/ui/popover';
 import {Show} from '@/app/_components/show'
 import { For } from '@/app/_components/for'
-import { Dynamic } from '@/app/_components/dynamic'
 
 type ComboboxType = {
 	options: { value: string, label: string; }[],
 	label: string,
-	setSelect: () => void
+	setSelect: (value: string) => void
 }
 
 export const Combobox: FC<ComboboxType> = ({options, label, setSelect}) =>
@@ -37,11 +36,12 @@ export const Combobox: FC<ComboboxType> = ({options, label, setSelect}) =>
 	const onSelect = (currentValue: string) =>
 	{
 		setValue( ( currentValue === value ? "" : currentValue ) )
+		setSelect(currentValue)
 		setOpen(false)
 	}
 	
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover modal={true} open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
 					variant='outline'
@@ -55,13 +55,13 @@ export const Combobox: FC<ComboboxType> = ({options, label, setSelect}) =>
 					<ChevronsUpDown className='ml-2 h-4 shrink-0 opacity-50'/>		
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className='w-full p-0'>
+			<PopoverContent className='w-96 p-0'>
 				<Command>
-					<CommandInput placeholder='Search...'>
-						<CommandList>
-							<CommandEmpty>No { label } found.</CommandEmpty>
+					<CommandInput placeholder='بحث...' />
+						<CommandList className='max-h-60'>
+						<CommandEmpty>لم يتم العثور على { label }</CommandEmpty>
 							<CommandGroup>
-								<For each={options}>
+							<For each={options}>
 									{ ( option, index ) => (
 										<CommandItem
 											key={ option.value }
@@ -69,14 +69,12 @@ export const Combobox: FC<ComboboxType> = ({options, label, setSelect}) =>
 											onSelect={(currentValue) => onSelect(currentValue)}
 										>
 											<Check className={ cn( 'mr-2 h-4 w-4', value === option.value ? 'opacity-100' : 'opacity-0' ) } />
-											<Dynamic component={ option.label } />
-											{option.label}
+											{ option.label }
 										</CommandItem>
 									)}
 								</For>
 							</CommandGroup>
 						</CommandList>
-					</CommandInput>
 				</Command>
 
 			</PopoverContent>

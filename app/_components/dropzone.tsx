@@ -1,5 +1,5 @@
 'use client'
-import { useMemo } from 'react';
+import { type FC ,useMemo } from 'react';
 import {useDropzone} from 'react-dropzone';
 
 const baseStyle = {
@@ -30,7 +30,7 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
-export const Dropzone = () => {
+export const Dropzone: FC<{label: string}> = ({label}) => {
 	const {
 		getRootProps,
 		getInputProps,
@@ -39,7 +39,7 @@ export const Dropzone = () => {
 		isDragReject
   } = useDropzone({accept: {'image/*': []}});
 
-  const style = useMemo(() => ({
+  const style: any = useMemo(() => ({
     ...baseStyle,
     ...(isFocused ? focusedStyle : {}),
     ...(isDragAccept ? acceptStyle : {}),
@@ -54,7 +54,7 @@ export const Dropzone = () => {
     <div className="container">
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>{label}</p>
       </div>
     </div>
   );

@@ -10,12 +10,16 @@ const userState: User = {
 	token: null
 }
 
-const user = JSON.parse( localStorage.getItem( 'user' ) || JSON.stringify(userState) ) 
+let user;
+
+if (typeof window !== 'undefined') {
+	user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || JSON.stringify(userState)) : JSON.stringify(userState);
+ }
 	
 const initialState: User = {
 	userName: user?.userName,
 	fullName: user?.fullName,
-	role: user.role,
+	role: user?.role,
 	token: user?.token
 };
 
@@ -25,7 +29,7 @@ export const authSlice = createSlice( {
 	reducers: {
 		logout: (state) =>
 		{
-			localStorage.removeItem( 'userData' )
+			localStorage && localStorage.removeItem( 'userData' )
 			state.fullName = null
 			state.userName = null
 			state.role = null
@@ -36,7 +40,7 @@ export const authSlice = createSlice( {
 	{
 		builder.addMatcher( authApi.endpoints.login.matchFulfilled, ( _state, { payload } ) =>
 		{
-			localStorage.setItem( "user", JSON.stringify( payload.result ) );
+			localStorage && localStorage?.setItem( "user", JSON.stringify( payload.result ) );
 			return payload
 		} )
 	}

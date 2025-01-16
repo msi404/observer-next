@@ -44,6 +44,8 @@ const StateManagersPage = () => {
         searchTerm="name"
         primaryAction={
           <BasicDialog
+          open
+          onOpenChange={() => console.log('test')}
             buttonLabel={t("stateManagers:actions.filterAction")}
             buttonIcon={<Filter />}
             title={t("stateManagers:dialog.filterTitle")}

@@ -47,6 +47,8 @@ const DataEntriesPage = () => {
         searchTerm="name"
         primaryAction={
           <BasicDialog
+            open
+            onOpenChange={() => console.log('test')}
             buttonLabel={t("stateMangers:actions.filterAction")}
             buttonIcon={<Filter />}
             title="تصفية العناصر"
