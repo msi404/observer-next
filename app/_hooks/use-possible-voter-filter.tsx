@@ -59,8 +59,7 @@ export const usePossibleVotersFilter = (table: Table<any>) =>
 		  <BasicDialog
 			 open={open}
 			 onOpenChange={setOpen}
-			 buttonLabel="تصفية"
-			 buttonIcon={<Filter />}
+			 button={<Button className='lg:w-1/4'>تصفية<Filter/></Button>}
 			 title="تصفية"
 			 description="ادخل المعطيات الاتية لتصفية العناصر"
 		  >

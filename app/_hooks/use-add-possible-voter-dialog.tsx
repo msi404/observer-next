@@ -58,8 +58,7 @@ export const useAddPossibleVoterDialog = () =>
 		<BasicDialog
 			open={ open }
 			onOpenChange={ setOpen }
-			buttonLabel='اضافة'
-			buttonIcon={ <SquarePen /> }
+			button={<Button className='lg:w-1/4'>اضافة<SquarePen /></Button>}
 			title='اضافة ناخب محتمل'
 			description="ادخل المعطيات الاتية لاضافة عنصر"
 		>

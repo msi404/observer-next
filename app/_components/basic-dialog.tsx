@@ -1,5 +1,5 @@
 import { type FC, type ReactNode } from 'react';
-import { Button } from '@/app/_components/ui/button';
+import {cn} from '@/app/_lib/utils'
 import {
   Dialog,
   DialogContent,
@@ -11,32 +11,30 @@ import {
 import { Separator } from '@/app/_components/ui/separator';
 
 type BasicDialog = {
-  buttonLabel: string;
-  buttonIcon?: ReactNode;
+  button: ReactNode;
   title: string;
   open: boolean;
   onOpenChange: any;
   description: string;
   children: ReactNode;
+  className?: string
 };
 
 export const BasicDialog: FC<BasicDialog> = ({
-  buttonLabel,
-  buttonIcon,
+  button,
   title,
   open,
   onOpenChange,
   description,
-  children
+  children,
+  className
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="lg:w-1/4">
-          {buttonLabel} {buttonIcon}
-        </Button>
+        {button}
       </DialogTrigger>
-      <DialogContent className="max-w-[425px] max-h-[100%] overflow-y-auto">
+      <DialogContent className={cn("max-w-[425px] max-h-[100%] overflow-y-auto", className)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

@@ -60,8 +60,7 @@ export const useConfirmedVotersFilter = (table: Table<any>) =>
 		  <BasicDialog
 			 open={open}
 			 onOpenChange={setOpen}
-			 buttonLabel="تصفية"
-			 buttonIcon={<Filter />}
+			 button={<Button className='lg:w-1/4'>تصفية<Filter/></Button>}
 			 title="تصفية"
 			 description="ادخل المعطيات الاتية لتصفية العناصر"
 		  >
@@ -115,7 +114,7 @@ export const useConfirmedVotersFilter = (table: Table<any>) =>
 			 <DialogFooter>
 				<div className="flex justify-between w-full">
 				  <Button type="submit" onClick={applyFilters}>
-					 اضافة
+					 تصفية
 				  </Button>
 				  <DialogClose asChild aria-label="Close">
 					 <Button variant="outline">الغاء</Button>

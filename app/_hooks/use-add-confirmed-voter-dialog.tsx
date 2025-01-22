@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {useForm} from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,15 +54,15 @@ export const useAddConfirmedVoterDialog = () =>
 	
 	const onSubmit = async ( values: z.infer<typeof addVoterSchema> ) =>
 	{
-		console.log(values);
+    console.log( values );
+    console.log(file);
 	}
 
 	const DialogComponent = useMemo( () => (
 		<BasicDialog
 			open={ open }
 			onOpenChange={ setOpen }
-			buttonLabel='اضافة'
-			buttonIcon={ <SquarePen /> }
+			button={<Button className='lg:w-1/4'>اضافة<SquarePen/></Button>}
 			title='اضافة ناخب مؤكد'
 			description="ادخل المعطيات الاتية لاضافة عنصر"
 		>
@@ -189,7 +189,7 @@ export const useAddConfirmedVoterDialog = () =>
                   </FormItem>
                 )}
               />
-              <Dropzone setFile={ ( file ) => setFile( file ) } label="اختيار صورة الناخب" />
+              <Dropzone setFile={ (voterFile) => setFile( voterFile ) } label="اختيار صورة الناخب" />
             </div>
             <div className=" relative">
               <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
@@ -214,6 +214,10 @@ export const useAddConfirmedVoterDialog = () =>
           </form>
         </Form>
 		</BasicDialog>
-	), [ open ] )
+  ), [ open ] )
+  useEffect( () =>
+  {
+    console.log(file);
+  }, [file])
 	return DialogComponent;
 }
