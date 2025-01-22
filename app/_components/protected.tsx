@@ -2,7 +2,7 @@
 import { type ReactNode, Fragment } from 'react'
 import {permanentRedirect} from 'next/navigation'
 import { useSelector } from 'react-redux'
-import { selectToken } from '@/app/_lib/features/auth/authSlice'
+import { selectToken } from '@/app/_lib/features/authSlice'
 
 export const Protected = ({children}: {children: ReactNode}) =>
 {

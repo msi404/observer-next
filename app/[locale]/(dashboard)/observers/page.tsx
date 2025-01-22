@@ -59,8 +59,6 @@ const ObserversPage = () => {
             buttonIcon={<Filter />}
             title={t("observers:dialog.filterTitle")}
             description={t("observers:dialog.filterDescription")}
-            primaryAction={<Button>{t("observers:dialog.applyFilter")}</Button>}
-            secondaryAction={<Button variant="outline">{t("observers:dialog.cancelFilter")}</Button>}
           >
             {["name", "phone", "gender", "state", "pollingCenter"].map((id, index) => (
               <div className="grid grid-cols-1 items-center gap-4" key={index}>

@@ -6,7 +6,7 @@ import {
 	useSuperAdminStatisticsQuery,
 } from "@/app/_services/fetchApi";
 import { hasPermission } from "@/app/_auth/auth-rbac";
-import { selectUser } from "@/app/_lib/features/auth/authSlice";
+import { selectUser } from "@/app/_lib/features/authSlice";
 
 export const useStats = () => {
 	const initialStats = {

@@ -50,8 +50,6 @@ const StateManagersPage = () => {
             buttonIcon={<Filter />}
             title={t("stateManagers:dialog.filterTitle")}
             description={t("stateManagers:dialog.filterDescription")}
-            primaryAction={<Button>{t("stateManagers:actions.filter")}</Button>}
-            secondaryAction={<Button variant="outline">{t("stateManagers:actions.cancel")}</Button>}
           >
             <div className="grid grid-cols-1 items-center gap-4">
               <Input

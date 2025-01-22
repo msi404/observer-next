@@ -2,7 +2,7 @@
 import { useStats } from '@/app/_hooks/use-stats';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { useSelector } from 'react-redux';
-import { selectUser } from '@/app/_lib/features/auth/authSlice';
+import { selectUser } from '@/app/_lib/features/authSlice';
 import {
 	UsersRound,
 	Eye,

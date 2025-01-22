@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState} from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,6 @@ import {
   getSortedRowModel,
   type ColumnDef,
   type ColumnFiltersState,
-  type Table,
   type SortingState
 } from '@tanstack/react-table';
 
@@ -23,278 +22,24 @@ import {
   TabsList,
   TabsTrigger
 } from '@/app/_components/ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/app/_components/ui/select';
 import { Input } from '@/app/_components/ui/input';
 import { Button } from '@/app/_components/ui/button';
-import { BasicDialog } from '@/app/_components/basic-dialog';
 import { DataTableColumnHeader } from '@/app/_components/table-header';
 import { DynamicTable } from '@/app/_components/dynamic-table';
 import { DataTablePagination } from '@/app/_components/table-pagination';
 import { confirmedVotersData, possibleVotersData } from '@/app/_utils/faker';
 import Placeholder from '@/app/_assets/images/placeholder.png';
 import { Dynamic } from '@/app/_components/dynamic';
-import { Dropzone } from '@/app/_components/dropzone';
 import { Show } from '@/app/_components/show';
-import { Filter, FilePlus, CirclePlus } from 'lucide-react';
-import { Combobox } from '@/app/_components/combobox';
-import { DatePicker } from '@/app/_components/date-picker';
+import {useAddConfirmedVoterDialog } from '@/app/_hooks/use-add-confirmed-voter-dialog'
+import { useAddPossibleVoterDialog } from '@/app/_hooks/use-add-possible-voter-dialog'
+import { useConfirmedVotersFilter } from '@/app/_hooks/use-confirmed-voter-filter'
+import {usePossibleVotersFilter} from '@/app/_hooks/use-possible-voter-filter'
 
-interface Filter {
-  id: string;
-  value: string;
-}
-
-const governorates = [
-  { label: 'بغداد', value: 'بغداد' },
-  { label: 'البصرة', value: 'البصرة' },
-  { label: 'نينوى', value: 'نينوى' },
-  { label: 'أربيل', value: 'أربيل' },
-  { label: 'السليمانية', value: 'السليمانية' },
-  { label: 'دهوك', value: 'دهوك' },
-  { label: 'كركوك', value: 'كركوك' },
-  { label: 'النجف', value: 'النجف' },
-  { label: 'كربلاء', value: 'كربلاء' },
-  { label: 'بابل', value: 'بابل' },
-  { label: 'الأنبار', value: 'الأنبار' },
-  { label: 'ديالى', value: 'ديالى' },
-  { label: 'واسط', value: 'واسط' },
-  { label: 'ميسان', value: 'ميسان' },
-  { label: 'ذي قار', value: 'ذي قار' },
-  { label: 'المثنى', value: 'المثنى' },
-  { label: 'القادسية', value: 'القادسية' },
-  { label: 'صلاح الدين', value: 'صلاح الدين' }
-];
-
-const useAddConfirmedVoterDialog = () => {
-  const [open, setOpen] = useState(false);
-
-  const DialogComponent = useMemo(
-    () => (
-      <BasicDialog
-        open={open}
-        onOpenChange={setOpen}
-        buttonLabel="اضافة"
-        buttonIcon={<CirclePlus />}
-        title="اضافة ناخب مؤكد"
-        description="ادخل المعطيات الاتية لاضافة عنصر"
-        primaryAction={<Button type="submit">اضافة</Button>}
-        secondaryAction={<Button variant="outline">الغاء</Button>}
-      >
-        <Input placeholder="اسم الناخب الثلاثي" />
-        <Input placeholder="العنوان" />
-        <DatePicker />
-        <Input placeholder="رقم الناخب" />
-        <Select>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="الجنس" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="male">ذكر</SelectItem>
-            <SelectItem value="female">انثى</SelectItem>
-          </SelectContent>
-        </Select>
-        <Input placeholder="المركز" />
-        <Input placeholder="المرشح" />
-      </BasicDialog>
-    ),
-    [open]
-  );
-
-  return DialogComponent;
-};
-const useAddPossibleVoterDialog = () => {
-  const [open, setOpen] = useState(false);
-
-  const DialogComponent = useMemo(
-    () => (
-      <BasicDialog
-        open={open}
-        onOpenChange={setOpen}
-        buttonLabel="اضافة"
-        buttonIcon={<CirclePlus />}
-        title="اضافة ناخب محتمل"
-        description="ادخل المعطيات الاتية لاضافة عنصر"
-        primaryAction={<Button type="submit">اضافة</Button>}
-        secondaryAction={<Button variant="outline">الغاء</Button>}
-      >
-        <Input placeholder="اسم الناخب الثلاثي" />
-        <Input placeholder="العنوان" />
-        <DatePicker />
-        <Input placeholder="رقم الناخب" />
-        <Select>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="الجنس" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="male">ذكر</SelectItem>
-            <SelectItem value="female">انثى</SelectItem>
-          </SelectContent>
-        </Select>
-        <Input placeholder="المركز" />
-        <Input placeholder="المرشح" />
-        <Dropzone label='اضافة صورة الناخب'/>
-      </BasicDialog>
-    ),
-    [open]
-  );
-
-  return DialogComponent;
-};
-
-const useConfirmedVotersDialog = (table: Table<any>) => {
-  const [filters, setFilters] = useState<Filter[]>([]);
-  const [open, setOpen] = useState(false);
-
-  const applyFilters = useCallback(() => {
-    table.setColumnFilters(filters);
-    setOpen(false);
-    setFilters([]);
-  }, [table, filters]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') applyFilters();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [applyFilters]);
-
-  const DialogComponent = useMemo(
-    () => (
-      <BasicDialog
-        open={open}
-        onOpenChange={setOpen}
-        buttonLabel="تصفية"
-        buttonIcon={<Filter />}
-        title="تصفية"
-        description="ادخل المعطيات الاتية لتصفية العناصر"
-        primaryAction={
-          <Button type="submit" onClick={applyFilters}>
-            تصفية
-          </Button>
-        }
-        secondaryAction={<Button variant="outline">الغاء</Button>}
-      >
-        <Input
-          placeholder="العنوان"
-          onChange={(event) =>
-            setFilters(() => [
-              ...filters,
-              { id: 'address', value: event.target.value }
-            ])
-          }
-        />
-        <Combobox
-          options={governorates}
-          setSelect={(value) =>
-            setFilters(() => [...filters, { id: 'state', value: value }])
-          }
-          label="المحافظة"
-        />
-
-        <Input
-          placeholder="مركز الاقتراع"
-          onChange={(event) =>
-            setFilters(() => [
-              ...filters,
-              { id: 'pollingCenter', value: event.target.value }
-            ])
-          }
-        />
-        <Input
-          placeholder="مدخل البيانات"
-          onChange={(event) =>
-            setFilters(() => [
-              ...filters,
-              { id: 'dataEntry', value: event.target.value }
-            ])
-          }
-        />
-        <Input
-          placeholder="المرشح"
-          onChange={(event) =>
-            setFilters(() => [
-              ...filters,
-              { id: 'candidate', value: event.target.value }
-            ])
-          }
-        />
-      </BasicDialog>
-    ),
-    [applyFilters, filters, open]
-  );
-
-  return DialogComponent;
-};
-
-const usePossibleVotersDialog = (table: Table<any>) => {
-  const [filters, setFilters] = useState<Filter[]>([]);
-  const [open, setOpen] = useState(false);
-
-  const applyFilters = useCallback(() => {
-    table.setColumnFilters(filters);
-    setOpen(false);
-    setFilters([]);
-  }, [table, filters]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') applyFilters();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [applyFilters]);
-
-  const DialogComponent = useMemo(
-    () => (
-      <BasicDialog
-        open={open}
-        onOpenChange={setOpen}
-        buttonLabel="تصفية"
-        buttonIcon={<Filter />}
-        title="تصفية"
-        description="ادخل المعطيات الاتية لتصفية العناصر"
-        primaryAction={
-          <Button type="submit" onClick={applyFilters}>
-            تصفية
-          </Button>
-        }
-        secondaryAction={<Button variant="outline">الغاء</Button>}
-      >
-        <Input
-          placeholder="العنوان"
-          onChange={(event) =>
-            setFilters(() => [
-              ...filters,
-              { id: 'address', value: event.target.value }
-            ])
-          }
-        />
-        <Combobox
-          options={governorates}
-          setSelect={(value) =>
-            setFilters(() => [...filters, { id: 'state', value: value }])
-          }
-          label="المحافظة"
-        />
-        <Input placeholder="مركز الاقتراع" />
-        <Input placeholder="مدخل البيانات" />
-        <Input placeholder="المرشح" />
-      </BasicDialog>
-    ),
-    [applyFilters, filters, open]
-  );
-
-  return DialogComponent;
-};
-
-const ElectionBasePage = () => {
+const ElectionBasePage = () =>
+{
+  const AddConfirmedVoter = useAddConfirmedVoterDialog()
+  const AddPossibleVoter = useAddPossibleVoterDialog()
   const [confirmedVotersColumnFilter, setConfirmedVotersColumnFilter] =
     useState<ColumnFiltersState>([]);
   const [possibleVotersColumnFilter, setPossibledVotersColumnFilter] =
@@ -428,8 +173,11 @@ const ElectionBasePage = () => {
       columnFilters: possibleVotersColumnFilter,
       sorting: possibleVotersSorting
     }
-  });
-
+  } );
+  
+  const FilterConfirmedVoters = useConfirmedVotersFilter(confirmedVotersTable)
+  const FilterPossibleVoters = usePossibleVotersFilter( possibleVotersTable )
+  
   const clearConfirmedVotersFilters = () => {
     confirmedVotersTable.setColumnFilters([]);
   };
@@ -470,7 +218,7 @@ const ElectionBasePage = () => {
                     placeholder="ابحث عن ناخبين مؤكدين"
                   />
                   <Dynamic
-                    component={useConfirmedVotersDialog(confirmedVotersTable)}
+                    component={FilterConfirmedVoters}
                   />
                   <Show when={confirmedVotersColumnFilter.length > 0}>
                     <Button
@@ -481,7 +229,7 @@ const ElectionBasePage = () => {
                     </Button>
                   </Show>
                 </div>
-                <Dynamic component={useAddConfirmedVoterDialog()} />
+                <Dynamic component={AddConfirmedVoter} />
               </CardContent>
               <CardContent>
                 <DynamicTable table={confirmedVotersTable} />
@@ -516,7 +264,7 @@ const ElectionBasePage = () => {
                     placeholder="ابحث عن ناخبين محتملين"
                   />
                   <Dynamic
-                    component={usePossibleVotersDialog(possibleVotersTable)}
+                    component={FilterPossibleVoters}
                   />
                   <Show when={possibleVotersColumnFilter.length > 0}>
                     <Button
@@ -527,7 +275,7 @@ const ElectionBasePage = () => {
                     </Button>
                   </Show>
                 </div>
-                <Dynamic component={useAddPossibleVoterDialog()} />
+                <Dynamic component={AddPossibleVoter} />
               </CardContent>
               <CardContent>
                 <DynamicTable table={possibleVotersTable} />

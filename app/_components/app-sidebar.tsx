@@ -4,7 +4,7 @@ import { useElectoralEntityAdminProfileQuery } from '@/app/_services/fetchApi';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import { selectUser } from '@/app/_lib/features/auth/authSlice';
+import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
 
@@ -20,7 +20,7 @@ import {
   SidebarMenuItem,
   SidebarRail
 } from '@/app/_components/ui/sidebar';
-
+import {Separator} from '@/app/_components/ui/separator'
 import { NavUser } from '@/app/_components/nav-user';
 import { NavUserSkeleton } from '@/app/_components/nav-user-skeleton';
 import { Show } from '@/app/_components/show';
@@ -87,6 +87,7 @@ export const AppSidebar = () => {
           </SidebarContent>
         </SidebarGroup>
       </SidebarContent>
+      <Separator />
       <SidebarFooter>
         <Show when={!isLoading} fallback={<NavUserSkeleton />}>
           <NavUser user={data?.result} />

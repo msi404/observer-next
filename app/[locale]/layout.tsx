@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Kufi_Arabic } from "next/font/google";
 import {dir} from "i18next";
 
@@ -34,18 +34,16 @@ export const metadata: Metadata = {
   generator: "Next.js",
   manifest: "/manifest.json",
   keywords: ["nextjs", "next14", "pwa", "next-pwa"],
-  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
   authors: [
     {
       name: "Ismail Salah",
       url: "www.linkedin.com/in/ismail-junior-60b876247",
     },
   ],
-  viewport:
-    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
   icons: [
-    { rel: "apple-touch-icon", url: "icons/next.svg" },
-    { rel: "icon", url: "icons/next.svg" },
+    { rel: "apple-touch-icon", url: "icons/icon-512.png" },
+    { rel: "icon", url: "icons/icon-144.png" },
+    { rel: "icon", url: "icons/icon-256.png" },
   ],
 };
 

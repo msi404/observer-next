@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { selectUser } from '@/app/_lib/features/auth/authSlice';
+import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { useDataCards } from '@/app/_hooks/use-data-cards';
 import { useChartsConfig } from '@/app/_hooks/use-charts-config';

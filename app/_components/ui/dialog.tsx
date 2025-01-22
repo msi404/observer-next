@@ -21,7 +21,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-gray-400/80 data-[state=open]:animate-[enter_200ms_ease-out] data-[state=closed]:animate-[exit_450ms_ease-in-out] data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-gray-400/75 backdrop-brightness-50 data-[state=open]:animate-[enter_200ms_ease-out] data-[state=closed]:animate-[exit_450ms_ease-in-out] data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -38,7 +38,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 overflow-hidden grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-xl data-[state=open]:animate-[enter_300ms_ease-out] data-[state=closed]:animate-[exit_450ms_ease-in] data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[250%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[130%] sm:rounded-lg",
+        "fixed left-[50%] top-[50%] z-50 overflow-hidden grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-xl shadow-zinc-600/50 data-[state=open]:animate-[enter_300ms_ease-out] data-[state=closed]:animate-[exit_450ms_ease-in] data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[250%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[130%] sm:rounded-lg",
         className
       )}
       {...props}

@@ -1,6 +1,6 @@
 'use client';
 
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 import { format } from 'date-fns';
 import { Calendar1Icon } from 'lucide-react';
 
@@ -13,8 +13,7 @@ import {
   PopoverTrigger
 } from '@/app/_components/ui/popover';
 
-export const DatePicker: FC = () => {
-  const [date, setDate] = useState<Date>();
+export const DatePicker: FC<{value: Date | null, onChange: VoidFunction}> = ({value, onChange}) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -22,20 +21,20 @@ export const DatePicker: FC = () => {
           variant="outline"
           className={cn(
             'w-full justify-start text-left font-normal',
-            !date && 'text-muted-foreground'
+            !value && 'text-muted-foreground'
           )}
         >
           <Calendar1Icon className="mr-2 w-4 h-4" />
-          {date ? format(date, 'PPP') : <span>تاريخ الميلاد</span>}{' '}
+          {value ? format(value, 'PPP') : <span>تاريخ الميلاد</span>}{' '}
           {/* Check for date validity */}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={ date }
+          selected={value}
           captionLayout="dropdown-buttons"
-          onSelect={setDate}
+          onSelect={onChange}
           initialFocus
           fromYear={ 1960 }
           toYear={2030}

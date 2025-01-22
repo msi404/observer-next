@@ -29,7 +29,7 @@ import { DynamicTable } from '@/app/_components/dynamic-table';
 import { DataTablePagination } from '@/app/_components/table-pagination';
 import { Dynamic } from '@/app/_components/dynamic';
 import { Show } from '@/app/_components/show';
-import { CirclePlus } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import { confirmedVotersData } from '@/app/_utils/faker';
 
 const useAddPartyDialog = () => {
@@ -41,11 +41,9 @@ const useAddPartyDialog = () => {
         open={open}
         onOpenChange={setOpen}
         buttonLabel="اضافة"
-        buttonIcon={<CirclePlus />}
+        buttonIcon={<SquarePen />}
         title="اضافة كيان سياسي"
         description="ادخل المعطيات الاتية لاضافة عنصر"
-        primaryAction={<Button type="submit">اضافة</Button>}
-        secondaryAction={<Button variant="outline">الغاء</Button>}
       >
         <Input placeholder="اسم الكيان" />
         <Input placeholder="رقم القائمة" />

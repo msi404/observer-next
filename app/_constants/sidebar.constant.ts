@@ -2,17 +2,17 @@ import { type Permission } from '@/app/_auth/auth-rbac'
 
 import
 	{
-	House,
 	Archive,
-	ShieldCheck,
-	Pencil,
-	TrendingUpDown,
+	Feather,
 	Eye,
-	SquareUserRound,
-	UsersRound,
-	HeartHandshake,
+	ContactRound,
+	Flame,
+	Scale,
+	CircleUserRound,
+	HandHeart,
 	Bell,
 	LifeBuoy,
+	Landmark
 } from "lucide-react";
 
 type SidebarItem = {
@@ -27,7 +27,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		persmission: "view:home",
 		title: "common:sidebar.home",
 		url: "/",
-		icon: House
+		icon: Landmark
 	},
 	{
 		persmission: "view:polling-management",
@@ -39,19 +39,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		persmission: "view:state-mangement",
 		title: "common:sidebar.stateManagment",
 		url: "/state-mangers",
-		icon: ShieldCheck,
+		icon: Scale,
 	},
 	{
 		persmission: "view:election-results",
 		title: "common:sidebar.electionResults",
 		url: "/election-results",
-		icon: TrendingUpDown,
+		icon: Flame,
 	},
 	{
 		persmission: "view:data-entries",
 		title: "common:sidebar.dataEntries",
 		url: "/data-entries",
-		icon: Pencil,
+		icon: Feather,
 	},
 	{
 		persmission: "view:observers",
@@ -63,19 +63,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		persmission: "view:candidates",
 		title: "common:sidebar.candidates",
 		url: "/candidates",
-		icon: SquareUserRound,
+		icon: ContactRound,
 	},
 	{
 		persmission: "view:user-mangement",
 		title: "common:sidebar.userManagement",
 		url: "/",
-		icon: UsersRound,
+		icon: CircleUserRound,
 	},
 	{
 		persmission: "view:election-base",
 		title: "common:sidebar.electionBase",
 		url: "/election-base",
-		icon: HeartHandshake,
+		icon: HandHeart,
 	},
 	{
 		persmission: "view:notifications",

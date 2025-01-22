@@ -53,8 +53,6 @@ const DataEntriesPage = () => {
             buttonIcon={<Filter />}
             title="تصفية العناصر"
             description="تصفية العناصر حسب المعطيات الاتية"
-            primaryAction={<Button>تصفية</Button>}
-            secondaryAction={<Button variant="outline">الغاء</Button>}
           >
             {/* Filter Input Fields */}
             {[...Array(5)].map((_, index) => (

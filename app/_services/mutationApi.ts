@@ -2,42 +2,49 @@ import { tatweerApi } from "@/app/_services/api";
 
 const mutationApi = tatweerApi.injectEndpoints({
 	endpoints: builder => ({
-		createElectoralEntity: builder.mutation({
+		addElectoralEntity: builder.mutation({
 			query: dto => ({
 				url: "ElectoralEntity/add",
 				method: "POST",
 				body: dto,
 			}),
 		}),
-		createElectoralEntityAdmin: builder.mutation({
+		addElectoralEntityAdmin: builder.mutation({
 			query: dto => ({
 				url: "ElectoralEntityAdmin/Add",
 				method: "POST",
 				body: dto,
 			}),
 		}),
-		createDataEntry: builder.mutation({
+		addDataEntry: builder.mutation({
 			query: dto => ({
 				url: "DataEntry/Add",
 				method: "POST",
 				body: dto,
 			}),
 		}),
-		createCandidate: builder.mutation({
+		addCandidate: builder.mutation({
 			query: dto => ({
 				url: "Candidate/Add",
 				method: "POST",
 				body: dto,
 			}),
 		}),
-		createRegistrationCenter: builder.mutation({
+		addVoter: builder.mutation({
+			query: dto => ({
+				url: "Voter/Add",
+				method: "POST",
+				body: dto,
+			}),
+		}),
+		addRegistrationCenter: builder.mutation({
 			query: dto => ({
 				url: "RegistrationCenter/Add",
 				method: "POST",
 				body: dto,
 			}),
 		} ),
-		createPost: builder.mutation( {
+		addPost: builder.mutation( {
 			query: dto => ( {
 				url: 'Post/Add',
 				method: 'POST',
@@ -74,6 +81,9 @@ const mutationApi = tatweerApi.injectEndpoints({
 			query: dto => ( {
 				url: 'File/Add',
 				method: 'POST',
+				headers: {
+				'Content-Type': 'multipart/form-data'
+				},
 				body: dto
 			})
 		})
@@ -82,13 +92,14 @@ const mutationApi = tatweerApi.injectEndpoints({
 });
 
 export const {
-	useCreateElectoralEntityMutation,
-	useCreateElectoralEntityAdminMutation,
-	useCreateDataEntryMutation,
-	useCreateCandidateMutation,
-	useCreateRegistrationCenterMutation,
+	useAddElectoralEntityMutation,
+	useAddElectoralEntityAdminMutation,
+	useAddDataEntryMutation,
+	useAddCandidateMutation,
+	useAddVoterMutation,
+	useAddRegistrationCenterMutation,
 	useDeleteElectoralEntityMutation,
 	useUpdateElectoralEntityMutation,
-	useCreatePostMutation,
+	useAddPostMutation,
 	useUploadFileMutation
 } = mutationApi;

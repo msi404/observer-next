@@ -56,12 +56,6 @@ const useDialog = (table: Table<any>) => {
         buttonIcon={<Filter />}
         title="تصفية"
         description="ادخل المعطيات الاتية لتصفية العناصر"
-        primaryAction={
-          <Button type="submit" onClick={applyFilters}>
-            تصفية
-          </Button>
-        }
-        secondaryAction={<Button variant="outline">الغاء</Button>}
       >
         <Input
           placeholder="رقم المرشح"

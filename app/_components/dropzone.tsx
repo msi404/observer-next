@@ -1,5 +1,6 @@
 'use client'
-import { type FC ,useMemo } from 'react';
+import Image from 'next/image'
+import { type FC ,useMemo, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 
 const baseStyle = {
@@ -30,14 +31,24 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
-export const Dropzone: FC<{label: string}> = ({label}) => {
+export const Dropzone: FC<{ label: string; setFile: (file: File) => void }> = ( { label, setFile } ) =>
+{
+ const [files, setFiles] = useState<{preview: ''}[]>([])
 	const {
 		getRootProps,
 		getInputProps,
 		isFocused,
 		isDragAccept,
-		isDragReject
-  } = useDropzone({accept: {'image/*': []}});
+    isDragReject,
+  } = useDropzone( {
+    accept: { 'image/*': [] }, maxFiles: 1, onDrop: acceptedFiles =>
+    {
+      // @ts-ignore
+      setFiles( acceptedFiles.map( ( file => Object.assign( file, {
+        preview: URL.createObjectURL( file )
+      } ) ) ) )
+      setFile(acceptedFiles[0])
+  }});
 
   const style: any = useMemo(() => ({
     ...baseStyle,
@@ -48,13 +59,13 @@ export const Dropzone: FC<{label: string}> = ({label}) => {
     isFocused,
     isDragAccept,
     isDragReject
-  ]);
-
+  ] );
   return (
     <div className="container">
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
-        <p>{label}</p>
+        {!files.length && <p>{ label }</p>}
+        {files.length > 0 && <Image src={files[0].preview} width={350} height={350} alt='Photo'/>}
       </div>
     </div>
   );

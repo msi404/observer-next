@@ -1,7 +1,7 @@
 'use client'
 import { redirect } from 'next/navigation';
 import { useSelector } from 'react-redux'
-import { selectToken } from '@/app/_lib/features/auth/authSlice'
+import { selectToken } from '@/app/_lib/features/authSlice'
 import { Fingerprint, Atom } from "lucide-react"
 
 import { Container } from '@/app/_components/container';

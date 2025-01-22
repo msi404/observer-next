@@ -1,6 +1,6 @@
 'use client';
 import { useDispatch } from 'react-redux';
-import { logout } from '@/app/_lib/features/auth/authSlice';
+import { logout } from '@/app/_lib/features/authSlice';
 import { ChevronsUpDown, LogOut } from 'lucide-react';
 
 import {
