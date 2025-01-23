@@ -10,9 +10,11 @@ import
 	Scale,
 	CircleUserRound,
 	HandHeart,
+	ChartBarBig,
 	Bell,
 	LifeBuoy,
-	Landmark
+	Landmark,
+	Codesandbox	
 } from "lucide-react";
 
 type SidebarItem = {
@@ -34,6 +36,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		title: "common:sidebar.pollingManagement",
 		url: "/polling-management",
 		icon: Archive,
+	},
+	{
+		persmission: "view:parties-representers",
+		title: 'ممثلين الكيان',
+		url: "/parties-representers",
+		icon: Codesandbox,
 	},
 	{
 		persmission: "view:state-mangement",
@@ -68,7 +76,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 	{
 		persmission: "view:user-mangement",
 		title: "common:sidebar.userManagement",
-		url: "/",
+		url: "/user-mangement",
 		icon: CircleUserRound,
 	},
 	{
@@ -78,15 +86,21 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		icon: HandHeart,
 	},
 	{
+		persmission: "view:reports",
+		title: "التقارير",
+		url: "/reports",
+		icon: ChartBarBig,
+	},
+	{
 		persmission: "view:notifications",
 		title: "common:sidebar.notifications",
-		url: "/",
+		url: "/notifications",
 		icon: Bell,
 	},
 	{
 		persmission: "view:issues",
 		title: "common:sidebar.issues",
-		url: "/",
+		url: "/issues",
 		icon: LifeBuoy,
 	},
 ];

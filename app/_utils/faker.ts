@@ -1,4 +1,5 @@
 import { fakerAR as faker } from '@faker-js/faker';
+
 const createRandomPossibleVoter = () =>
 { 
 	return {
@@ -126,6 +127,24 @@ return governorates.map(governorate => ({
 }));
 }
 
+const createRandomParties = () =>
+{
+	return {
+		name: faker.company.name(),
+		menuNumber: faker.number.int( { min: 50, max: 999 } ),
+		createdAt: faker.date.past()
+	}
+}
+
+const createRandomStateDesks = () =>
+{
+	return {
+		state: faker.location.state(),
+		pollingCenters: faker.number.int( { min: 30, max: 500 } ),
+		observers: faker.number.int({min: 20, max: 500})
+	}
+}
+
 export const possibleVotersData = faker.helpers.multiple( createRandomPossibleVoter, { count: 100 } );
 export const confirmedVotersData = faker.helpers.multiple( createRandomConfirmedVoter, { count: 100 } );
 export const stateManagersData = faker.helpers.multiple( createRandomStateManger, { count: 40 } );
@@ -136,3 +155,5 @@ export const candidatesData =	faker.helpers.multiple( createRandomCandidate, { c
 export const issuesChartData = [ createRandomClosedIssues(), createRandomOpenedIssues() ];
 export const candidatesActivitiesData = createRandomCandidatesAcitvities();
 export const observersPerStateData = createRandomObserversPerState();
+export const partiesData = faker.helpers.multiple( createRandomParties, { count: 100 } );
+export const stateDesks = faker.helpers.multiple( createRandomStateDesks, { count: 100 } );

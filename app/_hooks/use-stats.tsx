@@ -37,6 +37,7 @@ export const useStats = () => {
 		}
 		if (
 			!isAdminStatsLoading && !isAdminStatsError &&
+			// @ts-ignore
 			hasPermission(user, "fetch:SupperAdminStatistic")
 		) {
 			setStats(prev => ({

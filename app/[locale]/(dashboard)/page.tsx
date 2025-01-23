@@ -1,5 +1,5 @@
 'use client';
-
+import {type NextPage} from 'next'
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -21,7 +21,7 @@ import {
   observersPerStateData,
 } from '@/app/_utils/faker';
 
-const Home = () => {
+const Home: NextPage = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();
   const { dataCards } = useDataCards();

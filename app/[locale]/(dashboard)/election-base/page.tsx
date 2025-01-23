@@ -1,4 +1,5 @@
 'use client';
+import {type NextPage} from 'next'
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
@@ -53,7 +54,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {cn} from '@/app/_lib/utils'
 
-const ElectionBasePage = () => {
+const ElectionBasePage: NextPage = () => {
   const user = useSelector(selectUser);
   const AddConfirmedVoter = useAddConfirmedVoterDialog();
   const AddPossibleVoter = useAddPossibleVoterDialog();
@@ -107,10 +108,11 @@ const ElectionBasePage = () => {
     }
   ];
 
+  // @ts-ignore
   const confirmedVotersColumns: ColumnDef<ConfirmedVotersHeader>[] = [
     {
       accessorKey: 'name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
           title={t('electionBase:confirmedVoters.table.header.name')}
@@ -135,7 +137,7 @@ const ElectionBasePage = () => {
     },
     {
       accessorKey: 'candidate',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
           title={t('electionBase:confirmedVoters.table.header.candidateName')}
@@ -149,7 +151,7 @@ const ElectionBasePage = () => {
     {
       accessorKey: 'cardPhoto',
       header: t('electionBase:confirmedVoters.table.header.cardPhoto'),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Image
           placeholder="blur"
           blurDataURL={Placeholder.blurDataURL}
@@ -161,10 +163,11 @@ const ElectionBasePage = () => {
         />
       )
     },
-    {
-      accessorKey: 'cardPhoto',
+    hasPermission( user, 'view:confirmedVotersActions' ) && {
+      id: 'actions',
+      accessorKey: 'actions',
       header: 'الاجرائات',
-      cell: ( { row } ) =>
+      cell: () =>
       {
         const [openDelete, setOpenDelete] = useState<boolean>(false);
         const [ openEdit, setOpenEdit ] = useState<boolean>( false );
@@ -397,7 +400,7 @@ const ElectionBasePage = () => {
         )
       }
     }
-  ];
+  ].filter(Boolean)
 
   const confirmedVotersTable = useReactTable({
     data: confirmedVotrs,

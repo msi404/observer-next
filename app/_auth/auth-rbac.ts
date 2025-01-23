@@ -1,8 +1,24 @@
 export type User = {
-  fullName: string | null
+  id: string | null
+  phone: string | null
+  pollingCenter: string | null
+  profileImg: string | null
+  totalPosts: number | null
+  updatedAt: string | null
+  username: string | null
+  candidateListSerial: string | null
+  candidateSerial: string | null
+  coverImg: string | null
+  createdAt: string | null
+  dateOfBirth: string | null
+  deletedAt: string | null
+  electoralEntity: string | null
+  email: string | null
+  gov: string | null
 	role: Role | null
-	userName: string | null
-	token: string | null }
+	name: string | null
+  token: string | null
+}
 
 export type Role = keyof typeof ROLES
 export type Permission = (typeof ROLES)[Role][number]
@@ -11,19 +27,28 @@ const ROLES = {
   0: [
     "view:home",
     "view:polling-management",
-    "view:user-mangement",
+    "view:state-mangement",
     "view:election-results",
+    "view:data-entries",
+    "view:observers",
+    "view:user-mangement",
     "view:election-base",
     "view:notifications",
     "view:issues",
     "view:total-candidates",
     "view:total-observers",
-    "view:total-entities",
     "view:total-comfirmed-voters",
     "view:total-possible-voters",
-    "view:observer-by-state-chart",
+    "view:confirmedVotersActions",
     'view:addConfirmedVoter',
     'view:addPossibleVoter',
+    "fetch:GetStatistics",
+    "view:parties-representers",
+    "view:candidates",
+    "view:reports",
+    "view:candidate-activity-chart",
+    "view:total-issues-chart",
+    "view:observer-by-state-chart",
   ],
 
   1: [
@@ -49,6 +74,7 @@ const ROLES = {
     'view:addConfirmedVoter',
     'view:addPossibleVoter',
     "fetch:GetStatistics",
+    "view:confirmedVotersActions"
   ],
 
   2: [

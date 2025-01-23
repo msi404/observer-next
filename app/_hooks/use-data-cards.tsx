@@ -9,7 +9,7 @@ import {
 	Codesandbox,
 	Vote,
 	Building2,
-	Pencil,
+	Feather,
 	UserRoundCheck,
 	UserRoundSearch
 } from 'lucide-react';
@@ -34,6 +34,7 @@ export const useDataCards = () =>
 		  description: 'home:cards.totalOfObservers'
 		},
 		{
+			// @ts-ignore
 			permission: hasPermission( user, 'view:total-entities' ),
 			isLoading,
 		  total: stats.electionEntityCount,
@@ -41,6 +42,7 @@ export const useDataCards = () =>
 		  description: 'home:cards.totalOfEntities'
 		},
 		{
+			// @ts-ignore
 			permission: hasPermission( user, 'view:total-polling-centers' ),
 			isLoading,
 		  total: stats.pollingCenterCount,
@@ -48,6 +50,7 @@ export const useDataCards = () =>
 		  description: 'home:cards.totalOfPollingCenters'
 		},
 		{
+			// @ts-ignore
 			permission: hasPermission( user, 'view:total-centers' ),
 			isLoading,
 		  total: stats.stationCount,
@@ -58,7 +61,7 @@ export const useDataCards = () =>
 			permission: hasPermission( user, 'view:total-data-entries' ),
 			isLoading,
 		  total: stats.stationCount,
-		  icon: <Pencil />,
+		  icon: <Feather />,
 		  description: 'home:cards.totalOfDataEntries'
 		},
 		{

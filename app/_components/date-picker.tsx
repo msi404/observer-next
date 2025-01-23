@@ -32,6 +32,7 @@ export const DatePicker: FC<{value: Date | null, onChange: VoidFunction}> = ({va
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
+          // @ts-ignore
           selected={value}
           captionLayout="dropdown-buttons"
           onSelect={onChange}

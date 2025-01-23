@@ -1,13 +1,16 @@
 'use client'
+import {type NextPage} from 'next'
+import Image from 'next/image'
 import { redirect } from 'next/navigation';
 import { useSelector } from 'react-redux'
 import { selectToken } from '@/app/_lib/features/authSlice'
-import { Fingerprint, Atom } from "lucide-react"
+import { Fingerprint } from "lucide-react"
 
 import { Container } from '@/app/_components/container';
-import { LoginForm } from '@/app/_components/login-form'
+import { LoginForm } from '@/app/_components/login-form';
+import Logo from '@/app/_assets/logo.png'
 
-const SignInPage = () =>
+const SignInPage: NextPage = () =>
 {
 	const token = useSelector( selectToken )
 
@@ -17,10 +20,10 @@ const SignInPage = () =>
 			<div className="flex flex-col gap-4 p-6 md:p-10">
 			<div className="flex justify-center gap-2 md:justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Atom className="size-4" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-secondary text-primary-foreground">
+              <Image src={Logo.src} width={100} height={100} alt='Logo'/>
             </div>
-            Tatweer Inc.
+					برنامج المراقب | شركة تطوير
           </a>
         </div>
 			<Container className='flex flex-1 items-center justify-center'>

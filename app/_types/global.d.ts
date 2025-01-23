@@ -124,3 +124,15 @@ type StateMangersHeader = {
 	state: string;
 	entityName: string;
 };
+
+type StateDesk = {
+	name: string;
+	menuNumber: number;
+	createdAt: Date;
+}
+
+type StateDeskHeader = {
+	name: string;
+	menuNumber: number;
+	createdAt: Date;
+}

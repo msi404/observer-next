@@ -23,25 +23,26 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 	className,
 	...props
 }) => {
-	const [login, { isLoading }] = useLoginMutation();
+	const [login, { isLoading, isError }] = useLoginMutation();
 	const { toast } = useToast();
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
-			UserNameOrPhoneNumber: "",
+			usernameOrPhone: "",
 			password: "",
 		},
 	});
 
 	const onSubmit = async (values: z.infer<typeof loginSchema>) => {
 		try {
-			const response = await login(values).unwrap();
+			const response = await login( values ).unwrap();
 			if (response) return window.location.replace("/");
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (error: any) {
+		} catch ( error: any )
+		{
 			toast({
 				title: "Error",
-				description: error.data.message,
+				description: error.data,
 				variant: "destructive",
 			});
 		}
@@ -63,7 +64,7 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 					<div className="grid gap-6">
 						<FormField
 							control={form.control}
-							name="UserNameOrPhoneNumber"
+							name="usernameOrPhone"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>اسم المستخدم</FormLabel>

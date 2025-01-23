@@ -21,7 +21,6 @@ export default async function RootLayout({
 }> )
 {
   return (
-    <Protected>
     <SidebarProvider>
       <AppSidebar />
           <SidebarInset>
@@ -36,6 +35,5 @@ export default async function RootLayout({
               <Toaster />
             </SidebarInset>
       </SidebarProvider>
-      </Protected>
   );
 }
