@@ -3,8 +3,10 @@ import {motion} from 'motion/react'
 import {
   SidebarMenu,
   SidebarMenuItem,
+  useSidebar
 } from '@/app/_components/ui/sidebar';
-import {CloudAlert, RefreshCcw} from 'lucide-react'
+import { CloudAlert, RefreshCcw } from 'lucide-react'
+import {cn} from '@/app/_lib/utils'
 
 
 export const ErrorUser = ({
@@ -13,11 +15,12 @@ export const ErrorUser = ({
   retry: () => void
   } ) =>
 {
+  const { open } = useSidebar();
   return (
     <SidebarMenu>
       <SidebarMenuItem className='flex flex-col justify-center text-center gap-3'>
-        <div className='flex justify-between items-center'>
-          <CloudAlert color='red' size='25px'/>
+        <div className='justify-between items-center hidden lg:flex'>
+          <CloudAlert className={open ? 'block' : 'hidden'} color='red' size='25px'/>
           <motion.button
 						onClick={retry}
 				  whileHover={{
@@ -28,12 +31,12 @@ export const ErrorUser = ({
 						duration: 0.2
 					 }
 				  }}
-				  className="bg-slate-200 p-1 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+				  className={cn("bg-slate-200 p-1 cursor-pointer border rounded-full text-gray-500 hover:text-primary", open ? 'mx-4': 'mx-0')}
 					>
 						<RefreshCcw />
 				</motion.button>
        </div>
-        <span className='text-sm'>خطأ في تحميل الملف الشخصي</span>
+        <span className={cn('text-sm', open ? 'block' : 'hidden')}>خطأ في تحميل الملف الشخصي</span>
       </SidebarMenuItem>
     </SidebarMenu>
   );

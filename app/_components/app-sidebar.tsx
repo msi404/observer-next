@@ -100,7 +100,7 @@ export const AppSidebar = () =>
               <ErrorUser retry={refetch}/>
           </Match>
           <Match when={isSuccess}>
-              <User user={data}/>
+              <User user={data?.data}/>
           </Match>
           <Match when={isFetching}>
             <FetchUser />

@@ -1,41 +1,33 @@
 'use client';
 import { type NextPage } from 'next';
-import { useSelector } from 'react-redux';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-import { selectUser } from '@/app/_lib/features/authSlice';
-import { hasPermission } from '@/app/_auth/auth-rbac';
 
 import { Container } from '@/app/_components/container';
-import { Card, CardContent } from '@/app/_components/ui/card';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger
 } from '@/app/_components/ui/tabs';
-import { Input } from '@/app/_components/ui/input';
-import { Button } from '@/app/_components/ui/button';
-import { DynamicTable } from '@/app/_components/dynamic-table';
-import { DataTablePagination } from '@/app/_components/table-pagination';
-import { Dynamic } from '@/app/_components/dynamic';
-import { Show } from '@/app/_components/show';
-
-import { useDynamicTable } from '@/app/_hooks/use-dynamic-table';
+import { ErrorTable } from '@/app/_components/error-table'
+import {FetchTable} from '@/app/_components/fetch-table'
+import {useElectoralEntitiesTable} from '@/app/_hooks/use-electoral-entities-table'
 import { useFilter } from '@/app/_hooks/use-filter';
 import { useAdd } from '@/app/_hooks/use-add';
+import { Table } from '@/app/_components/table'
+import {Switch, Match} from '@/app/_components/switch'
 
-const CandidatesPage: NextPage = () => {
-  const user = useSelector( selectUser );
-  
+const CandidatesPage: NextPage = () => {  
   const {
-    confirmedVotersTable,
-    possibleVotersTable,
-    confirmedVotersColumnFilter,
-    possibleVotersColumnFilter,
-    clearConfirmedVotersFilters,
-    clearPossibleVotersFilters
-  } = useDynamicTable();
+    isError,
+    isFetching,
+    isSuccess,
+    refetch,
+    electoralEntitiesTable,
+    electoralEntitiesColumnFilter,
+    clearElectoralEntitiesFilters,
+  } = useElectoralEntitiesTable();
 
   const { AddConfirmedVoter, AddPossibleVoter } = useAdd();
   const { FilterConfirmedVoters, FilterPossibleVoters } = useFilter();
@@ -57,47 +49,22 @@ const CandidatesPage: NextPage = () => {
             initial={{ x: -300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-            <Card className="p-4">
-              <CardContent className="flex flex-col lg:flex-row gap-5 justify-between">
-                <div className="lg:w-1/2 flex flex-col lg:flex-row gap-5">
-                  <Input
-                    value={
-                      (confirmedVotersTable
-                        .getColumn('name')
-                        ?.getFilterValue() as string) ?? ''
-                    }
-                    onChange={(event) =>
-                      confirmedVotersTable
-                        .getColumn('name')
-                        ?.setFilterValue(event.target.value)
-                    }
-                    type="text"
-                    placeholder="ابحث عن ناخبين مؤكدين"
-                  />
-                  <Dynamic
-                    component={FilterConfirmedVoters(confirmedVotersTable)}
-                  />
-                  <Show when={confirmedVotersColumnFilter.length > 0}>
-                    <Button
-                      onClick={clearConfirmedVotersFilters}
-                      variant="ghost"
-                    >
-                      الغاء التصفية
-                    </Button>
-                  </Show>
-                </div>
-                <Show when={hasPermission(user, 'view:addConfirmedVoter')}>
-                  <Dynamic component={AddConfirmedVoter} />
-                </Show>
-              </CardContent>
-              <CardContent>
-                <DynamicTable table={confirmedVotersTable} />
-                <DataTablePagination
-                  className="mt-12"
-                  table={confirmedVotersTable}
-                />
-              </CardContent>
-            </Card>
+            <Switch>
+              <Match when={isError}>
+                <ErrorTable retry={refetch}/>
+              </Match>
+              <Match when={isFetching}>
+                <FetchTable />
+              </Match>
+              <Match when={isSuccess}>
+              <Table
+              Filter={FilterConfirmedVoters}
+              Add={AddConfirmedVoter}
+              columnFilter={electoralEntitiesColumnFilter}
+              clearFilter={clearElectoralEntitiesFilters}
+              table={ electoralEntitiesTable } />
+              </Match>
+           </Switch>
           </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
@@ -105,47 +72,22 @@ const CandidatesPage: NextPage = () => {
             initial={{ x: 300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-            <Card className="p-4">
-              <CardContent className="flex flex-col lg:flex-row gap-5 justify-between">
-                <div className="lg:w-1/2 flex flex-col lg:flex-row gap-5">
-                  <Input
-                    value={
-                      (possibleVotersTable
-                        .getColumn('name')
-                        ?.getFilterValue() as string) ?? ''
-                    }
-                    onChange={(event) =>
-                      possibleVotersTable
-                        .getColumn('name')
-                        ?.setFilterValue(event.target.value)
-                    }
-                    type="text"
-                    placeholder="ابحث عن ناخبين محتملين"
-                  />
-                  <Dynamic
-                    component={FilterPossibleVoters(possibleVotersTable)}
-                  />
-                  <Show when={possibleVotersColumnFilter.length > 0}>
-                    <Button
-                      onClick={clearPossibleVotersFilters}
-                      variant="ghost"
-                    >
-                      الغاء التصفية
-                    </Button>
-                  </Show>
-                </div>
-                <Show when={hasPermission(user, 'view:addPossibleVoter')}>
-                  <Dynamic component={AddPossibleVoter} />
-                </Show>
-              </CardContent>
-              <CardContent>
-                <DynamicTable table={possibleVotersTable} />
-                <DataTablePagination
-                  className="mt-12"
-                  table={possibleVotersTable}
-                />
-              </CardContent>
-            </Card>
+              <Switch>
+              <Match when={isError}>
+                <ErrorTable retry={refetch}/>
+              </Match>
+              <Match when={isFetching}>
+                <FetchTable />
+              </Match>
+              <Match when={isSuccess}>
+              <Table
+              Filter={FilterConfirmedVoters}
+              Add={AddConfirmedVoter}
+              columnFilter={electoralEntitiesColumnFilter}
+              clearFilter={clearElectoralEntitiesFilters}
+              table={ electoralEntitiesTable } />
+              </Match>
+           </Switch>
           </motion.div>
         </TabsContent>
       </Tabs>

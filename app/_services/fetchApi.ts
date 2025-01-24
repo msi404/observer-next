@@ -5,6 +5,9 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 		currentUser: builder.query( {
 			query: () => 'users/current'
 		} ),
+		electoralEntities: builder.query( {
+			query: () => 'electoralentities'
+		}),
 		statistics: builder.query( {
 			query: () => "statistics",
 		} ),
@@ -14,5 +17,6 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 
 export const {
 	useCurrentUserQuery,
+	useElectoralEntitiesQuery,
 	useStatisticsQuery
 } = fetchDataApi;

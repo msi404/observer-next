@@ -11,7 +11,7 @@ export const FetchUser = () =>
 {
   return (
     <SidebarMenu>
-		  <SidebarMenuItem className='flex flex-col gap-3 p-2'>
+		  <SidebarMenuItem className='flex flex-col gap-3 p-2 h-16'>
 		  <motion.div
         animate={{
           rotate: 360,

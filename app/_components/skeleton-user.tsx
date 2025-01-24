@@ -19,7 +19,7 @@ export const SkeletonUser = () =>
 {
   return (
     <SidebarMenu>
-    <SidebarMenuItem>
+    <SidebarMenuItem className='h-16'>
       <DropdownMenu>
         <DropdownMenuTrigger disabled asChild>
           <SidebarMenuButton

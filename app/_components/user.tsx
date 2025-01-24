@@ -30,9 +30,8 @@ export const User = ({
   user
 }: {
   user: {
-    fullName: string;
-    userName: string;
-    avatar?: string;
+    username: string;
+    name: string;
   };
 }) => {
   const dispatch = useDispatch();
@@ -45,7 +44,7 @@ export const User = ({
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
+      <SidebarMenuItem className='h-16'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
@@ -53,12 +52,12 @@ export const User = ({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src="f" alt={user?.fullName} />
-                <AvatarFallback className="rounded-lg">TW</AvatarFallback>
+                <AvatarImage src="f" alt={user?.username} />
+                <AvatarFallback className="rounded-lg">{user?.username.slice(0,2).toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.fullName}</span>
-                <span className="truncate text-xs">{user?.userName}</span>
+                <span className="truncate font-semibold">{user?.name.toUpperCase()}</span>
+                <span className="truncate text-xs">{user?.name}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -72,14 +71,14 @@ export const User = ({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src="ff" alt={user?.fullName} />
-                  <AvatarFallback className="rounded-lg">TW</AvatarFallback>
+                  <AvatarImage src="ff" alt={user?.username} />
+                  <AvatarFallback className="rounded-lg">{user?.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
-                    {user?.fullName}
+                    {user?.username.toUpperCase()}
                   </span>
-                  <span className="truncate text-xs">{user?.userName}</span>
+                  <span className="truncate text-xs">{user?.username}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

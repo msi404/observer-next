@@ -29,6 +29,7 @@ const ROLES = {
     "view:polling-management",
     "view:state-mangement",
     "view:profile",
+    "view:parties-representers",
     "view:election-results",
     "view:data-entries",
     "view:observers",
