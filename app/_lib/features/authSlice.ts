@@ -20,7 +20,7 @@ const userState: User = {
   electoralEntity: null,
   email: null,
   gov: null,
-  role: 0,
+  role: null,
   name: null,
   token: null
 };
@@ -33,7 +33,7 @@ if (typeof window !== 'undefined') {
     : JSON.stringify(userState);
 }
 
-const initialState: User = userState
+const initialState: User = user
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -65,9 +65,10 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
-      (_state, { payload }) => {
+      ( _state, { payload } ) =>
+      {
         localStorage &&
-          localStorage?.setItem('user', JSON.stringify(payload.result.data));
+          localStorage?.setItem('user', JSON.stringify(payload.data));
         return payload;
       }
     );

@@ -1,6 +1,7 @@
 {
 	"sidebar": {
 		"home": "الرئيسية",
+		"profile": "الملف الشخصي",
 		"pollingManagement": "إدارة الاقتراع",
 		"stateManagment": "إدارة المحافظات",
 		"electionResults": "نتائج الانتخابات",

@@ -7,7 +7,7 @@ import {
 } from "@/app/_components/ui/card";
 import { Skeleton } from '@/app/_components/ui/skeleton'
 
-export const CardSkeleton = () =>
+export const SkeletonCard = () =>
 {
 	return (
 		<Card className="flex justify-between items-center">

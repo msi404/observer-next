@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/app/_components/ui/sidebar"
-export const NavUserSkeleton = () =>
+export const SkeletonUser = () =>
 {
   return (
     <SidebarMenu>

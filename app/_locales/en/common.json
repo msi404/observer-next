@@ -1,6 +1,7 @@
 {
 	"sidebar": {
 		"home": "Home",
+		"profile": "Profile",
 		"pollingManagement": "Polling Management",
 		"stateManagment": "State Managment",
 		"electionResults": "Election Results",

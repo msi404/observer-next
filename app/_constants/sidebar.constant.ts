@@ -6,8 +6,10 @@ import
 	Feather,
 	Eye,
 	ContactRound,
-	Flame,
+	TrendingUp,
 	Scale,
+	UsersRound,
+	CalendarFold,
 	CircleUserRound,
 	HandHeart,
 	ChartBarBig,
@@ -32,6 +34,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		icon: Landmark
 	},
 	{
+		persmission: "view:profile",
+		title: "common:sidebar.profile",
+		url: "/profile",
+		icon: CircleUserRound
+	},
+	{
 		persmission: "view:polling-management",
 		title: "common:sidebar.pollingManagement",
 		url: "/polling-management",
@@ -53,7 +61,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		persmission: "view:election-results",
 		title: "common:sidebar.electionResults",
 		url: "/election-results",
-		icon: Flame,
+		icon: TrendingUp,
+	},
+	{
+		persmission: "view:events",
+		title: "الفعاليات",
+		url: "/events",
+		icon: CalendarFold,
 	},
 	{
 		persmission: "view:data-entries",
@@ -77,7 +91,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		persmission: "view:user-mangement",
 		title: "common:sidebar.userManagement",
 		url: "/user-mangement",
-		icon: CircleUserRound,
+		icon: UsersRound,
 	},
 	{
 		persmission: "view:election-base",

@@ -26,7 +26,7 @@ import {
 
 import { LanguageSwitcher } from '@/app/_components/language-switcher';
 
-export const NavUser = ({
+export const User = ({
   user
 }: {
   user: {

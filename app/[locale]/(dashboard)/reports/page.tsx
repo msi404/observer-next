@@ -1,10 +1,10 @@
 import {type NextPage} from 'next'
 
-const CandidatePage: NextPage = () =>
+const ReportsPage: NextPage = () =>
 {
 	return (
 		<div>صفحة التقارير</div>
 	)
 };
 
-export default CandidatePage
+export default ReportsPage

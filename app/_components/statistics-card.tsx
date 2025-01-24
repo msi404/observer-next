@@ -8,7 +8,7 @@ import {
 	CardTitle,
 } from "@/app/_components/ui/card";
 
-export const DataCard: FC<{
+export const StatisticsCard: FC<{
 	icon: ReactNode;
 	total: number;
 	description: string;

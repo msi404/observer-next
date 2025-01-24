@@ -5,16 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { useDataCards } from '@/app/_hooks/use-data-cards';
-import { useChartsConfig } from '@/app/_hooks/use-charts-config';
+import { useStatistics } from '@/app/_hooks/use-statistics';
+import { useCharts } from '@/app/_hooks/use-charts';
 
-import { DataCard } from '@/app/_components/data-card';
-import { CardSkeleton } from '@/app/_components/card-skeleton';
+import { StatisticsCard } from '@/app/_components/statistics-card';
+import {ErrorCard} from '@/app/_components/error-card'
+import { SkeletonCard } from '@/app/_components/skeleton-card';
+import {FetchCard} from '@/app/_components/fetch-card'
 import { Container } from '@/app/_components/container';
 import { PiChart } from '@/app/_components/pi-chart';
 import { BasicChart } from '@/app/_components/basic-chart';
 import { Show } from '@/app/_components/show';
 import { For } from '@/app/_components/for';
+import {Switch, Match} from '@/app/_components/switch'
 import {
   issuesChartData,
   candidatesActivitiesData,
@@ -24,13 +27,13 @@ import {
 const Home: NextPage = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();
-  const { dataCards } = useDataCards();
+  const { statistics, refetch } = useStatistics();
 
   const {
     candidatesActivitiesChartConfig,
     observersPerStateChartConfig,
     issuesChartConfig,
-  } = useChartsConfig();
+  } = useCharts();
 
   const totalIssues = useMemo(() => {
     return issuesChartData.reduce((acc, curr) => acc + curr.total, 0);
@@ -40,22 +43,42 @@ const Home: NextPage = () => {
     <Container className="space-y-6">
       {/* Data Cards Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <For each={dataCards}>
-          {(item, index) => (
-            <Show
-              key={ index }
-              fallback={<CardSkeleton />}
-              when={ !item.isLoading }>
-            <Show
-              when={item.permission}
-            >
-              <DataCard
+        <For each={statistics}>
+          { ( item, index ) => (
+            <Show when={item.permission}>
+               <Switch>
+              <Match when={item.isLoading}>
+                  <SkeletonCard />
+              </Match>
+              <Match when={item.isError}>
+                <ErrorCard retry={refetch}/>
+              </Match>
+              <Match when={item.isSuccess}>
+                <StatisticsCard
                 icon={item.icon}
                 description={t(item.description)}
                 total={item.total}
               />
-            </Show>
+              </Match>
+              <Match when={item.isFetching}>
+              <FetchCard/>
+              </Match>
+            </Switch>
            </Show>
+          //   <Show
+          //     key={ index }
+          //     fallback={<CardSkeleton />}
+          //     when={ !item.isLoading }>
+          //   <Show
+          //     when={item.permission}
+          //   >
+          //     <DataCard
+          //       icon={item.icon}
+          //       description={t(item.description)}
+          //       total={item.total}
+          //     />
+          //   </Show>
+          //  </Show>
           )}
         </For>
       </section>

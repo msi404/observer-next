@@ -28,21 +28,23 @@ const ROLES = {
     "view:home",
     "view:polling-management",
     "view:state-mangement",
+    "view:profile",
     "view:election-results",
     "view:data-entries",
     "view:observers",
+    "view:events",
     "view:user-mangement",
     "view:election-base",
     "view:notifications",
     "view:issues",
     "view:total-candidates",
     "view:total-observers",
+    "view:total-complaints",
     "view:total-comfirmed-voters",
     "view:total-possible-voters",
     "view:confirmedVotersActions",
     'view:addConfirmedVoter',
     'view:addPossibleVoter',
-    "fetch:GetStatistics",
     "view:parties-representers",
     "view:candidates",
     "view:reports",
@@ -51,11 +53,12 @@ const ROLES = {
     "view:observer-by-state-chart",
   ],
 
-  1: [
+  10: [
     "view:home",
     "view:polling-management",
     "view:state-mangement",
     "view:election-results",
+    "view:events",
     "view:data-entries",
     "view:observers",
     "view:candidates",
@@ -73,11 +76,10 @@ const ROLES = {
     "view:observer-by-state-chart",
     'view:addConfirmedVoter',
     'view:addPossibleVoter',
-    "fetch:GetStatistics",
     "view:confirmedVotersActions"
   ],
 
-  2: [
+  12: [
     "view:home",
     "view:polling-management",
     "view:state-mangement",
@@ -90,7 +92,7 @@ const ROLES = {
     "view:issues"
   ],
 
-  3: [ "view:home",
+  100: [ "view:home",
     "view:observers",
     "view:election-base",
     "view:notifications",
@@ -99,7 +101,15 @@ const ROLES = {
     "view:total-possible-voters",
    ],
   
-  4: [ "view:home",
+  102: [ "view:home",
+    "view:polling-management",
+    "view:state-mangement",
+    "view:election-results",
+    "view:data-entries",
+    "view:observers",
+    "view:election-base",
+],
+  104: [ "view:home",
     "view:polling-management",
     "view:state-mangement",
     "view:election-results",

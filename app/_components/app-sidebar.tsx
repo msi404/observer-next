@@ -1,9 +1,9 @@
 'use client';
 import { useSelector } from 'react-redux';
-import { useElectoralEntityAdminProfileQuery } from '@/app/_services/fetchApi';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
+import {useCurrentUserQuery} from '@/app/_services/fetchApi'
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
@@ -21,17 +21,20 @@ import {
   SidebarRail
 } from '@/app/_components/ui/sidebar';
 import {Separator} from '@/app/_components/ui/separator'
-import { NavUser } from '@/app/_components/nav-user';
-import { NavUserSkeleton } from '@/app/_components/nav-user-skeleton';
+import { User } from '@/app/_components/user';
+import { SkeletonUser } from '@/app/_components/skeleton-user';
+import { ErrorUser } from '@/app/_components/error-user'
+import {FetchUser} from '@/app/_components/fetch-user'
 import { Show } from '@/app/_components/show';
 import { For } from '@/app/_components/for';
+import {Switch, Match} from '@/app/_components/switch'
 import { Dynamic } from '@/app/_components/dynamic';
 import { motion } from 'motion/react';
 
-export const AppSidebar = () => {
-  // const { data, isLoading } = useProfileQuery("");
+export const AppSidebar = () =>
+{
+  const {data, isLoading, isError, isSuccess, isFetching, refetch} = useCurrentUserQuery('')
   const user = useSelector(selectUser);
-  const { data, isLoading } = useElectoralEntityAdminProfileQuery('');
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -89,9 +92,20 @@ export const AppSidebar = () => {
       </SidebarContent>
       <Separator />
       <SidebarFooter>
-        <Show when={!isLoading} fallback={<NavUserSkeleton />}>
-          <NavUser user={data?.result} />
-        </Show>
+      <Switch>
+        <Match when={ isLoading }>
+            <SkeletonUser />
+          </Match>
+          <Match when={isError}>
+              <ErrorUser retry={refetch}/>
+          </Match>
+          <Match when={isSuccess}>
+              <User user={data}/>
+          </Match>
+          <Match when={isFetching}>
+            <FetchUser />
+          </Match>
+      </Switch>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
