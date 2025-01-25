@@ -35,7 +35,7 @@ export const useAdd = () =>
 {
 	const AddConfirmedVoter = () =>
 	{
-		const [ file, setFile ] = useState<File>()
+	const [ file, setFile ] = useState<File>()
 	const [ open, setOpen ] = useState<boolean>( false )
 	const { toast } = useToast()
 	const form = useForm<z.infer<typeof addVoterSchema>>( {
