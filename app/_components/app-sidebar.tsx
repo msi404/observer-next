@@ -48,7 +48,7 @@ export const AppSidebar = () =>
         <SidebarGroup>
           <SidebarGroupLabel>Main</SidebarGroupLabel>
           <SidebarContent>
-            <SidebarMenu>
+            <SidebarMenu className='overflow-x-hidden'>
               <For each={SIDEBAR_ITEMS}>
                 {(item, index) => (
                   <Show
