@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
+import withSerwistInit from "@serwist/next";
 
-const withPWA = require('next-pwa')({
-  dest: 'public'
-})
+const withSerwist = withSerwistInit({
+  swSrc: "public/sw.ts",
+  swDest: "public/sw.js",
+  reloadOnOnline: true
+});
 
-const nextConfig: NextConfig = withPWA({
+const nextConfig: NextConfig = withSerwist( {
   images: {
     remotePatterns: [
       {

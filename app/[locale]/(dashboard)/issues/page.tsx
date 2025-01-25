@@ -1,4 +1,4 @@
-import {type NextPage} from 'next'
+import { type NextPage } from 'next'
 
 
 const IssuesPage: NextPage = () =>
@@ -6,6 +6,5 @@ const IssuesPage: NextPage = () =>
 		return (
 			<div>issues</div>
 		)
-	};
-	
-	export default IssuesPage;
+};	
+export default IssuesPage;

@@ -94,5 +94,4 @@ const ObserversPage: NextPage = () => {
     </Container>
   );
 };
-
 export default ObserversPage;

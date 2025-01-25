@@ -94,5 +94,4 @@ const DataEntriesPage: NextPage = () => {
     </Container>
   );
 };
-
 export default DataEntriesPage;

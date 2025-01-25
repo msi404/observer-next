@@ -94,5 +94,4 @@ const CandidatesPage: NextPage = () => {
     </Container>
   );
 };
-
 export default CandidatesPage;

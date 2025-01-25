@@ -25,57 +25,45 @@ const userState: User = {
   token: null
 };
 
-let user;
+
+let initialState: User = userState;
 
 if (typeof window !== 'undefined') {
-  user = localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user') || JSON.stringify(userState))
-    : JSON.stringify(userState);
+  const storedUser = localStorage.getItem('user');
+  if (storedUser) {
+    initialState = JSON.parse(storedUser);
+  }
 }
-
-const initialState: User = user
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    setUser: (state, { payload }) => {
+      Object.assign(state, payload); // Update state with user payload
+    },
     logout: (state) => {
-      localStorage && localStorage.removeItem('user');
-		state.id = null
-		state.phone = null
-		state.pollingCenter = null
-		state.profileImg = null
-		state.totalPosts = null
-		state.updatedAt = null
-		state.username = null
-		state.candidateListSerial = null
-		state.candidateSerial = null
-		state.coverImg = null
-		state.createdAt = null
-		state.dateOfBirth = null
-		state.deletedAt = null
-		state.electoralEntity = null
-		state.email = null
-		state.gov = null
-		state.role = 0
-		state.name = null
-		state.token = null
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('user');
+      }
+      Object.assign(state, userState); 
     }
   },
   extraReducers: (builder) => {
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
-      ( _state, { payload } ) =>
+      ( state, { payload } ) =>
       {
-        localStorage &&
-          localStorage?.setItem('user', JSON.stringify(payload.data));
-        return payload;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(payload.data));
+        }
+        Object.assign(state, payload.data);
       }
     );
   }
 });
 
-export const selectToken = (state: RootState) => state.auth.token;
-export const selectUser = (state: RootState) => state.auth;
-export const { logout } = authSlice.actions;
+export const selectToken = ( state: RootState ) => state.auth.token;
+export const selectUser = ( state: RootState ) => state.auth;
+export const { logout, setUser } = authSlice.actions;
 export default authSlice.reducer;

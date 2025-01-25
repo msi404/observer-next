@@ -28,9 +28,43 @@ const i18Namespaces = [
   "candidates",
   "electionBase" ];
 
+const APP_NAME = "Observer Election System";
+const APP_DEFAULT_TITLE = "Observer Election System";
+const APP_TITLE_TEMPLATE = "%s - Observer Election System";
+const APP_DESCRIPTION = "Observer Election System";
+
 export const metadata: Metadata = {
-  title: "برنامج المراقب",
-  description: "برنامج المراقب الخاص بادارة العملية الانتخابية.",
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
   generator: "Next.js",
   manifest: "/manifest.json",
   keywords: ["nextjs", "next14", "pwa", "next-pwa"],
@@ -45,6 +79,10 @@ export const metadata: Metadata = {
     { rel: "icon", url: "icons/maskable_icon_x512.png" },
     { rel: "icon", url: "icons/maskable_icon_x192.png" },
   ],
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
 };
 
 export function generateStaticParams() {

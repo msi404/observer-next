@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import type { FC, ReactNode } from "react";
 import { I18nextProvider } from "react-i18next";

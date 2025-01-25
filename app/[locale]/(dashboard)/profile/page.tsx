@@ -6,5 +6,4 @@ const ProfilePage: NextPage = () =>
 		<div>صفحة الملف الشخصي</div>
 	)
 };
-
 export default ProfilePage

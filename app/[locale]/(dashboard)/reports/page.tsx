@@ -6,5 +6,4 @@ const ReportsPage: NextPage = () =>
 		<div>صفحة التقارير</div>
 	)
 };
-
 export default ReportsPage

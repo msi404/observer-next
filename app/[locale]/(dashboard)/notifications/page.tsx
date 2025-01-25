@@ -6,5 +6,4 @@ const NotificationsPage: NextPage = () =>
 		<div>notifications</div>
 	)
 };
-
 export default NotificationsPage;

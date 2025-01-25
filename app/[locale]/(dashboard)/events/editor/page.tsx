@@ -13,5 +13,4 @@ const EditorPage: NextPage = () =>
 		</Container>
 	)
 };
-
 export default EditorPage

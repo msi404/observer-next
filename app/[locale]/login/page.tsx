@@ -40,5 +40,4 @@ const SignInPage: NextPage = () =>
 		</div>
 	)
 };
-
 export default SignInPage;
