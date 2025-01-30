@@ -2,6 +2,7 @@
 import { useDispatch } from 'react-redux';
 import { logout } from '@/app/_lib/features/authSlice';
 import { ChevronsUpDown, LogOut } from 'lucide-react';
+import Avvvatars from 'avvvatars-react';
 
 import {
   Avatar,
@@ -23,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/app/_components/ui/sidebar';
+import { Show } from '@/app/_components/show';
 
 import { LanguageSwitcher } from '@/app/_components/language-switcher';
 
@@ -37,14 +39,13 @@ export const User = ({
   const dispatch = useDispatch();
   const { isMobile } = useSidebar();
 
-  const onLogoutClick = () =>
-  {
-    dispatch( logout() );
+  const onLogoutClick = () => {
+    dispatch(logout());
   };
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem className='h-16'>
+      <SidebarMenuItem className="h-16">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
@@ -52,11 +53,21 @@ export const User = ({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src="f" alt={user?.username} />
-                <AvatarFallback className="rounded-lg">{user?.username.slice(0,2).toUpperCase()}</AvatarFallback>
+                <Show
+                  when={user.username}
+                  fallback={
+                    <AvatarFallback className="rounded-lg">
+                      <Avvvatars value="Tatweer" />
+                    </AvatarFallback>
+                  }
+                >
+                  <Avvvatars value={user.username} />
+                </Show>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.name.toUpperCase()}</span>
+                <span className="truncate font-semibold">
+                  {user?.name.toUpperCase()}
+                </span>
                 <span className="truncate text-xs">{user?.name}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -71,8 +82,16 @@ export const User = ({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src="ff" alt={user?.username} />
-                  <AvatarFallback className="rounded-lg">{user?.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                <Show
+                  when={user.username}
+                  fallback={
+                    <AvatarFallback className="rounded-lg">
+                      <Avvvatars value="Tatweer" />
+                    </AvatarFallback>
+                  }
+                >
+                  <Avvvatars value={user.username} />
+                </Show>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">

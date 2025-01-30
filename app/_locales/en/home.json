@@ -23,8 +23,7 @@
 		"description": "Number of closed issues and opened issues.",
 		"label": "Issue",
 		"tooltips": {
-			"opened": "Opened",
-			"closed": "Closed"
+			"issues": "Issues"
 		}
 	},
 	"ObserverByState": {

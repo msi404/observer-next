@@ -33,7 +33,7 @@ import { Input } from '@/app/_components/ui/input';
 import { type Level } from '@tiptap/extension-heading';
 import { Dynamic } from '@/app/_components/dynamic';
 import { BasicDialog } from '@/app/_components/basic-dialog';
-import { addEventSchema } from '@/app/_schema/event';
+import { addEventSchema } from '@/app/_validation/event';
 import { Spinner } from '@/app/_components/spinner';
 import {Dropzone} from '@/app/_components/dropzone'
 interface ToolbarButtonProps {

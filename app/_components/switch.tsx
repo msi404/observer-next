@@ -1,8 +1,8 @@
-import React, { ReactNode, FC, Children, isValidElement } from "react";
+import React, { ReactNode, FC, Children, isValidElement, ReactElement, JSXElementConstructor } from "react";
 
 // Define Match Props
 interface MatchProps {
-  when: boolean; // Condition to check
+  when: boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | undefined ; // Condition to check
   children: ReactNode; // Content to render if the condition is true
 }
 

@@ -16,7 +16,7 @@ import {
 	FormLabel,
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
-import { loginSchema } from "@/app/_schema/login";
+import { loginSchema } from "@/app/_validation/login";
 import { Spinner } from "@/app/_components/spinner";
 
 export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({

@@ -1,8 +1,8 @@
-import { type JSX, type FC,Fragment, type ReactNode} from 'react';
+import { type JSX, type FC,Fragment, type ReactNode, ReactElement, JSXElementConstructor} from 'react';
 
 export const Show: FC<{
   children: JSX.Element | ReactNode | string;
-  when: boolean | string | number;
+  when: boolean | string | number | ReactElement<unknown, string | JSXElementConstructor<any>> | undefined;
   fallback?: JSX.Element | string |null;
 }> = ({ children, when, fallback }) => {
   return (

@@ -65,27 +65,13 @@ const Home: NextPage = () => {
               </Match>
             </Switch>
            </Show>
-          //   <Show
-          //     key={ index }
-          //     fallback={<CardSkeleton />}
-          //     when={ !item.isLoading }>
-          //   <Show
-          //     when={item.permission}
-          //   >
-          //     <DataCard
-          //       icon={item.icon}
-          //       description={t(item.description)}
-          //       total={item.total}
-          //     />
-          //   </Show>
-          //  </Show>
           )}
         </For>
       </section>
 
       {/* Charts Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Show when={hasPermission(user, 'view:candidate-activity-chart')}>
+        {/* <Show when={hasPermission(user, 'view:candidate-activity-chart')}>
           <BasicChart
             chartData={candidatesActivitiesData}
             chartConfig={candidatesActivitiesChartConfig}
@@ -94,7 +80,7 @@ const Home: NextPage = () => {
             title={t('home:charts.candidatesActivities.title')}
             description={t('home:charts.candidatesActivities.description')}
           />
-        </Show>
+        </Show> */}
 
         <Show when={hasPermission(user, 'view:total-issues-chart')}>
           <PiChart
@@ -111,7 +97,7 @@ const Home: NextPage = () => {
       </section>
 
       {/* Observers by State Chart */}
-      <section>
+      {/* <section>
         <Show when={hasPermission(user, 'view:observer-by-state-chart')}>
           <BasicChart
             chartData={observersPerStateData}
@@ -123,7 +109,7 @@ const Home: NextPage = () => {
             description={t('home:charts.ObserverByState.description')}
           />
         </Show>
-      </section>
+      </section> */}
     </Container>
   );
 };

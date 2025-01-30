@@ -14,7 +14,7 @@ import
 	HandHeart,
 	ChartBarBig,
 	Bell,
-	LifeBuoy,
+	Inbox,
 	Landmark,
 	Codesandbox	
 } from "lucide-react";
@@ -115,6 +115,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		persmission: "view:issues",
 		title: "common:sidebar.issues",
 		url: "/issues",
-		icon: LifeBuoy,
+		icon: Inbox,
 	},
 ];

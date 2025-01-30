@@ -13,28 +13,30 @@ import {
 import {EmptyTable} from '@/app/_components/empty-table'
 import { ErrorTable } from '@/app/_components/error-table'
 import {FetchTable} from '@/app/_components/fetch-table'
-import {useElectoralEntitiesTable} from '@/app/_hooks/use-electoral-entities-table'
 import { useFilter } from '@/app/_hooks/use-filter';
 import { useAdd } from '@/app/_hooks/use-add';
 import { Table } from '@/app/_components/table'
-import {Switch, Match} from '@/app/_components/switch'
-
+import { Switch, Match } from '@/app/_components/switch'
+import {LoadingTable} from '@/app/_components/loading-table'
+import { useElectionBaseTable } from '@/app/_hooks/use-election-base-table';
 const ElectionBasePage: NextPage = () => {  
   const {
     isError,
     isFetching,
     isSuccess,
-    data,
+    isLoading,
+    confirmedVotrs,
     refetch,
-    electoralEntitiesTable,
-    electoralEntitiesColumnFilter,
-    clearElectoralEntitiesFilters,
-  } = useElectoralEntitiesTable();
+    confirmedVotersTable,
+    confirmedVotersColumnFilter,
+    clearConfirmedVotersFilters,
+  } = useElectionBaseTable();
 
-  const { AddConfirmedVoter, AddPossibleVoter } = useAdd();
+  const {AddConfirmedVoterOnEmpty ,AddConfirmedVoter, AddPossibleVoter } = useAdd();
   const { FilterConfirmedVoters, FilterPossibleVoters } = useFilter();
 
   const { t } = useTranslation();
+
   return (
     <Container>
       <Tabs defaultValue="political-entities">
@@ -55,19 +57,22 @@ const ElectionBasePage: NextPage = () => {
               <Match when={isError}>
                 <ErrorTable retry={refetch}/>
               </Match>
+              <Match when={isLoading}>
+                <LoadingTable />
+              </Match>
               <Match when={isFetching}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess && data?.data?.items.length === 0}>
-                <EmptyTable retry={refetch}/>
+              <Match when={isSuccess && confirmedVotrs?.data?.items.length === 0}>
+                <EmptyTable Add={<AddConfirmedVoterOnEmpty />} retry={refetch}/>
               </Match>
-              <Match when={isSuccess && data?.data?.items.length > 0}>
+              <Match when={isSuccess && confirmedVotrs?.data?.items.length > 0}>
               <Table
               Filter={FilterConfirmedVoters}
               Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
+              columnFilter={confirmedVotersColumnFilter}
+              clearFilter={clearConfirmedVotersFilters}
+              table={ confirmedVotersTable } />
               </Match>
            </Switch>
           </motion.div>
@@ -84,16 +89,16 @@ const ElectionBasePage: NextPage = () => {
               <Match when={isFetching}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess && data?.data?.items.length === 0}>
-                <EmptyTable retry={refetch}/>
+              <Match when={isSuccess && confirmedVotrs?.data?.items.length === 0}>
+                <EmptyTable Add={<AddConfirmedVoterOnEmpty />} retry={refetch}/>
               </Match>
-              <Match when={isSuccess && data?.data?.items.length > 0}>
+              <Match when={isSuccess && confirmedVotrs?.data?.items.length > 0}>
               <Table
               Filter={FilterConfirmedVoters}
               Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
+              columnFilter={confirmedVotersColumnFilter}
+              clearFilter={clearConfirmedVotersFilters}
+              table={ confirmedVotersTable } />
               </Match>
            </Switch>
           </motion.div>

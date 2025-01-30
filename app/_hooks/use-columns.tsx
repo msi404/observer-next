@@ -15,7 +15,7 @@ import { Trash, SquarePen } from 'lucide-react'
 
 import {selectUser} from '@/app/_lib/features/authSlice'
 import {hasPermission} from '@/app/_auth/auth-rbac'
-import { addVoterSchema } from '@/app/_schema/elecationBase'
+import { addVoterSchema } from '@/app/_validation/elecationBase'
 import { BasicDialog } from '@/app/_components/basic-dialog'
 import { DialogFooter, DialogClose } from '@/app/_components/ui/dialog'
 import { Button } from '@/app/_components/ui/button'

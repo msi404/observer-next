@@ -23,8 +23,7 @@
 		"description": "عدد الشكاوى التي تم الرد عليها والتي لم يتم الرد عليه",
 		"label": "شكوى",
 		"tooltips": {
-			"opened": "الجديدة",
-			"closed": "المغلقة"
+			"issues": "الشكاوى"
 		}
 	},
 	"ObserverByState": {

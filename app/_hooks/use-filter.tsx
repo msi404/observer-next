@@ -8,6 +8,9 @@ import { DialogFooter, DialogClose } from '@/app/_components/ui/dialog'
 import { Separator } from '@/app/_components/ui/separator'
 import {Button} from '@/app/_components/ui/button'
 import { Filter } from 'lucide-react'
+import { useProvincesQuery } from '@/app/_services/fetchApi'
+import {useUsersQuery} from '@/app/_services/fetchApi'
+import { set } from 'date-fns';
 
 interface Filter {
 	id: string;
@@ -15,32 +18,14 @@ interface Filter {
 }
  
 
-const governorates = [
-	{ label: 'بغداد', value: 'بغداد' },
-	{ label: 'البصرة', value: 'البصرة' },
-	{ label: 'نينوى', value: 'نينوى' },
-	{ label: 'أربيل', value: 'أربيل' },
-	{ label: 'السليمانية', value: 'السليمانية' },
-	{ label: 'دهوك', value: 'دهوك' },
-	{ label: 'كركوك', value: 'كركوك' },
-	{ label: 'النجف', value: 'النجف' },
-	{ label: 'كربلاء', value: 'كربلاء' },
-	{ label: 'بابل', value: 'بابل' },
-	{ label: 'الأنبار', value: 'الأنبار' },
-	{ label: 'ديالى', value: 'ديالى' },
-	{ label: 'واسط', value: 'واسط' },
-	{ label: 'ميسان', value: 'ميسان' },
-	{ label: 'ذي قار', value: 'ذي قار' },
-	{ label: 'المثنى', value: 'المثنى' },
-	{ label: 'القادسية', value: 'القادسية' },
-	{ label: 'صلاح الدين', value: 'صلاح الدين' }
- ];
-
-
 export const useFilter = () =>
 {
 	const FilterConfirmedVoters = (table: Table<any>) =>
 	{
+		const { data: provinces,isLoading: isLoadingProvinces } = useProvincesQuery( '' )
+		const { data: users,isLoading: isLoadingUsers } = useUsersQuery( 'Role=102' )
+		const [governorates, setGovernorates] = useState<{label: string, value: string}[]>([])
+		const [candidates, setCandidates] = useState<{label: string, value: string}[]>([])
 		const [filters, setFilters] = useState<Filter[]>([]);
 		const [ open, setOpen ] = useState( false );
 			
@@ -56,7 +41,27 @@ export const useFilter = () =>
 				};
 				document.addEventListener('keydown', handleKeyDown);
 				return () => document.removeEventListener('keydown', handleKeyDown);
-			 }, [applyFilters]);
+			 }, [ applyFilters ] );
+		
+		useEffect( () =>
+		{
+			if ( !isLoadingProvinces )
+			{
+				const governorates = provinces?.data.items.map( (province: { name: any; }) => ({label: province.name, value: province.name}))
+				setGovernorates( governorates )
+				console.log(governorates);
+			}
+		}, [ provinces, isLoadingProvinces ] )
+		
+		useEffect( () =>
+		{
+			if ( !isLoadingUsers )
+			{
+				const candidates = users?.data.items.map( ( user: { name: any; } ) => ( { label: user.name, value: user.name } ) )
+				setCandidates( candidates )
+				console.log(candidates);
+			}
+		}, [users, isLoadingUsers] )
 		  
 			 const DialogComponent = useMemo(
 				() => (
@@ -102,14 +107,12 @@ export const useFilter = () =>
 						  ])
 						}
 					 />
-					 <Input
-						placeholder="المرشح"
-						onChange={(event) =>
-						  setFilters(() => [
-							 ...filters,
-							 { id: 'candidate', value: event.target.value }
-						  ])
+					 <Combobox
+						options={candidates}
+						setSelect={(value) =>
+						  setFilters(() => [...filters, { id: 'candidate', value: value }])
 						}
+						label="المرشح"
 					 />
 					 <div className=" relative">
 						<Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />

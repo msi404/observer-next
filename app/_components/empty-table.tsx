@@ -1,3 +1,4 @@
+'use client'
 import { type FC } from 'react';
 import { motion } from 'motion/react';
 import { Container } from '@/app/_components/container';
@@ -9,8 +10,8 @@ import {
   CardDescription
 } from '@/app/_components/ui/card';
 import { ArchiveX, RefreshCcw } from 'lucide-react';
-
-export const EmptyTable: FC<{ retry: VoidFunction }> = ({ retry }) => {
+export const EmptyTable: FC<{ retry: VoidFunction; Add: any}> = ( { retry, Add} ) =>
+{
   return (
     <Container>
       <Card className="p-4 h-96">
@@ -22,6 +23,7 @@ export const EmptyTable: FC<{ retry: VoidFunction }> = ({ retry }) => {
           <CardDescription>يبدو ان ليس هناك بيانات هل تريد المحاولة مجدداً؟</CardDescription>
         </CardHeader>
         <CardContent className="text-primary flex justify-center items-center">
+          { Add }
           <motion.button
             onClick={retry}
             whileHover={{
