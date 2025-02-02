@@ -3,11 +3,11 @@ import { z } from 'zod';
 
 export const addVoterSchema = z.object( {
 	name: z.string().min( 3 ),
-	birthDate: z.date().default(new Date),
-	gender: z.string(),
+	dateOfBirth: z.date().default(new Date),
+	gender: z.enum(['0', '1']).transform((val) => Number(val)),
 	img: z.string(),
-	address: z.string().min(5),
+	address: z.string().min(3),
 	pollingCenterId: z.string().min(3),
 	candidateId: z.string().min(3),
-	serial: z.string()
+	serial: z.string().min(3)
 })

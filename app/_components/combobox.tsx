@@ -1,7 +1,6 @@
 'use client';
 import { type FC ,useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/app/_lib/utils';
 import { Button } from '@/app/_components/ui/button';
 import
 	{
@@ -21,14 +20,17 @@ import
 } from '@/app/_components/ui/popover';
 import {Show} from '@/app/_components/show'
 import { For } from '@/app/_components/for'
+import {cn} from '@/app/_lib/utils'
 
 type ComboboxType = {
 	options: { value: string, label: string; }[],
 	label: string,
+	className?: string,
+	disabled?: boolean,
 	setSelect: (value: string) => void
 }
 
-export const Combobox: FC<ComboboxType> = ({options, label, setSelect}) =>
+export const Combobox: FC<ComboboxType> = ({options, label, className, setSelect, disabled}) =>
 {
 	const [ open, setOpen ] = useState<boolean>( false )
 	const [ value, setValue ] = useState<string>( '' )
@@ -44,10 +46,11 @@ export const Combobox: FC<ComboboxType> = ({options, label, setSelect}) =>
 		<Popover modal={true} open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
+					disabled={disabled}
 					variant='outline'
 					role='combobox'
 					aria-expanded={ open }
-					className='w-full justify-between'
+					className={ cn( 'w-full justify-between', className ) }
 				>
 				<Show when={value} fallback={label}>
 					{options.find((option) => option.value === value)?.label}

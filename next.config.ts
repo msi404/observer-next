@@ -17,6 +17,13 @@ const nextConfig: NextConfig = withSerwist( {
         pathname: '/u/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'observer-api-v2.tatweer-dev.com',
+        port: '',
+        pathname: '/**',
+        search: '',
+      },
     ],
   },
 });

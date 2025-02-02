@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { type FC ,useMemo, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
+import { FieldError } from 'react-hook-form';
 
 const baseStyle = {
   flex: 1,
@@ -31,7 +32,7 @@ const rejectStyle = {
   borderColor: '#ff1744'
 };
 
-export const Dropzone: FC<{ label: string; setFile: (file: File) => void }> = ( { label, setFile } ) =>
+export const Dropzone: FC<{ label: string; setFile: (file: File) => void, error?: FieldError }> = ( { label, setFile, error } ) =>
 {
  const [files, setFiles] = useState<{preview: ''}[]>([])
 	const {
@@ -54,7 +55,8 @@ export const Dropzone: FC<{ label: string; setFile: (file: File) => void }> = ( 
     ...baseStyle,
     ...(isFocused ? focusedStyle : {}),
     ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
+    ...( isDragReject ? rejectStyle : {} ),
+    ...( error ? { borderColor: '#ff1744' } : {} )
   }), [
     isFocused,
     isDragAccept,

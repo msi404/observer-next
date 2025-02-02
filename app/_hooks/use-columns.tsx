@@ -1,11 +1,10 @@
 'use client';
-import { useState } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import {useSelector} from 'react-redux'
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {motion} from 'motion/react'
-import Image from 'next/image'
 import
 	{
 	type ColumnDef
@@ -15,7 +14,7 @@ import { Trash, SquarePen } from 'lucide-react'
 
 import {selectUser} from '@/app/_lib/features/authSlice'
 import {hasPermission} from '@/app/_auth/auth-rbac'
-import { addVoterSchema } from '@/app/_validation/elecationBase'
+import { addVoterSchema } from '@/app/_validation/elecation-base'
 import { BasicDialog } from '@/app/_components/basic-dialog'
 import { DialogFooter, DialogClose } from '@/app/_components/ui/dialog'
 import { Button } from '@/app/_components/ui/button'
@@ -41,9 +40,10 @@ import {cn} from '@/app/_lib/utils'
 import {Spinner} from '@/app/_components/spinner'
 import { DataTableColumnHeader } from '@/app/_components/table-header'
 import {DatePicker} from '@/app/_components/date-picker'
-import Placeholder from '@/app/_assets/images/placeholder.png'
-
-
+import {useDeleteVoterMutation} from '@/app/_services/mutationApi'
+import { useVotersQuery } from '@/app/_services/fetchApi'
+import { calcAge } from '@/app/_utils/calc-age'
+import { Zoom } from '@/app/_components/zoom'
 export const useColumns = () =>
 {
 	const user = useSelector(selectUser)
@@ -98,23 +98,43 @@ export const useColumns = () =>
 		  )
 		},
 		{
-		  accessorKey: 'address',
-		  header: t('electionBase:confirmedVoters.table.header.address')
+		  accessorKey: 'dateOfBirth',
+		  header: ({ column }: any) => (
+			 <DataTableColumnHeader
+				column={column}
+				title={t('electionBase:confirmedVoters.table.header.age')}
+			 />
+			),
+			cell: ( {cell}: {cell: any}  ) => {
+				return (
+					<span className='flex justify-center items-center'>
+						{calcAge(cell.getValue())}
+				  </span>
+			  )
+			}
 		},
 		{
-		  accessorKey: 'state',
+		  accessorKey: 'pollingCenter.gov',
 		  header: t('electionBase:confirmedVoters.table.header.governorate')
 		},
 		{
-		  accessorKey: 'pollingCenter',
+		  accessorKey: 'pollingCenter.name',
 		  header: t('electionBase:confirmedVoters.table.header.pollingCenter')
 		},
 		{
-		  accessorKey: 'dataEntry',
-		  header: t('electionBase:confirmedVoters.table.header.dataEntry')
+		  accessorKey: 'gender',
+			header: t( 'electionBase:confirmedVoters.table.header.gender' ),
+			cell: ( {cell}: {cell: any} ) =>
+			{
+				return (
+					<Fragment>
+						{cell.getValue() === 0 ? 'ذكر' : 'انثى'}
+				  </Fragment>
+			  )
+		  }
 		},
 		{
-		  accessorKey: 'candidate',
+		  accessorKey: 'candidate.name',
 		  header: ({ column }: any) => (
 			 <DataTableColumnHeader
 				column={column}
@@ -123,45 +143,43 @@ export const useColumns = () =>
 		  )
 		},
 		{
-		  accessorKey: 'candidateNumber',
+		  accessorKey: 'serial',
 		  header: t('electionBase:confirmedVoters.table.header.candidateNumber')
 		},
 		{
-		  accessorKey: 'cardPhoto',
+		  accessorKey: 'img',
 		  header: t('electionBase:confirmedVoters.table.header.cardPhoto'),
-		  cell: ({ row }: any) => (
-			 <Image
-				placeholder="blur"
-				blurDataURL={Placeholder.blurDataURL}
-				width={48}
-				height={48}
-				src={row.getValue('cardPhoto') as string}
-				alt="صورة البطاقة"
-				className="w-12 h-12 rounded-lg"
-			 />
-		  )
+			cell: ( { cell }: any ) =>
+			{
+				const value = cell.getValue()		 
+				return (
+					<Zoom preview={value} />
+				)
+			}
 		},
 		hasPermission( user, 'view:confirmedVotersActions' ) && {
 		  id: 'actions',
 		  accessorKey: 'actions',
 		  header: 'الاجرائات',
-		  cell: () =>
+		  cell: ({row}: {row: any}) =>
 		  {
+			const [deleteVoter, {isLoading}] = useDeleteVoterMutation()
+			const {refetch} = useVotersQuery('')
 			 const [openDelete, setOpenDelete] = useState<boolean>(false);
 			 const [ openEdit, setOpenEdit ] = useState<boolean>( false );
 			 const [ file, setFile ] = useState<File>()
 				const form = useForm<z.infer<typeof addVoterSchema>>( {
 				  resolver: zodResolver( addVoterSchema ),
 				  defaultValues: {
-					 name: '',
+					 name: row.original.name,
 					 // @ts-ignore
-					 birthDate: '',
-					 gender: '',
+					 birthDate: row.original.dateOfBirth,
+					 gender: row.original.gender,
 					 iDimage: '',
 					 address: '',
-					 pollingCenterId: '',
+					 pollingCenterId: row.original.pollingCenter.name,
 					 candidateId: '',
-					 voterType: ''
+					 voterType: row.original.serial
 				  }
 				} )
 				const onSubmit = async ( values: z.infer<typeof addVoterSchema> ) =>
@@ -169,6 +187,12 @@ export const useColumns = () =>
 				  console.log( values );
 				  console.log(file);
 				}
+			  
+			  const onDelete = async () =>
+			  {
+				  await deleteVoter( row.original.id )
+				  refetch()
+			  }
 			 return (
 				<div className="flex justify-between items-center gap-2">
 				<BasicDialog
@@ -194,7 +218,7 @@ export const useColumns = () =>
 		  >
 			 <DialogFooter>
 				<div className="flex justify-between w-full">
-				  <Button variant="destructive" disabled={false}>
+				  <Button variant="destructive" onClick={onDelete} disabled={isLoading}>
 					 حذف
 					 {false && (
 						<div className=" scale-125">
@@ -305,14 +329,14 @@ export const useColumns = () =>
 							 <FormControl>
 								<Select
 								  onValueChange={field.onChange}
-								  defaultValue={field.value}
+								  defaultValue={field.value.toString()}
 								>
 								  <SelectTrigger className="w-full">
 									 <SelectValue placeholder="الجنس" />
 								  </SelectTrigger>
 								  <SelectContent>
-									 <SelectItem value="male">ذكر</SelectItem>
-									 <SelectItem value="female">انثى</SelectItem>
+									 <SelectItem value="0">ذكر</SelectItem>
+									 <SelectItem value="1">انثى</SelectItem>
 								  </SelectContent>
 								</Select>
 							 </FormControl>

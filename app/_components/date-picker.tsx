@@ -13,7 +13,7 @@ import {
   PopoverTrigger
 } from '@/app/_components/ui/popover';
 
-export const DatePicker: FC<{value: Date | null, onChange: VoidFunction}> = ({value, onChange}) => {
+export const DatePicker: FC<{value: Date | null, onChange: VoidFunction, disabled?: boolean}> = ({value, onChange, disabled}) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -31,6 +31,7 @@ export const DatePicker: FC<{value: Date | null, onChange: VoidFunction}> = ({va
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
+          disabled={disabled}
           mode="single"
           // @ts-ignore
           selected={value}

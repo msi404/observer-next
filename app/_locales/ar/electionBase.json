@@ -6,12 +6,14 @@
 		"table": {
 			"header": {
 				"name": "الاسم",
+				"gender": "الجنس",
 				"address": "العنوان",
+				"age": "العمر",
 				"governorate": "المحافظة",
 				"pollingCenter": "مركز الاقتراع",
 				"dataEntry": "مدخل البيانات",
 				"candidateName": "اسم المرشح",
-				"candidateNumber":"زقم المرشح",
+				"candidateNumber":"رقم المرشح",
 				"cardPhoto": "صورة البطاقة"
 			}
 		}

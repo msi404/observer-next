@@ -15,7 +15,7 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 			query: () => 'users/current'
 		} ),
 		voters: builder.query( {
-			query: () => 'voters'
+			query: (param) => `voters?${param}`
 		} ),
 		electoralEntities: builder.query( {
 			query: () => 'electoralentities'

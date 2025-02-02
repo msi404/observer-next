@@ -55,6 +55,7 @@ const Home: NextPage = () => {
               </Match>
               <Match when={item.isSuccess}>
                 <StatisticsCard
+                url={item.url}    
                 icon={item.icon}
                 description={t(item.description)}
                 total={item.total}

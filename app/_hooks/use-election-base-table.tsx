@@ -1,5 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import {selectCurrentPage, selectPageSize, setTotalPages} from '@/app/_lib/features/paginationSlice'
 import {
   useReactTable,
   getCoreRowModel,
@@ -12,9 +14,13 @@ import {
 import { useColumns } from '@/app/_hooks/use-columns';
 import { useVotersQuery } from '@/app/_services/fetchApi';
 
-export const useElectionBaseTable = () => {
-  const { data: confirmedVotrs, isLoading ,isError, isFetching, isSuccess,refetch } =
-	 useVotersQuery('');
+export const useElectionBaseTable = () =>
+{
+	const dispatch = useDispatch()
+	const currentPage = useSelector( selectCurrentPage )
+	const pageSize = useSelector(selectPageSize)
+  const { data: voters, isLoading ,isError, isFetching, isSuccess,refetch } =
+	 useVotersQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
 
   const { confirmedVotersColumns } = useColumns();
 
@@ -25,7 +31,7 @@ export const useElectionBaseTable = () => {
 	 useState<SortingState>([]);
 
   const confirmedVotersTable = useReactTable({
-	 data: !isLoading && confirmedVotrs!,
+	 data: !isLoading && voters?.data?.items!,
 	 columns: confirmedVotersColumns,
 	 getCoreRowModel: getCoreRowModel(),
 	 getFilteredRowModel: getFilteredRowModel(),
@@ -42,13 +48,21 @@ export const useElectionBaseTable = () => {
   const clearConfirmedVotersFilters = () => {
 	confirmedVotersTable.setColumnFilters([]);
   };
+	
+	useEffect( () =>
+	{
+		if ( !isLoading )
+		{
+			dispatch(setTotalPages(voters?.data?.totalPages))
+		}
+	}, [isLoading, voters])
 
   return {
 	 isError,
 	 isFetching,
-		isSuccess,
+	isSuccess,
 	 isLoading,
-	 confirmedVotrs,
+	 voters,
 	 refetch,
 	 confirmedVotersColumnFilter,
 	 clearConfirmedVotersFilters,

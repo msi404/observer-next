@@ -10,7 +10,7 @@ import {
   type SortingState
 } from '@tanstack/react-table';
 import { useColumns } from '@/app/_hooks/use-columns';
-import { useElectoralEntitiesQuery } from '@/app/_services/fetchApi';
+import { useVotersQuery } from '@/app/_services/fetchApi';
 
 import { confirmedVotersData, possibleVotersData } from '@/app/_utils/faker';
 
@@ -18,13 +18,9 @@ const confirmedVotrs: ConfirmedVoters[] = confirmedVotersData;
 const possibleVotrs: PossibleVoters[] = possibleVotersData;
 
 export const useDynamicTable = () => {
-  const {
-    data,
-    isLoading,
-    isError,
-    isFetching,
-    isSuccess,
-    refetch } = useElectoralEntitiesQuery( '' );
+
+  const { data: voters, isLoading } = useVotersQuery( '' )
+  const [confirmedVoters, setConfirmedVoters] = useState([])
   
   const { possibleVotersColumns, confirmedVotersColumns } = useColumns();
   const [confirmedVotersColumnFilter, setConfirmedVotersColumnFilter] =
@@ -89,6 +85,14 @@ export const useDynamicTable = () => {
   const clearPossibleVotersFilters = () => {
     possibleVotersTable.setColumnFilters([]);
   };
+
+  useEffect( () =>
+  {
+    if ( !isLoading )
+    {
+      console.log(voters);
+    }
+  }, [isLoading, voters])
 
   return {
     confirmedVotersColumnFilter,

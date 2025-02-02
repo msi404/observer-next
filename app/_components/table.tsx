@@ -1,5 +1,6 @@
 'use client'
 import { type FC, type ComponentType, type ReactElement } from 'react';
+import {motion} from 'motion/react'
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { Card, CardContent } from '@/app/_components/ui/card';
@@ -10,14 +11,16 @@ import { Dynamic } from '@/app/_components//dynamic';
 import { DynamicTable } from '@/app/_components/dynamic-table';
 import { DataTablePagination } from '@/app/_components/table-pagination';
 import { hasPermission } from '@/app/_auth/auth-rbac';
+import { DynamicPagination } from '@/app/_components/dynamic-pagination'
 
 export const Table: FC<{
   table: any;
   clearFilter: VoidFunction;
   Add: ComponentType;
+  Retry: ReactElement
   Filter: (table: any) => ReactElement;
   columnFilter: any;
-}> = ({ table, clearFilter, Add, Filter, columnFilter }) => {
+}> = ({ table, clearFilter, Add, Filter, columnFilter, Retry }) => {
   const user = useSelector(selectUser);
   return (
     <Card className="p-4">
@@ -38,13 +41,19 @@ export const Table: FC<{
             </Button>
           </Show>
         </div>
+        <div>
+        <Show when={hasPermission(user, 'view:addConfirmedVoter')}>
+          {Retry}
+        </Show>
         <Show when={hasPermission(user, 'view:addConfirmedVoter')}>
           <Dynamic component={<Add />} />
         </Show>
+        </div>
       </CardContent>
       <CardContent>
         <DynamicTable table={table} />
-        <DataTablePagination className="mt-12" table={table} />
+        {/* <DataTablePagination className="mt-12" table={ table } /> */}
+        <DynamicPagination />
       </CardContent>
     </Card>
   );

@@ -6,8 +6,9 @@
 		"table": {
 			"header": {
 				"name": "Name",
-				"address": "Address",
+				"gender": "Gender",
 				"governorate": "Governorate",
+				"age": "age",
 				"pollingCenter": "Polling Center",
 				"dataEntry": "Data Entry",
 				"candidateName": "Candidate Name",
