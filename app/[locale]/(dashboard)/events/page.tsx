@@ -14,7 +14,7 @@ import { ErrorTable } from '@/app/_components/error-table'
 import {FetchTable} from '@/app/_components/fetch-table'
 import {useElectoralEntitiesTable} from '@/app/_hooks/use-electoral-entities-table'
 import { useFilter } from '@/app/_hooks/use-filter';
-import { useAdd } from '@/app/_hooks/use-add';
+import { useAdd } from '@/app/_hooks/actions/use-add-confirmed-voter';
 import { Table } from '@/app/_components/table'
 import {Switch, Match} from '@/app/_components/switch'
 

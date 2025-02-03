@@ -11,10 +11,10 @@ import {
   type ColumnFiltersState,
   type SortingState
 } from '@tanstack/react-table';
-import { useColumns } from '@/app/_hooks/use-columns';
+import { useConfirmedVotersColumns } from '@/app/_hooks/columns/use-confirmed-voter-columns';
 import { useVotersQuery } from '@/app/_services/fetchApi';
 
-export const useElectionBaseTable = () =>
+export const useVotersTable = () =>
 {
 	const dispatch = useDispatch()
 	const currentPage = useSelector( selectCurrentPage )
@@ -22,7 +22,7 @@ export const useElectionBaseTable = () =>
   const { data: voters, isLoading ,isError, isFetching, isSuccess,refetch } =
 	  useVotersQuery( `PageNumber=${ currentPage }&PageSize=${ pageSize }` );
 	
-  const { confirmedVotersColumns } = useColumns();
+  const { confirmedVotersColumns } = useConfirmedVotersColumns();
 
   const [confirmedVotersColumnFilter, setconfirmedVotersColumnFilter] =
 	 useState<ColumnFiltersState>([]);

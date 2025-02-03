@@ -19,7 +19,7 @@ import { Spinner } from '@/app/_components/spinner'
 import {DialogClose, DialogFooter} from '@/app/_components/ui/dialog'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/app/_hooks/use-toast';
-import { addVoterSchema } from '@/app/_validation/elecation-base';
+import { addVoterSchema } from '@/app/_validation/voter';
 import { cn } from '@/app/_lib/utils'
 import { DatePicker } from '@/app/_components/date-picker'
 import

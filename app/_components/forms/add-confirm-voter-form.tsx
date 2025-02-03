@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
 
 // Hooks
-import { useAddConfirmedVoter } from '@/app/_hooks/use-add';
+import { useAddConfirmedVoter } from '@/app/_hooks/actions/use-add-confirmed-voter';
 
 // UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
@@ -68,7 +68,7 @@ export const AddConfirmVoterForm = () => {
         description="ادخل المعطيات الاتية لاضافة عنصر"
       >
         <Form {...form}>
-          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
             {/* Form Fields */}
             <div className="grid gap-4">
               {/* Name */}
