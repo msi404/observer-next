@@ -9,7 +9,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationNext,
   PaginationPrevious
@@ -23,7 +22,6 @@ export const DynamicPagination = () =>
 	const dispatch = useDispatch()
 	const currentPage = useSelector( selectCurrentPage )
 	const totalPages = useSelector( selectTotalPages )
-
   const onPageChange = (page: number) => {
     dispatch(setCurrentPage(page))
   };

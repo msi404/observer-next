@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
 
 // Hooks
-import { useAdd } from '@/app/_hooks/use-add';
+import { useAddConfirmedVoter } from '@/app/_hooks/use-add';
 
 // UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
@@ -38,9 +38,7 @@ import { Show } from '@/app/_components/show';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddConfirmVoterForm = () => {
-  const { addConfirmedVoter } = useAdd();
-  const {
-    open,
+  const { open,
     setOpen,
     form,
     onSubmit,
@@ -48,8 +46,8 @@ export const AddConfirmVoterForm = () => {
     isLoadingFile,
     pollingCentersSearch,
     usersSearch,
-    fileRef
-  } = addConfirmedVoter();
+    fileRef } = useAddConfirmedVoter();
+
   const Component = useMemo(
     () => (
       <BasicDialog
@@ -85,7 +83,7 @@ export const AddConfirmVoterForm = () => {
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={false}
+                        disabled={isLoadingFile || isLoadingVoter}
                         placeholder="اسم الناخب الثلاثي"
                         {...field}
                       />
@@ -107,7 +105,7 @@ export const AddConfirmVoterForm = () => {
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="العنوان"
-                        disabled={isLoadingVoter}
+                        disabled={isLoadingFile || isLoadingVoter}
                         {...field}
                       />
                     </FormControl>
@@ -123,7 +121,7 @@ export const AddConfirmVoterForm = () => {
                   <FormItem>
                     <FormControl>
                       <DatePicker
-                        disabled={isLoadingVoter}
+                        disabled={isLoadingFile || isLoadingVoter}
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -145,7 +143,7 @@ export const AddConfirmVoterForm = () => {
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="رقم بطاقة الناخب"
-                        disabled={isLoadingVoter}
+                        disabled={isLoadingFile || isLoadingVoter}
                         {...field}
                       />
                     </FormControl>
@@ -161,7 +159,7 @@ export const AddConfirmVoterForm = () => {
                   <FormItem>
                     <FormControl>
                       <Select
-                        disabled={isLoadingVoter}
+                        disabled={isLoadingFile || isLoadingVoter}
                         onValueChange={field.onChange}
                         defaultValue={field.value?.toString()}
                       >
@@ -185,18 +183,17 @@ export const AddConfirmVoterForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Combobox
-                        disabled={isLoadingVoter}
-                        className={cn(
-                          form.formState.errors.pollingCenterId &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        options={pollingCentersSearch}
-                        setSelect={(value) =>
-                          form.setValue('pollingCenterId', value)
-                        }
-                        label="مركز الاقتراع"
-                      />
+                    <Combobox
+                          options={pollingCentersSearch}
+                          value={field.value} // Controlled by React Hook Form
+                          onChange={field.onChange} // Updates React Hook Form on change
+                          label="مركز الاقتراع"
+                          disabled={isLoadingVoter || isLoadingFile}
+                          className={cn(
+                            form.formState.errors.pollingCenterId &&
+                              'border-destructive focus:border-destructive focus:ring-destructive'
+                          )}
+                        />
                     </FormControl>
                   </FormItem>
                 )}
@@ -209,18 +206,17 @@ export const AddConfirmVoterForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Combobox
-                        disabled={false}
-                        className={cn(
-                          form.formState.errors.candidateId &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        options={usersSearch}
-                        setSelect={(value) =>
-                          form.setValue('candidateId', value)
-                        }
-                        label="المرشح"
-                      />
+                    <Combobox
+                          options={usersSearch}
+                          value={field.value} // Controlled by React Hook Form
+                          onChange={field.onChange} // Updates React Hook Form on change
+                          label="المرشح"
+                          disabled={isLoadingVoter || isLoadingFile}
+                          className={cn(
+                            form.formState.errors.pollingCenterId &&
+                              'border-destructive focus:border-destructive focus:ring-destructive'
+                          )}
+                        />
                     </FormControl>
                   </FormItem>
                 )}
@@ -246,16 +242,16 @@ export const AddConfirmVoterForm = () => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={false}>
+                <Button type="submit" disabled={isLoadingFile || isLoadingVoter}>
                   اضافة
-                  {false && (
+                  {(isLoadingFile || isLoadingVoter) && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={false}>
+                  <Button variant="outline" disabled={isLoadingFile || isLoadingVoter}>
                     الغاء
                   </Button>
                 </DialogClose>

@@ -12,5 +12,9 @@
 		"electionBase": "قاعدة الانتخابية",
 		"notifications": "الإشعارات",
 		"issues": "الشكاوى"
+	},
+	"pagination": {
+		"next": "التالي",
+		"previous": "السابق"
 	}
 }

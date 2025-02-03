@@ -20,8 +20,8 @@ export const useElectionBaseTable = () =>
 	const currentPage = useSelector( selectCurrentPage )
 	const pageSize = useSelector(selectPageSize)
   const { data: voters, isLoading ,isError, isFetching, isSuccess,refetch } =
-	 useVotersQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
-
+	  useVotersQuery( `PageNumber=${ currentPage }&PageSize=${ pageSize }` );
+	
   const { confirmedVotersColumns } = useColumns();
 
   const [confirmedVotersColumnFilter, setconfirmedVotersColumnFilter] =

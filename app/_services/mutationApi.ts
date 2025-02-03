@@ -21,7 +21,14 @@ const mutationApi = tatweerApi.injectEndpoints({
         url: `voters/${id}`,
         method: 'DELETE'
       })
-    })
+    } ),
+    updateVoter: builder.mutation({
+      query: ({ voter, id }: { voter: any, id: string }) => ({
+        url: `voters/${id}`,
+        method: 'PUT',
+        body: voter
+      })
+    }),
   }),
   overrideExisting: false
 });
@@ -29,5 +36,6 @@ const mutationApi = tatweerApi.injectEndpoints({
 export const {
   useUploadFileMutation,
   useCreateVoterMutation,
-  useDeleteVoterMutation
+  useDeleteVoterMutation,
+  useUpdateVoterMutation
 } = mutationApi;

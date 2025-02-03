@@ -25,10 +25,8 @@ import {
 
 // Validation Schemas
 import { addVoterSchema } from '@/app/_validation/elecation-base';
-export const useAdd = () =>
-{
-  
-  const addConfirmedVoter = () =>
+
+export  const useAddConfirmedVoter = () =>
   {
 	  const pageSize = useSelector( selectPageSize )
 	  const currentPage = useSelector(selectCurrentPage)
@@ -36,7 +34,7 @@ export const useAdd = () =>
 	const [createVoter, { isLoading: isLoadingVoter }] = useCreateVoterMutation();
 	const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
 	const { refetch } = useVotersQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
-	
+
 	// State Management
 	const [usersSearch, setUsersSearch] = useState<{ value: string; label: string }[]>([]);
 	const [pollingCentersSearch, setPollingCentersSearch] = useState<{ value: string; label: string }[]>([]);
@@ -72,18 +70,17 @@ export const useAdd = () =>
 	  if (!fileRef.current) {
 		 console.error("No file selected!");
 		 return;
-	  }
-	
+	  }	
 	  try {
 		 const formData = new FormData();
 		 formData.append("file", fileRef.current as File);
 		 
-		 const response = await uploadFile(formData);
-		 form.setValue("img", `${baseURL}/${response?.data?.data}`);
+		 const response = await uploadFile(formData).unwrap();
+		 form.setValue("img", `${baseURL}/${response?.data}`);
 	
-		 const result = await createVoter(addVoterSchema.parse(form.getValues()));
+		 const result = await createVoter(addVoterSchema.parse(form.getValues())).unwrap();
 	
-		 console.log(result);
+		  console.log( result );
 	  } catch (error: any) {
 		 toast({
 			title: "Error",
@@ -96,27 +93,26 @@ export const useAdd = () =>
 		 setOpen(false);
 	  }
 	};
-	
-	// Effect to Update Search Options
-	useEffect(() => {
-	  if (!isLoadingUsers) {
-		 setUsersSearch(
-			users?.data.items.map((user: any) => ({
-			  value: user.id,
-			  label: user.name
-			}))
-		 );
-	  }
-	  
-	  if (!isLoadingPollingCenters) {
-		 setPollingCentersSearch(
-			pollingCenters?.data.items.map((pollingCenter: any) => ({
-			  value: pollingCenter.id,
-			  label: pollingCenter.name
-			}))
-		 );
-	  }
-  }, [ users, isLoadingUsers, pollingCenters, isLoadingPollingCenters ] );
+        // Effect to Update Search Options
+        useEffect(() => {
+			if (!isLoadingUsers) {
+			  setUsersSearch(
+				 users?.data.items.map((user: any) => ({
+					value: user.id,
+					label: user.name
+				 }))
+			  );
+			}
+
+			if (!isLoadingPollingCenters) {
+			  setPollingCentersSearch(
+				 pollingCenters?.data.items.map((pollingCenter: any) => ({
+					value: pollingCenter.id,
+					label: pollingCenter.name
+				 }))
+			  );
+			}
+		  }, [ users, isLoadingUsers, pollingCenters, isLoadingPollingCenters ] );
     return {
       open,
       setOpen,
@@ -126,10 +122,6 @@ export const useAdd = () =>
       isLoadingVoter,
       pollingCentersSearch,
       usersSearch,
-      fileRef,
+		 fileRef,
     }
   };
-  return {
-    addConfirmedVoter,
-  };
-};

@@ -65,7 +65,7 @@ const PaginationPrevious = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink> ) => {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const currentLanguage = i18n.language
  
   return (
@@ -78,7 +78,7 @@ const PaginationPrevious = ({
     <Show when={currentLanguage === 'en'} fallback={<ChevronRight className="h-4 w-4"/>}>
     <ChevronLeft className="h-4 w-4" />
     </Show>
-    <span>Previous</span>
+      <span>{t('common:pagination.previous')}</span>
   </PaginationLink>
   )
 }
@@ -89,7 +89,7 @@ const PaginationNext = ( {
   ...props
 }: React.ComponentProps<typeof PaginationLink> ) =>
 {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const currentLanguage = i18n.language
   return (
     <PaginationLink
@@ -98,7 +98,7 @@ const PaginationNext = ( {
     className={ cn( "gap-1 pr-2.5", className ) }
     { ...props }
   >
-    <span>Next</span>
+    <span>{t('common:pagination.next')}</span>
     <Show when={ currentLanguage === 'en' } fallback={ <ChevronLeft className="h-4 w-4" /> }>
       <ChevronRight className="h-4 w-4" />
     </Show>

@@ -10,7 +10,6 @@ import {Button} from '@/app/_components/ui/button'
 import { Filter } from 'lucide-react'
 import { useProvincesQuery } from '@/app/_services/fetchApi'
 import {useUsersQuery} from '@/app/_services/fetchApi'
-import { set } from 'date-fns';
 
 interface Filter {
 	id: string;

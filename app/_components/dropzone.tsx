@@ -1,7 +1,7 @@
-'use client'
-import Image from 'next/image'
-import { type FC ,useMemo, useState } from 'react';
-import {useDropzone} from 'react-dropzone';
+'use client';
+import Image from 'next/image';
+import { FC, useMemo, useState, useEffect } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { FieldError } from 'react-hook-form';
 
 const baseStyle = {
@@ -20,55 +20,61 @@ const baseStyle = {
   transition: 'border .24s ease-in-out'
 };
 
-const focusedStyle = {
-  borderColor: '#2196f3'
+const focusedStyle = { borderColor: '#2196f3' };
+const acceptStyle = { borderColor: '#00e676' };
+const rejectStyle = { borderColor: '#ff1744' };
+
+type DropzoneProps = {
+  label: string;
+  setFile: (file: File | null) => void;
+  error?: FieldError;
+  defaultImage?: string; // ✅ Add defaultImage prop
 };
 
-const acceptStyle = {
-  borderColor: '#00e676'
-};
+export const Dropzone: FC<DropzoneProps> = ({ label, setFile, error, defaultImage }) => {
+  const [files, setFiles] = useState<{ preview: string }[]>([]);
 
-const rejectStyle = {
-  borderColor: '#ff1744'
-};
+  // ✅ Set the default image on mount
+  useEffect(() => {
+    if (defaultImage) {
+      setFiles([{ preview: defaultImage }]);
+    }
+  }, [defaultImage]);
 
-export const Dropzone: FC<{ label: string; setFile: (file: File) => void, error?: FieldError }> = ( { label, setFile, error } ) =>
-{
- const [files, setFiles] = useState<{preview: ''}[]>([])
-	const {
-		getRootProps,
-		getInputProps,
-		isFocused,
-		isDragAccept,
-    isDragReject,
-  } = useDropzone( {
-    accept: { 'image/*': [] }, maxFiles: 1, onDrop: acceptedFiles =>
-    {
-      // @ts-ignore
-      setFiles( acceptedFiles.map( ( file => Object.assign( file, {
-        preview: URL.createObjectURL( file )
-      } ) ) ) )
-      setFile(acceptedFiles[0])
-  }});
+  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
+    accept: { 'image/*': [] },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      const updatedFiles = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })
+      );
+      setFiles(updatedFiles);
+      setFile(acceptedFiles[0]); // ✅ Set the file for form submission
+    }
+  });
 
-  const style: any = useMemo(() => ({
-    ...baseStyle,
-    ...(isFocused ? focusedStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...( isDragReject ? rejectStyle : {} ),
-    ...( error ? { borderColor: '#ff1744' } : {} )
-  }), [
-    isFocused,
-    isDragAccept,
-    isDragReject
-  ] );
+  const style: React.CSSProperties = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isFocused ? focusedStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+      ...(error ? { borderColor: '#ff1744' } : {})
+    }),
+    [isFocused, isDragAccept, isDragReject, error]
+  );
+
   return (
     <div className="container">
-      <div {...getRootProps({style})}>
+      <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        {!files.length && <p>{ label }</p>}
-        {files.length > 0 && <Image src={files[0].preview} width={350} height={350} alt='Photo'/>}
+        {!files.length && <p>{label}</p>}
+        {files.length > 0 && (
+          <Image src={files[0].preview} width={350} height={350} alt="Preview" />
+        )}
       </div>
     </div>
   );
-}
+};

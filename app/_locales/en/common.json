@@ -12,5 +12,9 @@
 		"electionBase": "Election Base",
 		"notifications": "Notifications",
 		"issues": "Issue"
+	},
+	"pagination": {
+		"next": "Next",
+		"previous": "Previous"
 	}
 }
