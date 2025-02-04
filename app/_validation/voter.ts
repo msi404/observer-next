@@ -14,7 +14,7 @@ export const addConfirmedVoterSchema = z.object({
   state: z.nativeEnum(VoterState),
   address: z.string().min(3),
   pollingCenterId: z.string().min(3),
-  candidateId: z.string(),
+  candidateId: z.string().min(3),
   serial: z.string().min(3)
 } );
 

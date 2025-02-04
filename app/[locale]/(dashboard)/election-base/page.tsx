@@ -19,11 +19,9 @@ import { LoadingTable } from '@/app/_components/loading-table';
 
 import { useVotersTable } from '@/app/_hooks/tables/use-voters-table';
 
-import { AddPossibleVoterEmptyForm } from '@/app/_components/forms/add-possible-voter-empty-form'
 import { AddPossibleVoterForm } from '@/app/_components/forms/add-possible-voter-form'
 import { FilterPossibleVotersForm } from '@/app/_components/forms/filter-possible-voter-form'
 
-import { AddConfirmVoterEmptyForm } from '@/app/_components/forms/add-confirm-voter-empty-form';
 import { AddConfirmVoterForm } from '@/app/_components/forms/add-confirm-voter-form';
 import { FilterConfirmedVotersForm } from '@/app/_components/forms/filter-confirmed-voter-form';
 
@@ -76,7 +74,7 @@ const ElectionBasePage: NextPage = () => {
               </Match>
               <Match when={isSuccess && confirmedVoters.length === 0}>
                 <EmptyTable
-                  Add={<AddConfirmVoterEmptyForm />}
+                  Add={<AddConfirmVoterForm />}
                   retry={refetch}
                 />
               </Match>
@@ -107,7 +105,7 @@ const ElectionBasePage: NextPage = () => {
               </Match>
               <Match when={isSuccess && possibleVoters.length === 0}>
                 <EmptyTable
-                  Add={<AddPossibleVoterEmptyForm />}
+                  Add={<AddPossibleVoterForm />}
                   retry={refetch}
                 />
               </Match>

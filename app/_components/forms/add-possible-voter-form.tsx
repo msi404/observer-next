@@ -36,8 +36,8 @@ import { Combobox } from '@/app/_components/combobox';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddPossibleVoterForm = () => {
-  const { open,
-    setOpen,
+  const { openAdd,
+    setOpenAdd,
     form,
     onSubmit,
     isLoadingVoter,
@@ -48,8 +48,8 @@ export const AddPossibleVoterForm = () => {
   const Component = useMemo(
     () => (
       <BasicDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={openAdd}
+        onOpenChange={setOpenAdd}
         button={
           <motion.button
             whileHover={{
@@ -247,7 +247,7 @@ export const AddPossibleVoterForm = () => {
         </Form>
       </BasicDialog>
     ),
-    [open]
+    [openAdd]
   );
 
   return Component;

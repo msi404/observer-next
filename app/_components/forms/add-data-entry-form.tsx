@@ -1,13 +1,13 @@
 'use client';
 
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 
 // External libraries
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
 
 // Hooks
-import { useAddConfirmedVoter } from '@/app/_hooks/actions/use-add-confirmed-voter';
+import { useAddDataEntry } from '@/app/_hooks/actions/use-add-data-entry';
 
 // UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
@@ -19,35 +19,26 @@ import {
   FormItem,
   FormField
 } from '@/app/_components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/app/_components/ui/select';
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import { Dropzone } from '@/app/_components/dropzone';
 import { Combobox } from '@/app/_components/combobox';
-import { Show } from '@/app/_components/show';
 // Utils
 import { cn } from '@/app/_lib/utils';
-export const AddConfirmVoterForm = () => {
-  const { openAdd,
+export const AddDataEntryForm = () => {
+  const {
+    openAdd,
     setOpenAdd,
     form,
     onSubmit,
-    isLoadingVoter,
-    isLoadingFile,
-    pollingCentersSearch,
-    usersSearch,
-    fileRef } = useAddConfirmedVoter();
-
+    isLoadingUser,
+    govCenterSearch,
+    pollingCenterSearch,
+    electoralEntitiesSearch
+  } = useAddDataEntry();
   const Component = useMemo(
     () => (
       <BasicDialog
@@ -64,11 +55,11 @@ export const AddConfirmVoterForm = () => {
             <PenSquare size="35px" />
           </motion.button>
         }
-        title="اضافة ناخب مؤكد"
+        title="اضافة مدخل بيانات"
         description="ادخل المعطيات الاتية لاضافة عنصر"
       >
         <Form {...form}>
-          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             {/* Form Fields */}
             <div className="grid gap-4">
               {/* Name */}
@@ -83,8 +74,27 @@ export const AddConfirmVoterForm = () => {
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingFile || isLoadingVoter}
-                        placeholder="اسم الناخب الثلاثي"
+                        disabled={isLoadingUser}
+                        placeholder="اسم الموظف الثلاثي"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.username &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUser}
+                        placeholder="اسم المستخدم"
                         {...field}
                       />
                     </FormControl>
@@ -92,20 +102,19 @@ export const AddConfirmVoterForm = () => {
                 )}
               />
 
-              {/* Address */}
               <FormField
                 control={form.control}
-                name="address"
+                name="password"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         className={cn(
-                          form.formState.errors.address &&
+                          form.formState.errors.password &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        placeholder="العنوان"
-                        disabled={isLoadingFile || isLoadingVoter}
+                        disabled={isLoadingUser}
+                        placeholder="كلمة المرور"
                         {...field}
                       />
                     </FormControl>
@@ -121,7 +130,7 @@ export const AddConfirmVoterForm = () => {
                   <FormItem>
                     <FormControl>
                       <DatePicker
-                        disabled={isLoadingFile || isLoadingVoter}
+                        disabled={isLoadingUser}
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -130,52 +139,27 @@ export const AddConfirmVoterForm = () => {
                 )}
               />
 
-              {/* Serial Number */}
               <FormField
                 control={form.control}
-                name="serial"
+                name="govId"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <Combobox
+                        options={govCenterSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="مركز المحافظة"
+                        disabled={isLoadingUser}
                         className={cn(
-                          form.formState.errors.serial &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                          form.formState.errors.govId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
                         )}
-                        placeholder="رقم بطاقة الناخب"
-                        disabled={isLoadingFile || isLoadingVoter}
-                        {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-
-              {/* Gender */}
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select
-                        disabled={isLoadingFile || isLoadingVoter}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="الجنس" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0">ذكر</SelectItem>
-                          <SelectItem value="1">انثى</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
               {/* Polling Center */}
               <FormField
                 control={form.control}
@@ -183,17 +167,17 @@ export const AddConfirmVoterForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                    <Combobox
-                          options={pollingCentersSearch}
-                          value={field.value} // Controlled by React Hook Form
-                          onChange={field.onChange} // Updates React Hook Form on change
-                          label="مركز الاقتراع"
-                          disabled={isLoadingVoter || isLoadingFile}
-                          className={cn(
-                            form.formState.errors.pollingCenterId &&
-                              'border-destructive focus:border-destructive focus:ring-destructive'
-                          )}
-                        />
+                      <Combobox
+                        options={pollingCenterSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="مركز الاقتراع"
+                        disabled={isLoadingUser}
+                        className={cn(
+                          form.formState.errors.pollingCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -202,36 +186,64 @@ export const AddConfirmVoterForm = () => {
               {/* Candidate */}
               <FormField
                 control={form.control}
-                name="candidateId"
+                name="electoralEntityId"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                    <Combobox
-                          options={usersSearch}
-                          value={field.value} // Controlled by React Hook Form
-                          onChange={field.onChange} // Updates React Hook Form on change
-                          label="المرشح"
-                          disabled={isLoadingVoter || isLoadingFile}
-                          className={cn(
-                            form.formState.errors.pollingCenterId &&
-                              'border-destructive focus:border-destructive focus:ring-destructive'
-                          )}
-                        />
+                      <Combobox
+                        options={electoralEntitiesSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="الكيان السياسي"
+                        disabled={isLoadingUser}
+                        className={cn(
+                          form.formState.errors.electoralEntityId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.phone &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUser}
+                        placeholder="رقم الهاتف"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(voterFile) => (fileRef.current = voterFile)}
-                label="اختيار صورة بطاقة الناخب"
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.email &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        placeholder="البريد الالكتروني"
+                        disabled={isLoadingUser}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
               />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة بطاقة الناخب
-                </span>
-              </Show>
             </div>
 
             {/* Separator */}
@@ -242,16 +254,16 @@ export const AddConfirmVoterForm = () => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingFile || isLoadingVoter}>
+                <Button type="submit" disabled={isLoadingUser}>
                   اضافة
-                  {(isLoadingFile || isLoadingVoter) && (
+                  {isLoadingUser && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingFile || isLoadingVoter}>
+                  <Button variant="outline" disabled={isLoadingUser}>
                     الغاء
                   </Button>
                 </DialogClose>

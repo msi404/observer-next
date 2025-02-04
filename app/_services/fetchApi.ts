@@ -8,18 +8,21 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 		pollingCenters: builder.query( {
 			query: () => 'pollingcenters'
 		} ),
+		electoralEntities: builder.query( {
+			query: () => 'electoralentities'
+		} ),
+		govCenters: builder.query( {
+			query: () => 'govcenters'
+		}),
 		users: builder.query( {
-			query: (filter) => `users?${filter}`
+			query: (params) => `users?${params}`
 		} ),
 		currentUser: builder.query( {
 			query: () => 'users/current'
 		} ),
 		voters: builder.query( {
-			query: (param) => `voters?${param}`
+			query: (params) => `voters?${params}`
 		} ),
-		electoralEntities: builder.query( {
-			query: () => 'electoralentities'
-		}),
 		statistics: builder.query( {
 			query: () => "statistics",
 		} ),
@@ -30,9 +33,10 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 export const {
 	useProvincesQuery,
 	useUsersQuery,
-	useCurrentUserQuery,
-	useElectoralEntitiesQuery,
-	useStatisticsQuery,
 	useVotersQuery,
-	usePollingCentersQuery
+	useCurrentUserQuery,
+	useStatisticsQuery,
+	usePollingCentersQuery,
+	useElectoralEntitiesQuery,
+	useGovCentersQuery
 } = fetchDataApi;

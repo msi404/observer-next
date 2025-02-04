@@ -16,6 +16,26 @@ const mutationApi = tatweerApi.injectEndpoints({
         body: voter
       })
     }),
+    createUser: builder.mutation({
+      query: (user) => ({
+        url: 'users',
+        method: 'POST',
+        body: user
+      })
+    }),
+    updateUser: builder.mutation({
+      query: ({ user, id }: { user: any, id: string }) => ({
+        url: `users/${id}`,
+        method: 'PUT',
+        body: user
+      })
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: 'DELETE',
+      })
+    }),
     deleteVoter: builder.mutation({
       query: (id) => ({
         url: `voters/${id}`,
@@ -37,5 +57,8 @@ export const {
   useUploadFileMutation,
   useCreateVoterMutation,
   useDeleteVoterMutation,
-  useUpdateVoterMutation
+  useUpdateVoterMutation,
+  useCreateUserMutation,
+  useDeleteUserMutation,
+  useUpdateUserMutation
 } = mutationApi;

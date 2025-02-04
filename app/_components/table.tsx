@@ -30,7 +30,7 @@ export const Table: FC<{
               table.getColumn('name')?.setFilterValue(event.target.value)
             }
             type="text"
-            placeholder="ابحث عن ناخبين"
+            placeholder="ابحث عن اسم"
           />
           <Dynamic component={Filter(table)} />
           <Show when={columnFilter.length > 0}>

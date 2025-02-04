@@ -15,15 +15,14 @@ import {
   usePollingCentersQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
-import {useToast} from '@/app/_hooks/use-toast'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { addConfirmedVoterSchema } from '@/app/_validation/voter'
-import { baseURL } from '@/app/_services/api'
+import { useToast } from '@/app/_hooks/use-toast';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { addConfirmedVoterSchema } from '@/app/_validation/voter';
+import { baseURL } from '@/app/_services/api';
 
-interface VoterItem
-{
+interface VoterItem {
   id: string;
   name: string;
   dateOfBirth: string;
@@ -96,7 +95,7 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
       } else {
         form.setValue('img', item.img);
       }
-      const result = await updateVoter({
+      await updateVoter({
         voter: addConfirmedVoterSchema.parse(form.getValues()),
         id: item.id
       });
@@ -138,20 +137,20 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
     await deleteVoter(item.id);
     refetch();
   };
-	
-	return {
-		openDelete,
-		openUpdate,
-		setOpenDelete,
-		setOpenUpdate,
-		onDelete,
-		isLoadingDelete,
-		onUpdate,
-		isLoadingUpdate,
-		form,
-		isLoadingFile,
-		pollingCentersSearch,
-		usersSearch,
-		fileRef,
-	}
+
+  return {
+    openDelete,
+    openUpdate,
+    setOpenDelete,
+    setOpenUpdate,
+    onDelete,
+    isLoadingDelete,
+    onUpdate,
+    isLoadingUpdate,
+    form,
+    isLoadingFile,
+    pollingCentersSearch,
+    usersSearch,
+    fileRef
+  };
 };

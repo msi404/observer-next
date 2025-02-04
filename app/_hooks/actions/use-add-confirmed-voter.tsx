@@ -46,7 +46,7 @@ export const useAddConfirmedVoter = () => {
   const [pollingCentersSearch, setPollingCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
   const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
@@ -78,7 +78,11 @@ export const useAddConfirmedVoter = () => {
   // Form Submission Handler
   const onSubmit = async (values: z.infer<typeof addConfirmedVoterSchema>) => {
     if (!fileRef.current) {
-      console.error('No file selected!');
+      toast({
+        title: 'لايوجد صورة',
+        description: 'يجب ان ترفع صورة',
+        variant: 'destructive'
+      });
       return;
     }
     try {
@@ -102,7 +106,7 @@ export const useAddConfirmedVoter = () => {
       console.log(error);
     } finally {
       refetch();
-      setOpen(false);
+      setOpenAdd(false);
     }
   };
   // Effect to Update Search Options
@@ -127,8 +131,8 @@ export const useAddConfirmedVoter = () => {
     }
   }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters]);
   return {
-    open,
-    setOpen,
+    openAdd,
+    setOpenAdd,
     form,
     onSubmit,
     isLoadingFile,

@@ -42,7 +42,7 @@ export const useAddPossibleVoter = () => {
   const [pollingCentersSearch, setPollingCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
   const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
@@ -85,7 +85,7 @@ export const useAddPossibleVoter = () => {
       console.log(error);
     } finally {
       refetch();
-      setOpen(false);
+      setOpenAdd(false);
     }
   };
   // Effect to Update Search Options
@@ -110,8 +110,8 @@ export const useAddPossibleVoter = () => {
     }
   }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters]);
   return {
-    open,
-    setOpen,
+    openAdd,
+    setOpenAdd,
     form,
     onSubmit,
     isLoadingVoter,
