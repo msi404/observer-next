@@ -4,11 +4,11 @@ import { Separator } from '@/app/_components/ui/separator';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Combobox } from '@/app/_components/combobox';
-import { useConfirmedVotersFilter } from '@/app/_hooks/filters/use-confirmed-voters-filter';
+import {usePossibleVotersFilter} from '@/app/_hooks/filters/use-possible-voters-filter'
 import { Filter } from 'lucide-react';
 import { type Table } from '@tanstack/react-table';
 
-export const FilterConfirmedVotersForm = (table: Table<any>) => {
+export const FilterPossibleVotersForm = (table: Table<any>) => {
   const {
     open,
     setOpen,
@@ -20,7 +20,7 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
 	  setFilters,
     applyFilters,
    clearFilters
-  } = useConfirmedVotersFilter(table);
+  } = usePossibleVotersFilter(table);
   return (
     <BasicDialog
       open={open}

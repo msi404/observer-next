@@ -1,16 +1,24 @@
 'use client';
+
+import {useMemo} from 'react';
+
+// External libraries
 import { motion } from 'motion/react';
-import { BasicDialog } from '@/app/_components/basic-dialog';
-import { Trash, Pencil } from 'lucide-react';
+import { PenSquare } from 'lucide-react';
+
+// Hooks
+import {useAddPossibleVoter} from '@/app/_hooks/actions/use-add-possible-voter'
+
+// UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
+import { Button } from '@/app/_components/ui/button';
+import { Input } from '@/app/_components/ui/input';
 import {
   Form,
   FormControl,
-  FormField,
-  FormItem
+  FormItem,
+  FormField
 } from '@/app/_components/ui/form';
-import { Input } from '@/app/_components/ui/input';
-import { DatePicker } from '@/app/_components/date-picker';
 import {
   Select,
   SelectContent,
@@ -18,103 +26,46 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/app/_components/ui/select';
-import { Combobox } from '@/app/_components/combobox';
-import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
-import { Dropzone } from '@/app/_components/dropzone';
+
+// Shared Components
+import { BasicDialog } from '@/app/_components/basic-dialog';
+import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import { Show } from '@/app/_components/show';
+import { Combobox } from '@/app/_components/combobox';
+// Utils
 import { cn } from '@/app/_lib/utils';
-import { useEditConfirmedVoter } from '@/app/_hooks/actions/use-edit-confirmed-voter';
+export const AddPossibleVoterForm = () => {
+  const { open,
+    setOpen,
+    form,
+    onSubmit,
+    isLoadingVoter,
+    pollingCentersSearch,
+    usersSearch,
+   } = useAddPossibleVoter();
 
-interface EditConfirmedVoterFormProps {
-  item: any; // Ideally, replace `any` with a proper interface
-}
-
-export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) => {
-  const {
-    openDelete,
-    onUpdate,
-    setOpenDelete,
-    setOpenUpdate,
-    onDelete,
-    isLoadingDelete,
-    isLoadingFile,
-	  isLoadingUpdate,
-	  openUpdate,
-	  pollingCentersSearch,
-	  usersSearch,
-	 fileRef,
-    form
-  } = useEditConfirmedVoter({item});
-  return (
-    <div className="flex justify-between items-center gap-2">
+  const Component = useMemo(
+    () => (
       <BasicDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
+        open={open}
+        onOpenChange={setOpen}
         button={
           <motion.button
             whileHover={{
               scale: 1.1,
-              transition: {
-                damping: 0,
-                ease: 'linear',
-                duration: 0.2
-              }
+              transition: { damping: 0, ease: 'linear', duration: 0.2 }
             }}
-            className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-destructive"
+            className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
           >
-            <Trash size="20px" />
+            <PenSquare size="35px" />
           </motion.button>
         }
-        title="حذف ناخب مؤكد"
-        description="هل انت متأكد من انك تريد حذف العنصر؟"
-      >
-        <DialogFooter>
-          <div className="flex justify-between w-full">
-            <Button
-              variant="destructive"
-              onClick={onDelete}
-              disabled={isLoadingDelete}
-            >
-              حذف
-              {isLoadingDelete && (
-                <div className=" scale-125">
-                  <Spinner />
-                </div>
-              )}
-            </Button>
-            <DialogClose asChild aria-label="Close">
-              <Button variant="outline" disabled={isLoadingDelete}>
-                الغاء
-              </Button>
-            </DialogClose>
-          </div>
-        </DialogFooter>
-      </BasicDialog>
-      <BasicDialog
-        open={openUpdate}
-        onOpenChange={setOpenUpdate}
-        button={
-          <motion.button
-            whileHover={{
-              scale: 1.1,
-              transition: {
-                damping: 0,
-                ease: 'linear',
-                duration: 0.2
-              }
-            }}
-            className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
-          >
-            <Pencil size="20px" />
-          </motion.button>
-        }
-        title="تعديل ناخب مؤكد"
-        description="ادخل المعطيات الاتية لتعديل عنصر"
+        title="اضافة ناخب محتمل"
+        description="ادخل المعطيات الاتية لاضافة عنصر"
       >
         <Form {...form}>
-          <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit, (errors) => console.log(errors))}>
             {/* Form Fields */}
             <div className="grid gap-4">
               {/* Name */}
@@ -129,7 +80,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingFile || isLoadingUpdate}
+                        disabled={isLoadingVoter}
                         placeholder="اسم الناخب الثلاثي"
                         {...field}
                       />
@@ -151,7 +102,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="العنوان"
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingVoter}
                         {...field}
                       />
                     </FormControl>
@@ -167,7 +118,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                   <FormItem>
                     <FormControl>
                       <DatePicker
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingVoter}
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -189,7 +140,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="رقم بطاقة الناخب"
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingVoter}
                         {...field}
                       />
                     </FormControl>
@@ -205,7 +156,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                   <FormItem>
                     <FormControl>
                       <Select
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingVoter}
                         onValueChange={field.onChange}
                         defaultValue={field.value?.toString()}
                       >
@@ -221,57 +172,52 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                   </FormItem>
                 )}
               />
+
+              {/* Polling Center */}
               <FormField
                 control={form.control}
                 name="pollingCenterId"
                 render={({ field }) => (
-                  <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingUpdate || isLoadingFile}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
+                  <FormItem>
+                    <FormControl>
+                    <Combobox
+                          options={pollingCentersSearch}
+                          value={field.value} // Controlled by React Hook Form
+                          onChange={field.onChange} // Updates React Hook Form on change
+                          label="مركز الاقتراع"
+                          disabled={isLoadingVoter}
+                          className={cn(
+                            form.formState.errors.pollingCenterId &&
+                              'border-destructive focus:border-destructive focus:ring-destructive'
+                          )}
+                        />
+                    </FormControl>
+                  </FormItem>
                 )}
               />
 
+              {/* Candidate */}
               <FormField
                 control={form.control}
                 name="candidateId"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Combobox
-                        options={usersSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="المرشح"
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        className={cn(
-                          form.formState.errors.candidateId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
+                    <Combobox
+                          options={usersSearch}
+                          value={field.value} // Controlled by React Hook Form
+                          onChange={field.onChange} // Updates React Hook Form on change
+                          label="المرشح"
+                          disabled={isLoadingVoter}
+                          className={cn(
+                            form.formState.errors.pollingCenterId &&
+                              'border-destructive focus:border-destructive focus:ring-destructive'
+                          )}
+                        />
                     </FormControl>
                   </FormItem>
                 )}
               />
-
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(voterFile) => (fileRef.current = voterFile)}
-                label="اختيار صورة بطاقة الناخب"
-                defaultImage={item.img}
-              />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة بطاقة الناخب
-                </span>
-              </Show>
             </div>
 
             {/* Separator */}
@@ -282,23 +228,16 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button
-                  type="submit"
-                  // onClick={onUpdate}
-                  disabled={isLoadingUpdate || isLoadingFile}
-                >
-                  تحديث
-                  {(isLoadingUpdate || isLoadingFile) && (
+                <Button type="submit" disabled={isLoadingVoter}>
+                  اضافة
+                  {(isLoadingVoter) && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button
-                    variant="outline"
-                    disabled={isLoadingUpdate || isLoadingFile}
-                  >
+                  <Button variant="outline" disabled={isLoadingVoter}>
                     الغاء
                   </Button>
                 </DialogClose>
@@ -307,6 +246,9 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
           </form>
         </Form>
       </BasicDialog>
-    </div>
+    ),
+    [open]
   );
+
+  return Component;
 };

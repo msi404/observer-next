@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -14,27 +14,23 @@ import { z } from 'zod';
 // Hooks
 import { useToast } from '@/app/_hooks/use-toast';
 
-// API Services
-import { baseURL } from '@/app/_services/api';
 import {
   usePollingCentersQuery,
   useUsersQuery,
   useVotersQuery
 } from '@/app/_services/fetchApi';
 import {
-  useUploadFileMutation,
   useCreateVoterMutation
 } from '@/app/_services/mutationApi';
 
 // Validation Schemas
-import { addConfirmedVoterSchema } from '@/app/_validation/voter';
+import { addPossibleVoterSchema } from '@/app/_validation/voter';
 
-export const useAddConfirmedVoter = () => {
+export const useAddPossibleVoter = () => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
   const [createVoter, { isLoading: isLoadingVoter }] = useCreateVoterMutation();
-  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const { refetch } = useVotersQuery(
     `PageNumber=${currentPage}&PageSize=${pageSize}`
   );
@@ -53,22 +49,18 @@ export const useAddConfirmedVoter = () => {
     usePollingCentersQuery('');
   const { data: users, isLoading: isLoadingUsers } = useUsersQuery('Role=102');
 
-  // Refs
-  const fileRef = useRef<File | null>(null);
-
   // Toast Hook
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addConfirmedVoterSchema>>({
-    resolver: zodResolver(addConfirmedVoterSchema),
+  const form = useForm<z.infer<typeof addPossibleVoterSchema>>({
+    resolver: zodResolver(addPossibleVoterSchema),
     defaultValues: {
       name: '',
       // @ts-ignore
       dateOfBirth: '',
-      img: '',
 		address: '',
-		state: 2,
+		state: 0,
       pollingCenterId: '',
       candidateId: '',
       serial: ''
@@ -76,20 +68,11 @@ export const useAddConfirmedVoter = () => {
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addConfirmedVoterSchema>) => {
-    if (!fileRef.current) {
-      console.error('No file selected!');
-      return;
-    }
+  const onSubmit = async (values: z.infer<typeof addPossibleVoterSchema>) => {
     try {
-      const formData = new FormData();
-      formData.append('file', fileRef.current as File);
-
-      const response = await uploadFile(formData).unwrap();
-      form.setValue('img', `${baseURL}/${response?.data}`);
-      form.setValue('state', 2);
+      form.setValue('state', 0);
       const result = await createVoter(
-        addConfirmedVoterSchema.parse(form.getValues())
+        addPossibleVoterSchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);
@@ -131,10 +114,8 @@ export const useAddConfirmedVoter = () => {
     setOpen,
     form,
     onSubmit,
-    isLoadingFile,
     isLoadingVoter,
     pollingCentersSearch,
     usersSearch,
-    fileRef
   };
 };

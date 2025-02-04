@@ -19,6 +19,10 @@ import { LoadingTable } from '@/app/_components/loading-table';
 
 import { useVotersTable } from '@/app/_hooks/tables/use-voters-table';
 
+import { AddPossibleVoterEmptyForm } from '@/app/_components/forms/add-possible-voter-empty-form'
+import { AddPossibleVoterForm } from '@/app/_components/forms/add-possible-voter-form'
+import { FilterPossibleVotersForm } from '@/app/_components/forms/filter-possible-voter-form'
+
 import { AddConfirmVoterEmptyForm } from '@/app/_components/forms/add-confirm-voter-empty-form';
 import { AddConfirmVoterForm } from '@/app/_components/forms/add-confirm-voter-form';
 import { FilterConfirmedVotersForm } from '@/app/_components/forms/filter-confirmed-voter-form';
@@ -31,11 +35,15 @@ const ElectionBasePage: NextPage = () => {
     isFetching,
     isSuccess,
     isLoading,
-    voters,
+    possibleVoters,
+    confirmedVoters,
     refetch,
+    possibleVotersTable,
+    possibleVotersColumnFilter,
+    clearPossibleVotersFilter,
     confirmedVotersTable,
     confirmedVotersColumnFilter,
-    clearConfirmedVotersFilters
+    clearConfirmedVotersFilter
   } = useVotersTable();
 
   const { t } = useTranslation();
@@ -66,19 +74,19 @@ const ElectionBasePage: NextPage = () => {
               <Match when={isFetching}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess && voters?.data?.items.length === 0}>
+              <Match when={isSuccess && confirmedVoters.length === 0}>
                 <EmptyTable
                   Add={<AddConfirmVoterEmptyForm />}
                   retry={refetch}
                 />
               </Match>
-              <Match when={isSuccess && voters?.data?.items.length > 0}>
+              <Match when={isSuccess && confirmedVoters.length > 0}>
                 <Table
                   Filter={FilterConfirmedVotersForm}
                   Add={AddConfirmVoterForm}
                   Retry={<Retry refetch={refetch} />}
                   columnFilter={confirmedVotersColumnFilter}
-                  clearFilter={clearConfirmedVotersFilters}
+                  clearFilter={clearConfirmedVotersFilter}
                   table={confirmedVotersTable}
                 />
               </Match>
@@ -97,20 +105,20 @@ const ElectionBasePage: NextPage = () => {
               <Match when={isFetching}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess && voters?.data?.items.length === 0}>
+              <Match when={isSuccess && possibleVoters.length === 0}>
                 <EmptyTable
-                  Add={<AddConfirmVoterEmptyForm />}
+                  Add={<AddPossibleVoterEmptyForm />}
                   retry={refetch}
                 />
               </Match>
-              <Match when={isSuccess && voters?.data?.items.length > 0}>
+              <Match when={isSuccess && possibleVoters.length > 0}>
                 <Table
                   Retry={<Retry refetch={refetch} />}
-                  Filter={FilterConfirmedVotersForm}
-                  Add={AddConfirmVoterForm}
-                  columnFilter={confirmedVotersColumnFilter}
-                  clearFilter={clearConfirmedVotersFilters}
-                  table={confirmedVotersTable}
+                  Filter={FilterPossibleVotersForm}
+                  Add={AddPossibleVoterForm}
+                  columnFilter={possibleVotersColumnFilter}
+                  clearFilter={clearPossibleVotersFilter}
+                  table={possibleVotersTable}
                 />
               </Match>
             </Switch>

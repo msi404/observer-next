@@ -13,7 +13,7 @@ interface Filter {
   value: string;
 }
 
-export const useConfirmedVotersFilter = ( table: Table<any> ) =>
+export const usePossibleVotersFilter = ( table: Table<any> ) =>
 {
   
   const updateFilter = (

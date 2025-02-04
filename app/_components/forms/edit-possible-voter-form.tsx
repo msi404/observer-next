@@ -25,13 +25,13 @@ import { Dropzone } from '@/app/_components/dropzone';
 import { Spinner } from '@/app/_components/spinner';
 import { Show } from '@/app/_components/show';
 import { cn } from '@/app/_lib/utils';
-import { useEditConfirmedVoter } from '@/app/_hooks/actions/use-edit-confirmed-voter';
+import {useEditPossibleVoter} from '@/app/_hooks/actions/use-edit-possible-voter'
 
-interface EditConfirmedVoterFormProps {
+interface EditPossibleVoterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) => {
+export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -39,14 +39,12 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
     setOpenUpdate,
     onDelete,
     isLoadingDelete,
-    isLoadingFile,
 	  isLoadingUpdate,
 	  openUpdate,
 	  pollingCentersSearch,
 	  usersSearch,
-	 fileRef,
     form
-  } = useEditConfirmedVoter({item});
+  } = useEditPossibleVoter({item});
   return (
     <div className="flex justify-between items-center gap-2">
       <BasicDialog
@@ -67,7 +65,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف ناخب مؤكد"
+        title="حذف ناخب محتمل"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
       >
         <DialogFooter>
@@ -110,7 +108,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
             <Pencil size="20px" />
           </motion.button>
         }
-        title="تعديل ناخب مؤكد"
+        title="تعديل ناخب محتمل"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>
@@ -129,7 +127,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingFile || isLoadingUpdate}
+                        disabled={isLoadingUpdate}
                         placeholder="اسم الناخب الثلاثي"
                         {...field}
                       />
@@ -151,7 +149,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="العنوان"
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingUpdate}
                         {...field}
                       />
                     </FormControl>
@@ -167,7 +165,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                   <FormItem>
                     <FormControl>
                       <DatePicker
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingUpdate}
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -189,7 +187,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="رقم بطاقة الناخب"
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingUpdate}
                         {...field}
                       />
                     </FormControl>
@@ -205,7 +203,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                   <FormItem>
                     <FormControl>
                       <Select
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingUpdate}
                         onValueChange={field.onChange}
                         defaultValue={field.value?.toString()}
                       >
@@ -230,7 +228,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                     value={field.value} // Controlled by React Hook Form
                     onChange={field.onChange} // Updates React Hook Form on change
                     label="مركز الاقتراع"
-                    disabled={isLoadingUpdate || isLoadingFile}
+                    disabled={isLoadingUpdate}
                     className={cn(
                       form.formState.errors.pollingCenterId &&
                         'border-destructive focus:border-destructive focus:ring-destructive'
@@ -250,7 +248,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                         value={field.value} // Controlled by React Hook Form
                         onChange={field.onChange} // Updates React Hook Form on change
                         label="المرشح"
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingUpdate}
                         className={cn(
                           form.formState.errors.candidateId &&
                             'border-destructive focus:border-destructive focus:ring-destructive'
@@ -260,18 +258,6 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                   </FormItem>
                 )}
               />
-
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(voterFile) => (fileRef.current = voterFile)}
-                label="اختيار صورة بطاقة الناخب"
-                defaultImage={item.img}
-              />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة بطاقة الناخب
-                </span>
-              </Show>
             </div>
 
             {/* Separator */}
@@ -285,10 +271,10 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                 <Button
                   type="submit"
                   // onClick={onUpdate}
-                  disabled={isLoadingUpdate || isLoadingFile}
+                  disabled={isLoadingUpdate}
                 >
                   تحديث
-                  {(isLoadingUpdate || isLoadingFile) && (
+                  {(isLoadingUpdate) && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
@@ -297,7 +283,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                 <DialogClose asChild aria-label="Close">
                   <Button
                     variant="outline"
-                    disabled={isLoadingUpdate || isLoadingFile}
+                    disabled={isLoadingUpdate}
                   >
                     الغاء
                   </Button>
