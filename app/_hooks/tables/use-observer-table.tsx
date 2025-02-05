@@ -12,50 +12,50 @@ import {
   type SortingState
 } from '@tanstack/react-table';
 
-import {useDataEntryColumns} from '@/app/_hooks/columns/use-data-entery-columns'
-import { useDataEntriesFilter } from '@/app/_hooks/filters/use-data-entries-filter'
-import { useUsersQuery } from '@/app/_services/fetchApi'
+import {useObserverColumns} from '@/app/_hooks/columns/use-observer-columns'
+import {useObserversFilter} from '@/app/_hooks/filters/use-observers-filter'
+import { useUsersQuery } from '@/app/_services/fetchApi';
 
-export const useDataEntriesTable = () => {
+export const useObserversTable = () => {
   const dispatch = useDispatch();
 
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   
   const { data: users, isLoading, isError, isFetching, isSuccess, refetch } =
-    useUsersQuery( `Role=100&PageNumber=${ currentPage }&PageSize=${ pageSize }` );
+    useUsersQuery( `Role=104&PageNumber=${ currentPage }&PageSize=${ pageSize }` );
   
-  const [ dataEntries, setDataEntries ] = useState( [] );
+  const [ observers, setObservers ] = useState( [] );
   
-  const { dataEntriesColumns } = useDataEntryColumns();
+  const { observersColumns } = useObserverColumns();
     
-  const [dataEntriesColumnFilter, setDataEntriesColumnFilter] = useState<ColumnFiltersState>([]);
-  const [dataEntriesSorting, setDataEntriesSorting] = useState<SortingState>([]);
+  const [observersColumnFilter, setObserversColumnFilter] = useState<ColumnFiltersState>([]);
+  const [observersSorting, setObserversSorting] = useState<SortingState>([]);
 
-  const dataEntriesTable = useReactTable({
-    data: dataEntries,
-    columns: dataEntriesColumns,
+  const observersTable = useReactTable({
+    data: observers,
+    columns: observersColumns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setDataEntriesColumnFilter,
-    onSortingChange: setDataEntriesSorting,
+    onColumnFiltersChange: setObserversColumnFilter,
+    onSortingChange: setObserversSorting,
     getSortedRowModel: getSortedRowModel(),
     state: {
-      columnFilters: dataEntriesColumnFilter,
-      sorting: dataEntriesSorting,
+      columnFilters: observersColumnFilter,
+      sorting: observersSorting,
     },
   } );
 
   // ✅ Move the hook here (outside the regular function)
-  const { clearFilters: clearDataEntriesFilter } = useDataEntriesFilter(dataEntriesTable);
+  const { clearFilters: clearObserversFilter } = useObserversFilter(observersTable);
   
   useEffect( () =>
   {
     if ( !isLoading )
     {
-      const dataEntriesExtracted = users?.data?.items     
-      setDataEntries( dataEntriesExtracted )
+      const observersExtracted = users?.data?.items     
+      setObservers( observersExtracted )
     }
   }, [ isLoading, users, isFetching ] )
   
@@ -70,10 +70,10 @@ export const useDataEntriesTable = () => {
     isFetching,
     isSuccess,
     isLoading,
-    dataEntries,
+    observers,
     refetch,
-    dataEntriesColumnFilter,
-    clearDataEntriesFilter,
-	  dataEntriesTable,
+    observersColumnFilter,
+    clearObserversFilter,
+	  observersTable,
   };
 };

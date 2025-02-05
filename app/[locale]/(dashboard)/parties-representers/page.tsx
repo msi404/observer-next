@@ -1,96 +1,64 @@
 'use client';
 import { type NextPage } from 'next';
-import { motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 
 import { Container } from '@/app/_components/container';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/app/_components/ui/tabs';
-import { ErrorTable } from '@/app/_components/error-table'
-import {FetchTable} from '@/app/_components/fetch-table'
-import {useElectoralEntitiesTable} from '@/app/_hooks/use-electoral-entities-table'
-import { useFilter } from '@/app/_hooks/use-filter';
-import { useAdd } from '@/app/_hooks/actions/use-add-confirmed-voter';
-import { Table } from '@/app/_components/table'
-import {Switch, Match} from '@/app/_components/switch'
 
-const PartiesRepresentersPage: NextPage = () => {  
+import { EmptyTable } from '@/app/_components/empty-table';
+import { ErrorTable } from '@/app/_components/error-table';
+import { FetchTable } from '@/app/_components/fetch-table';
+import { Table } from '@/app/_components/table';
+import { Switch, Match } from '@/app/_components/switch';
+import { LoadingTable } from '@/app/_components/loading-table';
+
+import { usePartiesRepresentersTable } from '@/app/_hooks/tables/use-parties-representers-table'
+import {AddPartiesRepresentersForm} from '@/app/_components/forms/add-parties-representers-form'
+import {FilterPartiesRepresentersForm} from '@/app/_components/forms/filter-parties-representers-form'
+import { Retry } from '@/app/_components/retry';
+
+const PartiesRepresentersPage: NextPage = () => {
   const {
     isError,
     isFetching,
     isSuccess,
+    isLoading,
+    partiesRepresenters,
     refetch,
-    electoralEntitiesTable,
-    electoralEntitiesColumnFilter,
-    clearElectoralEntitiesFilters,
-  } = useElectoralEntitiesTable();
+    partiesRepresentersTable,
+    partiesRepresentersColumnFilter,
+    clearPartiesRepresentersFilter
+  } = usePartiesRepresentersTable();
 
-  const { AddConfirmedVoter, AddPossibleVoter } = useAdd();
-  const { FilterConfirmedVoters, FilterPossibleVoters } = useFilter();
-
-  const { t } = useTranslation();
   return (
     <Container>
-      <Tabs defaultValue="political-entities">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger className="w-full" value="political-entities">
-            {t('electionBase:confirmedVoters.tabTitle')}
-          </TabsTrigger>
-          <TabsTrigger value="electoral-distribution">
-            {t('electionBase:possibleVoters.tabTitle')}
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="political-entities">
-          <motion.div
-            initial={{ x: -300 }}
-            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
-          >
+          <div>
             <Switch>
               <Match when={isError}>
-                <ErrorTable retry={refetch}/>
+                <ErrorTable retry={refetch} />
+              </Match>
+              <Match when={isLoading}>
+                <LoadingTable />
               </Match>
               <Match when={isFetching}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess}>
-              <Table
-              Filter={FilterConfirmedVoters}
-              Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
+              <Match when={isSuccess && partiesRepresenters.length === 0}>
+                <EmptyTable
+                  Add={<AddPartiesRepresentersForm />}
+                  retry={refetch}
+                />
               </Match>
-           </Switch>
-          </motion.div>
-        </TabsContent>
-        <TabsContent value="electoral-distribution">
-          <motion.div
-            initial={{ x: 300 }}
-            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
-          >
-              <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch}/>
+              <Match when={isSuccess && partiesRepresenters.length > 0}>
+                <Table
+                  Filter={FilterPartiesRepresentersForm}
+                  Add={AddPartiesRepresentersForm}
+                  Retry={<Retry refetch={refetch} />}
+                  columnFilter={partiesRepresentersColumnFilter}
+                  clearFilter={clearPartiesRepresentersFilter}
+                  table={partiesRepresentersTable}
+                />
               </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess}>
-              <Table
-              Filter={FilterConfirmedVoters}
-              Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
-              </Match>
-           </Switch>
-          </motion.div>
-        </TabsContent>
-      </Tabs>
+            </Switch>
+          </div>
     </Container>
   );
 };

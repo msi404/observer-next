@@ -10,10 +10,10 @@ import { Table } from '@/app/_components/table';
 import { Switch, Match } from '@/app/_components/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
-import { useDataEntriesTable } from '@/app/_hooks/tables/use-data-entries-table'
+import {useObserversTable} from '@/app/_hooks/tables/use-observer-table'
 
-import { AddDataEntryForm } from '@/app/_components/forms/add-data-entry-form';
-import {FilterDataEntriesForm} from '@/app/_components/forms/filter-data-entry-form'
+import {AddObserverForm} from '@/app/_components/forms/add-observer-form'
+import { FilterObserversForm } from '@/app/_components/forms/filter-observer-form'
 
 import { Retry } from '@/app/_components/retry';
 
@@ -23,12 +23,12 @@ const ObserversPage: NextPage = () => {
     isFetching,
     isSuccess,
     isLoading,
-    dataEntries,
+    observers,
     refetch,
-    dataEntriesTable,
-    dataEntriesColumnFilter,
-    clearDataEntriesFilter
-  } = useDataEntriesTable();
+    observersTable,
+    observersColumnFilter,
+    clearObserversFilter
+  } = useObserversTable();
 
   return (
     <Container>
@@ -43,20 +43,20 @@ const ObserversPage: NextPage = () => {
               <Match when={isFetching}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess && dataEntries.length === 0}>
+              <Match when={isSuccess && observers.length === 0}>
                 <EmptyTable
-                  Add={<AddDataEntryForm />}
+                  Add={<AddObserverForm />}
                   retry={refetch}
                 />
               </Match>
-              <Match when={isSuccess && dataEntries.length > 0}>
+              <Match when={isSuccess && observers.length > 0}>
                 <Table
-                  Filter={FilterDataEntriesForm}
-                  Add={AddDataEntryForm}
+                  Filter={FilterObserversForm}
+                  Add={AddObserverForm}
                   Retry={<Retry refetch={refetch} />}
-                  columnFilter={dataEntriesColumnFilter}
-                  clearFilter={clearDataEntriesFilter}
-                  table={dataEntriesTable}
+                  columnFilter={observersColumnFilter}
+                  clearFilter={clearObserversFilter}
+                  table={observersTable}
                 />
               </Match>
             </Switch>

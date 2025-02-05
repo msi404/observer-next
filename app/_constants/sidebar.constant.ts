@@ -7,7 +7,6 @@ import
 	Eye,
 	ContactRound,
 	TrendingUp,
-	Scale,
 	UsersRound,
 	CalendarFold,
 	CircleUserRound,
@@ -50,12 +49,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 		title: 'ممثلين الكيان',
 		url: "/parties-representers",
 		icon: Codesandbox,
-	},
-	{
-		persmission: "view:state-mangement",
-		title: "common:sidebar.stateManagment",
-		url: "/state-mangers",
-		icon: Scale,
 	},
 	{
 		persmission: "view:election-results",

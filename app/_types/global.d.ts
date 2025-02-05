@@ -53,33 +53,6 @@ type Voter = {
 	updatedAt: Date;
 	deletedAt: Date;
 };
-type ConfirmedVoters = {
-	id: string;
-	name: string;
-	pollingCenter: PollingCenter;
-	candidate: string;
-	serial: string;
-	img: string;
-	gender: string;
-	dateOfBirth: Date;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
-};
-
-type PossibleVoters = {
-	id: string;
-	name: string;
-	pollingCenter: PollingCenter;
-	candidate: string;
-	serial: string;
-	img: string;
-	gender: string;
-	dateOfBirth: Date;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
-};
 
 type User = {
 	id: string;
@@ -102,44 +75,3 @@ type User = {
 	updatedAt: Date;
 	deletedAt: Date;
 };
-
-type DataEntry = {
-	name: string;
-	phoneNumber: string;
-	state: string;
-	entityName: string;
-};
-
-type ElectionResult = {
-	photo: string;
-	name: string;
-	number: number;
-	state: string;
-	listNumber: number;
-	votes: number;
-	listIndex: number;
-};
-
-type Observer = {
-	photo: string;
-	name: string;
-	phoneNumber: string;
-	gender: string;
-	dataEntry: string;
-	state: string;
-	pollingCenter: string;
-	stationNumber: number;
-};
-
-type StateMangers = {
-	name: string;
-	phoneNumber: string;
-	state: string;
-	entityName: string;
-};
-
-type StateDesk = {
-	name: string;
-	menuNumber: number;
-	createdAt: Date;
-}
