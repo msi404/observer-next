@@ -16,12 +16,12 @@ import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import {useEditPartiesRepresenters} from '@/app/_hooks/actions/use-edit-parties-representers'
-interface EditPartiesRepresentersProps {
+import { useEditCandidate } from '@/app/_hooks/actions/use-edit-candidate';
+interface EditDataEntryFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditPartiesRepresentersForm = ({ item }: EditPartiesRepresentersProps) => {
+export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -29,15 +29,14 @@ export const EditPartiesRepresentersForm = ({ item }: EditPartiesRepresentersPro
     setOpenUpdate,
     onDelete,
     isLoadingDelete,
-	  isLoadingUpdate,
-	  openUpdate,
+    isLoadingUpdate,
+    openUpdate,
     pollingCentersSearch,
     electoralEntitiesSearch,
     govCenterSearch,
     form
-  } = useEditPartiesRepresenters({item});
+  } = useEditCandidate({ item });
   return (
-    
     <div className="flex gap-4 items-center">
       <BasicDialog
         open={openDelete}
@@ -57,7 +56,7 @@ export const EditPartiesRepresentersForm = ({ item }: EditPartiesRepresentersPro
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف ممثل كيان"
+        title="حذف مرشح"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
       >
         <DialogFooter>
@@ -87,20 +86,20 @@ export const EditPartiesRepresentersForm = ({ item }: EditPartiesRepresentersPro
         onOpenChange={setOpenUpdate}
         button={
           <motion.button
-          whileHover={{
-            scale: 1.1,
-            transition: {
-              damping: 0,
-              ease: 'linear',
-              duration: 0.2
-            }
-          }}
-          className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
-        >
-          <Pencil size="20px" />
-        </motion.button>
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                damping: 0,
+                ease: 'linear',
+                duration: 0.2
+              }
+            }}
+            className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <Pencil size="20px" />
+          </motion.button>
         }
-        title="تعديل ممثل كيان"
+        title="تعديل مرشح"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>
@@ -163,7 +162,7 @@ export const EditPartiesRepresentersForm = ({ item }: EditPartiesRepresentersPro
                 )}
               />
 
-<FormField
+              <FormField
                 control={form.control}
                 name="govId"
                 render={({ field }) => (
@@ -224,7 +223,7 @@ export const EditPartiesRepresentersForm = ({ item }: EditPartiesRepresentersPro
                   </FormItem>
                 )}
               />
-  <FormField
+              <FormField
                 control={form.control}
                 name="phone"
                 render={({ field }) => (

@@ -50,13 +50,13 @@ export const useAddObserver = () => {
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
+  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
     usePollingCentersQuery('');
 
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities } =
+  const { data: electoralEntities, isLoading: isLoadingElectoralEntities, refetch: refetchElectoralEntities } =
     useElectoralEntitiesQuery('');
 
-  const { data: govCenters, isLoading: isLoadingGovCenters } =
+  const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
     useGovCentersQuery('');
 
   // Toast Hook
@@ -102,7 +102,9 @@ export const useAddObserver = () => {
     }
   };
   // Effect to Update Search Options
-  useEffect(() => {
+  useEffect( () =>
+  {
+    refetchElectoralEntities()
     if (!isLoadingElectoralEntities) {
       setElectoralEntitiesSearch(
         electoralEntities?.data.items.map((electoralEntity: any) => ({
@@ -112,6 +114,7 @@ export const useAddObserver = () => {
       );
     }
 
+    refetchPollingCenters()
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
@@ -121,6 +124,7 @@ export const useAddObserver = () => {
       );
     }
 
+    refetchGovCenters()
     if (!isLoadingGovCenters) {
       setGovCenterSearch(
         govCenters?.data.items.map((govCenter: any) => ({
@@ -135,7 +139,8 @@ export const useAddObserver = () => {
     pollingCenters,
     isLoadingPollingCenters,
     govCenters,
-    isLoadingGovCenters
+    isLoadingGovCenters,
+    openAdd
   ]);
   return {
     openAdd,

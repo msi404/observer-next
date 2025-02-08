@@ -1,46 +1,35 @@
-type Gov = {
-	id: string;
-	name: string;
+type Dateable = {
 	createdAt: Date;
 	updatedAt: Date;
 	deletedAt: Date;
 }
 
-type PollingCenter = {
+type Identifiable = {
 	id: string;
+}
+
+type Gov = Dateable & Identifiable &  {
+	name: string;
+}
+
+type PollingCenter = Dateable & Identifiable & {
 	gov: Gov;
 	name: string;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
 }
 
-type GovCenter = {
-	id: string;
+type GovCenter = Dateable & Identifiable & {
 	gov: Gov;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
 }
 
-type Party = {
-	id: string;
+type Party = Dateable & Identifiable & {
 	name: string;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
 }
 
-type ElectoralEntity = {
-	id: string;
+type ElectoralEntity = Dateable & Identifiable & {
 	name: string;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
 }
 
-type Voter = {
-	id: string;
+type Voter = Dateable & Identifiable & {
 	name: string;
 	pollingCenter: PollingCenter;
 	candidate: string;
@@ -49,13 +38,9 @@ type Voter = {
 	state: number;
 	gender: string;
 	dateOfBirth: Date;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
 };
 
-type User = {
-	id: string;
+type User = Dateable & Identifiable & {
 	name: string;
 	username: string;
 	gov: Gov;
@@ -71,7 +56,4 @@ type User = {
 	candidateListSerial: number;
 	totalPosts: number;
 	token: string;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: Date;
 };

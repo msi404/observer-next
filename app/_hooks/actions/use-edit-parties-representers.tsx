@@ -61,13 +61,13 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
+  const { data: pollingCenters, isLoading: isLoadingPollingCenters} =
     usePollingCentersQuery('');
 
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities } =
+  const { data: electoralEntities, isLoading: isLoadingElectoralEntities} =
     useElectoralEntitiesQuery('');
 
-  const { data: govCenters, isLoading: isLoadingGovCenters } =
+  const { data: govCenters, isLoading: isLoadingGovCenters} =
     useGovCentersQuery('');
 
   // Toast Hook
@@ -125,7 +125,8 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
     }
   };
   // Effect to Update Search Options
-  useEffect(() => {
+  useEffect( () =>
+  {
     if (!isLoadingElectoralEntities) {
       setElectoralEntitiesSearch(
         electoralEntities?.data.items.map((electoralEntity: any) => ({
@@ -134,7 +135,6 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
         }))
       );
     }
-
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
@@ -143,7 +143,6 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
         }))
       );
     }
-
     if (!isLoadingGovCenters) {
       setGovCenterSearch(
         govCenters?.data.items.map((govCenter: any) => ({
@@ -158,7 +157,8 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
     pollingCenters,
     isLoadingPollingCenters,
     govCenters,
-    isLoadingGovCenters
+    isLoadingGovCenters,
+    openUpdate
   ]);
 
   const onDelete = async () => {

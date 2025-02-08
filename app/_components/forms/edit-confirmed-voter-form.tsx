@@ -26,7 +26,6 @@ import { Spinner } from '@/app/_components/spinner';
 import { Show } from '@/app/_components/show';
 import { cn } from '@/app/_lib/utils';
 import { useEditConfirmedVoter } from '@/app/_hooks/actions/use-edit-confirmed-voter';
-
 interface EditConfirmedVoterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
@@ -48,7 +47,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
     form
   } = useEditConfirmedVoter({item});
   return (
-    <div className="flex justify-between items-center gap-2">
+    <div className="flex gap-4 items-center ">
       <BasicDialog
         open={openDelete}
         onOpenChange={setOpenDelete}

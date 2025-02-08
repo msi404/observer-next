@@ -21,7 +21,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addUserSchema } from '@/app/_validation/user';
 
-interface ObserverItem {
+interface CandiateItem {
   id: string;
   name: string;
   dateOfBirth: string;
@@ -34,14 +34,14 @@ interface ObserverItem {
   email: string;
 }
 
-export const useEditObserver = ({ item }: { item: ObserverItem }) => {
+export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const { refetch } = useUsersQuery(
-    `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=1002&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -64,7 +64,7 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
   const { data: pollingCenters, isLoading: isLoadingPollingCenters} =
     usePollingCentersQuery('');
 
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities} =
+  const { data: electoralEntities, isLoading: isLoadingElectoralEntities } =
     useElectoralEntitiesQuery('');
 
   const { data: govCenters, isLoading: isLoadingGovCenters} =
@@ -87,14 +87,14 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
       username: item?.username,
       phone: item?.phone,
       email: item?.email,
-      role: 104
+      role: 102
     }
   });
 
   // Form Submission Handler
   const onUpdate = async (values: z.infer<typeof addUserSchema>) => {
     try {
-      form.setValue('role', 104);
+      form.setValue('role', 102);
       await updateUser({
         user: addUserSchema.parse(form.getValues()),
         id: item.id
@@ -143,7 +143,6 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
         }))
       );
     }
-
     if (!isLoadingGovCenters) {
       setGovCenterSearch(
         govCenters?.data.items.map((govCenter: any) => ({

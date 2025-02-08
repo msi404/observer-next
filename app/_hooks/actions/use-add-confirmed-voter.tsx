@@ -49,9 +49,9 @@ export const useAddConfirmedVoter = () => {
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
+  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
     usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers } = useUsersQuery('Role=102');
+  const { data: users, isLoading: isLoadingUsers, refetch: refetchUsers } = useUsersQuery('Role=102');
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -76,7 +76,7 @@ export const useAddConfirmedVoter = () => {
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addConfirmedVoterSchema>) => {
+  const onSubmit = async () => {
     if (!fileRef.current) {
       toast({
         title: 'لايوجد صورة',
@@ -111,7 +111,8 @@ export const useAddConfirmedVoter = () => {
   };
   // Effect to Update Search Options
 	useEffect( () =>
-	{
+  {
+    refetchUsers()
     if (!isLoadingUsers) {
       setUsersSearch(
         users?.data.items.map((user: any) => ({
@@ -120,8 +121,9 @@ export const useAddConfirmedVoter = () => {
         }))
       );
     }
-
-    if (!isLoadingPollingCenters) {
+    refetchPollingCenters()
+    if ( !isLoadingPollingCenters )
+    {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
           value: pollingCenter.id,
@@ -129,7 +131,7 @@ export const useAddConfirmedVoter = () => {
         }))
       );
     }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters]);
+  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openAdd]);
   return {
     openAdd,
     setOpenAdd,

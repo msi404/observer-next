@@ -19,9 +19,7 @@ import {
   useUsersQuery,
   useVotersQuery
 } from '@/app/_services/fetchApi';
-import {
-  useCreateVoterMutation
-} from '@/app/_services/mutationApi';
+import { useCreateVoterMutation } from '@/app/_services/mutationApi';
 
 // Validation Schemas
 import { addPossibleVoterSchema } from '@/app/_validation/voter';
@@ -45,9 +43,16 @@ export const useAddPossibleVoter = () => {
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
-    usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers } = useUsersQuery('Role=102');
+  const {
+    data: pollingCenters,
+    isLoading: isLoadingPollingCenters,
+    refetch: refetchPollingCenters
+  } = usePollingCentersQuery('');
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    refetch: refetchUsers
+  } = useUsersQuery('Role=102');
 
   // Toast Hook
   const { toast } = useToast();
@@ -59,8 +64,8 @@ export const useAddPossibleVoter = () => {
       name: '',
       // @ts-ignore
       dateOfBirth: '',
-		address: '',
-		state: 0,
+      address: '',
+      state: 0,
       pollingCenterId: '',
       candidateId: '',
       serial: ''
@@ -89,8 +94,8 @@ export const useAddPossibleVoter = () => {
     }
   };
   // Effect to Update Search Options
-	useEffect( () =>
-	{
+  useEffect(() => {
+    refetchPollingCenters();
     if (!isLoadingUsers) {
       setUsersSearch(
         users?.data.items.map((user: any) => ({
@@ -99,7 +104,7 @@ export const useAddPossibleVoter = () => {
         }))
       );
     }
-
+    refetchUsers();
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
@@ -108,7 +113,7 @@ export const useAddPossibleVoter = () => {
         }))
       );
     }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters]);
+  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openAdd]);
   return {
     openAdd,
     setOpenAdd,
@@ -116,6 +121,6 @@ export const useAddPossibleVoter = () => {
     onSubmit,
     isLoadingVoter,
     pollingCentersSearch,
-    usersSearch,
+    usersSearch
   };
 };

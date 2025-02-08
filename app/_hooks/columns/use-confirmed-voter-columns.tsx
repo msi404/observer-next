@@ -9,7 +9,6 @@ import { DataTableColumnHeader } from '@/app/_components/table-header';
 import { calcAge } from '@/app/_utils/calc-age';
 import { Zoom } from '@/app/_components/zoom';
 import {EditConfirmedVoterForm} from '@/app/_components/forms/edit-confirmed-voter-form'
-
 export const useConfirmedVotersColumns = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();

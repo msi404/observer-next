@@ -113,7 +113,8 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
   };
 
   // Effect to Update Search Options
-  useEffect(() => {
+  useEffect( () =>
+  {
     if (!isLoadingUsers) {
       setUsersSearch(
         users?.data.items.map((user: any) => ({
@@ -122,7 +123,6 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
         }))
       );
     }
-
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
@@ -131,7 +131,7 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
         }))
       );
     }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters]);
+  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openUpdate]);
 
   const onDelete = async () => {
     await deleteVoter(item.id);

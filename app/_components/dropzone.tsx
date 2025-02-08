@@ -55,6 +55,7 @@ export const Dropzone: FC<DropzoneProps> = ({ label, setFile, error, defaultImag
     }
   });
 
+  // @ts-ignore
   const style: React.CSSProperties = useMemo(
     () => ({
       ...baseStyle,

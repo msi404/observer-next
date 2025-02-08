@@ -38,7 +38,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
   } = useEditObserver({item});
   return (
     
-    <div className="flex justify-between items-center">
+    <div className="flex gap-4 items-center">
       <BasicDialog
         open={openDelete}
         onOpenChange={setOpenDelete}

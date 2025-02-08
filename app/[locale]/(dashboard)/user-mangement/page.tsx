@@ -10,84 +10,72 @@ import {
   TabsList,
   TabsTrigger
 } from '@/app/_components/ui/tabs';
-import { ErrorTable } from '@/app/_components/error-table'
-import {FetchTable} from '@/app/_components/fetch-table'
-import {useElectoralEntitiesTable} from '@/app/_hooks/use-electoral-entities-table'
-import { useFilter } from '@/app/_hooks/use-filter';
-import { useAdd } from '@/app/_hooks/actions/use-add-confirmed-voter';
-import { Table } from '@/app/_components/table'
-import {Switch, Match} from '@/app/_components/switch'
-
-const UserMangementPage: NextPage = () => {  
-  const {
-    isError,
-    isFetching,
-    isSuccess,
-    refetch,
-    electoralEntitiesTable,
-    electoralEntitiesColumnFilter,
-    clearElectoralEntitiesFilters,
-  } = useElectoralEntitiesTable();
-
-  const { AddConfirmedVoter, AddPossibleVoter } = useAdd();
-  const { FilterConfirmedVoters, FilterPossibleVoters } = useFilter();
-
+import {ProvinceAdminsWidget} from '@/app/_widgets/province-admins-widget'
+import { CandidatesWidget } from '@/app/_widgets/candidates-widget'
+import { DataEntriesWidget } from '@/app/_widgets/data-entries-widget'
+import { ObserversWidget } from '@/app/_widgets/observers-widget'
+import { PartiesRepresentersWidget } from '@/app/_widgets/parties-representers-widget'
+const UserMangementPage: NextPage = () => {
   const { t } = useTranslation();
+
   return (
     <Container>
-      <Tabs defaultValue="political-entities">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger className="w-full" value="political-entities">
-            {t('electionBase:confirmedVoters.tabTitle')}
+      <Tabs defaultValue="province-admins">
+        <TabsList className="grid w-full grid-cols-5 mb-6">
+          <TabsTrigger className="w-full" value="province-admins">
+             مدراء المحافظات
           </TabsTrigger>
-          <TabsTrigger value="electoral-distribution">
-            {t('electionBase:possibleVoters.tabTitle')}
+          <TabsTrigger value="parties-representers">
+            ممثلين الكيان
+          </TabsTrigger>
+          <TabsTrigger value="candidates">
+            المرشحين
+          </TabsTrigger>
+          <TabsTrigger value="data-entries">
+            مدخلين البيانات
+          </TabsTrigger>
+          <TabsTrigger value="observers">
+            المراقبين
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="political-entities">
-          <motion.div
-            initial={{ x: -300 }}
-            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
-          >
-            <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch}/>
-              </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess}>
-              <Table
-              Filter={FilterConfirmedVoters}
-              Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
-              </Match>
-           </Switch>
-          </motion.div>
-        </TabsContent>
-        <TabsContent value="electoral-distribution">
+        <TabsContent value="province-admins">
           <motion.div
             initial={{ x: 300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-              <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch}/>
-              </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess}>
-              <Table
-              Filter={FilterConfirmedVoters}
-              Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
-              </Match>
-           </Switch>
+            <ProvinceAdminsWidget />
+          </motion.div>
+        </TabsContent>
+        <TabsContent value="parties-representers">
+          <motion.div
+            initial={{ x: 300 }}
+            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
+          >
+            <PartiesRepresentersWidget />
+          </motion.div>
+        </TabsContent>
+        <TabsContent value="candidates">
+          <motion.div
+            initial={{ x: -300 }}
+            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
+          >
+            <CandidatesWidget />
+          </motion.div>
+        </TabsContent>
+        <TabsContent value="data-entries">
+          <motion.div
+            initial={{ x: -300 }}
+            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
+          >
+            <DataEntriesWidget />
+          </motion.div>
+        </TabsContent>
+        <TabsContent value="observers">
+          <motion.div
+            initial={{ x: -300 }}
+            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
+          >
+            <ObserversWidget />
           </motion.div>
         </TabsContent>
       </Tabs>

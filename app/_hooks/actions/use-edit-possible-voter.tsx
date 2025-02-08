@@ -54,9 +54,9 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
+  const { data: pollingCenters, isLoading: isLoadingPollingCenters} =
     usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers } = useUsersQuery('Role=102');
+  const { data: users, isLoading: isLoadingUsers} = useUsersQuery('Role=102');
 
   // Toast Hook
   const { toast } = useToast();
@@ -97,7 +97,8 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
   };
 
   // Effect to Update Search Options
-  useEffect(() => {
+  useEffect( () =>
+  {
     if (!isLoadingUsers) {
       setUsersSearch(
         users?.data.items.map((user: any) => ({
@@ -106,7 +107,6 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
         }))
       );
     }
-
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
@@ -115,7 +115,7 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
         }))
       );
     }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters]);
+  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openUpdate]);
 
   const onDelete = async () => {
     await deleteVoter(item.id);

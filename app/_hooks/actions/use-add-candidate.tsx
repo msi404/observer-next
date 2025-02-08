@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -14,37 +14,35 @@ import { z } from 'zod';
 // Hooks
 import { useToast } from '@/app/_hooks/use-toast';
 
+// API Services
+import { baseURL } from '@/app/_services/api';
 import {
   usePollingCentersQuery,
-  useElectoralEntitiesQuery,
-  useGovCentersQuery,
-  useUsersQuery
+  useUsersQuery,
 } from '@/app/_services/fetchApi';
-import { useCreateUserMutation } from '@/app/_services/mutationApi';
+import {
+  useUploadFileMutation,
+  useCreateUserMutation
+} from '@/app/_services/mutationApi';
 
 // Validation Schemas
 import { addUserSchema } from '@/app/_validation/user';
 
-export const useAddPartiesRepresenters = () => {
+export const useAddCandidate = () => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
-
+  const [createVoter, { isLoading: isLoadingCandidate }] = useCreateUserMutation();
+  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const { refetch } = useUsersQuery(
-    `Role=10&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=102&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
-  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
+  const [usersSearch, setUsersSearch] = useState<
     { value: string; label: string }[]
   >([]);
-
-  const [govCenterSearch, setGovCenterSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [pollingCenterSearch, setPollingCentersSearch] = useState<
+  const [pollingCentersSearch, setPollingCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
@@ -52,12 +50,10 @@ export const useAddPartiesRepresenters = () => {
   // Query Data
   const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
     usePollingCentersQuery('');
+  const { data: users, isLoading: isLoadingUsers, refetch: refetchUsers } = useUsersQuery('Role=102');
 
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities, refetch: refetchElectoralEntities } =
-    useElectoralEntitiesQuery('');
-
-  const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-    useGovCentersQuery('');
+  // Refs
+  const fileRef = useRef<File | null>(null);
 
   // Toast Hook
   const { toast } = useToast();
@@ -69,22 +65,31 @@ export const useAddPartiesRepresenters = () => {
       name: '',
       // @ts-ignore
       dateOfBirth: '',
-      govId: '',
+      profileImg: '',
+		address: '',
+		state: 2,
       pollingCenterId: '',
-      electoralEntityId: '',
-      username: '',
-      phone: '',
-      email: '',
-      password: '',
-      role: 10
+      serial: ''
     }
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addUserSchema>) => {
+  const onSubmit = async () => {
+    if (!fileRef.current) {
+      toast({
+        title: 'لايوجد صورة',
+        description: 'يجب ان ترفع صورة',
+        variant: 'destructive'
+      });
+      return;
+    }
     try {
-      form.setValue('role', 10);
-      const result = await createUser(
+      const formData = new FormData();
+      formData.append('file', fileRef.current as File);
+
+      const response = await uploadFile(formData).unwrap();
+      form.setValue('profileImg', `${baseURL}/${response?.data}`);
+      const result = await createVoter(
         addUserSchema.parse(form.getValues())
       ).unwrap();
 
@@ -102,17 +107,18 @@ export const useAddPartiesRepresenters = () => {
     }
   };
   // Effect to Update Search Options
-  useEffect( () =>
+	useEffect( () =>
   {
-    refetchElectoralEntities()
-    if (!isLoadingElectoralEntities) {
-      setElectoralEntitiesSearch(
-        electoralEntities?.data.items.map((electoralEntity: any) => ({
-          value: electoralEntity.id,
-          label: electoralEntity.name
+    refetchUsers()
+    if (!isLoadingUsers) {
+      setUsersSearch(
+        users?.data.items.map((user: any) => ({
+          value: user.id,
+          label: user.name
         }))
       );
     }
+
     refetchPollingCenters()
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
@@ -122,32 +128,16 @@ export const useAddPartiesRepresenters = () => {
         }))
       );
     }
-    refetchGovCenters()
-    if (!isLoadingGovCenters) {
-      setGovCenterSearch(
-        govCenters?.data.items.map((govCenter: any) => ({
-          value: govCenter.gov.id,
-          label: govCenter.gov.name
-        }))
-      );
-    }
-  }, [
-    electoralEntities,
-    isLoadingElectoralEntities,
-    pollingCenters,
-    isLoadingPollingCenters,
-    govCenters,
-    isLoadingGovCenters,
-    openAdd
-  ]);
+  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openAdd]);
   return {
     openAdd,
     setOpenAdd,
     form,
     onSubmit,
-    isLoadingUser,
-    govCenterSearch,
-    pollingCenterSearch,
-    electoralEntitiesSearch
+    isLoadingFile,
+    isLoadingCandidate,
+    pollingCentersSearch,
+    usersSearch,
+    fileRef
   };
 };

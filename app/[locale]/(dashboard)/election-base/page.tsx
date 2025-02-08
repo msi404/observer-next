@@ -10,40 +10,11 @@ import {
   TabsList,
   TabsTrigger
 } from '@/app/_components/ui/tabs';
-import { EmptyTable } from '@/app/_components/empty-table';
-import { ErrorTable } from '@/app/_components/error-table';
-import { FetchTable } from '@/app/_components/fetch-table';
-import { Table } from '@/app/_components/table';
-import { Switch, Match } from '@/app/_components/switch';
-import { LoadingTable } from '@/app/_components/loading-table';
 
-import { useVotersTable } from '@/app/_hooks/tables/use-voters-table';
-
-import { AddPossibleVoterForm } from '@/app/_components/forms/add-possible-voter-form'
-import { FilterPossibleVotersForm } from '@/app/_components/forms/filter-possible-voter-form'
-
-import { AddConfirmVoterForm } from '@/app/_components/forms/add-confirm-voter-form';
-import { FilterConfirmedVotersForm } from '@/app/_components/forms/filter-confirmed-voter-form';
-
-import { Retry } from '@/app/_components/retry';
+import { ConfirmedVotersWidget } from '@/app/_widgets/confirmed-voters-widget'
+import {PossibleVotersWidget} from '@/app/_widgets/possible-voters-widget'
 
 const ElectionBasePage: NextPage = () => {
-  const {
-    isError,
-    isFetching,
-    isSuccess,
-    isLoading,
-    possibleVoters,
-    confirmedVoters,
-    refetch,
-    possibleVotersTable,
-    possibleVotersColumnFilter,
-    clearPossibleVotersFilter,
-    confirmedVotersTable,
-    confirmedVotersColumnFilter,
-    clearConfirmedVotersFilter
-  } = useVotersTable();
-
   const { t } = useTranslation();
 
   return (
@@ -62,33 +33,7 @@ const ElectionBasePage: NextPage = () => {
             initial={{ x: -300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-            <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch} />
-              </Match>
-              <Match when={isLoading}>
-                <LoadingTable />
-              </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess && confirmedVoters.length === 0}>
-                <EmptyTable
-                  Add={<AddConfirmVoterForm />}
-                  retry={refetch}
-                />
-              </Match>
-              <Match when={isSuccess && confirmedVoters.length > 0}>
-                <Table
-                  Filter={FilterConfirmedVotersForm}
-                  Add={AddConfirmVoterForm}
-                  Retry={<Retry refetch={refetch} />}
-                  columnFilter={confirmedVotersColumnFilter}
-                  clearFilter={clearConfirmedVotersFilter}
-                  table={confirmedVotersTable}
-                />
-              </Match>
-            </Switch>
+           <ConfirmedVotersWidget />
           </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
@@ -96,30 +41,7 @@ const ElectionBasePage: NextPage = () => {
             initial={{ x: 300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-            <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch} />
-              </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess && possibleVoters.length === 0}>
-                <EmptyTable
-                  Add={<AddPossibleVoterForm />}
-                  retry={refetch}
-                />
-              </Match>
-              <Match when={isSuccess && possibleVoters.length > 0}>
-                <Table
-                  Retry={<Retry refetch={refetch} />}
-                  Filter={FilterPossibleVotersForm}
-                  Add={AddPossibleVoterForm}
-                  columnFilter={possibleVotersColumnFilter}
-                  clearFilter={clearPossibleVotersFilter}
-                  table={possibleVotersTable}
-                />
-              </Match>
-            </Switch>
+           <PossibleVotersWidget />
           </motion.div>
         </TabsContent>
       </Tabs>
