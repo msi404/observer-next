@@ -13,7 +13,7 @@ type Gov = Dateable & Identifiable &  {
 }
 
 type PollingCenter = Dateable & Identifiable & {
-	gov: Gov;
+	govCenter: GovCenter;
 	name: string;
 }
 
@@ -32,7 +32,8 @@ type ElectoralEntity = Dateable & Identifiable & {
 type Voter = Dateable & Identifiable & {
 	name: string;
 	pollingCenter: PollingCenter;
-	candidate: string;
+	candidate: User;
+	address: string,
 	serial: string;
 	img: string;
 	state: number;

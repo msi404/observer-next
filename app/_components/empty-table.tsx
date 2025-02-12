@@ -1,5 +1,7 @@
-'use client'
-import { type FC } from 'react';
+'use client';
+import { Fragment, type FC, type ComponentType } from 'react';
+import { useSelector } from 'react-redux'
+import {selectUser} from '@/app/_lib/features/authSlice'
 import { motion } from 'motion/react';
 import { Container } from '@/app/_components/container';
 import {
@@ -10,8 +12,15 @@ import {
   CardDescription
 } from '@/app/_components/ui/card';
 import { ArchiveX, RefreshCcw } from 'lucide-react';
-export const EmptyTable: FC<{ retry: VoidFunction; Add: any}> = ( { retry, Add} ) =>
+import { Show } from '@/app/_components/show';
+import { hasPermission } from '@/app/_auth/auth-rbac';
+import { Dynamic } from '@/app//_components/dynamic';
+export const EmptyTable: FC<{ retry: VoidFunction; Add?: ComponentType }> = ({
+  retry,
+  Add
+} ) =>
 {
+  const user = useSelector(selectUser)
   return (
     <Container>
       <Card className="p-4 h-96">
@@ -20,10 +29,17 @@ export const EmptyTable: FC<{ retry: VoidFunction; Add: any}> = ( { retry, Add} 
             <ArchiveX color="blue" size="35px" />
             <span>لاتوجد بيانات</span>
           </CardTitle>
-          <CardDescription>يبدو ان ليس هناك بيانات هل تريد المحاولة مجدداً؟</CardDescription>
+          <CardDescription>
+            يبدو ان ليس هناك بيانات هل تريد المحاولة مجدداً؟
+          </CardDescription>
         </CardHeader>
         <CardContent className="text-primary flex justify-center items-center">
-          { Add }
+          <Show
+            when={hasPermission(user, 'view:addConfirmedVoter')}
+            fallback={<Fragment />}
+          >
+            {Add && <Dynamic component={Add} />}
+          </Show>
           <motion.button
             onClick={retry}
             whileHover={{
@@ -36,7 +52,7 @@ export const EmptyTable: FC<{ retry: VoidFunction; Add: any}> = ( { retry, Add} 
             }}
             className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
           >
-            <RefreshCcw size='35px'/>
+            <RefreshCcw size="35px" />
           </motion.button>
         </CardContent>
       </Card>

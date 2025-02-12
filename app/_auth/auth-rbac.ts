@@ -26,6 +26,7 @@ export type Permission = (typeof ROLES)[Role][number]
 const ROLES = {
   0: [
     "view:home",
+    "view:voters",
     "view:polling-management",
     "view:state-mangement",
     "view:profile",
@@ -56,6 +57,7 @@ const ROLES = {
 
   10: [
     "view:home",
+    "view:voters",
     "view:polling-management",
     "view:state-mangement",
     "view:election-results",

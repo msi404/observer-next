@@ -84,7 +84,7 @@ export const useAddPossibleVoter = () => {
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.data,
+        description: error.data.title,
         variant: 'destructive'
       });
       console.log(error);

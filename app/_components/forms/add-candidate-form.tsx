@@ -1,6 +1,6 @@
 'use client';
 
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 
 // External libraries
 import { motion } from 'motion/react';
@@ -31,15 +31,15 @@ import { Show } from '@/app/_components/show';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddCandidateForm = () => {
-  const { openAdd,
+  const {
+    openAdd,
     setOpenAdd,
     form,
     onSubmit,
     isLoadingCandidate,
     isLoadingFile,
-    pollingCentersSearch,
-    usersSearch,
-    fileRef } = useAddCandidate();
+    fileRef
+  } = useAddCandidate();
 
   const Component = useMemo(
     () => (
@@ -60,7 +60,7 @@ export const AddCandidateForm = () => {
         title="اضافة مرشح"
         description="ادخل المعطيات الاتية لاضافة عنصر"
       >
-     <Form {...form}>
+        <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             {/* Form Fields */}
             <div className="grid gap-4">
@@ -78,6 +78,86 @@ export const AddCandidateForm = () => {
                         )}
                         disabled={isLoadingFile || isLoadingCandidate}
                         placeholder="اسم المرشح"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type='username'
+                        className={cn(
+                          form.formState.errors.username &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingFile || isLoadingCandidate}
+                        placeholder="اسم المعرف"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type='email'
+                        className={cn(
+                          form.formState.errors.email &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingFile || isLoadingCandidate}
+                        placeholder="البريد الالكتروني"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type='password'
+                        className={cn(
+                          form.formState.errors.password &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingFile || isLoadingCandidate}
+                        placeholder="كلمة المرور"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type='phone'
+                        className={cn(
+                          form.formState.errors.phone &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingFile || isLoadingCandidate}
+                        placeholder="رقم الهاتف"
                         {...field}
                       />
                     </FormControl>
@@ -109,13 +189,18 @@ export const AddCandidateForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        type="number"
                         className={cn(
                           form.formState.errors.candidateSerial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="رقم المرشح "
                         disabled={isLoadingCandidate || isLoadingFile}
-                        {...field}
+                        { ...field }
+                        onChange={ ( value ) =>
+                        {
+                          field.onChange(value.target.valueAsNumber)
+                        }}
                       />
                     </FormControl>
                   </FormItem>
@@ -129,46 +214,30 @@ export const AddCandidateForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        type="number"
                         className={cn(
                           form.formState.errors.candidateListSerial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         placeholder="رقم القائمة "
                         disabled={isLoadingCandidate || isLoadingFile}
-                        {...field}
+                        { ...field }
+                        onChange={ ( value ) =>
+                        {
+                          field.onChange(value.target.valueAsNumber)
+                        }}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="pollingCenterId"
-                render={({ field }) => (
-                  <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingCandidate || isLoadingFile}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
-                )}
-              />
-
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile) => (fileRef.current = voterFile)}
                 label="اختيار صورة الشخصية"
               />
               <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة الشخصية
-                </span>
+                <span className="text-destructive">يجب رفع صورة الشخصية</span>
               </Show>
             </div>
 
@@ -180,10 +249,7 @@ export const AddCandidateForm = () => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button
-                  type="submit"
-                  disabled={form.formState.isSubmitting}
-                >
+                <Button type="submit" disabled={isLoadingCandidate || isLoadingFile}>
                   اضافة
                   {(isLoadingCandidate || isLoadingFile) && (
                     <div className=" scale-125">

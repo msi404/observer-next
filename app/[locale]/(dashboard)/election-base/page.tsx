@@ -12,11 +12,10 @@ import {
 } from '@/app/_components/ui/tabs';
 
 import { ConfirmedVotersWidget } from '@/app/_widgets/confirmed-voters-widget'
-import {PossibleVotersWidget} from '@/app/_widgets/possible-voters-widget'
+import { PossibleVotersWidget } from '@/app/_widgets/possible-voters-widget'
 
 const ElectionBasePage: NextPage = () => {
   const { t } = useTranslation();
-
   return (
     <Container>
       <Tabs defaultValue="political-entities">

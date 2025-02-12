@@ -18,7 +18,9 @@ import { useToast } from '@/app/_hooks/use-toast';
 import { baseURL } from '@/app/_services/api';
 import {
   usePollingCentersQuery,
-  useUsersQuery,
+  useElectoralEntitiesQuery,
+  useProvincesQuery,
+  useUsersQuery
 } from '@/app/_services/fetchApi';
 import {
   useUploadFileMutation,
@@ -26,13 +28,14 @@ import {
 } from '@/app/_services/mutationApi';
 
 // Validation Schemas
-import { addUserSchema } from '@/app/_validation/user';
+import { addCandidateSchema } from '@/app/_validation/user';
 
 export const useAddCandidate = () => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createVoter, { isLoading: isLoadingCandidate }] = useCreateUserMutation();
+  const [createVoter, { isLoading: isLoadingCandidate }] =
+    useCreateUserMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const { refetch } = useUsersQuery(
     `Role=102&PageNumber=${currentPage}&PageSize=${pageSize}`
@@ -42,15 +45,38 @@ export const useAddCandidate = () => {
   const [usersSearch, setUsersSearch] = useState<
     { value: string; label: string }[]
   >([]);
+  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
+    { value: string; label: string }[]
+  >([]);
+
   const [pollingCentersSearch, setPollingCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-    usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers, refetch: refetchUsers } = useUsersQuery('Role=102');
+  const {
+    data: pollingCenters,
+    isLoading: isLoadingPollingCenters,
+    refetch: refetchPollingCenters
+  } = usePollingCentersQuery('');
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    refetch: refetchUsers
+  } = useUsersQuery('Role=102');
+  const {
+    data: electoralEntities,
+    isLoading: isLoadingElectoralEntities,
+    refetch: refetchElectoralEntities
+  } = useElectoralEntitiesQuery('');
+
+  const { data: provinces, isLoading: isLoadingProvinces, refetch: refetchProvinces } =
+    useProvincesQuery( '' );
+  
+    const [governoratesSearch, setGovernoratesSearch] = useState<
+    { label: string; value: string }[]
+  >([]);
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -59,17 +85,25 @@ export const useAddCandidate = () => {
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addCandidateSchema>>({
+    resolver: zodResolver(addCandidateSchema),
     defaultValues: {
       name: '',
+      govId: '',
+      username: '',
+      password: '',
+      phone: '',
+      email: '',
+      // @ts-ignore
+      candidateSerial: '',
+      // @ts-ignore
+      candidateListSerial: '',
       // @ts-ignore
       dateOfBirth: '',
       profileImg: '',
-		address: '',
-		state: 2,
+      electoralEntityId: '',
       pollingCenterId: '',
-      serial: ''
+      role: 102
     }
   });
 
@@ -90,14 +124,14 @@ export const useAddCandidate = () => {
       const response = await uploadFile(formData).unwrap();
       form.setValue('profileImg', `${baseURL}/${response?.data}`);
       const result = await createVoter(
-        addUserSchema.parse(form.getValues())
+        addCandidateSchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.data,
+        description: error.data.title,
         variant: 'destructive'
       });
       console.log(error);
@@ -107,9 +141,27 @@ export const useAddCandidate = () => {
     }
   };
   // Effect to Update Search Options
-	useEffect( () =>
-  {
-    refetchUsers()
+  useEffect(() => {
+    refetchElectoralEntities();
+    if (!isLoadingElectoralEntities) {
+      setElectoralEntitiesSearch(
+        electoralEntities?.data.items.map((electoralEntity: any) => ({
+          value: electoralEntity.id,
+          label: electoralEntity.name
+        }))
+      );
+    }
+    refetchProvinces()
+    if (!isLoadingProvinces) {
+      const governorates = provinces?.data.items.map(
+        (province: { name: string, id: string }) => ({
+          label: province.name,
+          value: province.id
+        })
+      );
+      setGovernoratesSearch(governorates);
+    }
+    refetchUsers();
     if (!isLoadingUsers) {
       setUsersSearch(
         users?.data.items.map((user: any) => ({
@@ -119,7 +171,7 @@ export const useAddCandidate = () => {
       );
     }
 
-    refetchPollingCenters()
+    refetchPollingCenters();
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.data.items.map((pollingCenter: any) => ({
@@ -128,7 +180,17 @@ export const useAddCandidate = () => {
         }))
       );
     }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openAdd]);
+  }, [
+    users,
+    isLoadingUsers,
+    pollingCenters,
+    isLoadingPollingCenters,
+    electoralEntities,
+    isLoadingElectoralEntities,
+    provinces,
+    isLoadingProvinces,
+    openAdd
+  ]);
   return {
     openAdd,
     setOpenAdd,
@@ -137,6 +199,8 @@ export const useAddCandidate = () => {
     isLoadingFile,
     isLoadingCandidate,
     pollingCentersSearch,
+    electoralEntitiesSearch,
+    governoratesSearch,
     usersSearch,
     fileRef
   };

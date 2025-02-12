@@ -8,12 +8,21 @@ import { hasPermission } from '@/app/_auth/auth-rbac';
 import { DataTableColumnHeader } from '@/app/_components/table-header';
 import { calcAge } from '@/app/_utils/calc-age';
 import { Zoom } from '@/app/_components/zoom';
-import {EditConfirmedVoterForm} from '@/app/_components/forms/edit-confirmed-voter-form'
-export const useConfirmedVotersColumns = () => {
+
+export const useElectionsResultsColumns = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();
   // @ts-ignore
-  const confirmedVotersColumns: ColumnDef<ConfirmedVoters>[] = [
+	const electionResultsColumns: ColumnDef<ConfirmedVoters>[] = [
+      {
+			id: 'img',
+			accessorKey: 'profileImg',
+			header: 'الصورة الشخصية',
+			cell: ({ cell }: any) => {
+			  const value = cell.getValue();
+			  return <Zoom preview={value} />;
+			}
+		 },
     {
       id: 'name',
       accessorKey: 'name',
@@ -88,28 +97,9 @@ export const useConfirmedVotersColumns = () => {
       accessorKey: 'serial',
       header: t('electionBase:confirmedVoters.table.header.candidateNumber')
     },
-    {
-      id: 'img',
-      accessorKey: 'card',
-      header: t('electionBase:confirmedVoters.table.header.cardPhoto'),
-      cell: ({ cell }: any) => {
-        const value = cell.getValue();
-        return <Zoom preview={value} />;
-      }
-    },
-    hasPermission(user, 'view:confirmedVotersActions') && {
-      id: 'actions',
-      accessorKey: 'actions',
-      header: 'الاجرائات',
-      cell: ({ row }: { row: any }) => {
-        return (
-            <EditConfirmedVoterForm item={row.original} />
-        );
-      }
-    }
   ].filter(Boolean);
 
   return {
-    confirmedVotersColumns
+    electionResultsColumns
   };
 };

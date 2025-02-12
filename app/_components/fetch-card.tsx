@@ -8,7 +8,7 @@ export const FetchCard: FC = () => {
     <Card className="flex items-center h-28">
       <motion.div
         animate={{
-          rotate: 360,
+          rotate: -360,
           transition: {
             repeat: Infinity,
             repeatType: 'loop',

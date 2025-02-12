@@ -25,7 +25,7 @@ export const usePossibleVotersColumns = () => {
     },
     {
       id: 'dateOfBirth',
-      accessorKey: 'dateOfBirth',
+      accessorKey: 'birth',
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
@@ -42,7 +42,7 @@ export const usePossibleVotersColumns = () => {
     },
     {
       id: 'province',
-      accessorKey: 'pollingCenter.govCenter.gov.name',
+      accessorKey: 'province.gov.name',
       header: t('electionBase:confirmedVoters.table.header.governorate')
     },
     {
@@ -66,7 +66,10 @@ export const usePossibleVotersColumns = () => {
           column={column}
           title={t('electionBase:confirmedVoters.table.header.candidateName')}
         />
-      )
+      ),
+      cell: ({ cell }: { cell: any }) => {
+        return <span>{cell.getValue() ?? 'لا يوجد'}</span>;
+      }
     },
     {
       id: 'serial',

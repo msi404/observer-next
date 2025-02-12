@@ -14,7 +14,7 @@ export const FetchTable: FC = () => {
         <CardContent className="text-primary h-96 flex justify-center items-center">
 		  <motion.div
         animate={{
-          rotate: 360,
+          rotate: -360,
           transition: {
             repeat: Infinity,
             repeatType: 'loop',

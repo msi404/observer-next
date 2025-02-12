@@ -55,7 +55,7 @@ export const useCandidateColumns = () => {
       header: 'الصورة الشخصية',
       cell: ({ cell }: any) => {
         const value = cell.getValue();
-        return value;
+        return <Zoom preview={value} />;
       }
     },
     hasPermission(user, 'view:confirmedVotersActions') && {

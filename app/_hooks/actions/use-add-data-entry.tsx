@@ -23,7 +23,7 @@ import {
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
 // Validation Schemas
-import { addUserSchema } from '@/app/_validation/user';
+import { addDataEntrySchema } from '@/app/_validation/user';
 
 export const useAddDataEntry = () => {
   const pageSize = useSelector(selectPageSize);
@@ -63,12 +63,12 @@ export const useAddDataEntry = () => {
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addDataEntrySchema>>({
+    resolver: zodResolver(addDataEntrySchema),
     defaultValues: {
       name: '',
       // @ts-ignore
-      dateOfBirth: '',
+      birth: '',
       govId: '',
       pollingCenterId: '',
       electoralEntityId: '',
@@ -81,11 +81,11 @@ export const useAddDataEntry = () => {
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addUserSchema>) => {
+  const onSubmit = async (values: z.infer<typeof addDataEntrySchema>) => {
     try {
       form.setValue('role', 100);
       const result = await createUser(
-        addUserSchema.parse(form.getValues())
+        addDataEntrySchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);

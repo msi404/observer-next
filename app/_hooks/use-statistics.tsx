@@ -73,8 +73,67 @@ export const useStatistics = () => {
     },
   ];
 
+  const electionResultsStatistics = [
+    {
+      permission: hasPermission(user, 'view:total-candidates'),
+      isLoading,
+      isError,
+      isSuccess,
+      isFetching,
+      url: '/candidates',
+      total: data?.data?.totalCandidates,
+      icon: <UsersRound />,
+      description: 'home:cards.totalOfCandidates'
+    },
+    {
+      permission: hasPermission(user, 'view:total-observers'),
+      isLoading,
+      isError,
+      isSuccess,
+      isFetching,
+      url: '/observers',
+      total: data?.data?.totalObservers,
+      icon: <Eye />,
+      description: 'home:cards.totalOfObservers'
+    },
+    {
+    	permission: hasPermission( user, 'view:total-complaints' ),
+      isLoading,
+      isError,
+      isSuccess,
+      isFetching,
+      url: '/issues',
+      total: data?.data?.totalComplaints,
+      icon: <CircleAlert />,
+      description: 'home:cards.totalOfComplaints'
+    },
+    {
+    	permission: hasPermission( user, 'view:total-comfirmed-voters' ),
+      isLoading,
+      isError,
+      isSuccess,
+      isFetching,
+      url: '/election-base',
+      total: data?.data?.totalConfirmedVoters,
+      icon: <UserRoundCheck />,
+      description: 'home:cards.totalOfConfirmedVoters'
+    },
+    {
+    	permission: hasPermission( user, 'view:total-possible-voters' ),
+      isLoading,
+      isError,
+      isSuccess,
+      isFetching,
+      url: '/election-base',
+      total: data?.data?.totalPendingVoters,
+      icon: <UserRoundSearch />,
+      description: 'home:cards.totalOfPossibleVoters'
+    },
+  ];
+
   return {
     refetch,
-    statistics
+    statistics,
+    electionResultsStatistics
   };
 };

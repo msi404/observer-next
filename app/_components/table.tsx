@@ -1,5 +1,5 @@
 'use client';
-import { type FC, type ComponentType, type ReactElement } from 'react';
+import { type FC, type ComponentType, type ReactElement, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { Card, CardContent } from '@/app/_components/ui/card';
@@ -14,7 +14,7 @@ import { DynamicPagination } from '@/app/_components/dynamic-pagination';
 export const Table: FC<{
   table: any;
   clearFilter: VoidFunction;
-  Add: ComponentType;
+  Add?: ComponentType;
   Retry: ReactElement;
   Filter: (table: any) => ReactElement;
   columnFilter: any;
@@ -43,8 +43,8 @@ export const Table: FC<{
           <Show when={hasPermission(user, 'view:addConfirmedVoter')}>
             {Retry}
           </Show>
-          <Show when={hasPermission(user, 'view:addConfirmedVoter')}>
-            <Dynamic component={<Add />} />
+          <Show when={hasPermission(user, 'view:addConfirmedVoter')} fallback={<Fragment />}>
+            {Add && <Dynamic component={<Add />} />}
           </Show>
         </div>
       </CardContent>

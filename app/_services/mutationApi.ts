@@ -14,7 +14,7 @@ const mutationApi = tatweerApi.injectEndpoints({
         url: 'voters',
         method: 'POST',
         body: voter
-      })
+      } ),
     }),
     createUser: builder.mutation({
       query: (user) => ({

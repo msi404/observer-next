@@ -109,6 +109,7 @@ export const AddDataEntryForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        type='password'
                         className={cn(
                           form.formState.errors.password &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -125,7 +126,7 @@ export const AddDataEntryForm = () => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="dateOfBirth"
+                name="birth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -133,73 +134,6 @@ export const AddDataEntryForm = () => {
                         disabled={isLoadingUser}
                         value={field.value}
                         onChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="govId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={govCenterSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="مركز المحافظة"
-                        disabled={isLoadingUser}
-                        className={cn(
-                          form.formState.errors.govId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Polling Center */}
-              <FormField
-                control={form.control}
-                name="pollingCenterId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={pollingCenterSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="مركز الاقتراع"
-                        disabled={isLoadingUser}
-                        className={cn(
-                          form.formState.errors.pollingCenterId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              {/* Candidate */}
-              <FormField
-                control={form.control}
-                name="electoralEntityId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={electoralEntitiesSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="الكيان السياسي"
-                        disabled={isLoadingUser}
-                        className={cn(
-                          form.formState.errors.electoralEntityId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
                       />
                     </FormControl>
                   </FormItem>

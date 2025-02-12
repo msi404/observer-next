@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
+import {skipToken} from '@reduxjs/toolkit/query/react'
 import { useSelector, useDispatch } from 'react-redux';
+import { hasPermission } from '@/app/_auth/auth-rbac'
+import {selectUser} from '@/app/_lib/features/authSlice'
 import { selectCurrentPage, selectPageSize, setTotalPages } from '@/app/_lib/features/paginationSlice';
 import {
   useReactTable,
@@ -20,12 +23,12 @@ import { useConfirmedVotersFilter } from '@/app/_hooks/filters/use-confirmed-vot
 
 export const useVotersTable = () => {
   const dispatch = useDispatch();
-
+  const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
-  
+  const fetchQuery = hasPermission(user, 'view:voters') ? `PageNumber=${ currentPage }&PageSize=${ pageSize }` : undefined
   const { data: voters, isLoading, isError, isFetching, isSuccess, refetch } =
-    useVotersQuery( `PageNumber=${ currentPage }&PageSize=${ pageSize }` );
+    useVotersQuery(fetchQuery ?? skipToken);
   
   const [ confirmedVoters, setConfirmedVoters ] = useState( [] );
   const [ possibleVoters, setPossibleVoters ] = useState( [] );
@@ -77,8 +80,8 @@ export const useVotersTable = () => {
   {
     if ( !isLoading )
     {
-      const confirmedVotersFiltered = voters?.data?.items.filter((voter: any) => voter.state === 2)
-      const possibleVotersFiltered = voters?.data?.items.filter( ( voter: any ) => voter.state === 0 )
+      const confirmedVotersFiltered = voters?.items.filter((voter: Voter) => voter.state === 2)
+      const possibleVotersFiltered = voters?.items.filter( ( voter: Voter ) => voter.state === 0 )
       
       setPossibleVoters( possibleVotersFiltered )
       setConfirmedVoters( confirmedVotersFiltered )
@@ -87,7 +90,7 @@ export const useVotersTable = () => {
   
   useEffect(() => {
     if (!isLoading) {
-      dispatch(setTotalPages(voters?.data?.totalPages));
+      dispatch(setTotalPages(voters?.totalPages));
     }
   }, [isLoading, voters, dispatch]);
 

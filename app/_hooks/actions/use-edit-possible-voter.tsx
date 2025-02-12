@@ -24,7 +24,8 @@ interface VoterItem
 {
   id: string;
   name: string;
-  dateOfBirth: string;
+  birth: string;
+  address: string;
   gender: string | number;
   pollingCenter: { id: string };
   candidate: { id: string };
@@ -66,13 +67,13 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
     resolver: zodResolver(addPossibleVoterSchema),
     defaultValues: {
       name: item.name,
-      dateOfBirth: new Date(item.dateOfBirth),
-      address: '',
+      birth: new Date(item.birth),
+      address: item.address,
       state: 0,
       // @ts-ignore
       gender: String(item.gender), // ✅ Convert to string
       pollingCenterId: String(item.pollingCenter.id),
-      candidateId: String(item.candidate.id),
+      candidateId: String(item.candidate?.id) ?? null,
       serial: item.serial
     }
   });

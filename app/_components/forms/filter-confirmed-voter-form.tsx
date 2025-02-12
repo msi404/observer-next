@@ -24,7 +24,7 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
   return (
     <BasicDialog
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={ setOpen }
       button={
         <Button className="lg:w-1/4">
           تصفية <Filter />

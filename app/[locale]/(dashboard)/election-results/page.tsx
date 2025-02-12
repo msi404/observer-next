@@ -1,96 +1,55 @@
 'use client';
 import { type NextPage } from 'next';
-import { motion } from 'motion/react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/app/_lib/features/authSlice';
+import { hasPermission } from '@/app/_auth/auth-rbac';
 import { useTranslation } from 'react-i18next';
-
+import {FetchCard} from '@/app/_components/fetch-card'
+import { Show } from '@/app/_components/show';
+import { For } from '@/app/_components/for';
+import { Switch, Match } from '@/app/_components/switch'
+import { StatisticsCard } from '@/app/_components/statistics-card';
+import {ErrorCard} from '@/app/_components/error-card'
+import { SkeletonCard } from '@/app/_components/skeleton-card';
+import { useStatistics } from '@/app/_hooks/use-statistics';
 import { Container } from '@/app/_components/container';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/app/_components/ui/tabs';
-import { ErrorTable } from '@/app/_components/error-table'
-import {FetchTable} from '@/app/_components/fetch-table'
-import {useElectoralEntitiesTable} from '@/app/_hooks/use-electoral-entities-table'
-import { useFilter } from '@/app/_hooks/use-filter';
-import { useAdd } from '@/app/_hooks/actions/use-add-confirmed-voter';
-import { Table } from '@/app/_components/table'
-import {Switch, Match} from '@/app/_components/switch'
-
-const ElectionResultsPage: NextPage = () => {  
-  const {
-    isError,
-    isFetching,
-    isSuccess,
-    refetch,
-    electoralEntitiesTable,
-    electoralEntitiesColumnFilter,
-    clearElectoralEntitiesFilters,
-  } = useElectoralEntitiesTable();
-
-  const { AddConfirmedVoter, AddPossibleVoter } = useAdd();
-  const { FilterConfirmedVoters, FilterPossibleVoters } = useFilter();
-
-  const { t } = useTranslation();
+import {ElectionResultsWidget} from '@/app/_widgets/election-results-widget'
+const ElectionResultsPage: NextPage = () =>
+{
+    const { t } = useTranslation();
+  const { electionResultsStatistics, refetch } = useStatistics();
   return (
     <Container>
-      <Tabs defaultValue="political-entities">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger className="w-full" value="political-entities">
-            {t('electionBase:confirmedVoters.tabTitle')}
-          </TabsTrigger>
-          <TabsTrigger value="electoral-distribution">
-            {t('electionBase:possibleVoters.tabTitle')}
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="political-entities">
-          <motion.div
-            initial={{ x: -300 }}
-            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
-          >
-            <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch}/>
-              </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess}>
-              <Table
-              Filter={FilterConfirmedVoters}
-              Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
-              </Match>
-           </Switch>
-          </motion.div>
-        </TabsContent>
-        <TabsContent value="electoral-distribution">
-          <motion.div
-            initial={{ x: 300 }}
-            animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
-          >
-              <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch}/>
-              </Match>
-              <Match when={isFetching}>
-                <FetchTable />
-              </Match>
-              <Match when={isSuccess}>
-              <Table
-              Filter={FilterConfirmedVoters}
-              Add={AddConfirmedVoter}
-              columnFilter={electoralEntitiesColumnFilter}
-              clearFilter={clearElectoralEntitiesFilters}
-              table={ electoralEntitiesTable } />
-              </Match>
-           </Switch>
-          </motion.div>
-        </TabsContent>
-      </Tabs>
+           {/* Data Cards Section */}
+            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <For each={electionResultsStatistics}>
+                { ( item, index ) => (
+                  <Show when={item.permission}>
+                     <Switch>
+                    <Match when={item.isLoading}>
+                        <SkeletonCard />
+                    </Match>
+                    <Match when={item.isError}>
+                      <ErrorCard retry={refetch}/>
+                    </Match>
+                    <Match when={item.isSuccess}>
+                      <StatisticsCard
+                      icon={item.icon}
+                      description={t(item.description)}
+                      total={item.total}
+                    />
+                    </Match>
+                    <Match when={item.isFetching}>
+                    <FetchCard/>
+                    </Match>
+                  </Switch>
+                 </Show>
+                )}
+              </For>
+            </section>
+          <div className='mt-12'>
+            <ElectionResultsWidget />
+          </div>
     </Container>
   );
 };

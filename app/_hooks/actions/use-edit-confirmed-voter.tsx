@@ -25,8 +25,9 @@ import { baseURL } from '@/app/_services/api';
 interface VoterItem {
   id: string;
   name: string;
-  dateOfBirth: string;
-  img: string;
+  birth: string;
+  card: string;
+  address: string,
   gender: string | number;
   pollingCenter: { id: string };
   candidate: { id: string };
@@ -72,14 +73,14 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
     resolver: zodResolver(addConfirmedVoterSchema),
     defaultValues: {
       name: item.name,
-      dateOfBirth: new Date(item.dateOfBirth),
-      img: item.img,
-      address: '',
+      dateOfBirth: new Date(item.birth),
+      card: item.card,
+      address: item.address,
       state: 0,
       // @ts-ignore
       gender: String(item.gender), // ✅ Convert to string
       pollingCenterId: String(item.pollingCenter.id),
-      candidateId: String(item.candidate.id),
+      candidateId: String(item.candidate?.id) ?? null,
       serial: item.serial
     }
   });
@@ -93,7 +94,7 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
         const response = await uploadFile(formData).unwrap();
         form.setValue('img', `${baseURL}/${response?.data}`);
       } else {
-        form.setValue('img', item.img);
+        form.setValue('img', item.card);
       }
       await updateVoter({
         voter: addConfirmedVoterSchema.parse(form.getValues()),

@@ -264,7 +264,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
               <Dropzone
                 setFile={(voterFile) => (fileRef.current = voterFile)}
                 label="اختيار صورة بطاقة الناخب"
-                defaultImage={item.img}
+                defaultImage={item.card}
               />
               <Show when={fileRef.current === null}>
                 <span className="text-destructive">
@@ -283,7 +283,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
               <div className="flex justify-between w-full">
                 <Button
                   type="submit"
-                  // onClick={onUpdate}
+                  onClick={onUpdate}
                   disabled={isLoadingUpdate || isLoadingFile}
                 >
                   تحديث

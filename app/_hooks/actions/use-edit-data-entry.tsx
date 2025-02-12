@@ -19,7 +19,7 @@ import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addUserSchema } from '@/app/_validation/user';
+import { addDataEntrySchema } from '@/app/_validation/user';
 
 interface DataEntryItem {
   id: string;
@@ -74,15 +74,15 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addDataEntrySchema>>({
+    resolver: zodResolver(addDataEntrySchema),
     defaultValues: {
       name: item.name,
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
-      govId: item.govId,
-      pollingCenterId: item.pollingCenter?.id,
-      electoralEntityId: item.electoralEntity?.id,
+      govId: null,
+      pollingCenterId: null,
+      electoralEntityId: null,
       password: 'defaultPassword123', // Placeholder; handle securely in production
       username: item?.username,
       phone: item?.phone,
@@ -92,11 +92,11 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
   });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addUserSchema>) => {
+  const onUpdate = async (values: z.infer<typeof addDataEntrySchema>) => {
     try {
       form.setValue('role', 100);
       await updateUser({
-        user: addUserSchema.parse(form.getValues()),
+        user: addDataEntrySchema.parse(form.getValues()),
         id: item.id
       });
     } catch (error: any) {

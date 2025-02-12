@@ -11,11 +11,12 @@ import {
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
-import { Combobox } from '@/app/_components/combobox';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
+import { Show } from '@/app/_components/show'
+import {Dropzone} from '@/app/_components/dropzone'
 import { useEditCandidate } from '@/app/_hooks/actions/use-edit-candidate';
 interface EditDataEntryFormProps {
   item: any; // Ideally, replace `any` with a proper interface
@@ -30,10 +31,9 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
+    isLoadingFile,
     openUpdate,
-    pollingCentersSearch,
-    electoralEntitiesSearch,
-    govCenterSearch,
+    fileRef,
     form
   } = useEditCandidate({ item });
   return (
@@ -107,6 +107,7 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
             {/* Form Fields */}
             <div className="grid gap-4">
               {/* Name */}
+              {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
@@ -118,8 +119,8 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم الموظف الثلاثي"
+                        disabled={isLoadingFile || isLoadingUpdate}
+                        placeholder="اسم المرشح"
                         {...field}
                       />
                     </FormControl>
@@ -133,12 +134,53 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        type="username"
                         className={cn(
                           form.formState.errors.username &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم المستخدم"
+                        disabled={isLoadingFile || isLoadingUpdate}
+                        placeholder="اسم المعرف"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        className={cn(
+                          form.formState.errors.email &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingFile || isLoadingUpdate}
+                        placeholder="البريد الالكتروني"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="phone"
+                        className={cn(
+                          form.formState.errors.phone &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingFile || isLoadingUpdate}
+                        placeholder="رقم الهاتف"
                         {...field}
                       />
                     </FormControl>
@@ -153,7 +195,7 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
                   <FormItem>
                     <FormControl>
                       <DatePicker
-                        disabled={isLoadingUpdate}
+                        disabled={isLoadingUpdate || isLoadingFile}
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -162,106 +204,65 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
                 )}
               />
 
+              {/* Serial Number */}
               <FormField
                 control={form.control}
-                name="govId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={govCenterSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="مركز المحافظة"
-                        disabled={isLoadingUpdate}
-                        className={cn(
-                          form.formState.errors.govId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Polling Center */}
-              <FormField
-                control={form.control}
-                name="pollingCenterId"
-                render={({ field }) => (
-                  <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingUpdate}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="electoralEntityId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={electoralEntitiesSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="الكيان السياسي"
-                        disabled={isLoadingUpdate}
-                        className={cn(
-                          form.formState.errors.electoralEntityId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
+                name="candidateSerial"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
+                        type="number"
                         className={cn(
-                          form.formState.errors.phone &&
+                          form.formState.errors.candidateSerial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingUpdate}
-                        placeholder="رقم الهاتف"
+                        placeholder="رقم المرشح "
+                        disabled={isLoadingUpdate || isLoadingFile}
                         {...field}
+                        onChange={(value) => {
+                          field.onChange(value.target.valueAsNumber);
+                        }}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-
+              {/* Serial Number */}
               <FormField
                 control={form.control}
-                name="email"
+                name="candidateListSerial"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
+                        type="number"
                         className={cn(
-                          form.formState.errors.email &&
+                          form.formState.errors.candidateListSerial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        placeholder="البريد الالكتروني"
-                        disabled={isLoadingUpdate}
+                        placeholder="رقم القائمة "
+                        disabled={isLoadingUpdate || isLoadingFile}
                         {...field}
+                        onChange={(value) => {
+                          field.onChange(value.target.valueAsNumber);
+                        }}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+              {/* Image Upload */}
+              <Dropzone
+                setFile={(voterFile: any) => (fileRef.current = voterFile)}
+                label="اختيار صورة بطاقة الناخب"
+                defaultImage={item.profileImg}
+              />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">
+                  يجب رفع صورة بطاقة الناخب
+                </span>
+              </Show>
             </div>
 
             {/* Separator */}
@@ -272,7 +273,11 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingUpdate}>
+                <Button
+                  type="submit"
+                  onClick={onUpdate}
+                  disabled={isLoadingUpdate}
+                >
                   تعديل
                   {isLoadingUpdate && (
                     <div className=" scale-125">

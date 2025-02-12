@@ -21,7 +21,33 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 			query: () => 'users/current'
 		} ),
 		voters: builder.query( {
-			query: (params) => `voters?${params}`
+			query: ( params ) => `voters?${ params }`,
+			transformResponse: ( response: any ) =>
+			{
+				const items = response.data.items.map( ( item: Voter ) =>
+				{
+					return {
+						id: item.id,
+						name: item.name,
+						address: item.address,
+						birth: item.dateOfBirth,
+						province: item.pollingCenter.govCenter,
+						pollingCenter: item.pollingCenter,
+						gender: item.gender,
+						candidate: item.candidate,
+						serial: item.serial,
+						card: item.img,
+						state: item.state
+					}
+				} )
+				return {
+					items,
+					pageNumber: response.data.pageNumber,
+					pageSize: response.data.pageSize,
+					totalCount: response.data.totalCount,
+					totalPages: response.data.totalPages
+				}
+			}
 		} ),
 		statistics: builder.query( {
 			query: () => "statistics",

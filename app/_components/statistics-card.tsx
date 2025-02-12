@@ -9,12 +9,13 @@ import {
 	CardTitle,
 	CardFooter
 } from "@/app/_components/ui/card";
+import {Show} from '@/app/_components/show'
 
 export const StatisticsCard: FC<{
 	icon: ReactNode;
 	total: number;
 	description: string;
-	url: string;
+	url?: string;
 }> = ({ icon, total, description, url}) => {
 	return (
 			<Card className="flex flex-col justify-between items-center">
@@ -25,12 +26,14 @@ export const StatisticsCard: FC<{
 			</CardHeader>
 			<CardContent className="text-primary">{ icon }</CardContent>
 			</div>
+			<Show when={url}>
 			<Link href={url} className="w-full p-2 border flex items-center">
 			<CardFooter className="flex justify-between items-center w-full">
 					<ArrowRight />
 				<span>عرض الصفحة</span>
 			</CardFooter>
 			</Link>
+			</Show>
 			</Card>
 	);
 	};
