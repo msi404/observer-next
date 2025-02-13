@@ -1,7 +1,4 @@
 'use client';
-
-import {useMemo} from 'react';
-
 // External libraries
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
@@ -45,8 +42,7 @@ export const AddPossibleVoterForm = () => {
     usersSearch,
    } = useAddPossibleVoter();
 
-  const Component = useMemo(
-    () => (
+  return (
       <BasicDialog
         open={openAdd}
         onOpenChange={setOpenAdd}
@@ -113,7 +109,7 @@ export const AddPossibleVoterForm = () => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="dateOfBirth"
+                name="birth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -246,9 +242,5 @@ export const AddPossibleVoterForm = () => {
           </form>
         </Form>
       </BasicDialog>
-    ),
-    [openAdd]
-  );
-
-  return Component;
+    )
 };

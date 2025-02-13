@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
-
 // External libraries
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
@@ -24,7 +22,6 @@ import { Separator } from '@/app/_components/ui/separator';
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import { Combobox } from '@/app/_components/combobox';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddObserverForm = () => {
@@ -34,13 +31,9 @@ export const AddObserverForm = () => {
     form,
     onSubmit,
     isLoadingUser,
-    govCenterSearch,
-    pollingCenterSearch,
-    electoralEntitiesSearch
   } = useAddObserver();
 	
-  const Component = useMemo(
-    () => (
+  return (
       <BasicDialog
         open={openAdd}
         onOpenChange={setOpenAdd}
@@ -138,73 +131,6 @@ export const AddObserverForm = () => {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="govId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={govCenterSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="مركز المحافظة"
-                        disabled={isLoadingUser}
-                        className={cn(
-                          form.formState.errors.govId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Polling Center */}
-              <FormField
-                control={form.control}
-                name="pollingCenterId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={pollingCenterSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="مركز الاقتراع"
-                        disabled={isLoadingUser}
-                        className={cn(
-                          form.formState.errors.pollingCenterId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              {/* Candidate */}
-              <FormField
-                control={form.control}
-                name="electoralEntityId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Combobox
-                        options={electoralEntitiesSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="الكيان السياسي"
-                        disabled={isLoadingUser}
-                        className={cn(
-                          form.formState.errors.electoralEntityId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="phone"
@@ -272,9 +198,5 @@ export const AddObserverForm = () => {
           </form>
         </Form>
       </BasicDialog>
-    ),
-    [openAdd]
-  );
-
-  return Component;
+    )
 };

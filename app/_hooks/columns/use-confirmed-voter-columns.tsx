@@ -94,7 +94,7 @@ export const useConfirmedVotersColumns = () => {
       header: t('electionBase:confirmedVoters.table.header.cardPhoto'),
       cell: ({ cell }: any) => {
         const value = cell.getValue();
-        return <Zoom preview={value} />;
+        return <Zoom className='border w-16' preview={value} />;
       }
     },
     hasPermission(user, 'view:confirmedVotersActions') && {

@@ -51,6 +51,14 @@ export const usePossibleVotersColumns = () => {
       header: t('electionBase:confirmedVoters.table.header.pollingCenter')
     },
     {
+      id: 'address',
+      accessorKey: 'address',
+      header: 'العنوان',
+      cell: ({ cell }: { cell: any }) => {
+        return <span className=' text-xs'>{cell.getValue()}</span>;
+      }
+    },
+    {
       id: 'gender',
       accessorKey: 'gender',
       header: t('electionBase:confirmedVoters.table.header.gender'),

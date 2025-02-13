@@ -276,17 +276,17 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
                 <Button
                   type="submit"
                   onClick={onUpdate}
-                  disabled={isLoadingUpdate}
+                  disabled={isLoadingUpdate || isLoadingFile}
                 >
                   تعديل
-                  {isLoadingUpdate && (
+                  {isLoadingUpdate || isLoadingFile && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingUpdate}>
+                  <Button variant="outline" disabled={isLoadingUpdate || isLoadingFile}>
                     الغاء
                   </Button>
                 </DialogClose>

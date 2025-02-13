@@ -8,17 +8,21 @@ export const useCharts = () =>
 
 	const candidatesActivitiesChartConfig = {
 		candidatesActivities: {
-			label: t("home:charts.candidatesActivities.tooltips.label"),
+			label: t( "home:charts.candidatesActivities.tooltips.label" ),
 			color: "hsl(var(--chart-1))",
 		},
 	} satisfies ChartConfig;
 
-	const observersPerStateChartConfig = {
-		numberOfObservers: {
-			label: t("home:charts.ObserverByState.tooltips.label"),
-			color: "hsl(var(--chart-1))",
-		},
-	} satisfies ChartConfig;
+	const votersPerStateChartConfig = {
+			confirmedVoters: {
+				label: 'المؤكدين',
+				color: "hsl(var(--chart-1))",
+			},
+			possibleVoters: {
+				label: 'المحتملين',
+				color: "hsl(var(--chart-2))",
+		}
+	 } satisfies ChartConfig;
 
 	const issuesChartConfig = {
 		closed: {
@@ -31,9 +35,21 @@ export const useCharts = () =>
 		},
 	} satisfies ChartConfig;
 
+	const gendersChartConfig = {
+		male: {
+			label: 'ذكر',
+			color: "hsl(var(--chart-1))",
+		},
+		female: {
+			label: 'انثى',
+			color: "hsl(var(--chart-2))",
+		},
+	} satisfies ChartConfig;
+
 	return {
 		candidatesActivitiesChartConfig,
-		observersPerStateChartConfig,
-		issuesChartConfig
+		votersPerStateChartConfig,
+		issuesChartConfig,
+		gendersChartConfig
 	}
 }

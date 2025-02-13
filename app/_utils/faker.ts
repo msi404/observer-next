@@ -123,7 +123,8 @@ const createRandomObserversPerState = () =>
 
 return governorates.map(governorate => ({
 	governorate,
-	numberOfObservers: faker.number.int({ min: 1, max: 100 })
+	confirmedVoters: faker.number.int( { min: 1, max: 100 } ),
+	possibleVoters: faker.number.int( { min: 1, max: 100 } )
 }));
 }
 

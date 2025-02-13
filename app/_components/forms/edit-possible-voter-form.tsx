@@ -21,11 +21,9 @@ import {
 import { Combobox } from '@/app/_components/combobox';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
-import { Dropzone } from '@/app/_components/dropzone';
 import { Spinner } from '@/app/_components/spinner';
-import { Show } from '@/app/_components/show';
 import { cn } from '@/app/_lib/utils';
-import {useEditPossibleVoter} from '@/app/_hooks/actions/use-edit-possible-voter'
+import { useEditPossibleVoter } from '@/app/_hooks/actions/use-edit-possible-voter'
 
 interface EditPossibleVoterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
@@ -46,7 +44,7 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
     form
   } = useEditPossibleVoter({item});
   return (
-    <div className="flex justify-between items-center gap-2">
+    <div className="flex gap-4 items-center ">
       <BasicDialog
         open={openDelete}
         onOpenChange={setOpenDelete}

@@ -1,7 +1,4 @@
 'use client';
-
-import {useMemo} from 'react';
-
 // External libraries
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
@@ -48,8 +45,7 @@ export const AddConfirmVoterForm = () => {
     usersSearch,
     fileRef } = useAddConfirmedVoter();
 
-  const Component = useMemo(
-    () => (
+  return (
       <BasicDialog
         open={openAdd}
         onOpenChange={setOpenAdd}
@@ -237,7 +233,7 @@ export const AddConfirmVoterForm = () => {
               <div className="flex justify-between w-full">
                 <Button
                   type="submit"
-                  disabled={form.formState.isSubmitting}
+                  disabled={isLoadingVoter || isLoadingFile}
                 >
                   اضافة
                   {(isLoadingVoter || isLoadingFile) && (
@@ -259,9 +255,5 @@ export const AddConfirmVoterForm = () => {
           </form>
         </Form>
       </BasicDialog>
-    ),
-    [openAdd]
-  );
-
-  return Component;
+    )
 };

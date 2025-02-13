@@ -18,23 +18,25 @@ import {
 	ChartTooltipContent,
 } from "@/app/_components/ui/chart";
 
-interface BasicChartProps {
+interface TwinChartProps {
 	title: string;
 	description: string;
 	chartConfig: ChartConfig;
 	chartData: unknown[];
 	dataKey: string;
-	nameKey: string;
+	nameKeyOne: string;
+	nameKeyTwo: string;
 	formatLabel?: boolean;
 }
 
-export const BasicChart: FC<BasicChartProps> = ({
+export const TwinChart: FC<TwinChartProps> = ({
 	title,
 	description,
 	chartConfig,
 	chartData,
 	dataKey,
-	nameKey,
+	nameKeyOne,
+	nameKeyTwo,
 	formatLabel = true,
 } ) =>
 {
@@ -62,8 +64,13 @@ export const BasicChart: FC<BasicChartProps> = ({
 							content={<ChartTooltipContent indicator="dashed" />}
 						/>
 						<Bar
-							dataKey={nameKey}
-							fill={`var(--color-${nameKey}`}
+							dataKey={nameKeyOne}
+							fill={`var(--color-${nameKeyOne}`}
+							radius={4}
+						/>
+						<Bar
+							dataKey={nameKeyTwo}
+							fill={`var(--color-${nameKeyTwo}`}
 							radius={4}
 						/>
 					</BarChart>
@@ -72,7 +79,7 @@ export const BasicChart: FC<BasicChartProps> = ({
 			<CardFooter className="flex-col items-start gap-2 text-sm">
 				<div className="flex gap-2 font-medium leading-none">
 				النتائج الكلية{" "}
-					<TrendingUp className="h-4 w-4" />
+				<TrendingUp className="h-4 w-4" />
 				</div>
 				<div className="leading-none text-muted-foreground">
 				يمثل العدد الكلي للبيانات

@@ -6,23 +6,35 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { DataTableColumnHeader } from '@/app/_components/table-header';
-import { calcAge } from '@/app/_utils/calc-age';
 import { Zoom } from '@/app/_components/zoom';
+import { TrendingUp } from 'lucide-react';
 
 export const useElectionsResultsColumns = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();
   // @ts-ignore
-	const electionResultsColumns: ColumnDef<ConfirmedVoters>[] = [
-      {
-			id: 'img',
-			accessorKey: 'profileImg',
-			header: 'الصورة الشخصية',
-			cell: ({ cell }: any) => {
-			  const value = cell.getValue();
-			  return <Zoom preview={value} />;
-			}
-		 },
+  const electionResultsColumns: ColumnDef<ConfirmedVoters>[] = [
+    {
+      id: 'hash',
+      accessorKey: 'hash',
+      header: '#',
+      cell: ({ row }: { row: any }) => {
+        return (
+          <h1 className="text-xl text-primary font-medium">
+            {Number(row.id) + 1}#
+          </h1>
+        );
+      }
+    },
+    {
+      id: 'img',
+      accessorKey: 'profileImg',
+      header: 'الصورة الشخصية',
+      cell: ({ cell }: any) => {
+        const value = cell.getValue();
+        return <Zoom className="rounded-full border w-12" preview={value} />;
+      }
+    },
     {
       id: 'name',
       accessorKey: 'name',
@@ -31,72 +43,101 @@ export const useElectionsResultsColumns = () => {
           column={column}
           title={t('electionBase:confirmedVoters.table.header.name')}
         />
-      )
-    },
-    {
-      id: 'dateOfBirth',
-      accessorKey: 'birth',
-      header: ({ column }: any) => (
-        <DataTableColumnHeader
-          column={column}
-          title={t('electionBase:confirmedVoters.table.header.age')}
-        />
       ),
-      cell: ({ cell }: { cell: any }) => {
+      cell: ({ row }: { row: any }) => {
         return (
-          <span className="flex justify-center items-center">
-            {calcAge(cell.getValue())}
-          </span>
+          <div>
+            <h1 className="text-lg text-primary">{row.original.name}</h1>
+            <span className="text-xs text-gray-600">
+              رقم المرشح: {row.original.candidateSerial}
+            </span>
+          </div>
         );
       }
     },
     {
-      id: 'province',
-      accessorKey: 'province.gov.name',
-      header: t('electionBase:confirmedVoters.table.header.governorate')
-    },
-    {
       id: 'pollingCenter',
       accessorKey: 'pollingCenter.name',
-      header: t( 'electionBase:confirmedVoters.table.header.pollingCenter' ),
-      cell: ({ cell }: { cell: any }) => {
-        return <span className='text-xs'>{cell.getValue()}</span>;
+      header: t('electionBase:confirmedVoters.table.header.pollingCenter'),
+      cell: ({ row }: { row: any }) => {
+        return (
+          <div>
+            <h1 className="text-lg text-primary">{row.original.name}</h1>
+            <span className="text-xs text-gray-600">
+              رقم القائمة: {row.original.candidateListSerial}
+            </span>
+          </div>
+        );
       }
     },
     {
-      id: 'address',
-      accessorKey: 'address',
-      header: 'العنوان',
-      cell: ({ cell }: { cell: any }) => {
-        return <span className=' text-xs'>{cell.getValue()}</span>;
-      }
-    },
-    {
-      id: 'gender',
-      accessorKey: 'gender',
-      header: t('electionBase:confirmedVoters.table.header.gender'),
-      cell: ({ cell }: { cell: any }) => {
-        return <Fragment>{cell.getValue() === 0 ? 'ذكر' : 'انثى'}</Fragment>;
-      }
-    },
-    {
-      id: 'candidate',
-      accessorKey: 'candidate.name',
+      id: 'votes',
+      accessorKey: 'totalVoters',
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.candidateName')}
+          title='عدد الاصوات'
         />
       ),
-      cell: ({ cell }: { cell: any }) => {
-        return <span>{cell.getValue() ?? 'لا يوجد'}</span>;
+      cell: ({ row }: { row: any }) => {
+        return (
+          <div className="flex justify-center items-center gap-2">
+            <TrendingUp/>
+            <div className="text-center">
+              <h1 className="text-lg text-primary">
+                {row.original.totalVoters}
+              </h1>
+              <span className="text-xs text-gray-600">عدد الاصوات</span>
+            </div>
+          </div>
+        );
       }
     },
     {
-      id: 'serial',
-      accessorKey: 'serial',
-      header: t('electionBase:confirmedVoters.table.header.candidateNumber')
+      id: 'list',
+      accessorKey: 'totalVoters',
+      header: 'تسلسل القائمة',
+      cell: ({ cell }: { cell: any }) => {
+        return (
+          <div className='text-center'>
+          <h1 className="text-lg text-primary">{cell.getValue()}</h1>
+          <span className="text-xs text-gray-600">
+            تسلسل القائمة
+          </span>
+        </div>
+        )
+      }
     },
+    {
+      id: 'pollingCenterSerial',
+      accessorKey: 'totalVoters',
+      header: 'تسلسل مركز التسجيل',
+      cell: ({ cell }: { cell: any }) => {
+        return (
+          <div className='text-center'>
+          <h1 className="text-lg text-primary">{cell.getValue()}</h1>
+          <span className="text-xs text-gray-600">
+            تسلسل مركز التسجيل
+          </span>
+        </div>
+        )
+      }
+    },
+    {
+      id: 'provinceSerial',
+      accessorKey: 'totalVoters',
+      header: 'تسلسل مكتب المحافظة',
+      cell: ({ cell }: { cell: any }) => {
+        return (
+          <div className='text-center'>
+          <h1 className="text-lg text-primary">{cell.getValue()}</h1>
+          <span className="text-xs text-gray-600">
+            تسلسل مركز التسجيل
+          </span>
+        </div>
+        )
+      }
+    }
   ].filter(Boolean);
 
   return {

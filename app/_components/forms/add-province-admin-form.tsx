@@ -1,7 +1,5 @@
 'use client';
 
-import {useMemo} from 'react';
-
 // External libraries
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
@@ -26,7 +24,6 @@ import { BasicDialog } from '@/app/_components/basic-dialog';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
 import { Dropzone } from '@/app/_components/dropzone';
-import { Combobox } from '@/app/_components/combobox';
 import { Show } from '@/app/_components/show';
 // Utils
 import { cn } from '@/app/_lib/utils';
@@ -37,12 +34,9 @@ export const AddProvinceAdminForm = () => {
     onSubmit,
     isLoadingCandidate,
     isLoadingFile,
-    pollingCentersSearch,
-    usersSearch,
     fileRef } = useAddCandidate();
 
-  const Component = useMemo(
-    () => (
+return (
       <BasicDialog
         open={openAdd}
         onOpenChange={setOpenAdd}
@@ -77,7 +71,7 @@ export const AddProvinceAdminForm = () => {
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         disabled={isLoadingFile || isLoadingCandidate}
-                        placeholder="اسم المرشح"
+                        placeholder="اسم مدير المحافظة"
                         {...field}
                       />
                     </FormControl>
@@ -113,7 +107,7 @@ export const AddProvinceAdminForm = () => {
                           form.formState.errors.candidateSerial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        placeholder="رقم المرشح "
+                        placeholder="رقم مدير المحافظة "
                         disabled={isLoadingCandidate || isLoadingFile}
                         {...field}
                       />
@@ -141,25 +135,6 @@ export const AddProvinceAdminForm = () => {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="pollingCenterId"
-                render={({ field }) => (
-                  <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingCandidate || isLoadingFile}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
-                )}
-              />
-
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile) => (fileRef.current = voterFile)}
@@ -204,9 +179,5 @@ export const AddProvinceAdminForm = () => {
           </form>
         </Form>
       </BasicDialog>
-    ),
-    [openAdd]
-  );
-
-  return Component;
+    )
 };
