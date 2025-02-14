@@ -10,7 +10,7 @@ import { SkeletonPiChart } from '@/app/_components/skeleton-pi-chart';
 import {issuesChartData} from '@/app/_utils/faker'
 import { Switch, Match } from '@/app/_components/switch';
 
-export const ComplaintsChartWidegt = () =>
+export const ComplaintsChartWidget = () =>
 {
 	const {t} = useTranslation()
   const {
@@ -39,7 +39,8 @@ export const ComplaintsChartWidegt = () =>
         <SkeletonPiChart />
       </Match>
 		  <Match when={ isSuccessComplaints }>
-		  <PiChart
+        <PiChart
+          retry={refetchComplaints}
             total={totalIssues}
             chartConfig={issuesChartConfig}
             chartData={complaints}

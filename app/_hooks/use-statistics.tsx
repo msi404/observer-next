@@ -81,7 +81,7 @@ export const useStatistics = () => {
       isSuccess,
       isFetching,
       url: '/candidates',
-      total: data?.data?.totalCandidates,
+      total: data?.totalCandidates,
       icon: <UsersRound />,
       description: 'المرشحين'
     },
@@ -92,7 +92,7 @@ export const useStatistics = () => {
       isSuccess,
       isFetching,
       url: '/observers',
-      total: data?.data?.totalObservers,
+      total: data?.totalObservers,
       icon: <Eye />,
       description: 'home:cards.totalOfObservers'
     },
@@ -103,7 +103,7 @@ export const useStatistics = () => {
       isSuccess,
       isFetching,
       url: '/issues',
-      total: data?.data?.totalComplaints,
+      total: data?.totalComplaints,
       icon: <CircleAlert />,
       description: 'home:cards.totalOfComplaints'
     },
@@ -114,7 +114,7 @@ export const useStatistics = () => {
       isSuccess,
       isFetching,
       url: '/election-base',
-      total: data?.data?.totalConfirmedVoters,
+      total: data?.totalConfirmedVoters,
       icon: <UserRoundCheck />,
       description: 'home:cards.totalOfConfirmedVoters'
     },
@@ -125,7 +125,7 @@ export const useStatistics = () => {
       isSuccess,
       isFetching,
       url: '/election-base',
-      total: data?.data?.totalPendingVoters,
+      total: data?.totalPendingVoters,
       icon: <UserRoundSearch />,
       description: 'home:cards.totalOfPossibleVoters'
     },

@@ -17,9 +17,6 @@ import { useToast } from '@/app/_hooks/use-toast';
 // API Services
 import { baseURL } from '@/app/_services/api';
 import {
-  usePollingCentersQuery,
-  useElectoralEntitiesQuery,
-  useProvincesQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
 import {
@@ -45,38 +42,14 @@ export const useAddCandidate = () => {
   const [usersSearch, setUsersSearch] = useState<
     { value: string; label: string }[]
   >([]);
-  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [pollingCentersSearch, setPollingCentersSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const {
-    data: pollingCenters,
-    isLoading: isLoadingPollingCenters,
-    refetch: refetchPollingCenters
-  } = usePollingCentersQuery('');
   const {
     data: users,
     isLoading: isLoadingUsers,
     refetch: refetchUsers
   } = useUsersQuery('Role=102');
-  const {
-    data: electoralEntities,
-    isLoading: isLoadingElectoralEntities,
-    refetch: refetchElectoralEntities
-  } = useElectoralEntitiesQuery('');
-
-  const { data: provinces, isLoading: isLoadingProvinces, refetch: refetchProvinces } =
-    useProvincesQuery( '' );
-  
-    const [governoratesSearch, setGovernoratesSearch] = useState<
-    { label: string; value: string }[]
-  >([]);
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -142,25 +115,6 @@ export const useAddCandidate = () => {
   };
   // Effect to Update Search Options
   useEffect(() => {
-    refetchElectoralEntities();
-    if (!isLoadingElectoralEntities) {
-      setElectoralEntitiesSearch(
-        electoralEntities?.data.items.map((electoralEntity: any) => ({
-          value: electoralEntity.id,
-          label: electoralEntity.name
-        }))
-      );
-    }
-    refetchProvinces()
-    if (!isLoadingProvinces) {
-      const governorates = provinces?.data.items.map(
-        (province: { name: string, id: string }) => ({
-          label: province.name,
-          value: province.id
-        })
-      );
-      setGovernoratesSearch(governorates);
-    }
     refetchUsers();
     if (!isLoadingUsers) {
       setUsersSearch(
@@ -170,25 +124,9 @@ export const useAddCandidate = () => {
         }))
       );
     }
-
-    refetchPollingCenters();
-    if (!isLoadingPollingCenters) {
-      setPollingCentersSearch(
-        pollingCenters?.data.items.map((pollingCenter: any) => ({
-          value: pollingCenter.id,
-          label: pollingCenter.name
-        }))
-      );
-    }
   }, [
     users,
     isLoadingUsers,
-    pollingCenters,
-    isLoadingPollingCenters,
-    electoralEntities,
-    isLoadingElectoralEntities,
-    provinces,
-    isLoadingProvinces,
     openAdd
   ]);
   return {
@@ -198,9 +136,6 @@ export const useAddCandidate = () => {
     onSubmit,
     isLoadingFile,
     isLoadingCandidate,
-    pollingCentersSearch,
-    electoralEntitiesSearch,
-    governoratesSearch,
     usersSearch,
     fileRef
   };

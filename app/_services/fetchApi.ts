@@ -57,22 +57,44 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 			query: () => 'govs'
 		}),
 		pollingCenters: builder.query( {
-			query: () => 'pollingcenters'
+			query: (params) => `pollingcenters?${params}`,
+			transformResponse: ( response: any ) =>
+			{
+				const items = response.data.items;
+				return {
+					items,
+					pageNumber: response.data.pageNumber,
+					pageSize: response.data.pageSize,
+					totalCount: response.data.totalCount,
+					totalPages: response.data.totalPages
+				}
+			}
 		} ),
 		electoralEntities: builder.query( {
 			query: () => 'electoralentities'
 		} ),
 		govCenters: builder.query( {
-			query: () => 'govcenters'
+			query: ( query ) => `govcenters?${ query }`,
+			transformResponse: ( response: any ) =>
+			{
+				const items = response.data.items;
+				return {
+					items,
+					pageNumber: response.data.pageNumber,
+					pageSize: response.data.pageSize,
+					totalCount: response.data.totalCount,
+					totalPages: response.data.totalPages
+				}
+			}
 		}),
 		users: builder.query( {
-			query: (params) => `users?${params}`
+			query: (query) => `users?${query}`
 		} ),
 		currentUser: builder.query( {
 			query: () => 'users/current'
 		} ),
 		voters: builder.query( {
-			query: ( params ) => `voters?${ params }`,
+			query: ( query ) => `voters?${ query }`,
 			transformResponse: ( response: any ) =>
 			{
 				const items = response.data.items.map( ( item: Voter ) =>

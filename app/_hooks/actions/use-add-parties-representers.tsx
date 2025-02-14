@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -15,9 +15,6 @@ import { z } from 'zod';
 import { useToast } from '@/app/_hooks/use-toast';
 
 import {
-  usePollingCentersQuery,
-  useElectoralEntitiesQuery,
-  useGovCentersQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
@@ -34,30 +31,7 @@ export const useAddPartiesRepresenters = () => {
   const { refetch } = useUsersQuery(
     `Role=10&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
-
-  // State Management
-  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [govCenterSearch, setGovCenterSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [pollingCenterSearch, setPollingCentersSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-
-  // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-    usePollingCentersQuery('');
-
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities, refetch: refetchElectoralEntities } =
-    useElectoralEntitiesQuery('');
-
-  const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-    useGovCentersQuery('');
 
   // Toast Hook
   const { toast } = useToast();
@@ -101,53 +75,11 @@ export const useAddPartiesRepresenters = () => {
       setOpenAdd(false);
     }
   };
-  // Effect to Update Search Options
-  useEffect( () =>
-  {
-    refetchElectoralEntities()
-    if (!isLoadingElectoralEntities) {
-      setElectoralEntitiesSearch(
-        electoralEntities?.data.items.map((electoralEntity: any) => ({
-          value: electoralEntity.id,
-          label: electoralEntity.name
-        }))
-      );
-    }
-    refetchPollingCenters()
-    if (!isLoadingPollingCenters) {
-      setPollingCentersSearch(
-        pollingCenters?.data.items.map((pollingCenter: any) => ({
-          value: pollingCenter.id,
-          label: pollingCenter.name
-        }))
-      );
-    }
-    refetchGovCenters()
-    if (!isLoadingGovCenters) {
-      setGovCenterSearch(
-        govCenters?.data.items.map((govCenter: any) => ({
-          value: govCenter.gov.id,
-          label: govCenter.gov.name
-        }))
-      );
-    }
-  }, [
-    electoralEntities,
-    isLoadingElectoralEntities,
-    pollingCenters,
-    isLoadingPollingCenters,
-    govCenters,
-    isLoadingGovCenters,
-    openAdd
-  ]);
   return {
     openAdd,
     setOpenAdd,
     form,
     onSubmit,
     isLoadingUser,
-    govCenterSearch,
-    pollingCenterSearch,
-    electoralEntitiesSearch
   };
 };

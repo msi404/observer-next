@@ -110,7 +110,7 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
     }
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
-        pollingCenters?.data.items.map((pollingCenter: any) => ({
+        pollingCenters?.items.map((pollingCenter: any) => ({
           value: pollingCenter.id,
           label: pollingCenter.name
         }))

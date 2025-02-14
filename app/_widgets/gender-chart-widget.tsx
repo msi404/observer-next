@@ -40,6 +40,7 @@ export const GenderChartWidget = () =>
 
 			<Match when={isSuccessGenders}>
 				<PiChart
+					retry={refetchGenders}
 					total={totalGenders}
             chartConfig={gendersChartConfig}
             chartData={genders}

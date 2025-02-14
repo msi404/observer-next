@@ -1,7 +1,34 @@
 import { tatweerApi } from '@/app/_services/api';
 
 const mutationApi = tatweerApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: ( builder ) => ( {
+    createGovCenter: builder.mutation( {
+      query: ( item ) => ( {
+        url: 'govcenters',
+        method: 'POST',
+        body: item
+      })
+    } ),
+    deleteGovCenter: builder.mutation( {
+      query: (id) => ( {
+        url: `govcenters/${ id }`,
+        method: 'DELETE'
+      })
+    }),
+    updateGovCenter: builder.mutation( {
+      query: ({govCenter, id}) => ( {
+        url: `govcenters/${ id }`,
+        method: 'PUT',
+        body: govCenter
+      })
+    }),
+    createPollingCenter: builder.mutation( {
+      query: ( item ) => ( {
+        url: 'pollingcenters',
+        method: 'POST',
+        body: item
+      })
+    }),
     uploadFile: builder.mutation({
       query: (file) => ({
         url: 'attachments',
@@ -60,5 +87,9 @@ export const {
   useUpdateVoterMutation,
   useCreateUserMutation,
   useDeleteUserMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useCreatePollingCenterMutation,
+  useCreateGovCenterMutation,
+  useDeleteGovCenterMutation,
+  useUpdateGovCenterMutation
 } = mutationApi;

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -10,9 +10,6 @@ import {
   useDeleteUserMutation
 } from '@/app/_services/mutationApi';
 import {
-  useElectoralEntitiesQuery,
-  usePollingCentersQuery,
-  useGovCentersQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
@@ -44,31 +41,10 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
     `Role=100&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
-  // State Management
-  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [govCenterSearch, setGovCenterSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [pollingCentersSearch, setPollingCentersSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
-  // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters} =
-    usePollingCentersQuery('');
-
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities} =
-    useElectoralEntitiesQuery('');
-
-  const { data: govCenters, isLoading: isLoadingGovCenters} =
-    useGovCentersQuery('');
 
   // Toast Hook
   const { toast } = useToast();
@@ -124,44 +100,6 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
       setOpenUpdate(false);
     }
   };
-  // Effect to Update Search Options
-  useEffect( () =>
-  {
-    if (!isLoadingElectoralEntities) {
-      setElectoralEntitiesSearch(
-        electoralEntities?.data.items.map((electoralEntity: any) => ({
-          value: electoralEntity.id,
-          label: electoralEntity.name
-        }))
-      );
-    }
-
-    if (!isLoadingPollingCenters) {
-      setPollingCentersSearch(
-        pollingCenters?.data.items.map((pollingCenter: any) => ({
-          value: pollingCenter.id,
-          label: pollingCenter.name
-        }))
-      );
-    }
-
-    if (!isLoadingGovCenters) {
-      setGovCenterSearch(
-        govCenters?.data.items.map((govCenter: any) => ({
-          value: govCenter.gov.id,
-          label: govCenter.gov.name
-        }))
-      );
-    }
-  }, [
-    electoralEntities,
-    isLoadingElectoralEntities,
-    pollingCenters,
-    isLoadingPollingCenters,
-    govCenters,
-    isLoadingGovCenters,
-    openUpdate
-  ]);
 
   const onDelete = async () => {
     await deleteUser(item.id);
@@ -177,8 +115,5 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
-    govCenterSearch,
-    pollingCentersSearch,
-    electoralEntitiesSearch
   };
 };

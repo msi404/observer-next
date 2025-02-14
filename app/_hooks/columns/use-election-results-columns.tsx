@@ -32,7 +32,7 @@ export const useElectionsResultsColumns = () => {
       header: 'الصورة الشخصية',
       cell: ({ cell }: any) => {
         const value = cell.getValue();
-        return <Zoom className="rounded-full border w-12" preview={value} />;
+        return <Zoom className="rounded-full border w-12 h-12" preview={value} />;
       }
     },
     {

@@ -9,20 +9,17 @@ import {
   FormField,
   FormItem
 } from '@/app/_components/ui/form';
-import { Input } from '@/app/_components/ui/input';
-import { DatePicker } from '@/app/_components/date-picker';
+import { Combobox } from '@/app/_components/combobox';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
-interface EditPartiesRepresentersProps {
+import { useEditGovCenter } from '@/app/_hooks/actions/use-edit-gov-center';
+interface EditGovCenterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditPartiesRepresentersForm = ({
-  item
-}: EditPartiesRepresentersProps) => {
+export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -32,8 +29,10 @@ export const EditPartiesRepresentersForm = ({
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
+    govSearch,
     form
-  } = useEditPartiesRepresenters({ item });
+  } = useEditGovCenter( { item } );
+	
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -54,9 +53,9 @@ export const EditPartiesRepresentersForm = ({
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف ممثل كيان"
+        title="حذف مكتب محافظة"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
-      >
+		  >
         <DialogFooter>
           <div className="flex justify-between w-full">
             <Button
@@ -97,102 +96,29 @@ export const EditPartiesRepresentersForm = ({
             <Pencil size="20px" />
           </motion.button>
         }
-        title="تعديل ممثل كيان"
+        title="تعديل مكتب محافظة"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
             <div className="grid gap-4">
-              {/* Name */}
-              <FormField
+				<FormField
                 control={form.control}
-                name="name"
+                name="govId"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <Combobox
+                        options={govSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="المحافظة"
+                        disabled={isLoadingUpdate}
                         className={cn(
-                          form.formState.errors.name &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                          form.formState.errors.govId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
                         )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم الموظف الثلاثي"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.username &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم المستخدم"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Date of Birth */}
-              <FormField
-                control={form.control}
-                name="dateOfBirth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <DatePicker
-                        disabled={isLoadingUpdate}
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.phone &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="رقم الهاتف"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.email &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="البريد الالكتروني"
-                        disabled={isLoadingUpdate}
-                        {...field}
                       />
                     </FormControl>
                   </FormItem>

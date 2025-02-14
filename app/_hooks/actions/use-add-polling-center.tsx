@@ -14,66 +14,61 @@ import { z } from 'zod';
 // Hooks
 import { useToast } from '@/app/_hooks/use-toast';
 
+// API Services
+import { useCreatePollingCenterMutation } from '@/app/_services/mutationApi';
 import {
-  useUsersQuery
+  usePollingCentersQuery
 } from '@/app/_services/fetchApi';
-import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
 // Validation Schemas
-import { addUserSchema } from '@/app/_validation/user';
+import { addPollingCenterSchema } from '@/app/_validation/polling-center';
 
-export const useAddObserver = () => {
+export const useAddPollingCenter = (govCenterId: string) => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
-
-  const { refetch } = useUsersQuery(
-    `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
-  );
+  const [createPollingCenter, { isLoading: isLoadingPollingCenter }] =
+    useCreatePollingCenterMutation();
 
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
+  // Query Data
+  const { refetch: refetchPollingCenters } = usePollingCentersQuery(
+    `PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${govCenterId}`
+  );
   // Toast Hook
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addPollingCenterSchema>>({
+    resolver: zodResolver(addPollingCenterSchema),
     defaultValues: {
       name: '',
-      // @ts-ignore
-      dateOfBirth: '',
-      govId: '',
-      pollingCenterId: '',
-      electoralEntityId: '',
-      username: '',
-      phone: '',
-      email: '',
-      password: '',
-      role: 104
+      govCenterId: ''
     }
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addUserSchema>) => {
-    try {
-      form.setValue('role', 104);
-      const result = await createUser(
-        addUserSchema.parse(form.getValues())
+  const onSubmit = async () => {
+    try
+    {
+      form.setValue('govCenterId', govCenterId)
+      const result = await createPollingCenter(
+        addPollingCenterSchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.data,
+        description: error.data.title,
         variant: 'destructive'
       });
       console.log(error);
     } finally {
-      refetch();
-      setOpenAdd(false);
+      refetchPollingCenters();
+      setOpenAdd( false );
+      form.reset()
     }
   };
   return {
@@ -81,6 +76,6 @@ export const useAddObserver = () => {
     setOpenAdd,
     form,
     onSubmit,
-    isLoadingUser,
+    isLoadingPollingCenter
   };
 };

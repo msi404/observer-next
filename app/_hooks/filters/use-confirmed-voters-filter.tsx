@@ -83,7 +83,7 @@ export const useConfirmedVotersFilter = ( table: Table<any> ) =>
 
   useEffect(() => {
     if (!isLoadingPollingCenters) {
-      const centers = pollingCenters?.data.items.map(
+      const centers = pollingCenters?.items.map(
         (center: { name: string }) => ({
           label: center.name,
           value: center.name

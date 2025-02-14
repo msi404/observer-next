@@ -32,6 +32,7 @@ export const VoterStatesChartWidget = () => {
       </Match>
       <Match when={isSuccessVoters}>
         <TwinChart
+          retry={refetchVoters}
           chartData={voters}
           chartConfig={votersPerStateChartConfig}
           formatLabel={false}

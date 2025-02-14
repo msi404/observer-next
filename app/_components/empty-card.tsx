@@ -15,7 +15,7 @@ import { ArchiveX, RefreshCcw } from 'lucide-react';
 import { Show } from '@/app/_components/show';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { Dynamic } from '@/app//_components/dynamic';
-export const EmptyTable: FC<{ retry: VoidFunction; Add?: ReactElement }> = ({
+export const EmptyCard: FC<{ retry: VoidFunction; Add?: ReactElement }> = ({
   retry,
   Add
 } ) =>

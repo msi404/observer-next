@@ -137,7 +137,7 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
     }
     if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
-        pollingCenters?.data.items.map((pollingCenter: any) => ({
+        pollingCenters?.items.map((pollingCenter: any) => ({
           value: pollingCenter.id,
           label: pollingCenter.name
         }))

@@ -1,5 +1,4 @@
 'use client';
-import { useEffect } from 'react';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
@@ -45,11 +44,6 @@ export const useGraph = () => {
     refetch: refetchComplaints
   } = useComplaintsStatisticsQuery(queryComplaints);
 
-  useEffect(() => {
-    if (!isLoadingVoters) {
-      console.log(voters);
-    }
-  }, [isLoadingVoters, voters]);
   return {
     complaints,
     isErrorComplaints,

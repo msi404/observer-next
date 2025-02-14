@@ -1,76 +1,65 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
   selectPageSize
 } from '@/app/_lib/features/paginationSlice';
-import {
-  useUpdateUserMutation,
-  useDeleteUserMutation
+import
+	{
+	useUpdateGovCenterMutation,
+  useDeleteGovCenterMutation
 } from '@/app/_services/mutationApi';
 import {
-  useUsersQuery
+  useGovCentersQuery,
+  useProvincesQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addUserSchema } from '@/app/_validation/user';
+import { addGovCenterSchema } from '@/app/_validation/gov-center'
 
-interface ObserverItem {
-  id: string;
-  name: string;
-  dateOfBirth: string;
-  pollingCenter: { id: string };
-  electoralEntity: { id: string };
-  govId: string;
-  phone: string;
-  password: string;
-  username: string;
-  email: string;
-}
-
-export const useEditObserver = ({ item }: { item: ObserverItem }) => {
+export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
-  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
-  const { refetch } = useUsersQuery(
-    `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
-  );
+  const [updateGovCenter, { isLoading: isLoadingUpdate }] = useUpdateGovCenterMutation();
+  const [deleteGovCenter, { isLoading: isLoadingDelete }] = useDeleteGovCenterMutation();
+
+
+  // State Management
+  const [govSearch, setGovSearch] = useState<
+  { value: string; label: string }[]
+>([]);
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
+  // Query Data
+  const { refetch } = useGovCentersQuery(
+	`PageNumber=${currentPage}&PageSize=${pageSize}`
+  );
+	
+	 const { data: provinces, isLoading: isLoadingProvinces } =
+		 useProvincesQuery('');
+
   // Toast Hook
   const { toast } = useToast();
 
-  // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
-    defaultValues: {
-      name: item.name,
-      // @ts-ignore
-      dateOfBirth: new Date(item.dateOfBirth),
-      govId: item.govId,
-      pollingCenterId: item.pollingCenter?.id,
-      electoralEntityId: item.electoralEntity?.id,
-      password: 'defaultPassword123', // Placeholder; handle securely in production
-      username: item?.username,
-      phone: item?.phone,
-      email: item?.email,
-      role: 104
-    }
-  });
+   // Form Setup
+	const form = useForm<z.infer<typeof addGovCenterSchema>>({
+		resolver: zodResolver(addGovCenterSchema),
+		defaultValues: {
+		  govId: item.gov.id
+		}
+	 });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addUserSchema>) => {
+  const onUpdate = async (values: z.infer<typeof addGovCenterSchema>) => {
     try {
-      form.setValue('role', 104);
-      await updateUser({
-        user: addUserSchema.parse(form.getValues()),
+      await updateGovCenter({
+        govCenter: addGovCenterSchema.parse(form.getValues()),
         id: item.id
       });
     } catch (error: any) {
@@ -95,12 +84,24 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
     finally
     {
       refetch();
-      setOpenUpdate(false);
+		 setOpenUpdate( false );
+		 form.reset()
     }
   };
+  // Effect to Update Search Options
+  useEffect(() => {
+	if (!isLoadingProvinces) {
+	  setGovSearch(
+		 provinces?.data.items.map((gov: any) => ({
+			value: gov.id,
+			label: gov.name
+		 }))
+	  );
+	}
+ }, [provinces, isLoadingProvinces, openUpdate]);
 
   const onDelete = async () => {
-    await deleteUser(item.id);
+    await deleteGovCenter(item.id);
     refetch();
   };
   return {
@@ -113,5 +114,6 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
+    govSearch
   };
 };
