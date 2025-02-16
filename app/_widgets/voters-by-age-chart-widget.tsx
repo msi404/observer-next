@@ -1,4 +1,5 @@
 'use client';
+import {useEffect} from 'react'
 import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
@@ -11,7 +12,7 @@ import { voterByAgeData, candidatesActivitiesData } from '@/app/_utils/faker';
 
 export const VotersByAgeChartWidget = () => {
   const { t } = useTranslation();
-  const { votersByAgeChartConfig, candidatesActivitiesChartConfig } =
+  const { votersByAgeChartConfig } =
     useCharts();
   const {
     voterByAge,
@@ -21,6 +22,14 @@ export const VotersByAgeChartWidget = () => {
     isLoadingVoterByAge,
     refetchVoterByAge
   } = useGraph();
+
+  useEffect( () =>
+  {
+    if ( !isLoadingVoterByAge )
+    {
+      console.log(voterByAge);
+    }
+  }, [isLoadingVoterByAge, isFetchingVoterByAge, voterByAge])
 
   return (
     <Switch>
@@ -41,7 +50,7 @@ export const VotersByAgeChartWidget = () => {
           nameKeyOne="confirmedVoters"
           nameKeyTwo="possibleVoters"
           chartConfig={votersByAgeChartConfig}
-          chartData={voterByAgeData}
+          chartData={voterByAge}
           title="اعمار الناخبين"
           description="معدل اعمار الناخبين"
         />

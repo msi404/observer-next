@@ -21,7 +21,7 @@ import { addUserSchema } from '@/app/_validation/user';
 interface ObserverItem {
   id: string;
   name: string;
-  dateOfBirth: string;
+  birth: string;
   pollingCenter: { id: string };
   electoralEntity: { id: string };
   govId: string;
@@ -53,7 +53,7 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
     defaultValues: {
       name: item.name,
       // @ts-ignore
-      dateOfBirth: new Date(item.dateOfBirth),
+      dateOfBirth: new Date(item.birth),
       govId: item.govId,
       pollingCenterId: item.pollingCenter?.id,
       electoralEntityId: item.electoralEntity?.id,

@@ -42,7 +42,7 @@ export const useAddDataEntry = () => {
     defaultValues: {
       name: '',
       // @ts-ignore
-      birth: '',
+      dateOfBirth: '',
       govId: '',
       pollingCenterId: '',
       electoralEntityId: '',

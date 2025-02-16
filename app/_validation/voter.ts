@@ -29,7 +29,7 @@ export const addConfirmedVoterSchema = z.object({
 
 export const addPossibleVoterSchema = z.object({
   name: z.string().min(3),
-  birth: z.date().default(new Date()),
+  dateOfBirth: z.date().default(new Date()),
   gender: z.enum(['0', '1']).transform((val) => Number(val)),
   state: z.nativeEnum(VoterState),
   address: z.string().min(3),

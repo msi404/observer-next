@@ -20,7 +20,7 @@ export const addUserSchema = z.object({
 
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
-  birth: z.date().default( new Date() ),
+  dateOfBirth: z.date().default( new Date() ),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -64,7 +64,7 @@ export const addCandidateSchema = z.object({
 
 export const addDataEntrySchema = z.object({
   name: z.string().min(3),
-  birth: z.date().default( new Date() ),
+  dateOfBirth: z.date().default( new Date() ),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -106,7 +106,7 @@ export const addDataEntrySchema = z.object({
 
 export const addObserverSchema = z.object({
   name: z.string().min(3),
-  birth: z.date().default( new Date() ),
+  dateOfBirth: z.date().default( new Date() ),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -148,7 +148,7 @@ export const addObserverSchema = z.object({
 
 export const addElectralAdminSchema = z.object({
   name: z.string().min(3),
-  birth: z.date().default( new Date() ),
+  dateOfBirth: z.date().default( new Date() ),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -190,7 +190,7 @@ export const addElectralAdminSchema = z.object({
 
 export const addProvinceAdminSchema = z.object({
   name: z.string().min(3),
-  birth: z.date().default( new Date() ),
+  dateOfBirth: z.date().default( new Date() ),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )

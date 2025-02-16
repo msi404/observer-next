@@ -53,7 +53,7 @@ export const useAddProvinceAdmin = () => {
     defaultValues: {
       name: '',
       // @ts-ignore
-      birth: '',
+      dateOfBirth: '',
       govId: '',
       pollingCenterId: '',
       electoralEntityId: '',

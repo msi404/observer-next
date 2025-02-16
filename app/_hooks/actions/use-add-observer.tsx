@@ -49,7 +49,7 @@ export const useAddObserver = () => {
     defaultValues: {
       name: '',
       // @ts-ignore
-      birth: '',
+      dateOfBirth: '',
       govId: '',
       pollingCenterId: '',
       electoralEntityId: '',

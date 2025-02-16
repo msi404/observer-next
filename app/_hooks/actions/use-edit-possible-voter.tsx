@@ -67,7 +67,7 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
     resolver: zodResolver(addPossibleVoterSchema),
     defaultValues: {
       name: item.name,
-      birth: new Date(item.birth),
+      dateOfBirth: new Date(item.birth),
       address: item.address,
       state: 0,
       // @ts-ignore

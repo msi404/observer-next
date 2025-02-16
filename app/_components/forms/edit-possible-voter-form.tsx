@@ -23,7 +23,7 @@ import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { useEditPossibleVoter } from '@/app/_hooks/actions/use-edit-possible-voter'
+import { useEditPossibleVoter } from '@/app/_hooks/actions/use-edit-possible-voter';
 
 interface EditPossibleVoterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
@@ -37,12 +37,12 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
     setOpenUpdate,
     onDelete,
     isLoadingDelete,
-	  isLoadingUpdate,
-	  openUpdate,
-	  pollingCentersSearch,
-	  usersSearch,
+    isLoadingUpdate,
+    openUpdate,
+    pollingCentersSearch,
+    usersSearch,
     form
-  } = useEditPossibleVoter({item});
+  } = useEditPossibleVoter({ item });
   return (
     <div className="flex gap-4 items-center ">
       <BasicDialog
@@ -158,7 +158,7 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="birth"
+                name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -243,6 +243,7 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
                     <FormControl>
                       <Combobox
                         options={usersSearch}
+                        //@ts-ignore
                         value={field.value} // Controlled by React Hook Form
                         onChange={field.onChange} // Updates React Hook Form on change
                         label="المرشح"
@@ -272,17 +273,14 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
                   disabled={isLoadingUpdate}
                 >
                   تحديث
-                  {(isLoadingUpdate) && (
+                  {isLoadingUpdate && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button
-                    variant="outline"
-                    disabled={isLoadingUpdate}
-                  >
+                  <Button variant="outline" disabled={isLoadingUpdate}>
                     الغاء
                   </Button>
                 </DialogClose>

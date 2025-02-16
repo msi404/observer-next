@@ -2,6 +2,13 @@ import { tatweerApi } from '@/app/_services/api';
 
 const mutationApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
+    createNotification: builder.mutation( {
+      query: ( item ) => ( {
+        url: 'notifications',
+        method: 'POST',
+        body: item
+      })
+    }),
     createGovCenter: builder.mutation( {
       query: ( item ) => ( {
         url: 'govcenters',
@@ -91,5 +98,6 @@ export const {
   useCreatePollingCenterMutation,
   useCreateGovCenterMutation,
   useDeleteGovCenterMutation,
-  useUpdateGovCenterMutation
+  useUpdateGovCenterMutation,
+  useCreateNotificationMutation
 } = mutationApi;

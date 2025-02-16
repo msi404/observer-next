@@ -30,7 +30,9 @@ interface EditConfirmedVoterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) => {
+export const EditConfirmedVoterForm = ({
+  item
+}: EditConfirmedVoterFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -39,13 +41,13 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
     onDelete,
     isLoadingDelete,
     isLoadingFile,
-	  isLoadingUpdate,
-	  openUpdate,
-	  pollingCentersSearch,
-	  usersSearch,
-	 fileRef,
+    isLoadingUpdate,
+    openUpdate,
+    pollingCentersSearch,
+    usersSearch,
+    fileRef,
     form
-  } = useEditConfirmedVoter({item});
+  } = useEditConfirmedVoter({ item });
   return (
     <div className="flex gap-4 items-center ">
       <BasicDialog
@@ -246,6 +248,7 @@ export const EditConfirmedVoterForm = ({ item }: EditConfirmedVoterFormProps) =>
                     <FormControl>
                       <Combobox
                         options={usersSearch}
+                        //@ts-ignore
                         value={field.value} // Controlled by React Hook Form
                         onChange={field.onChange} // Updates React Hook Form on change
                         label="المرشح"

@@ -145,7 +145,7 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
     }
     if (!isLoadingGovCenters) {
       setGovCenterSearch(
-        govCenters?.data.items.map((govCenter: any) => ({
+        govCenters?.items.map((govCenter: any) => ({
           value: govCenter.gov.id,
           label: govCenter.gov.name
         }))

@@ -120,7 +120,7 @@ export const AddPartiesRepresentersForm = () => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="birth"
+                name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

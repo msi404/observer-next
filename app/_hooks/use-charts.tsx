@@ -36,11 +36,11 @@ export const useCharts = () => {
 
   const issuesChartConfig = {
     closed: {
-      label: t('home:charts.issuesNumber.tooltips.closed'),
+      label: 'المغلقة',
       color: 'hsl(var(--chart-1))'
     },
     opened: {
-      label: t('home:charts.issuesNumber.tooltips.opened'),
+      label: 'المفتوحة',
       color: 'hsl(var(--chart-2))'
     }
   } satisfies ChartConfig;

@@ -1,13 +1,5 @@
 import { Card, CardContent } from '@/app/_components/ui/card';
 import { Skeleton } from '@/app/_components/ui/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/app/_components/ui/table';
 import { Container } from '@/app/_components/container';
 import { For } from '@/app/_components/for';
 
@@ -34,34 +26,34 @@ export const LoadingTable = () => {
           </div>
         </CardContent>
         <Container>
-          <Table>
-            <TableHeader>
-              <TableRow>
+          <div>
+            <div>
+              <div className='flex justify-between'>
                 <For each={arrayHeader}>
                   {(item) => (
-                    <TableHead key={item.id}>
+                    <div key={item.id}>
                       <Skeleton className="h-4 w-16" />
-                    </TableHead>
+                    </div>
                   )}
                 </For>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+              </div>
+            </div>
+            <div>
               <For each={arrayBody}>
                 {(item) => (
-                  <TableRow key={item.id}>
+                  <div className='flex justify-between items-center gap-4' key={item.id}>
                     <For each={arrayHeader}>
                       {(item) => (
-                        <TableCell key={item.id}>
+                        <div className='my-2' key={item.id}>
                           <Skeleton className="h-5 w-20" />
-                        </TableCell>
+                        </div>
                       )}
                     </For>
-                  </TableRow>
+                  </div>
                 )}
               </For>
-            </TableBody>
-          </Table>
+            </div>
+          </div>
           <Skeleton className="w-full h-8 mt-12" />
         </Container>
       </Card>

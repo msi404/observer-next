@@ -1,4 +1,5 @@
 'use client';
+import {useEffect} from 'react'
 import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
@@ -7,7 +8,6 @@ import { FetchCard } from '@/app/_components/fetch-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { Switch, Match } from '@/app/_components/switch';
 import { BasicChart } from '@/app/_components/basic-chart';
-import { candidatesActivitiesData } from '@/app/_utils/faker';
 
 export const CandidatesActivitiesChartWidget = () => {
   const { t } = useTranslation();
@@ -21,6 +21,14 @@ export const CandidatesActivitiesChartWidget = () => {
     isLoadingCandidates,
     refetchCandidates
   } = useGraph();
+
+  useEffect( () =>
+  {
+    if ( !isLoadingCandidates )
+    {
+      console.log(candidatesActivites);
+    }
+  }, [isLoadingCandidates, candidatesActivites, isFetchingCandidates])
   return (
     <Switch>
       <Match when={isErrorCandidates}>
@@ -35,7 +43,7 @@ export const CandidatesActivitiesChartWidget = () => {
       <Match when={isSuccessCandidates}>
         <BasicChart
           retry={refetchCandidates}
-          chartData={candidatesActivitiesData}
+          chartData={candidatesActivites}
           chartConfig={candidatesActivitiesChartConfig}
           dataKey="month"
           nameKey="candidatesActivities"

@@ -66,7 +66,7 @@ export const useEditCandidate = ({ item }: { item: CandiateItem }) => {
       // @ts-ignore
       candidateListSerial: item.candidateListSerial,
       // @ts-ignore
-      birth: new Date(item.dateOfBirth),
+      dateOfBirth: new Date(item.dateOfBirth),
       profileImg: item.profileImg,
       role: 102
     }

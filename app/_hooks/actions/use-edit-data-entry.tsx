@@ -21,7 +21,7 @@ import { addDataEntrySchema } from '@/app/_validation/user';
 interface DataEntryItem {
   id: string;
   name: string;
-  dateOfBirth: string;
+  birth: string;
   pollingCenter: { id: string };
   electoralEntity: { id: string };
   govId: string;
@@ -55,7 +55,7 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
     defaultValues: {
       name: item.name,
       // @ts-ignore
-      dateOfBirth: new Date(item.dateOfBirth),
+      dateOfBirth: new Date(item.birth),
       govId: null,
       pollingCenterId: null,
       electoralEntityId: null,

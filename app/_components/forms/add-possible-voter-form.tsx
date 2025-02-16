@@ -109,7 +109,7 @@ export const AddPossibleVoterForm = () => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="birth"
+                name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -200,7 +200,8 @@ export const AddPossibleVoterForm = () => {
                   <FormItem>
                     <FormControl>
                     <Combobox
-                          options={usersSearch}
+                        options={ usersSearch }
+                        //@ts-ignore
                           value={field.value} // Controlled by React Hook Form
                           onChange={field.onChange} // Updates React Hook Form on change
                           label="المرشح"
