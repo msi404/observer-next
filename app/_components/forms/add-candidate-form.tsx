@@ -163,7 +163,7 @@ export const AddCandidateForm = () => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="dateOfBirth"
+                name="birth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

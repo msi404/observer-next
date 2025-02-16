@@ -2,6 +2,34 @@ import { tatweerApi } from "@/app/_services/api";
 
 const fetchDataApi = tatweerApi.injectEndpoints( {
 	endpoints: builder => ( {
+		votersAgeStatistics: builder.query( {
+			query: () => 'statistics/voters/ages',
+			transformResponse: ( response: any ) =>
+			{
+				return response.data.chart;
+			}
+		}),
+		candidatesActivitiesStatistics: builder.query( {
+			query: () => 'statistics/candidates/posts',
+			transformResponse: ( response: any ) =>
+			{
+				return response;
+			}
+		}),
+		complaints: builder.query( {
+			query: (params) => `complaints?${params}`,
+			transformResponse: ( response: any ) =>
+			{
+				const items = response.data.items;
+				return {
+					items,
+					pageNumber: response.data.pageNumber,
+					pageSize: response.data.pageSize,
+					totalCount: response.data.totalCount,
+					totalPages: response.data.totalPages
+				}
+			}
+		}),
 		votersStatistics: builder.query( {
 			query: () => 'statistics/voters/regions',
 			transformResponse: ( response: any ) =>
@@ -104,7 +132,7 @@ const fetchDataApi = tatweerApi.injectEndpoints( {
 						name: item.name,
 						address: item.address,
 						birth: item.dateOfBirth,
-						province: item.pollingCenter.govCenter,
+						province: item.pollingCenter?.govCenter,
 						pollingCenter: item.pollingCenter,
 						gender: item.gender,
 						candidate: item.candidate,
@@ -150,5 +178,8 @@ export const {
 	useGovCentersQuery,
 	useComplaintsStatisticsQuery,
 	useGenderStatisticsQuery,
-	useVotersStatisticsQuery
+	useVotersStatisticsQuery,
+	useComplaintsQuery,
+	useCandidatesActivitiesStatisticsQuery,
+	useVotersAgeStatisticsQuery
 } = fetchDataApi;

@@ -1,5 +1,4 @@
 'use client';
-import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -42,7 +41,11 @@ export const useCandidateColumns = () => {
     {
       id: 'pollingCenter',
       accessorKey: 'pollingCenter.name',
-      header: 'مكتب المحافظة'
+      header: 'مكتب المحافظة',
+      cell: ( { cell }: { cell: any; } ) =>
+      {
+        return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+      }
     },
     {
       id: 'phone',

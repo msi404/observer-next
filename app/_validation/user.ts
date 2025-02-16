@@ -7,7 +7,7 @@ export const addUserSchema = z.object({
   govId: z.string().min(3),
   pollingCenterId: z.string().min(3),
   electoralEntityId: z.string().min(3),
-  username: z.string().min(3),
+  username: z.string().min(3).max(16),
   password: z.string().min(6),
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
@@ -20,7 +20,7 @@ export const addUserSchema = z.object({
 
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  birth: z.date().default( new Date() ),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -51,7 +51,7 @@ export const addCandidateSchema = z.object({
         return value
       }
     }).optional(),
-  username: z.string().min(3),
+  username: z.string().min(3).max(16),
   password: z.string().min(6).optional(),
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
@@ -95,7 +95,133 @@ export const addDataEntrySchema = z.object({
         return value
       }
     }),
-  username: z.string().min(3),
+  username: z.string().min(3).max(16),
+  password: z.string().min(6),
+  profileImg: z.string().optional(),
+  coverImg: z.string().optional(),
+  role: z.number(),
+  phone: z.string().min(5),
+  email: z.string().email(),
+} );
+
+export const addObserverSchema = z.object({
+  name: z.string().min(3),
+  birth: z.date().default( new Date() ),
+  govId:z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  pollingCenterId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  electoralEntityId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  username: z.string().min(3).max(16),
+  password: z.string().min(6),
+  profileImg: z.string().optional(),
+  coverImg: z.string().optional(),
+  role: z.number(),
+  phone: z.string().min(5),
+  email: z.string().email(),
+} );
+
+export const addElectralAdminSchema = z.object({
+  name: z.string().min(3),
+  birth: z.date().default( new Date() ),
+  govId:z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  pollingCenterId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  electoralEntityId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  username: z.string().min(3).max(16),
+  password: z.string().min(6),
+  profileImg: z.string().optional(),
+  coverImg: z.string().optional(),
+  role: z.number(),
+  phone: z.string().min(5),
+  email: z.string().email(),
+} );
+
+export const addProvinceAdminSchema = z.object({
+  name: z.string().min(3),
+  birth: z.date().default( new Date() ),
+  govId:z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  pollingCenterId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  electoralEntityId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }),
+  username: z.string().min(3).max(16),
   password: z.string().min(6),
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),

@@ -1,4 +1,8 @@
 'use client';
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { useTranslation } from 'react-i18next';
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
@@ -7,45 +11,55 @@ import { Table } from '@/app/_components/table';
 import { Switch, Match } from '@/app/_components/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
-import { useVotersTable } from '@/app/_hooks/tables/use-voters-table';
+import { usePossibleVotersTable } from '@/app/_hooks/tables/use-possible-voters-table';
 
 import { AddPossibleVoterForm } from '@/app/_components/forms/add-possible-voter-form';
 import { FilterPossibleVotersForm } from '@/app/_components/forms/filter-possible-voter-form';
 
 import { Retry } from '@/app/_components/retry';
 
-export const PossibleVotersWidget = () => {
+export const PossibleVotersWidget = () =>
+{
+  const dispatch = useDispatch()
+  const mounted = useMounted()
   const {
-    isError,
-    isFetching,
-    isSuccess,
-    isLoading,
+    isErrorPossibleVoters,
+    isFetchingPossibleVoter,
+    isSuccessPossibleVoter,
+    isLoadingPossibleVoters,
     possibleVoters,
-    refetch,
+    refetchPossibleVoters,
     possibleVotersTable,
     possibleVotersColumnFilter,
     clearPossibleVotersFilter
-  } = useVotersTable();
-
+  } = usePossibleVotersTable();
   const { t } = useTranslation();
+
+  useEffect( () =>
+    {
+      if ( mounted )
+      {
+        dispatch(resetPaginationState())
+      }
+    }, [mounted])
 
   return (
     <Switch>
-      <Match when={isLoading}>
+      <Match when={isLoadingPossibleVoters}>
         <LoadingTable />
       </Match>
-      <Match when={isError}>
-        <ErrorTable retry={refetch} />
+      <Match when={isErrorPossibleVoters}>
+        <ErrorTable retry={refetchPossibleVoters} />
       </Match>
-      <Match when={isFetching}>
+      <Match when={isFetchingPossibleVoter}>
         <FetchTable />
       </Match>
-      <Match when={isSuccess && possibleVoters.length === 0}>
-        <EmptyTable Add={<AddPossibleVoterForm />} retry={refetch} />
+      <Match when={isSuccessPossibleVoter && possibleVoters?.items.length === 0}>
+        <EmptyTable Add={<AddPossibleVoterForm />} retry={refetchPossibleVoters} />
       </Match>
-      <Match when={isSuccess && possibleVoters.length > 0}>
+      <Match when={isSuccessPossibleVoter && possibleVoters?.items.length > 0}>
         <Table
-          Retry={<Retry refetch={refetch} />}
+          Retry={<Retry refetch={refetchPossibleVoters} />}
           Filter={FilterPossibleVotersForm}
           Add={AddPossibleVoterForm}
           columnFilter={possibleVotersColumnFilter}

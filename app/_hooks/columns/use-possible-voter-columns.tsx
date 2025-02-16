@@ -82,7 +82,7 @@ export const usePossibleVotersColumns = () => {
     {
       id: 'serial',
       accessorKey: 'serial',
-      header: t('electionBase:confirmedVoters.table.header.candidateNumber')
+      header: 'رقم بطاقة الناخب'
     },
     hasPermission(user, 'view:confirmedVotersActions') && {
       id: 'actions',

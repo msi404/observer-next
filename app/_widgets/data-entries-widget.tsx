@@ -1,4 +1,8 @@
 'use client';
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
@@ -13,7 +17,10 @@ import {FilterDataEntriesForm} from '@/app/_components/forms/filter-data-entry-f
 
 import { Retry } from '@/app/_components/retry';
 
-export const DataEntriesWidget = () => {
+export const DataEntriesWidget = () =>
+{
+	const dispatch = useDispatch()
+	const mounted = useMounted()
   const {
 	 isError,
 	 isFetching,
@@ -25,6 +32,14 @@ export const DataEntriesWidget = () => {
 	 dataEntriesColumnFilter,
 	 clearDataEntriesFilter
   } = useDataEntriesTable();
+	
+  useEffect( () =>
+	{
+	  if ( mounted )
+	  {
+		 dispatch(resetPaginationState())
+	  }
+	}, [mounted])
 
   return (
 				<Switch>

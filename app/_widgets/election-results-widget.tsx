@@ -1,4 +1,8 @@
 'use client';
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { useTranslation } from 'react-i18next';
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
@@ -12,7 +16,10 @@ import { FilterConfirmedVotersForm } from '@/app/_components/forms/filter-confir
 
 import { Retry } from '@/app/_components/retry';
 
-export const ElectionResultsWidget = () => {
+export const ElectionResultsWidget = () =>
+{
+	const dispatch = useDispatch()
+	const mounted = useMounted()
   const {
 	 isError,
 	 isFetching,
@@ -25,7 +32,15 @@ export const ElectionResultsWidget = () => {
 	 clearElectionResultsFilter
   } = useElectionResultsTable();
 
-  const { t } = useTranslation();
+	const { t } = useTranslation();
+	
+	useEffect( () =>
+		{
+		  if ( mounted )
+		  {
+			 dispatch(resetPaginationState())
+		  }
+		}, [mounted])
 
   return (
 				<Switch>

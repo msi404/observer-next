@@ -72,7 +72,7 @@ export const useAddCandidate = () => {
       // @ts-ignore
       candidateListSerial: '',
       // @ts-ignore
-      dateOfBirth: '',
+      birth: '',
       profileImg: '',
       electoralEntityId: '',
       pollingCenterId: '',

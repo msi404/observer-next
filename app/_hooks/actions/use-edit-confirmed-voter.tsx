@@ -44,7 +44,7 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
     useDeleteVoterMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const { refetch } = useVotersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=2&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -76,11 +76,11 @@ export const useEditConfirmedVoter = ({ item }: { item: VoterItem }) => {
       dateOfBirth: new Date(item.birth),
       card: item.card,
       address: item.address,
-      state: 0,
+      state: 2,
       // @ts-ignore
       gender: String(item.gender), // ✅ Convert to string
-      pollingCenterId: String(item.pollingCenter.id),
-      candidateId: String(item.candidate?.id) ?? null,
+      pollingCenterId: item.pollingCenter?.id,
+      candidateId: item.candidate?.id ?? '',
       serial: item.serial
     }
   });

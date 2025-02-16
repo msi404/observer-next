@@ -30,6 +30,10 @@ export const useDataEntryColumns = () => {
           title='مكتب المحافظة'
         />
       ),
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
     },
     {
       id: 'phone',

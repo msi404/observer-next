@@ -1,4 +1,8 @@
 'use client';
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
@@ -13,7 +17,10 @@ import { FilterObserversForm } from '@/app/_components/forms/filter-observer-for
 
 import { Retry } from '@/app/_components/retry';
 
-export const ObserversWidget = () => {
+export const ObserversWidget = () =>
+{
+	const dispatch = useDispatch()
+	const mounted = useMounted()
   const {
 	 isError,
 	 isFetching,
@@ -25,6 +32,14 @@ export const ObserversWidget = () => {
 	 observersColumnFilter,
 	 clearObserversFilter
   } = useObserversTable();
+	
+  useEffect( () =>
+	{
+	  if ( mounted )
+	  {
+		 dispatch(resetPaginationState())
+	  }
+	}, [mounted])
 
   return (
 				<Switch>

@@ -32,7 +32,7 @@ export const GenderChartWidget = () =>
 				<ErrorCard retry={refetchGenders}/>
 			</Match>
 			<Match when={isFetchingGenders}>
-				<FetchCard />
+				<FetchCard className='h-[33rem]'/>
 			</Match>
 			<Match when={isLoadingGenders}>
 				<SkeletonPiChart />

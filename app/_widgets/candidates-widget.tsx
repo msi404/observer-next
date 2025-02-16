@@ -1,4 +1,8 @@
 'use client';
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
@@ -12,7 +16,10 @@ import { AddCandidateForm } from '@/app/_components/forms/add-candidate-form';
 import {FilterCandidateForm} from '@/app/_components/forms/filter-candidate-form'
 import { Retry } from '@/app/_components/retry';
 
-export const CandidatesWidget = () => {
+export const CandidatesWidget = () =>
+{
+	const dispatch = useDispatch()
+	const mounted = useMounted()
   const {
 	 isError,
 	 isFetching,
@@ -24,6 +31,14 @@ export const CandidatesWidget = () => {
 	 candidatesColumnFilter,
 	 clearCandidatesFilter
   } = useCandidatesTable();
+	
+  useEffect( () =>
+	{
+	  if ( mounted )
+	  {
+		 dispatch(resetPaginationState())
+	  }
+	}, [mounted])
 
   return (
 				<Switch>

@@ -1,4 +1,6 @@
 'use client';
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -34,7 +36,8 @@ const Details: FC<{
   gov: string;
   pollingCenters: number;
   observers: number;
-}> = ({ gov, pollingCenters, observers }) => {
+}> = ( { gov, pollingCenters, observers } ) =>
+{
   return (
     <div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
@@ -55,6 +58,7 @@ const Details: FC<{
 
 export const GovCentersWidget: FC = () => {
   const dispatch = useDispatch();
+  const mounted = useMounted()
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
 
@@ -65,7 +69,16 @@ export const GovCentersWidget: FC = () => {
     if (!isLoading) {
       dispatch(setTotalPages(data?.totalPages));
     }
-  }, [isLoading, data, dispatch]);
+  }, [ isLoading, data, dispatch ] );
+  
+  useEffect( () =>
+    {
+      if ( mounted )
+      {
+        dispatch(resetPaginationState())
+      }
+    }, [mounted])
+  
 
   return (
     <Card className="py-12 px-6">

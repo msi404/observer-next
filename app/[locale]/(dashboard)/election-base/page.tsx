@@ -1,5 +1,4 @@
 'use client';
-import { type NextPage } from 'next';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,8 +12,11 @@ import {
 
 import { ConfirmedVotersWidget } from '@/app/_widgets/confirmed-voters-widget'
 import { PossibleVotersWidget } from '@/app/_widgets/possible-voters-widget'
+import {type NextPage } from 'next';
 
-const ElectionBasePage: NextPage = () => {
+const VotersPage: NextPage = () =>
+{
+  
   const { t } = useTranslation();
   return (
     <Container>
@@ -32,7 +34,7 @@ const ElectionBasePage: NextPage = () => {
             initial={{ x: -300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-           <ConfirmedVotersWidget />
+            <ConfirmedVotersWidget /> 
           </motion.div>
         </TabsContent>
         <TabsContent value="electoral-distribution">
@@ -40,7 +42,7 @@ const ElectionBasePage: NextPage = () => {
             initial={{ x: 300 }}
             animate={{ x: 0, transition: { damping: 0, ease: 'easeOut' } }}
           >
-           <PossibleVotersWidget />
+            <PossibleVotersWidget />
           </motion.div>
         </TabsContent>
       </Tabs>
@@ -48,4 +50,4 @@ const ElectionBasePage: NextPage = () => {
   );
 };
 
-export default ElectionBasePage;
+export default VotersPage;

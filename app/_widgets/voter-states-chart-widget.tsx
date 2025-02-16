@@ -28,7 +28,7 @@ export const VoterStatesChartWidget = () => {
         <SkeletonCard />
       </Match>
       <Match when={isFetchingVoters}>
-        <FetchCard />
+        <FetchCard className='h-[50rem]'/>
       </Match>
       <Match when={isSuccessVoters}>
         <TwinChart

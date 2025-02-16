@@ -7,7 +7,6 @@ import { PiChart } from '@/app/_components/pi-chart';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonPiChart } from '@/app/_components/skeleton-pi-chart';
-import {issuesChartData} from '@/app/_utils/faker'
 import { Switch, Match } from '@/app/_components/switch';
 
 export const ComplaintsChartWidget = () =>
@@ -25,7 +24,7 @@ export const ComplaintsChartWidget = () =>
   const { issuesChartConfig } = useCharts();
 
   const totalIssues = useMemo(() => {
-    return issuesChartData?.reduce((acc, curr) => acc + curr.total, 0);
+    return complaints?.reduce((acc, curr) => acc + curr.total, 0);
   }, [isLoadingComplaints, complaints]);
   return (
     <Switch>
@@ -33,7 +32,7 @@ export const ComplaintsChartWidget = () =>
         <ErrorCard retry={refetchComplaints} />
       </Match>
       <Match when={isFetchingComplaints}>
-        <FetchCard />
+        <FetchCard className='h-[33rem]'/>
       </Match>
       <Match when={isLoadingComplaints}>
         <SkeletonPiChart />

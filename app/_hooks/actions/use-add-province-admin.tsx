@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -17,8 +17,7 @@ import { useToast } from '@/app/_hooks/use-toast';
 // API Services
 import { baseURL } from '@/app/_services/api';
 import {
-  usePollingCentersQuery,
-  useUsersQuery,
+  useUsersQuery
 } from '@/app/_services/fetchApi';
 import {
   useUploadFileMutation,
@@ -26,31 +25,21 @@ import {
 } from '@/app/_services/mutationApi';
 
 // Validation Schemas
-import { addUserSchema } from '@/app/_validation/user';
+import { addProvinceAdminSchema } from '@/app/_validation/user';
 
 export const useAddProvinceAdmin = () => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createVoter, { isLoading: isLoadingCandidate }] = useCreateUserMutation();
+  const [createUser, { isLoading: isLoadingProvinceAdmin }] =
+    useCreateUserMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const { refetch } = useUsersQuery(
-    `Role=102&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=12&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
-  const [usersSearch, setUsersSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-  const [pollingCentersSearch, setPollingCentersSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-
-  // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-    usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers, refetch: refetchUsers } = useUsersQuery('Role=102');
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -59,17 +48,21 @@ export const useAddProvinceAdmin = () => {
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addProvinceAdminSchema>>({
+    resolver: zodResolver(addProvinceAdminSchema),
     defaultValues: {
       name: '',
       // @ts-ignore
-      dateOfBirth: '',
-      profileImg: '',
-		address: '',
-		state: 2,
+      birth: '',
+      govId: '',
       pollingCenterId: '',
-      serial: ''
+      electoralEntityId: '',
+      username: '',
+      profileImg: '',
+      phone: '',
+      email: '',
+      password: '',
+      role: 12
     }
   });
 
@@ -89,8 +82,8 @@ export const useAddProvinceAdmin = () => {
 
       const response = await uploadFile(formData).unwrap();
       form.setValue('profileImg', `${baseURL}/${response?.data}`);
-      const result = await createVoter(
-        addUserSchema.parse(form.getValues())
+      const result = await createUser(
+        addProvinceAdminSchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);
@@ -106,39 +99,13 @@ export const useAddProvinceAdmin = () => {
       setOpenAdd(false);
     }
   };
-  // Effect to Update Search Options
-	useEffect( () =>
-  {
-    refetchUsers()
-    if (!isLoadingUsers) {
-      setUsersSearch(
-        users?.data.items.map((user: any) => ({
-          value: user.id,
-          label: user.name
-        }))
-      );
-    }
-
-    refetchPollingCenters()
-    if (!isLoadingPollingCenters) {
-      setPollingCentersSearch(
-        pollingCenters?.items.map((pollingCenter: any) => ({
-          value: pollingCenter.id,
-          label: pollingCenter.name
-        }))
-      );
-    }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openAdd]);
   return {
     openAdd,
     setOpenAdd,
     form,
     onSubmit,
     isLoadingFile,
-    isLoadingCandidate,
-    pollingCentersSearch,
-    usersSearch,
+    isLoadingProvinceAdmin,
     fileRef
   };
 };
-

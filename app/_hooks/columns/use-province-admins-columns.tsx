@@ -1,5 +1,4 @@
 'use client';
-import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -19,29 +18,17 @@ export const useProvniceAdminsColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title='اسم المرشح'
+          title='اسم الموظف'
         />
       )
     },
     {
-      id: 'candidateSerial',
-      accessorKey: 'candidateSerial',
-      header: ({ column }: any) => (
-        <DataTableColumnHeader
-          column={column}
-          title='رقم المرشح'
-        />
-      ),
-    },
-    {
-      id: 'candidateListSerial',
-      accessorKey: 'candidateListSerial',
-      header: 'رقم القائمة'
-    },
-    {
-      id: 'pollingCenter',
-      accessorKey: 'pollingCenter.name',
-      header: 'مكتب المحافظة'
+      id: 'govCenter',
+      accessorKey: 'govCenter.name',
+      header: 'مكتب المحافظة',
+      cell: ({ cell }: { cell: any }) => {
+        return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+      }
     },
     {
       id: 'phone',
@@ -54,7 +41,7 @@ export const useProvniceAdminsColumns = () => {
       header: 'الصورة الشخصية',
       cell: ({ cell }: any) => {
         const value = cell.getValue();
-        return value;
+        return <Zoom className='border rounded-full w-16 h-16' preview={value} />;
       }
     },
     hasPermission(user, 'view:confirmedVotersActions') && {

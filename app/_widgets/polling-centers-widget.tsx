@@ -1,4 +1,6 @@
 'use client';
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type FC, useEffect } from 'react';
@@ -50,7 +52,9 @@ const Details: FC<{
   );
 };
 
-export const PollingCentersWidget: FC = () => {
+export const PollingCentersWidget: FC = () =>
+{
+  const mounted = useMounted()
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
@@ -66,7 +70,16 @@ export const PollingCentersWidget: FC = () => {
     if (!isLoading) {
       dispatch(setTotalPages(data?.totalPages));
     }
-  }, [isLoading, data, dispatch]);
+  }, [ isLoading, data, dispatch ] );
+  
+
+  useEffect( () =>
+    {
+      if ( mounted )
+      {
+        dispatch(resetPaginationState())
+      }
+    }, [mounted])
 
   return (
     <Card className="py-12 px-6">

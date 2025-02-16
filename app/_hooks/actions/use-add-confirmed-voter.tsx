@@ -36,7 +36,7 @@ export const useAddConfirmedVoter = () => {
   const [createVoter, { isLoading: isLoadingVoter }] = useCreateVoterMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const { refetch } = useVotersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=2&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management

@@ -5,8 +5,7 @@ import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
 
 // Hooks
-import { useAddCandidate } from '@/app/_hooks/actions/use-add-candidate';
-
+import {useAddProvinceAdmin} from '@/app/_hooks/actions/use-add-province-admin'
 // UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
@@ -32,9 +31,9 @@ export const AddProvinceAdminForm = () => {
     setOpenAdd,
     form,
     onSubmit,
-    isLoadingCandidate,
+    isLoadingProvinceAdmin,
     isLoadingFile,
-    fileRef } = useAddCandidate();
+    fileRef } = useAddProvinceAdmin();
 
 return (
       <BasicDialog
@@ -70,23 +69,64 @@ return (
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingFile || isLoadingCandidate}
-                        placeholder="اسم مدير المحافظة"
+                        disabled={isLoadingProvinceAdmin || isLoadingFile}
+                        placeholder="اسم الموظف الثلاثي"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.username &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingProvinceAdmin || isLoadingFile}
+                        placeholder="اسم المستخدم"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type='password'
+                        className={cn(
+                          form.formState.errors.password &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingProvinceAdmin || isLoadingFile}
+                        placeholder="كلمة المرور"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="dateOfBirth"
+                name="birth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <DatePicker
-                        disabled={isLoadingCandidate || isLoadingFile}
+                        disabled={isLoadingProvinceAdmin || isLoadingFile}
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -94,41 +134,39 @@ return (
                   </FormItem>
                 )}
               />
-
-              {/* Serial Number */}
               <FormField
                 control={form.control}
-                name="candidateSerial"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         className={cn(
-                          form.formState.errors.candidateSerial &&
+                          form.formState.errors.phone &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        placeholder="رقم مدير المحافظة "
-                        disabled={isLoadingCandidate || isLoadingFile}
+                        disabled={isLoadingProvinceAdmin || isLoadingFile}
+                        placeholder="رقم الهاتف"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              {/* Serial Number */}
+
               <FormField
                 control={form.control}
-                name="candidateListSerial"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         className={cn(
-                          form.formState.errors.candidateListSerial &&
+                          form.formState.errors.email &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        placeholder="رقم القائمة "
-                        disabled={isLoadingCandidate || isLoadingFile}
+                        placeholder="البريد الالكتروني"
+                        disabled={isLoadingProvinceAdmin || isLoadingFile}
                         {...field}
                       />
                     </FormControl>
@@ -160,7 +198,7 @@ return (
                   disabled={form.formState.isSubmitting}
                 >
                   اضافة
-                  {(isLoadingCandidate || isLoadingFile) && (
+                  {(isLoadingProvinceAdmin || isLoadingFile) && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
@@ -169,7 +207,7 @@ return (
                 <DialogClose asChild aria-label="Close">
                   <Button
                     variant="outline"
-                    disabled={isLoadingCandidate || isLoadingFile}
+                    disabled={isLoadingProvinceAdmin || isLoadingFile}
                   >
                     الغاء
                   </Button>

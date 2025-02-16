@@ -2,10 +2,11 @@ import { type FC } from 'react';
 import { motion } from 'motion/react';
 import { Card } from '@/app/_components/ui/card';
 import { RefreshCcw } from 'lucide-react';
+import {cn} from '@/app/_lib/utils'
 
-export const FetchCard: FC = () => {
+export const FetchCard: FC<{className?: string}> = ({className='h-28'}) => {
   return (
-    <Card className="flex items-center h-28">
+    <Card className={cn(className,"flex items-center")}>
       <motion.div
         animate={{
           rotate: -360,

@@ -41,7 +41,7 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
   const [deleteVoter, { isLoading: isLoadingDelete }] =
     useDeleteVoterMutation();
   const { refetch } = useVotersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=0&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -72,11 +72,11 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
       state: 0,
       // @ts-ignore
       gender: String(item.gender), // ✅ Convert to string
-      pollingCenterId: String(item.pollingCenter.id),
-      candidateId: String(item.candidate?.id) ?? null,
+      pollingCenterId: item.pollingCenter?.id ?? '',
+      candidateId: item.candidate?.id ?? '',
       serial: item.serial
     }
-  });
+  } );
   // Form Submission Handler
   const onUpdate = async () => {
     try {

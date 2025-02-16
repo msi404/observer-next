@@ -46,7 +46,7 @@ export const PiChart: FC<PiChartProps> = ({
 	const isDataZero = total === 0 || chartData?.every((item) => item.total === 0);
 
 	return (
-		<Card className="flex flex-col ">
+		<Card className="flex flex-col">
 			<CardHeader>
         <div className="flex justify-between items-center">
           <CardHeader>

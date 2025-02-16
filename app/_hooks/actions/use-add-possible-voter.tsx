@@ -30,7 +30,7 @@ export const useAddPossibleVoter = () => {
   // API Mutations & Queries
   const [createVoter, { isLoading: isLoadingVoter }] = useCreateVoterMutation();
   const { refetch } = useVotersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=0&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management

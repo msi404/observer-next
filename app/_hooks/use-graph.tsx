@@ -3,12 +3,22 @@ import { skipToken } from '@reduxjs/toolkit/query/react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { useComplaintsStatisticsQuery } from '@/app/_services/fetchApi';
-import { useGenderStatisticsQuery } from '@/app/_services/fetchApi';
-import { useVotersStatisticsQuery } from '@/app/_services/fetchApi';
+import {
+  useGenderStatisticsQuery,
+  useComplaintsStatisticsQuery,
+  useVotersStatisticsQuery,
+  useCandidatesActivitiesStatisticsQuery,
+  useVotersAgeStatisticsQuery
+} from '@/app/_services/fetchApi';
 
 export const useGraph = () => {
   const user = useSelector(selectUser);
+  const queryVotersAge = hasPermission(user, 'view:addConfirmedVoter')
+    ? ''
+    : skipToken;
+  const queryCandidates = hasPermission(user, 'view:addConfirmedVoter')
+    ? ''
+    : skipToken;
   const queryVoters = hasPermission(user, 'view:candidates') ? '' : skipToken;
   const queryGenders = hasPermission(user, 'view:total-issues-chart')
     ? ''
@@ -16,6 +26,24 @@ export const useGraph = () => {
   const queryComplaints = hasPermission(user, 'view:total-issues-chart')
     ? ''
     : skipToken;
+
+  const {
+    data: voterByAge,
+    isError: isErrorVoterByAge,
+    isFetching: isFetchingVoterByAge,
+    isLoading: isLoadingVoterByAge,
+    isSuccess: isSuccessVoterByAge,
+    refetch: refetchVoterByAge,
+  } = useVotersAgeStatisticsQuery(queryVotersAge);
+
+  const {
+    data: candidatesActivites,
+    isError: isErrorCandidates,
+    isFetching: isFetchingCandidates,
+    isLoading: isLoadingCandidates,
+    isSuccess: isSuccessCandidates,
+    refetch: refetchCandidates
+  } = useCandidatesActivitiesStatisticsQuery(queryCandidates);
 
   const {
     data: voters,
@@ -62,6 +90,18 @@ export const useGraph = () => {
     isFetchingVoters,
     isLoadingVoters,
     isSuccessVoters,
-    refetchVoters
+    refetchVoters,
+    candidatesActivites,
+    isErrorCandidates,
+    isFetchingCandidates,
+    isLoadingCandidates,
+    isSuccessCandidates,
+    refetchCandidates,
+    isErrorVoterByAge,
+    isFetchingVoterByAge,
+    isLoadingVoterByAge,
+    isSuccessVoterByAge,
+    refetchVoterByAge,
+    voterByAge
   };
 };

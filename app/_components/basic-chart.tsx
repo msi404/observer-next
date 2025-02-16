@@ -1,6 +1,6 @@
 "use client";
 import { type FC } from "react";
-import { TrendingUp } from "lucide-react";
+import { RefreshCcw, TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -17,6 +17,7 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/app/_components/ui/chart";
+import { motion } from "motion/react";
 
 interface BasicChartProps {
 	title: string;
@@ -26,6 +27,7 @@ interface BasicChartProps {
 	dataKey: string;
 	nameKey: string;
 	formatLabel?: boolean;
+	retry: VoidFunction;
 }
 
 export const BasicChart: FC<BasicChartProps> = ({
@@ -36,13 +38,32 @@ export const BasicChart: FC<BasicChartProps> = ({
 	dataKey,
 	nameKey,
 	formatLabel = true,
+	retry,
 } ) =>
 {
 	return (
 		<Card>
 			<CardHeader>
+				<div className="flex justify-between items-center">
+				<CardHeader>
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>{description}</CardDescription>
+			</CardHeader>
+			<motion.button
+            onClick={retry}
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                damping: 0,
+                ease: 'linear',
+                duration: 0.2
+              }
+            }}
+            className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <RefreshCcw size="35px" />
+          </motion.button>
+				</div>
 			</CardHeader>
 			<CardContent>
 				<ChartContainer config={chartConfig}>

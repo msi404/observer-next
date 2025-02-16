@@ -103,6 +103,7 @@ export const AddPartiesRepresentersForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
+                        type='password'
                         className={cn(
                           form.formState.errors.password &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -119,7 +120,7 @@ export const AddPartiesRepresentersForm = () => {
               {/* Date of Birth */}
               <FormField
                 control={form.control}
-                name="dateOfBirth"
+                name="birth"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

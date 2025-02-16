@@ -20,7 +20,7 @@ import {
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
 // Validation Schemas
-import { addUserSchema } from '@/app/_validation/user';
+import { addElectralAdminSchema } from '@/app/_validation/user';
 
 export const useAddPartiesRepresenters = () => {
   const pageSize = useSelector(selectPageSize);
@@ -37,8 +37,8 @@ export const useAddPartiesRepresenters = () => {
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addElectralAdminSchema>>({
+    resolver: zodResolver(addElectralAdminSchema),
     defaultValues: {
       name: '',
       // @ts-ignore
@@ -55,11 +55,11 @@ export const useAddPartiesRepresenters = () => {
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addUserSchema>) => {
+  const onSubmit = async (values: z.infer<typeof addElectralAdminSchema>) => {
     try {
       form.setValue('role', 10);
       const result = await createUser(
-        addUserSchema.parse(form.getValues())
+        addElectralAdminSchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);

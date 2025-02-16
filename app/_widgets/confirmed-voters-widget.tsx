@@ -1,4 +1,8 @@
 'use client';
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { useMounted } from '@mantine/hooks'
+import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { useTranslation } from 'react-i18next';
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
@@ -7,50 +11,60 @@ import { Table } from '@/app/_components/table';
 import { Switch, Match } from '@/app/_components/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
-import { useVotersTable } from '@/app/_hooks/tables/use-voters-table';
-
+import {useConfirmedVotersTable} from '@/app/_hooks/tables/use-confirmed-voters-table'
 import { AddConfirmVoterForm } from '@/app/_components/forms/add-confirm-voter-form';
 import { FilterConfirmedVotersForm } from '@/app/_components/forms/filter-confirmed-voter-form';
 
 import { Retry } from '@/app/_components/retry';
 
-export const ConfirmedVotersWidget = () => {
+export const ConfirmedVotersWidget = () =>
+{
+  const dispatch = useDispatch()
+  const mounted = useMounted()
   const {
-    isError,
-    isFetching,
-    isSuccess,
-    isLoading,
+    isErrorConfirmedVoters,
+    isFetchingConfirmedVoter,
+    isSuccessConfirmedVoter,
+    isLoadingConfirmedVoters,
     confirmedVoters,
-    refetch,
+    refetchConfirmedVoters,
     confirmedVotersTable,
     confirmedVotersColumnFilter,
     clearConfirmedVotersFilter
-  } = useVotersTable();
+  } = useConfirmedVotersTable();
 
   const { t } = useTranslation();
 
+  useEffect( () =>
+  {
+    if ( mounted )
+    {
+      dispatch(resetPaginationState())
+    }
+  }, [mounted])
+
   return (
             <Switch>
-              <Match when={isError}>
-                <ErrorTable retry={refetch} />
+              <Match when={isErrorConfirmedVoters}>
+                <ErrorTable retry={refetchConfirmedVoters} />
               </Match>
-              <Match when={isLoading}>
+              <Match when={isLoadingConfirmedVoters}>
                 <LoadingTable />
               </Match>
-              <Match when={isFetching}>
+              <Match when={isFetchingConfirmedVoter}>
                 <FetchTable />
               </Match>
-              <Match when={isSuccess && confirmedVoters.length === 0}>
+              <Match when={isSuccessConfirmedVoter && confirmedVoters?.items.length === 0}>
                 <EmptyTable
                   Add={<AddConfirmVoterForm />}
-                  retry={refetch}
+                  retry={refetchConfirmedVoters}
                 />
               </Match>
-              <Match when={isSuccess && confirmedVoters.length > 0}>
+              <Match when={isSuccessConfirmedVoter && confirmedVoters?.items.length > 0}>
                 <Table
                   Filter={FilterConfirmedVotersForm}
                   Add={AddConfirmVoterForm}
-                  Retry={<Retry refetch={refetch} />}
+                  Retry={<Retry refetch={refetchConfirmedVoters} />}
                   columnFilter={confirmedVotersColumnFilter}
                   clearFilter={clearConfirmedVotersFilter}
                   table={confirmedVotersTable}

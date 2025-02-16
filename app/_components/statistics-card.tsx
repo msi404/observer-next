@@ -27,7 +27,7 @@ export const StatisticsCard: FC<{
 			<CardContent className="text-primary">{ icon }</CardContent>
 			</div>
 			<Show when={url}>
-			<Link href={url} className="w-full p-2 border flex items-center">
+			<Link href={url} className="w-full p-2 border-t flex items-center">
 			<CardFooter className="flex justify-between items-center w-full">
 					<ArrowRight />
 				<span>عرض الصفحة</span>

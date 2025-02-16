@@ -44,14 +44,18 @@ export const useConfirmedVotersColumns = () => {
     {
       id: 'province',
       accessorKey: 'province.gov.name',
-      header: t('electionBase:confirmedVoters.table.header.governorate')
+      header: t( 'electionBase:confirmedVoters.table.header.governorate' ),
+      cell: ( { cell }: { cell: any; } ) =>
+      {
+        return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+      }
     },
     {
       id: 'pollingCenter',
       accessorKey: 'pollingCenter.name',
       header: t( 'electionBase:confirmedVoters.table.header.pollingCenter' ),
       cell: ({ cell }: { cell: any }) => {
-        return <span className='text-xs'>{cell.getValue()}</span>;
+        return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
       }
     },
     {
@@ -86,7 +90,7 @@ export const useConfirmedVotersColumns = () => {
     {
       id: 'serial',
       accessorKey: 'serial',
-      header: t('electionBase:confirmedVoters.table.header.candidateNumber')
+      header: 'رقم بطاقة الناخب'
     },
     {
       id: 'img',
