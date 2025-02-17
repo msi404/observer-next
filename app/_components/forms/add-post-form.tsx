@@ -9,7 +9,7 @@ import {useAddPost} from '@/app/_hooks/actions/use-add-post'
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input'
-import { Textarea } from '@/app/_components/ui/textarea';
+import {AutosizeTextarea} from '@/app/_components/ui/autosize-textarea'
 import {
   Form,
   FormField,
@@ -82,7 +82,8 @@ export const AddPostForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <AutosizeTextarea
+                      maxHeight={400}
                       className={cn(
                         form.formState.errors.content &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'

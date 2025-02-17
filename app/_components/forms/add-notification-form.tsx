@@ -10,7 +10,7 @@ import { useAddNotification } from '@/app/_hooks/actions/use-add-notifications';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
-import { Textarea } from '@/app/_components/ui/textarea';
+import {AutosizeTextarea, AutosizeTextAreaRef} from '@/app/_components/ui/autosize-textarea'
 import {
   Form,
   FormControl,
@@ -115,7 +115,8 @@ export const AddNotificationsForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <AutosizeTextarea
+                      maxHeight={400}
                       className={cn(
                         form.formState.errors.content &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'

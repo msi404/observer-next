@@ -4,7 +4,7 @@ import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Input } from '@/app/_components/ui/input';
-import { Textarea } from '@/app/_components/ui/textarea';
+import {AutosizeTextarea} from '@/app/_components/ui/autosize-textarea'
 import {
   Form,
   FormControl,
@@ -131,7 +131,8 @@ export const EditPostForm = ({ item }: EditPostFormProps) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea
+                      <AutosizeTextarea
+                        maxHeight={400}
                         className={cn(
                           form.formState.errors.content &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
