@@ -10,12 +10,13 @@ import { useAddNotification } from '@/app/_hooks/actions/use-add-notifications';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
-import {AutosizeTextarea, AutosizeTextAreaRef} from '@/app/_components/ui/autosize-textarea'
+import {AutosizeTextarea} from '@/app/_components/ui/autosize-textarea'
 import {
   Form,
   FormControl,
   FormItem,
-  FormField
+  FormField,
+  FormLabel
 } from '@/app/_components/ui/form';
 import {
   Select,
@@ -63,6 +64,7 @@ export const AddNotificationsForm = () => {
               name="role"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>ارسال الى</FormLabel>
                   <FormControl>
                     <Select
                       disabled={isLoadingNotification}
@@ -95,6 +97,7 @@ export const AddNotificationsForm = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>العنوان</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -114,6 +117,7 @@ export const AddNotificationsForm = () => {
               name="content"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>المحتوى</FormLabel>
                   <FormControl>
                     <AutosizeTextarea
                       maxHeight={400}

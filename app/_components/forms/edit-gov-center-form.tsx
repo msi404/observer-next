@@ -3,11 +3,13 @@ import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
+import {Input} from '@/app/_components/ui/input'
 import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Combobox } from '@/app/_components/combobox';
 import { Button } from '@/app/_components/ui/button';
@@ -103,11 +105,53 @@ export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
             <div className="grid gap-4">
+            <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>اسم مكتب المحافظة</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.name &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUpdate}
+                        placeholder="اسم مكتب المحافظة"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+                  <FormField
+                control={form.control}
+                name="serial"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الرقم التسلسلي</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        className={cn(
+                          form.formState.errors.serial &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUpdate}
+                        placeholder="الرقم التسلسلي"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 				<FormField
                 control={form.control}
                 name="govId"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>المحافظة</FormLabel>
                     <FormControl>
                       <Combobox
                         options={govSearch}

@@ -9,7 +9,8 @@ import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
@@ -111,6 +112,7 @@ export const EditPostForm = ({ item }: EditPostFormProps) => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>العنوان</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -130,6 +132,7 @@ export const EditPostForm = ({ item }: EditPostFormProps) => {
                 name="content"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>المحتوى</FormLabel>
                     <FormControl>
                       <AutosizeTextarea
                         maxHeight={400}
@@ -166,7 +169,7 @@ export const EditPostForm = ({ item }: EditPostFormProps) => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" onClick={onUpdate} disabled={isLoadingUpdate || isLoadingFile}>
+                <Button type="submit" disabled={isLoadingUpdate || isLoadingFile}>
                   تعديل
                   {(isLoadingUpdate || isLoadingFile) && (
                     <div className=" scale-125">

@@ -53,13 +53,15 @@ export const ObserversWidget = () =>
 					 <FetchTable />
 				  </Match>
 				  <Match when={isSuccess && observers.length === 0}>
-					 <EmptyTable
+			  <EmptyTable
+				  permission='view:addObserver'
 						Add={<AddObserverForm />}
 						retry={refetch}
 					 />
 				  </Match>
 				  <Match when={isSuccess && observers.length > 0}>
-					 <Table
+			  <Table
+				  permission='view:addObserver'
 						Filter={FilterObserversForm}
 						Add={AddObserverForm}
 						Retry={<Retry refetch={refetch} />}

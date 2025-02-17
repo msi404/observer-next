@@ -15,8 +15,10 @@ import { ArchiveX, RefreshCcw } from 'lucide-react';
 import { Show } from '@/app/_components/show';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { Dynamic } from '@/app//_components/dynamic';
-export const EmptyTable: FC<{ retry: VoidFunction; Add?: ReactElement }> = ({
+import {type Permission} from '@/app/_auth/auth-rbac'
+export const EmptyTable: FC<{ retry: VoidFunction; Add?: ReactElement, permission: Permission }> = ({
   retry,
+  permission,
   Add
 } ) =>
 {
@@ -35,7 +37,7 @@ export const EmptyTable: FC<{ retry: VoidFunction; Add?: ReactElement }> = ({
         </CardHeader>
         <CardContent className="text-primary flex justify-center items-center">
           <Show
-            when={hasPermission(user, 'view:addConfirmedVoter')}
+            when={hasPermission(user, permission)}
             fallback={<Fragment />}
           >
             <Dynamic component={Add} />

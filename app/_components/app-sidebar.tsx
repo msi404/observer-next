@@ -2,11 +2,13 @@
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image'
 import Link from 'next/link';
 import {useCurrentUserQuery} from '@/app/_services/fetchApi'
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
+import CompanyLogo from '@/app/_assets/company.png'
 
 import {
   Sidebar,
@@ -46,7 +48,9 @@ export const AppSidebar = () =>
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Main</SidebarGroupLabel>
+          <SidebarGroupLabel className='flex justify-center items-center mb-6'>
+            <Image src={CompanyLogo.src} width={80} height={70} alt='Company Logo'/>
+          </SidebarGroupLabel>
           <SidebarContent>
             <SidebarMenu className='overflow-x-hidden'>
               <For each={SIDEBAR_ITEMS}>

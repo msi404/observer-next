@@ -11,7 +11,7 @@ export const usePartiesRepresentersColumns = () =>
   const user = useSelector(selectUser);
   const { t } = useTranslation();
   // @ts-ignore
-  const partiesRepresentersColumns: ColumnDef<ConfirmedVoters>[] = [
+  const partiesRepresentersColumns: ColumnDef<User>[] = [
     {
       id: 'name',
       accessorKey: 'name',
@@ -23,12 +23,12 @@ export const usePartiesRepresentersColumns = () =>
       )
     },
     {
-      id: 'provinceOffice',
-      accessorKey: 'gov.name',
+      id: 'electoralEntity',
+      accessorKey: 'electoralEntity.name',
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title='مكتب المحافظة'
+          title='الكيان السياسي'
         />
       ),
       cell: ( { cell }: { cell: any; } ) =>

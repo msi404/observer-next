@@ -18,20 +18,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addDataEntrySchema } from '@/app/_validation/user';
 
-interface DataEntryItem {
-  id: string;
-  name: string;
-  birth: string;
-  pollingCenter: { id: string };
-  electoralEntity: { id: string };
-  govId: string;
-  phone: string;
-  password: string;
-  username: string;
-  email: string;
-}
-
-export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
+export const useEditDataEntry = ({ item }: { item: User }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
@@ -55,7 +42,7 @@ export const useEditDataEntry = ({ item }: { item: DataEntryItem }) => {
     defaultValues: {
       name: item.name,
       // @ts-ignore
-      dateOfBirth: new Date(item.birth),
+      dateOfBirth: new Date(item.dateOfBirth),
       govId: null,
       pollingCenterId: null,
       electoralEntityId: null,

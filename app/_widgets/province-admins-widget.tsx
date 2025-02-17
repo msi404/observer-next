@@ -52,13 +52,15 @@ export const ProvinceAdminsWidget = () =>
 					 <FetchTable />
 				  </Match>
 				  <Match when={isSuccess && provinceAdmins.length === 0}>
-					 <EmptyTable
+			  <EmptyTable
+				  permission='view:addProvinceAdmin'
 						Add={<AddProvinceAdminForm />}
 						retry={refetch}
 					 />
 				  </Match>
 				  <Match when={isSuccess && provinceAdmins.length > 0}>
-					 <Table
+			  <Table
+				  permission='view:addProvinceAdmin'
 						Filter={FilterProvinceAdminForm}
 						Add={AddProvinceAdminForm}
 						Retry={<Retry refetch={refetch} />}

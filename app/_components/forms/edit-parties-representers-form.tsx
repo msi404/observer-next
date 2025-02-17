@@ -7,8 +7,10 @@ import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
+import { Combobox } from '@/app/_components/combobox';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
@@ -32,6 +34,7 @@ export const EditPartiesRepresentersForm = ({
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
+    electoralEntitiesSearch,
     form
   } = useEditPartiesRepresenters({ item });
   return (
@@ -110,6 +113,7 @@ export const EditPartiesRepresentersForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المستخدم الثلاثي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -129,6 +133,7 @@ export const EditPartiesRepresentersForm = ({
                 name="username"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -149,8 +154,13 @@ export const EditPartiesRepresentersForm = ({
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>تاريخ الميلاد</FormLabel>
                     <FormControl>
                       <DatePicker
+                        className={cn(
+                          form.formState.errors.dateOfBirth &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
                         disabled={isLoadingUpdate}
                         value={field.value}
                         onChange={field.onChange}
@@ -164,6 +174,7 @@ export const EditPartiesRepresentersForm = ({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -184,6 +195,7 @@ export const EditPartiesRepresentersForm = ({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>البريد الالكتروني</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -193,6 +205,28 @@ export const EditPartiesRepresentersForm = ({
                         placeholder="البريد الالكتروني"
                         disabled={isLoadingUpdate}
                         {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="electoralEntityId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الكيان السياسي</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={electoralEntitiesSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="الكيان السياسي"
+                        disabled={isLoadingUpdate}
+                        className={cn(
+                          form.formState.errors.electoralEntityId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
                       />
                     </FormControl>
                   </FormItem>

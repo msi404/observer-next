@@ -14,7 +14,8 @@ import {
   Form,
   FormControl,
   FormItem,
-  FormField
+  FormField,
+  FormLabel
 } from '@/app/_components/ui/form';
 import {
   Select,
@@ -70,6 +71,7 @@ export const AddPossibleVoterForm = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم الناخب الثلاثي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -91,6 +93,7 @@ export const AddPossibleVoterForm = () => {
                 name="address"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>العنوان</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -112,8 +115,13 @@ export const AddPossibleVoterForm = () => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>تاريخ الميلاد</FormLabel>
                     <FormControl>
                       <DatePicker
+                         className={cn(
+                          form.formState.errors.dateOfBirth &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
                         disabled={isLoadingVoter}
                         value={field.value}
                         onChange={field.onChange}
@@ -129,6 +137,7 @@ export const AddPossibleVoterForm = () => {
                 name="serial"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم بطاقة الناخب</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -150,6 +159,7 @@ export const AddPossibleVoterForm = () => {
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>الجنس</FormLabel>
                     <FormControl>
                       <Select
                         disabled={isLoadingVoter}
@@ -175,6 +185,7 @@ export const AddPossibleVoterForm = () => {
                 name="pollingCenterId"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>مركز الاقتراع</FormLabel>
                     <FormControl>
                     <Combobox
                           options={pollingCentersSearch}
@@ -198,6 +209,7 @@ export const AddPossibleVoterForm = () => {
                 name="candidateId"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>المرشح</FormLabel>
                     <FormControl>
                     <Combobox
                         options={ usersSearch }
@@ -207,7 +219,7 @@ export const AddPossibleVoterForm = () => {
                           label="المرشح"
                           disabled={isLoadingVoter}
                           className={cn(
-                            form.formState.errors.pollingCenterId &&
+                            form.formState.errors.candidateId &&
                               'border-destructive focus:border-destructive focus:ring-destructive'
                           )}
                         />

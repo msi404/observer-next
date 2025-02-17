@@ -14,17 +14,17 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
     setOpen,
     governoratesSearch,
     pollingCentersSearch,
-	  usersSearch,
-	  filters,
-	  updateFilter,
-	  setFilters,
+    usersSearch,
+    filters,
+    updateFilter,
+    setFilters,
     applyFilters,
-   clearFilters
+    clearFilters
   } = useConfirmedVotersFilter(table);
   return (
     <BasicDialog
       open={open}
-      onOpenChange={ setOpen }
+      onOpenChange={setOpen}
       button={
         <Button className="lg:w-1/4">
           تصفية <Filter />
@@ -33,6 +33,7 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
       title="تصفية"
       description="ادخل المعطيات الاتية لتصفية العناصر"
     >
+      <h1>المحافظة</h1>
       <Combobox
         options={governoratesSearch}
         value={filters.find((filter) => filter.id === 'province')?.value || ''}
@@ -41,6 +42,7 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
         }
         label="المحافظة"
       />
+      <h1>مركز الاقتراع</h1>
       <Combobox
         options={pollingCentersSearch}
         value={
@@ -51,6 +53,7 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
         }
         label="مركز الاقتراع"
       />
+      <h1>المرشح</h1>
       <Combobox
         options={usersSearch}
         value={filters.find((filter) => filter.id === 'candidate')?.value || ''}
@@ -68,7 +71,9 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
             تصفية
           </Button>
           <DialogClose asChild aria-label="Close">
-            <Button variant="outline" onClick={clearFilters}>الغاء</Button>
+            <Button variant="outline" onClick={clearFilters}>
+              الغاء
+            </Button>
           </DialogClose>
         </div>
       </DialogFooter>

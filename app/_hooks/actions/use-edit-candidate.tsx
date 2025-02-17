@@ -24,8 +24,8 @@ interface CandiateItem {
   id: string;
   name: string;
   dateOfBirth: string;
-  candidateSerial: string;
-  candidateListSerial: string;
+  candidateSerial: number;
+  candidateListSerial: number;
   profileImg: string;
   phone: string;
   password: string;
@@ -61,9 +61,7 @@ export const useEditCandidate = ({ item }: { item: CandiateItem }) => {
       username: item.username,
       phone: item.phone,
       email: item.email,
-      // @ts-ignore
       candidateSerial: item.candidateSerial,
-      // @ts-ignore
       candidateListSerial: item.candidateListSerial,
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),

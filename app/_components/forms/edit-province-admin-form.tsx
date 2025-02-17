@@ -7,20 +7,22 @@ import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
+import {Combobox} from '@/app/_components/combobox'
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { useEditCandidate } from '@/app/_hooks/actions/use-edit-candidate';
-interface EditDataEntryFormProps {
+import {useEditProvinceAdmins} from '@/app/_hooks/actions/use-edit-province-admin'
+interface EditProvinceAdminsFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
+export const EditProvniceAdminForm = ({ item }: EditProvinceAdminsFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -30,8 +32,9 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
+    govCenterSearch,
     form
-  } = useEditCandidate({ item });
+  } = useEditProvinceAdmins({ item });
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -108,6 +111,7 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم الموظف الثلاثي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -127,6 +131,7 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -147,8 +152,13 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>تاريخ الميلاد</FormLabel>
                     <FormControl>
                       <DatePicker
+                        className={cn(
+                          form.formState.errors.dateOfBirth &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
                         disabled={isLoadingUpdate}
                         value={field.value}
                         onChange={field.onChange}
@@ -162,6 +172,7 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -182,6 +193,7 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>البريد الالكتروني</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -196,6 +208,28 @@ export const EditProvniceAdminForm = ({ item }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
+                <FormField
+              control={form.control}
+              name="govCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={govCenterSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مكتب محافظة"
+                      disabled={isLoadingUpdate}
+                      className={cn(
+                        form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             </div>
 
             {/* Separator */}

@@ -19,6 +19,10 @@ type PollingCenter = Dateable & Identifiable & {
 
 type GovCenter = Dateable & Identifiable & {
 	gov: Gov;
+	name: string
+	serial: string
+	totalPollingCenters: number
+	totalObservers: number
 }
 
 type Party = Dateable & Identifiable & {
@@ -46,6 +50,7 @@ type User = Dateable & Identifiable & {
 	username: string;
 	gov: Gov;
 	electoralEntity: ElectoralEntity;
+	govCenter: GovCenter;
 	pollingCenter: PollingCenter;
 	role: number;
 	email: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -17,7 +17,8 @@ import { useToast } from '@/app/_hooks/use-toast';
 // API Services
 import { baseURL } from '@/app/_services/api';
 import {
-  useUsersQuery
+  useUsersQuery,
+  useGovCentersQuery
 } from '@/app/_services/fetchApi';
 import {
   useUploadFileMutation,
@@ -38,8 +39,15 @@ export const useAddProvinceAdmin = () => {
     `Role=12&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
+  const [govCenterSearch, setGovCenterSearchSearch] = useState<
+  { value: string; label: string }[]
+>([]);
+
   // State Management
-  const [openAdd, setOpenAdd] = useState<boolean>(false);
+  const [ openAdd, setOpenAdd ] = useState<boolean>( false );
+  
+      const { data: goveCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
+        useGovCentersQuery('');
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -99,6 +107,20 @@ export const useAddProvinceAdmin = () => {
       setOpenAdd(false);
     }
   };
+
+      // Effect to Update Search Options
+      useEffect( () =>
+      {
+        refetchGovCenters()
+        if (!isLoadingGovCenters) {
+          setGovCenterSearchSearch(
+            goveCenters?.items.map((govCenter: any) => ({
+              value: govCenter.id,
+              label: govCenter.name
+            }))
+          );
+        }
+      }, [goveCenters, isLoadingGovCenters, openAdd]);
   return {
     openAdd,
     setOpenAdd,
@@ -106,6 +128,7 @@ export const useAddProvinceAdmin = () => {
     onSubmit,
     isLoadingFile,
     isLoadingProvinceAdmin,
+    govCenterSearch,
     fileRef
   };
 };

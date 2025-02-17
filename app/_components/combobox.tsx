@@ -51,7 +51,7 @@ export const Combobox: FC<ComboboxType> = ({
           aria-expanded={open}
           className={cn('w-full justify-between', className)}
         >
-          {options.find((option) => option.value === value)?.label || label}
+          {options.find((option) => option.value === value)?.label || <span className='text-gray-400'>{label}</span>}
           <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

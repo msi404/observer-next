@@ -53,7 +53,8 @@ export const DataEntriesWidget = () =>
 					 <FetchTable />
 				  </Match>
 				  <Match when={isSuccess && dataEntries.length === 0}>
-					 <EmptyTable
+			  <EmptyTable
+				  permission='view:addDataEntry'
 						Add={<AddDataEntryForm />}
 						retry={refetch}
 					 />

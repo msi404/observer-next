@@ -13,10 +13,10 @@ import {
   PopoverTrigger
 } from '@/app/_components/ui/popover';
 
-export const DatePicker: FC<{value: Date | null, onChange: VoidFunction, disabled?: boolean}> = ({value, onChange, disabled}) => {
+export const DatePicker: FC<{value: Date | null, onChange: VoidFunction, disabled?: boolean, className?: string}> = ({value, onChange, disabled, className}) => {
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger className={cn(className)} asChild>
         <Button
           variant="outline"
           className={cn(

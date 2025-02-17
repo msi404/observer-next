@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -15,7 +15,8 @@ import { z } from 'zod';
 import { useToast } from '@/app/_hooks/use-toast';
 
 import {
-  useUsersQuery
+  useUsersQuery,
+  useElectoralEntitiesQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
@@ -31,8 +32,14 @@ export const useAddPartiesRepresenters = () => {
   const { refetch } = useUsersQuery(
     `Role=10&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
+
+  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
+  { value: string; label: string }[]
+>([]);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
+    const { data: electoralEntities, isLoading: isLoadingElectoralEntities, refetch: refetchElectoralEntities } =
+      useElectoralEntitiesQuery('');
   // Toast Hook
   const { toast } = useToast();
 
@@ -55,7 +62,7 @@ export const useAddPartiesRepresenters = () => {
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addElectralAdminSchema>) => {
+  const onSubmit = async () => {
     try {
       form.setValue('role', 10);
       const result = await createUser(
@@ -75,11 +82,26 @@ export const useAddPartiesRepresenters = () => {
       setOpenAdd(false);
     }
   };
+
+    // Effect to Update Search Options
+    useEffect( () =>
+    {
+      refetchElectoralEntities()
+      if (!isLoadingElectoralEntities) {
+        setElectoralEntitiesSearch(
+          electoralEntities?.items.map((electoralEntity: any) => ({
+            value: electoralEntity.id,
+            label: electoralEntity.name
+          }))
+        );
+      }
+    }, [electoralEntities, isLoadingElectoralEntities, openAdd]);
   return {
     openAdd,
     setOpenAdd,
     form,
     onSubmit,
     isLoadingUser,
+    electoralEntitiesSearch
   };
 };

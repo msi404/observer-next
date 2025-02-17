@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -7,61 +7,50 @@ import {
 } from '@/app/_lib/features/paginationSlice';
 import
 	{
-	useUpdateGovCenterMutation,
-  useDeleteGovCenterMutation
+	useUpdateElectoralEntityMutation,
+  useDeleteElectoralEntityMutation
 } from '@/app/_services/mutationApi';
 import {
-  useGovCentersQuery,
-  useProvincesQuery
+  useElectoralEntitiesQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addGovCenterSchema } from '@/app/_validation/gov-center'
+import {addElectoralEntitySchema} from '@/app/_validation/electoral-entity'
 
-export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
+export const useEditElectoralEntity = ({ item }: { item: GovCenter }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
-  const [updateGovCenter, { isLoading: isLoadingUpdate }] = useUpdateGovCenterMutation();
-  const [deleteGovCenter, { isLoading: isLoadingDelete }] = useDeleteGovCenterMutation();
+  const [updateElectoralEntity, { isLoading: isLoadingUpdate }] = useUpdateElectoralEntityMutation();
+  const [deleteElectoralEntity, { isLoading: isLoadingDelete }] = useDeleteElectoralEntityMutation();
 
 
   // State Management
-  const [govSearch, setGovSearch] = useState<
-  { value: string; label: string }[]
->([]);
-
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   // Query Data
-  const { refetch } = useGovCentersQuery(
+  const { refetch } = useElectoralEntitiesQuery(
 	`PageNumber=${currentPage}&PageSize=${pageSize}`
   );
-	
-	 const { data: provinces, isLoading: isLoadingProvinces } =
-		 useProvincesQuery('');
-
   // Toast Hook
   const { toast } = useToast();
 
    // Form Setup
-	const form = useForm<z.infer<typeof addGovCenterSchema>>({
-		resolver: zodResolver(addGovCenterSchema),
+	const form = useForm<z.infer<typeof addElectoralEntitySchema>>({
+		resolver: zodResolver(addElectoralEntitySchema),
     defaultValues: {
-      serial: item.name,
-      name: item.serial,
-		  govId: item.gov.id
+     name: item.name
 		}
 	 });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addGovCenterSchema>) => {
+  const onUpdate = async (values: z.infer<typeof addElectoralEntitySchema>) => {
     try {
-      await updateGovCenter({
-        govCenter: addGovCenterSchema.parse(form.getValues()),
+      await updateElectoralEntity({
+        electoralEntity: addElectoralEntitySchema.parse(form.getValues()),
         id: item.id
       });
     } catch (error: any) {
@@ -90,20 +79,9 @@ export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
 		 form.reset()
     }
   };
-  // Effect to Update Search Options
-  useEffect(() => {
-	if (!isLoadingProvinces) {
-	  setGovSearch(
-		 provinces?.data.items.map((gov: any) => ({
-			value: gov.id,
-			label: gov.name
-		 }))
-	  );
-	}
- }, [provinces, isLoadingProvinces, openUpdate]);
 
   const onDelete = async () => {
-    await deleteGovCenter(item.id);
+    await deleteElectoralEntity(item.id);
     refetch();
   };
   return {
@@ -116,6 +94,5 @@ export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
-    govSearch
   };
 };

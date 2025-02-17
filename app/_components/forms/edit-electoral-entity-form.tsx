@@ -3,8 +3,7 @@ import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
-import { Input } from '@/app/_components/ui/input';
-import {AutosizeTextarea} from '@/app/_components/ui/autosize-textarea'
+import {Input} from '@/app/_components/ui/input'
 import {
   Form,
   FormControl,
@@ -15,14 +14,14 @@ import {
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
-import { Dropzone } from '@/app/_components/dropzone';
 import { cn } from '@/app/_lib/utils';
-import {useEditPostSingle} from '@/app/_hooks/actions/use-edit-post-single'
-import {Show} from '@/app/_components/show'
-interface EditPostFormProps {
+import {useEditElectoralEntity} from '@/app/_hooks/actions/use-edit-electoral-entity'
+interface EditElectoralEntityFormProps
+{
   item: any; // Ideally, replace `any` with a proper interface
 }
-export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
+
+export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -31,12 +30,10 @@ export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
-    isLoadingFile,
-    fileRef,
     openUpdate,
     form
-  } = useEditPostSingle({ item });
-
+  } = useEditElectoralEntity( { item } );
+	
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -57,9 +54,9 @@ export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف فعالية"
+        title="حذف كيان سياسي"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
-      >
+		  >
         <DialogFooter>
           <div className="flex justify-between w-full">
             <Button
@@ -100,65 +97,33 @@ export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
             <Pencil size="20px" />
           </motion.button>
         }
-        title="تعديل فعالية"
+        title="تعديل كيان سياسي"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
             <div className="grid gap-4">
-              <FormField
+            <FormField
                 control={form.control}
-                name="title"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>العنوان</FormLabel>
+                    <FormLabel>اسم الكيام السياسي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
-                          form.formState.errors.title &&
+                          form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        placeholder="العنوان"
-                        disabled={isLoadingUpdate || isLoadingFile}
+                        disabled={isLoadingUpdate}
+                        placeholder="اسم الكيان السياسي"
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>المحتوى</FormLabel>
-                    <FormControl>
-                      <AutosizeTextarea
-                        maxHeight={400}
-                        className={cn(
-                          form.formState.errors.content &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="المحتوى"
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(file) => (fileRef.current = file)}
-                label="اختيار صورة العالية"
-                defaultImage={item.img}
-              />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة الفعالية
-                </span>
-              </Show>
             </div>
 
             {/* Separator */}
@@ -169,16 +134,16 @@ export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingUpdate || isLoadingFile}>
+                <Button type="submit" disabled={isLoadingUpdate}>
                   تعديل
-                  {(isLoadingUpdate || isLoadingFile) && (
+                  {isLoadingUpdate && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingUpdate || isLoadingFile}>
+                  <Button variant="outline" disabled={isLoadingUpdate}>
                     الغاء
                   </Button>
                 </DialogClose>

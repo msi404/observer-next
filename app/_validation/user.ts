@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const addUserSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  dateOfBirth: z.date(),
   govId: z.string().min(3),
   pollingCenterId: z.string().min(3),
   electoralEntityId: z.string().min(3),
@@ -20,7 +20,7 @@ export const addUserSchema = z.object({
 
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  dateOfBirth: z.date(),
   govId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -169,16 +169,7 @@ export const addElectralAdminSchema = z.object({
         return value
       }
     }),
-  electoralEntityId: z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
+  electoralEntityId: z.string().min(3),
   username: z.string().min(3).max(16),
   password: z.string().min(6),
   profileImg: z.string().optional(),
@@ -191,16 +182,7 @@ export const addElectralAdminSchema = z.object({
 export const addProvinceAdminSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().default( new Date() ),
-  govId:z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
+  govCenterId :z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {
       if ( value === '' )

@@ -52,13 +52,15 @@ export const CandidatesWidget = () =>
 					 <FetchTable />
 				  </Match>
 				  <Match when={isSuccess && candidates.length === 0}>
-					 <EmptyTable
+			  <EmptyTable
+				  permission='view:addCandidate'
 						Add={<AddCandidateForm />}
 						retry={refetch}
 					 />
 				  </Match>
 				  <Match when={isSuccess && candidates.length > 0}>
-					 <Table
+			  <Table
+				  permission='view:addCandidate'
 						Filter={FilterCandidateForm}
 						Add={AddCandidateForm}
 						Retry={<Retry refetch={refetch} />}

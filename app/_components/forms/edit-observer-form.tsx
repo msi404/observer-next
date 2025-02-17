@@ -7,7 +7,8 @@ import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
@@ -108,6 +109,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم الموظف الثلاثي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -127,6 +129,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -147,8 +150,13 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>تاريخ الميلاد</FormLabel>
                     <FormControl>
                       <DatePicker
+                        className={cn(
+                          form.formState.errors.dateOfBirth &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
                         disabled={isLoadingUpdate}
                         value={field.value}
                         onChange={field.onChange}
@@ -162,6 +170,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -182,6 +191,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>البريد الالكتروني</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(

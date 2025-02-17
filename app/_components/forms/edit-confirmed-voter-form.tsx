@@ -7,7 +7,8 @@ import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
@@ -124,6 +125,7 @@ export const EditConfirmedVoterForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المناخب الثلاثي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -145,6 +147,7 @@ export const EditConfirmedVoterForm = ({
                 name="address"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>العنوان</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -166,8 +169,13 @@ export const EditConfirmedVoterForm = ({
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>تاريخ الميلاد</FormLabel>
                     <FormControl>
                       <DatePicker
+                        className={cn(
+                          form.formState.errors.dateOfBirth &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
                         disabled={isLoadingUpdate || isLoadingFile}
                         value={field.value}
                         onChange={field.onChange}
@@ -183,6 +191,7 @@ export const EditConfirmedVoterForm = ({
                 name="serial"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم بطاقة الناخب</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -204,6 +213,7 @@ export const EditConfirmedVoterForm = ({
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>الجنس</FormLabel>
                     <FormControl>
                       <Select
                         disabled={isLoadingUpdate || isLoadingFile}
@@ -226,7 +236,10 @@ export const EditConfirmedVoterForm = ({
                 control={form.control}
                 name="pollingCenterId"
                 render={({ field }) => (
-                  <Combobox
+                  <FormItem>
+                    <FormLabel>مركز الاقتراع</FormLabel>
+                    <FormControl>
+                    <Combobox
                     options={pollingCentersSearch}
                     value={field.value} // Controlled by React Hook Form
                     onChange={field.onChange} // Updates React Hook Form on change
@@ -237,6 +250,8 @@ export const EditConfirmedVoterForm = ({
                         'border-destructive focus:border-destructive focus:ring-destructive'
                     )}
                   />
+                    </FormControl>
+                 </FormItem>
                 )}
               />
 
@@ -245,6 +260,7 @@ export const EditConfirmedVoterForm = ({
                 name="candidateId"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>المرشح</FormLabel>
                     <FormControl>
                       <Combobox
                         options={usersSearch}
@@ -286,7 +302,6 @@ export const EditConfirmedVoterForm = ({
               <div className="flex justify-between w-full">
                 <Button
                   type="submit"
-                  onClick={onUpdate}
                   disabled={isLoadingUpdate || isLoadingFile}
                 >
                   تحديث

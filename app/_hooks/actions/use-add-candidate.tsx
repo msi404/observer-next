@@ -74,8 +74,6 @@ export const useAddCandidate = () => {
       // @ts-ignore
       birth: '',
       profileImg: '',
-      electoralEntityId: '',
-      pollingCenterId: '',
       role: 102
     }
   });

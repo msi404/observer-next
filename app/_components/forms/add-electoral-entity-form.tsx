@@ -1,37 +1,36 @@
 'use client';
 // External libraries
-import {type FC} from 'react'
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
 
 // Hooks
-import {useAddPollingCenter} from '@/app/_hooks/actions/use-add-polling-center'
+import {useAddElectoralEntity} from '@/app/_hooks/actions/use-add-electoral-entity'
 // UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
-import { Input } from '@/app/_components/ui/input';
 import {
   Form,
+  FormField,
   FormControl,
   FormItem,
-  FormField,
   FormLabel
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
+import {Input} from '@/app/_components/ui/input'
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Spinner } from '@/app/_components/spinner';
 // Utils
 import { cn } from '@/app/_lib/utils';
-export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCenter}) => {
+export const AddElectoralEntityForm = () => {
   const {
 	  openAdd,
 	  setOpenAdd,
 	  form,
 	  onSubmit,
-    isLoadingPollingCenter,
-  } = useAddPollingCenter(govCenter!);
+    isLoadingElectoralEntity,
+  } = useAddElectoralEntity();
 
   return (
       <BasicDialog
@@ -48,28 +47,27 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
             <PenSquare size="35px" />
           </motion.button>
         }
-        title="اضافة مركز اقتراع"
+        title="اضافة كيان سياسي"
         description="ادخل المعطيات الاتية لاضافة عنصر"
       >
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
-              {/* Name */}
-              <FormField
+          <div className="grid gap-4">
+          <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم مركز الاقتراع</FormLabel>
+                    <FormLabel>اسم الكيان السياسي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingPollingCenter}
-                        placeholder="اسم مركز الاقتراع"
+                        disabled={isLoadingElectoralEntity}
+                        placeholder="اسم الكيان السياسي "
                         {...field}
                       />
                     </FormControl>
@@ -86,9 +84,9 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingPollingCenter}>
+                <Button type="submit" disabled={isLoadingElectoralEntity}>
                   اضافة
-                  {isLoadingPollingCenter && (
+                  {isLoadingElectoralEntity && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
@@ -97,7 +95,7 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
                 <DialogClose asChild aria-label="Close">
                   <Button
                     variant="outline"
-                    disabled={isLoadingPollingCenter}
+                    disabled={isLoadingElectoralEntity}
                   >
                     الغاء
                   </Button>

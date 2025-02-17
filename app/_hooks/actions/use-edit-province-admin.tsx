@@ -10,8 +10,6 @@ import {
   useDeleteUserMutation
 } from '@/app/_services/mutationApi';
 import {
-  useElectoralEntitiesQuery,
-  usePollingCentersQuery,
   useGovCentersQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
@@ -19,41 +17,20 @@ import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addUserSchema } from '@/app/_validation/user';
+import { addProvinceAdminSchema } from '@/app/_validation/user';
 
-interface CandiateItem {
-  id: string;
-  name: string;
-  dateOfBirth: string;
-  pollingCenter: { id: string };
-  electoralEntity: { id: string };
-  govId: string;
-  phone: string;
-  password: string;
-  username: string;
-  email: string;
-}
-
-export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
+export const useEditProvinceAdmins = ({ item }: { item: User }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const { refetch } = useUsersQuery(
-    `Role=1002&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=12&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
-  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
   const [govCenterSearch, setGovCenterSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
-
-  const [pollingCentersSearch, setPollingCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
 
@@ -61,12 +38,6 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters} =
-    usePollingCentersQuery('');
-
-  const { data: electoralEntities, isLoading: isLoadingElectoralEntities } =
-    useElectoralEntitiesQuery('');
-
   const { data: govCenters, isLoading: isLoadingGovCenters} =
     useGovCentersQuery('');
 
@@ -74,13 +45,13 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addProvinceAdminSchema>>({
+    resolver: zodResolver(addProvinceAdminSchema),
     defaultValues: {
       name: item.name,
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
-      govId: item.govId,
+      govCenterId: item.govCenter?.id,
       pollingCenterId: item.pollingCenter?.id,
       electoralEntityId: item.electoralEntity?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
@@ -92,11 +63,11 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
   });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addUserSchema>) => {
+  const onUpdate = async (values: z.infer<typeof addProvinceAdminSchema>) => {
     try {
       form.setValue('role', 102);
       await updateUser({
-        user: addUserSchema.parse(form.getValues()),
+        user: addProvinceAdminSchema.parse(form.getValues()),
         id: item.id
       });
     } catch (error: any) {
@@ -127,35 +98,15 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
   // Effect to Update Search Options
   useEffect( () =>
   {
-    if (!isLoadingElectoralEntities) {
-      setElectoralEntitiesSearch(
-        electoralEntities?.data.items.map((electoralEntity: any) => ({
-          value: electoralEntity.id,
-          label: electoralEntity.name
-        }))
-      );
-    }
-    if (!isLoadingPollingCenters) {
-      setPollingCentersSearch(
-        pollingCenters?.items.map((pollingCenter: any) => ({
-          value: pollingCenter.id,
-          label: pollingCenter.name
-        }))
-      );
-    }
     if (!isLoadingGovCenters) {
       setGovCenterSearch(
         govCenters?.items.map((govCenter: any) => ({
-          value: govCenter.gov.id,
-          label: govCenter.gov.name
+          value: govCenter.id,
+          label: govCenter.name
         }))
       );
     }
   }, [
-    electoralEntities,
-    isLoadingElectoralEntities,
-    pollingCenters,
-    isLoadingPollingCenters,
     govCenters,
     isLoadingGovCenters,
     openUpdate
@@ -176,7 +127,5 @@ export const useEditProvinceAdmins = ({ item }: { item: CandiateItem }) => {
     isLoadingDelete,
     isLoadingUpdate,
     govCenterSearch,
-    pollingCentersSearch,
-    electoralEntitiesSearch
   };
 };

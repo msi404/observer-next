@@ -10,9 +10,13 @@ import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import {
   Form,
-  FormField
+  FormField,
+  FormControl,
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
+import {Input} from '@/app/_components/ui/input'
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/basic-dialog';
@@ -51,12 +55,56 @@ export const AddGovCenterForm = () => {
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
+          <div className="grid gap-4">
+          <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>اسم مكتب المحافظة</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.name &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingGovCenter}
+                        placeholder="اسم مكتب المحافظة"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+            />
+                <FormField
+                control={form.control}
+                name="serial"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الرقم التسلسلي</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        className={cn(
+                          form.formState.errors.serial &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingGovCenter}
+                        placeholder="الرقم التسلسلي"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             <FormField
                 control={form.control}
                 name="govId"
                 render={({ field }) => (
-                  <Combobox
+                  <FormItem>
+                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormControl>
+                    <Combobox
                     options={govSearch}
                     value={field.value} // Controlled by React Hook Form
                     onChange={field.onChange} // Updates React Hook Form on change
@@ -67,6 +115,8 @@ export const AddGovCenterForm = () => {
                         'border-destructive focus:border-destructive focus:ring-destructive'
                     )}
                   />
+                    </FormControl>
+                  </FormItem>
                 )}
               />
             </div>

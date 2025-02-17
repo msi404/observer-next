@@ -10,15 +10,16 @@ import { Dynamic } from '@/app/_components//dynamic';
 import { DynamicTable } from '@/app/_components/dynamic-table';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { DynamicPagination } from '@/app/_components/dynamic-pagination';
-
+import {type Permission} from '@/app/_auth/auth-rbac'
 export const Table: FC<{
   table: any;
   clearFilter: VoidFunction;
+  permission: Permission;
   Add?: ComponentType;
   Retry: ReactElement;
   Filter: (table: any) => ReactElement;
   columnFilter: any;
-}> = ({ table, clearFilter, Add, Filter, columnFilter, Retry }) => {
+}> = ({ table, clearFilter, Add, Filter, columnFilter, Retry, permission }) => {
   const user = useSelector(selectUser);
   return (
     <Card className="p-4">
@@ -40,10 +41,8 @@ export const Table: FC<{
           </Show>
         </div>
         <div>
-          <Show when={hasPermission(user, 'view:addConfirmedVoter')}>
             {Retry}
-          </Show>
-          <Show when={hasPermission(user, 'view:addConfirmedVoter')} fallback={<Fragment />}>
+          <Show when={hasPermission(user, permission)} fallback={<Fragment />}>
             {Add && <Dynamic component={<Add />} />}
           </Show>
         </div>

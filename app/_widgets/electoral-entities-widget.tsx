@@ -1,7 +1,6 @@
 'use client';
 import { useMounted } from '@mantine/hooks'
 import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
-import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -9,13 +8,12 @@ import {
   selectPageSize,
   setTotalPages
 } from '@/app/_lib/features/paginationSlice';
-import {selectUser} from '@/app/_lib/features/authSlice'
 import {EmptyCard} from '@/app/_components/empty-card'
 import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
-import { useGovCentersQuery } from '@/app/_services/fetchApi';
+import { useElectoralEntitiesQuery } from '@/app/_services/fetchApi';
 import {Show} from '@/app/_components/show'
 import { Switch, Match } from '@/app/_components/switch';
 import { For } from '@/app/_components/for';
@@ -25,48 +23,35 @@ import {
   CardFooter,
   CardTitle
 } from '@/app/_components/ui/card';
-import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
 import { DynamicPagination } from '@/app/_components/dynamic-pagination';
-import { AddGovCenterForm } from '@/app/_components/forms/add-gov-center-form';
-import { EditGovCenterForm } from '@/app/_components/forms/edit-gov-center-form';
+import { AddElectoralEntityForm } from '@/app/_components/forms/add-electoral-entity-form'
+import {EditElectoralEntityForm} from '@/app/_components/forms/edit-electoral-entity-form'
 import { Landmark } from 'lucide-react';
-import {hasPermission} from '@/app/_auth/auth-rbac'
 
 const Details: FC<{
-  gov: string;
-  pollingCenters: number;
-  observers: number;
-}> = ( { gov, pollingCenters, observers } ) =>
+  name: string
+}> = ( { name } ) =>
 {
   return (
     <div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
-        <h1>مكتب المحافظة</h1>
-        <h1>{gov}</h1>
-      </div>
-      <div className="flex justify-between rounded-lg p-2">
-        <h1>عدد مراكز التسجيل</h1>
-        <h1>{pollingCenters}</h1>
-      </div>
-      <div className="flex justify-between bg-slate-100 rounded-lg p-2">
-        <h1>عدد المراقبين للمحافظة</h1>
-        <h1>{observers}</h1>
+        <h1>اسم الكيان</h1>
+        <h1>{name}</h1>
       </div>
     </div>
   );
 };
 
-export const GovCentersWidget: FC = () => {
+export const ElectoralEntitiesWidget: FC = () => {
   const dispatch = useDispatch();
   const mounted = useMounted()
   const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector( selectPageSize );
-  const user = useSelector(selectUser)
+  const pageSize = useSelector(selectPageSize);
 
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
-    useGovCentersQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
+    useElectoralEntitiesQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
 
   useEffect(() => {
     if (!isLoading) {
@@ -87,7 +72,7 @@ export const GovCentersWidget: FC = () => {
     <Card className="py-12 px-6">
       <div className="flex justify-between items-center">
         <CardHeader>
-          <CardTitle>مكاتب المحافظات</CardTitle>
+          <CardTitle>الكيانات السياسية</CardTitle>
         </CardHeader>
         <Show when={isSuccess && data.items.length > 0}>
         <div>
@@ -105,9 +90,7 @@ export const GovCentersWidget: FC = () => {
           >
             <RefreshCcw size="35px" />
           </motion.button>
-            <Show when={hasPermission(user, 'view:addGovCenter')}>
-            <AddGovCenterForm />
-          </Show>
+          <AddElectoralEntityForm />
         </div>
       </Show>
       </div>
@@ -123,7 +106,7 @@ export const GovCentersWidget: FC = () => {
             <SkeletonCard />
           </Match>
           <Match when={isSuccess && data.items.length === 0}>
-            <EmptyCard permission='view:addGovCenter' Add={<AddGovCenterForm />} retry={refetch} />
+            <EmptyCard Add={<AddElectoralEntityForm />} retry={refetch} />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -133,21 +116,13 @@ export const GovCentersWidget: FC = () => {
                     Header={<Landmark size={70} />}
                     Content={
                       <Details
-                        gov={item.gov.name}
-                        pollingCenters={item.totalPollingCenters}
-                        observers={item.totalObservers}
+                        name={item.name}
                       />
                     }
                     Footer={
                       <div className="flex justify-between gap-3 w-full">
-                        <Link
-                          className="flex-1"
-                          href={`polling-management/${item.id}`}
-                        >
-                          <Button className="w-full">عرض مراكز التسجيل</Button>
-                        </Link>
                         <div>
-                          <EditGovCenterForm item={item} />
+                          <EditElectoralEntityForm item={item} />
                         </div>
                       </div>
                     }

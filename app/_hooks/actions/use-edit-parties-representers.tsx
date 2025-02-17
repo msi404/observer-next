@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -10,7 +10,8 @@ import {
   useDeleteUserMutation
 } from '@/app/_services/mutationApi';
 import {
-  useUsersQuery
+  useUsersQuery,
+  useElectoralEntitiesQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -39,9 +40,17 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const { refetch } = useUsersQuery(
     `Role=10&PageNumber=${currentPage}&PageSize=${pageSize}`
-  );
+  );  
+
+  const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
+  { value: string; label: string }[]
+    >( [] );
+  
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-  const [openDelete, setOpenDelete] = useState<boolean>(false);
+  const [ openDelete, setOpenDelete ] = useState<boolean>( false );
+  
+    const { data: elecotralEntities, isLoading: isLoadingElecotralEntities } =
+      useElectoralEntitiesQuery('');
 
   // Toast Hook
   const { toast } = useToast();
@@ -65,7 +74,7 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
   });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addUserSchema>) => {
+  const onUpdate = async () => {
     try {
       form.setValue('role', 10);
       await updateUser({
@@ -98,10 +107,25 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
     }
   };
 
+    // Effect to Update Search Options
+    useEffect( () =>
+      {
+        if (!isLoadingElecotralEntities) {
+          setElectoralEntitiesSearch(
+            elecotralEntities?.items.map((electoralEntity: any) => ({
+              value: electoralEntity.id,
+              label: electoralEntity.name
+            }))
+          );
+        }
+      }, [elecotralEntities, isLoadingElecotralEntities, openUpdate]);
+
   const onDelete = async () => {
     await deleteUser(item.id);
     refetch();
   };
+
+
   return {
     openUpdate,
     setOpenUpdate,
@@ -112,5 +136,6 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
+    electoralEntitiesSearch
   };
 };

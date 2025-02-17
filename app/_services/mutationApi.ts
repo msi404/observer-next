@@ -2,6 +2,26 @@ import { tatweerApi } from '@/app/_services/api';
 
 const mutationApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
+    createElectoralEntity: builder.mutation( {
+      query: ( item ) => ( {
+        url: 'electoralentities',
+        method: 'POST',
+        body: item
+      })
+    } ),
+    deleteElectoralEntity: builder.mutation( {
+      query: ( id ) => ( {
+        url: `electoralentities/${id}`,
+        method: 'DELETE',
+      })
+    } ),
+    updateElectoralEntity: builder.mutation( {
+      query: ( {id, electoralEntity} ) => ( {
+        url: `electoralentities/${id}`,
+        method: 'PUT',
+        body: electoralEntity
+      })
+    }),
     createPost: builder.mutation( {
       query: ( item ) => ( {
         url: 'posts',
@@ -122,5 +142,8 @@ export const {
   useCreateNotificationMutation,
   useCreatePostMutation,
   useDeletePostMutation,
-  useUpdatePostMutation
+  useUpdatePostMutation,
+  useCreateElectoralEntityMutation,
+  useDeleteElectoralEntityMutation,
+  useUpdateElectoralEntityMutation
 } = mutationApi;

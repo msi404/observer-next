@@ -1,8 +1,11 @@
 'use client';
+import {useSelector} from 'react-redux'
+import {selectUser} from '@/app/_lib/features/authSlice'
 import { type NextPage } from 'next';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-
+import { hasPermission } from '@/app/_auth/auth-rbac'
+import {Show} from '@/app/_components/show'
 import { Container } from '@/app/_components/container';
 import {
   Tabs,
@@ -15,7 +18,9 @@ import { CandidatesWidget } from '@/app/_widgets/candidates-widget'
 import { DataEntriesWidget } from '@/app/_widgets/data-entries-widget'
 import { ObserversWidget } from '@/app/_widgets/observers-widget'
 import { PartiesRepresentersWidget } from '@/app/_widgets/parties-representers-widget'
-const UserMangementPage: NextPage = () => {
+const UserMangementPage: NextPage = () =>
+{
+  const user = useSelector(selectUser)
   const { t } = useTranslation();
 
   return (
@@ -25,9 +30,11 @@ const UserMangementPage: NextPage = () => {
           <TabsTrigger className="w-full" value="province-admins">
              مدراء المحافظات
           </TabsTrigger>
+          <Show when={hasPermission(user, 'view:parties-representers-tab')}>
           <TabsTrigger value="parties-representers">
             ممثلين الكيان
           </TabsTrigger>
+          </Show>
           <TabsTrigger value="candidates">
             المرشحين
           </TabsTrigger>

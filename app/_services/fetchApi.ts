@@ -2,6 +2,20 @@ import { tatweerApi } from '@/app/_services/api';
 
 const fetchDataApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
+    electoralEntities: builder.query( {
+      query: ( query ) => `electoralentities?${ query }`,
+      transformResponse: ( response: any ) =>
+        {
+          const items = response.data.items;
+          return {
+            items,
+            pageNumber: response.data.pageNumber,
+            pageSize: response.data.pageSize,
+            totalCount: response.data.totalCount,
+            totalPages: response.data.totalPages
+          };        
+        }
+    }),
     post: builder.query( {
       query: (params) => `posts/${params}`,
       transformResponse: ( response: any ) =>
@@ -133,9 +147,6 @@ const fetchDataApi = tatweerApi.injectEndpoints({
           totalPages: response.data.totalPages
         };
       }
-    }),
-    electoralEntities: builder.query({
-      query: () => 'electoralentities'
     }),
     govCenters: builder.query({
       query: (query) => `govcenters?${query}`,

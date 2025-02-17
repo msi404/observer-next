@@ -14,7 +14,8 @@ import {
   Form,
   FormField,
   FormControl,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
 
@@ -62,6 +63,7 @@ export const AddPostForm = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>العنوان</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -81,6 +83,7 @@ export const AddPostForm = () => {
               name="content"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>المحتوى</FormLabel>
                   <FormControl>
                     <AutosizeTextarea
                       maxHeight={400}

@@ -14,7 +14,8 @@ import {
   Form,
   FormControl,
   FormItem,
-  FormField
+  FormField,
+  FormLabel
 } from '@/app/_components/ui/form';
 import {
   Select,
@@ -75,6 +76,7 @@ export const AddConfirmVoterForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>اسم الناخب الثلاثي</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -96,6 +98,7 @@ export const AddConfirmVoterForm = () => {
               name="address"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>العنوان</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -117,8 +120,13 @@ export const AddConfirmVoterForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>تاريخ الميلاد</FormLabel>
                   <FormControl>
                     <DatePicker
+                      className={cn(
+                        form.formState.errors.dateOfBirth &&
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
                       disabled={isLoadingVoter || isLoadingFile}
                       value={field.value}
                       onChange={field.onChange}
@@ -134,6 +142,7 @@ export const AddConfirmVoterForm = () => {
               name="serial"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>رقم بطاقة الناخب</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -155,6 +164,7 @@ export const AddConfirmVoterForm = () => {
               name="gender"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>الجنس</FormLabel>
                   <FormControl>
                     <Select
                       disabled={isLoadingVoter || isLoadingFile}
@@ -177,17 +187,22 @@ export const AddConfirmVoterForm = () => {
               control={form.control}
               name="pollingCenterId"
               render={({ field }) => (
-                <Combobox
-                  options={pollingCentersSearch}
-                  value={field.value} // Controlled by React Hook Form
-                  onChange={field.onChange} // Updates React Hook Form on change
-                  label="مركز الاقتراع"
-                  disabled={isLoadingVoter || isLoadingFile}
-                  className={cn(
-                    form.formState.errors.pollingCenterId &&
-                      'border-destructive focus:border-destructive focus:ring-destructive'
-                  )}
-                />
+                <FormItem>
+                  <FormLabel>مركز الاقتراع</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={pollingCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مركز اقتراع"
+                      disabled={isLoadingVoter || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.pollingCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
               )}
             />
 
@@ -196,13 +211,14 @@ export const AddConfirmVoterForm = () => {
               name="candidateId"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>المرشح</FormLabel>
                   <FormControl>
                     <Combobox
                       options={usersSearch}
                       //@ts-ignore
                       value={field.value} // Controlled by React Hook Form
                       onChange={field.onChange} // Updates React Hook Form on change
-                      label="المرشح"
+                      label="اختيار مرشح"
                       disabled={isLoadingVoter || isLoadingFile}
                       className={cn(
                         form.formState.errors.candidateId &&
@@ -214,7 +230,7 @@ export const AddConfirmVoterForm = () => {
               )}
             />
 
-            {/* Image Upload */}
+            {/* Image Upload */ }
             <Dropzone
               setFile={(voterFile) => (fileRef.current = voterFile)}
               label="اختيار صورة بطاقة الناخب"

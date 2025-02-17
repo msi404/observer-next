@@ -8,7 +8,8 @@ import {
   Form,
   FormControl,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
@@ -130,6 +131,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المرشح</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -149,6 +151,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
                       <Input
                         type="username"
@@ -169,6 +172,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>البريد الالكتروني</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -189,6 +193,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
                         type="phone"
@@ -210,6 +215,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>تاريخ الميلاد</FormLabel>
                     <FormControl>
                       <DatePicker
                         disabled={isLoadingUpdate || isLoadingFile}
@@ -227,6 +233,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateSerial"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم المرشح</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -251,6 +258,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateListSerial"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>رقم القائمة</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -292,16 +300,15 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
               <div className="flex justify-between w-full">
                 <Button
                   type="submit"
-                  onClick={onUpdate}
                   disabled={isLoadingUpdate || isLoadingFile}
                 >
                   تعديل
-                  {isLoadingUpdate ||
-                    (isLoadingFile && (
+                  {
+                    (isLoadingUpdate || isLoadingFile) && (
                       <div className=" scale-125">
                         <Spinner />
                       </div>
-                    ))}
+                    )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
                   <Button

@@ -14,14 +14,15 @@ import {
   Form,
   FormControl,
   FormItem,
-  FormField
+  FormField,
+  FormLabel
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Dropzone } from '@/app/_components/dropzone';
-import {Show} from '@/app/_components/show'
+import { Show } from '@/app/_components/show';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
 // Utils
@@ -65,6 +66,7 @@ export const AddObserverForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>اسم الموظف الثلاثي</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -84,6 +86,7 @@ export const AddObserverForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>اسم المستخدم</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -104,9 +107,10 @@ export const AddObserverForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>كلمة المرور</FormLabel>
                   <FormControl>
                     <Input
-                      type='password'
+                      type="password"
                       className={cn(
                         form.formState.errors.password &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -126,8 +130,13 @@ export const AddObserverForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>تاريخ الميلاد</FormLabel>
                   <FormControl>
                     <DatePicker
+                      className={cn(
+                        form.formState.errors.dateOfBirth &&
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
                       disabled={isLoadingUser || isLoadingFile}
                       value={field.value}
                       onChange={field.onChange}
@@ -141,6 +150,7 @@ export const AddObserverForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>رقم الهاتف</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -161,6 +171,7 @@ export const AddObserverForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>البريد الالكتروني</FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -202,7 +213,10 @@ export const AddObserverForm = () => {
                 )}
               </Button>
               <DialogClose asChild aria-label="Close">
-                <Button variant="outline" disabled={isLoadingUser || isLoadingFile}>
+                <Button
+                  variant="outline"
+                  disabled={isLoadingUser || isLoadingFile}
+                >
                   الغاء
                 </Button>
               </DialogClose>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -15,55 +15,44 @@ import { z } from 'zod';
 import { useToast } from '@/app/_hooks/use-toast';
 
 // API Services
-import { useCreateGovCenterMutation } from '@/app/_services/mutationApi';
+import { useCreateElectoralEntityMutation } from '@/app/_services/mutationApi';
 import {
-  useGovCentersQuery,
-  useProvincesQuery
+  useElectoralEntitiesQuery
 } from '@/app/_services/fetchApi';
 
 // Validation Schemas
-import { addGovCenterSchema } from '@/app/_validation/gov-center';
+import { addElectoralEntitySchema } from '@/app/_validation/electoral-entity';
 
-export const useAddGovCenter = () => {
+export const useAddElectoralEntity = () => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createGovCenter, { isLoading: isLoadingGovCenter }] =
-    useCreateGovCenterMutation();
-
-  // State Management
-  const [govSearch, setGovSearch] = useState<
-    { value: string; label: string }[]
-  >([]);
+  const [createElectoralEntity, { isLoading: isLoadingElectoralEntity }] =
+    useCreateElectoralEntityMutation();
 
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { refetch: refetchGovCenters } = useGovCentersQuery(
+  const { refetch: refetchElectoralEntities } = useElectoralEntitiesQuery(
     `PageNumber=${currentPage}&PageSize=${pageSize}`
   );
-
-  const { data: provinces, isLoading: isLoadingProvinces } =
-    useProvincesQuery('');
 
   // Toast Hook
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addGovCenterSchema>>({
-    resolver: zodResolver(addGovCenterSchema),
+  const form = useForm<z.infer<typeof addElectoralEntitySchema>>({
+    resolver: zodResolver(addElectoralEntitySchema),
     defaultValues: {
-      serial: '',
-      name: '',
-      govId: ''
+     name: ''
     }
   });
 
   // Form Submission Handler
   const onSubmit = async () => {
     try {
-      const result = await createGovCenter(
-        addGovCenterSchema.parse(form.getValues())
+      const result = await createElectoralEntity(
+        addElectoralEntitySchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);
@@ -75,30 +64,18 @@ export const useAddGovCenter = () => {
       });
       console.log(error);
     } finally {
-      refetchGovCenters();
+      refetchElectoralEntities();
       setOpenAdd( false );
       form.reset()
     }
   };
-
-  // Effect to Update Search Options
-  useEffect(() => {
-    if (!isLoadingProvinces) {
-      setGovSearch(
-        provinces?.data.items.map((gov: any) => ({
-          value: gov.id,
-          label: gov.name
-        }))
-      );
-    }
-  }, [provinces, isLoadingProvinces, openAdd]);
 
   return {
     openAdd,
     setOpenAdd,
     form,
     onSubmit,
-    isLoadingGovCenter,
-    govSearch
+    isLoadingElectoralEntity,
+    refetchElectoralEntities
   };
 };
