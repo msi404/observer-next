@@ -99,7 +99,7 @@ export const CandidatePostsSingleWidget: FC = () => {
             <SkeletonCard />
           </Match>
           <Match when={isSuccess && data.items.length === 0}>
-            <EmptyCard Add={<AddPostForm />} retry={refetch} />
+            <EmptyCard permission='view:addCandidate' Add={<AddPostForm />} retry={refetch} />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

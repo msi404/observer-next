@@ -52,12 +52,14 @@ export const PartiesRepresentersWidget = () =>
 				  </Match>
 				  <Match when={isSuccess && partiesRepresenters.length === 0}>
 					 <EmptyTable
+					 permission='view:addElectoralEntityAdmin'
 						Add={<AddPartiesRepresentersForm />}
 						retry={refetch}
 					 />
 				  </Match>
 				  <Match when={isSuccess && partiesRepresenters.length > 0}>
 					 <Table
+					 permission='view:addElectoralEntityAdmin'
 						Filter={FilterPartiesRepresentersForm}
 						Add={AddPartiesRepresentersForm}
 						Retry={<Retry refetch={refetch} />}

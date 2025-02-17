@@ -60,7 +60,8 @@ export const DataEntriesWidget = () =>
 					 />
 				  </Match>
 				  <Match when={isSuccess && dataEntries.length > 0}>
-					 <Table
+			  <Table
+				  permission='view:addDataEntry'
 						Filter={FilterDataEntriesForm}
 						Add={AddDataEntryForm}
 						Retry={<Retry refetch={refetch} />}

@@ -106,7 +106,7 @@ export const ElectoralEntitiesWidget: FC = () => {
             <SkeletonCard />
           </Match>
           <Match when={isSuccess && data.items.length === 0}>
-            <EmptyCard Add={<AddElectoralEntityForm />} retry={refetch} />
+            <EmptyCard permission='view:addElectoralEnttity' Add={<AddElectoralEntityForm />} retry={refetch} />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

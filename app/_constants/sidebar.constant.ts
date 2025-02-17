@@ -28,13 +28,13 @@ type SidebarItem = {
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     persmission: 'view:home',
-    title: 'common:sidebar.home',
+    title: 'الرئيسية',
     url: '/',
     icon: Landmark
 	},
   {
     persmission: 'view:electoralEntities',
-    title: 'common:sidebar.electoralEntities',
+    title: 'الكيانات السياسية',
     url: '/electoral-entities',
     icon: Component
   },
@@ -46,31 +46,31 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     persmission: 'view:polling-management',
-    title: 'common:sidebar.pollingManagement',
+    title: 'ادارة الاقتراع',
     url: '/polling-management',
     icon: Archive
   },
   {
     persmission: 'view:data-entries',
-    title: 'common:sidebar.dataEntries',
+    title: 'مدخلين البيانات',
     url: '/data-entries',
     icon: Feather
   },
   {
     persmission: 'view:observers',
-    title: 'common:sidebar.observers',
+    title: 'المراقبين',
     url: '/observers',
     icon: Eye
   },
   {
     persmission: 'view:profile',
-    title: 'common:sidebar.profile',
+    title: 'الملف الشخصي',
     url: '/profile',
     icon: CircleUserRound
   },
   {
     persmission: 'view:candidates',
-    title: 'common:sidebar.candidates',
+    title: 'المرشحين',
     url: '/candidates',
     icon: ContactRound
   },
@@ -82,19 +82,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     persmission: 'view:user-mangement',
-    title: 'common:sidebar.userManagement',
+    title: 'ادارة المستخدمين',
     url: '/user-mangement',
     icon: UsersRound
   },
   {
     persmission: 'view:election-base',
-    title: 'common:sidebar.electionBase',
+    title: 'القاعدة الانتخابية',
     url: '/election-base',
     icon: HandHeart
   },
   {
     persmission: 'view:election-results',
-    title: 'common:sidebar.electionResults',
+    title: 'النتائج الانتخابية',
     url: '/election-results',
     icon: TrendingUp
   },
@@ -106,13 +106,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     persmission: 'view:notifications',
-    title: 'common:sidebar.notifications',
+    title: 'الاشعارات',
     url: '/notifications',
     icon: Bell
   },
   {
     persmission: 'view:issues',
-    title: 'common:sidebar.issues',
+    title: 'الشكاوى',
     url: '/issues',
     icon: Inbox
   }

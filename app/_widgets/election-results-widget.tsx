@@ -54,12 +54,14 @@ export const ElectionResultsWidget = () =>
 					 <FetchTable />
 				  </Match>
 				  <Match when={isSuccess && electionResults.length === 0}>
-					 <EmptyTable
+			  <EmptyTable
+				  permission='view:addCandidate'
 						retry={refetch}
 					 />
 				  </Match>
 				  <Match when={isSuccess && electionResults.length > 0}>
-					 <Table
+			  <Table
+				  permission='view:addCandidate'
 						Filter={FilterConfirmedVotersForm}
 						Retry={<Retry refetch={refetch} />}
 						columnFilter={electionResultsColumnFilter}

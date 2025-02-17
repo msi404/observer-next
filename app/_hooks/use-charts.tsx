@@ -1,10 +1,7 @@
 'use client';
-import { useTranslation } from 'react-i18next';
 import { type ChartConfig } from '@/app/_components/ui/chart';
 
 export const useCharts = () => {
-  const { t } = useTranslation();
-
   const votersByAgeChartConfig = {
     confirmedVoters: {
       label: 'المؤكدين',

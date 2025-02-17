@@ -41,7 +41,7 @@ export const useElectionsResultsColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.name')}
+          title='الاسم'
         />
       ),
       cell: ({ row }: { row: any }) => {
@@ -58,7 +58,7 @@ export const useElectionsResultsColumns = () => {
     {
       id: 'pollingCenter',
       accessorKey: 'pollingCenter.name',
-      header: t('electionBase:confirmedVoters.table.header.pollingCenter'),
+      header: 'مركز الاقتراع',
       cell: ({ row }: { row: any }) => {
         return (
           <div>

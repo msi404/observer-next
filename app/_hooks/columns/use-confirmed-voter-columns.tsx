@@ -20,7 +20,7 @@ export const useConfirmedVotersColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.name')}
+          title='الاسم'
         />
       )
     },
@@ -30,7 +30,7 @@ export const useConfirmedVotersColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.age')}
+          title='العمر'
         />
       ),
       cell: ({ cell }: { cell: any }) => {
@@ -44,7 +44,7 @@ export const useConfirmedVotersColumns = () => {
     {
       id: 'province',
       accessorKey: 'province.gov.name',
-      header: t( 'electionBase:confirmedVoters.table.header.governorate' ),
+      header: 'مكتب المحافظة',
       cell: ( { cell }: { cell: any; } ) =>
       {
         return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
@@ -53,7 +53,7 @@ export const useConfirmedVotersColumns = () => {
     {
       id: 'pollingCenter',
       accessorKey: 'pollingCenter.name',
-      header: t( 'electionBase:confirmedVoters.table.header.pollingCenter' ),
+      header: 'مركز الاقتراع',
       cell: ({ cell }: { cell: any }) => {
         return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
       }
@@ -69,7 +69,7 @@ export const useConfirmedVotersColumns = () => {
     {
       id: 'gender',
       accessorKey: 'gender',
-      header: t('electionBase:confirmedVoters.table.header.gender'),
+      header: 'الجنس',
       cell: ({ cell }: { cell: any }) => {
         return <Fragment>{cell.getValue() === 0 ? 'ذكر' : 'انثى'}</Fragment>;
       }
@@ -80,7 +80,7 @@ export const useConfirmedVotersColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.candidateName')}
+          title='المرشح'
         />
       ),
       cell: ({ cell }: { cell: any }) => {
@@ -95,7 +95,7 @@ export const useConfirmedVotersColumns = () => {
     {
       id: 'img',
       accessorKey: 'card',
-      header: t('electionBase:confirmedVoters.table.header.cardPhoto'),
+      header: 'صورة البطاقة',
       cell: ({ cell }: any) => {
         const value = cell.getValue();
         return <Zoom className='border w-16 h-12' preview={value} />;

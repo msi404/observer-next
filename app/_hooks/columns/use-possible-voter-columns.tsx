@@ -19,7 +19,7 @@ export const usePossibleVotersColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.name')}
+          title='الاسم'
         />
       )
     },
@@ -29,7 +29,7 @@ export const usePossibleVotersColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.age')}
+          title='العمر'
         />
       ),
       cell: ({ cell }: { cell: any }) => {
@@ -43,12 +43,12 @@ export const usePossibleVotersColumns = () => {
     {
       id: 'province',
       accessorKey: 'province.gov.name',
-      header: t('electionBase:confirmedVoters.table.header.governorate')
+      header: 'مكتب المحافظة'
     },
     {
       id: 'pollingCenter',
       accessorKey: 'pollingCenter.name',
-      header: t('electionBase:confirmedVoters.table.header.pollingCenter')
+      header: 'مركز الاقتراع'
     },
     {
       id: 'address',
@@ -61,7 +61,7 @@ export const usePossibleVotersColumns = () => {
     {
       id: 'gender',
       accessorKey: 'gender',
-      header: t('electionBase:confirmedVoters.table.header.gender'),
+      header: 'الجنس',
       cell: ({ cell }: { cell: any }) => {
         return <Fragment>{cell.getValue() === 0 ? 'ذكر' : 'انثى'}</Fragment>;
       }
@@ -72,7 +72,7 @@ export const usePossibleVotersColumns = () => {
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}
-          title={t('electionBase:confirmedVoters.table.header.candidateName')}
+          title='المرشح'
         />
       ),
       cell: ({ cell }: { cell: any }) => {
