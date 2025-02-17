@@ -31,11 +31,19 @@ export const useCandidateColumns = () => {
           title='رقم المرشح'
         />
       ),
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
     },
     {
       id: 'candidateListSerial',
       accessorKey: 'candidateListSerial',
-      header: 'رقم القائمة'
+      header: 'رقم القائمة',
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
     },
     {
       id: 'pollingCenter',
@@ -49,7 +57,11 @@ export const useCandidateColumns = () => {
     {
       id: 'phone',
       accessorKey: 'phone',
-      header: 'رقم الهاتف'
+      header: 'رقم الهاتف',
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
     },
     {
       id: 'profileImg',

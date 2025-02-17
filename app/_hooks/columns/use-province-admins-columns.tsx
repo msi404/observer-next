@@ -33,7 +33,11 @@ export const useProvniceAdminsColumns = () => {
     {
       id: 'phone',
       accessorKey: 'phone',
-      header: 'رقم الهاتف'
+      header: 'رقم الهاتف',
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
     },
     {
       id: 'profileImg',

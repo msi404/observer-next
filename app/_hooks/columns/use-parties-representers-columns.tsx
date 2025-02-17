@@ -31,16 +31,28 @@ export const usePartiesRepresentersColumns = () =>
           title='مكتب المحافظة'
         />
       ),
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
     },
     {
       id: 'phone',
       accessorKey: 'phone',
-      header: 'رقم الهاتف'
+      header: 'رقم الهاتف',
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
 	  },
     {
       id: 'email',
       accessorKey: 'email',
-      header: 'البريد الالكتروني'
+      header: 'البريد الالكتروني',
+      cell: ( { cell }: { cell: any; } ) =>
+        {
+          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
+        }
 	  },
      {
       id: 'actions',
