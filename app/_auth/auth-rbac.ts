@@ -34,7 +34,6 @@ const ROLES = {
     "view:election-results",
     "view:data-entries",
     "view:observers",
-    "view:events",
     "view:user-mangement",
     "view:election-base",
     "view:notifications",

@@ -2,13 +2,20 @@
 import { usePathname } from 'next/navigation';
 import { type FC } from 'react';
 import { useUserQuery } from '@/app/_services/fetchApi';
-import {KpiItem} from '@/app/_components/kpi-item'
+import { KpiItem } from '@/app/_components/kpi-item'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from '@/app/_components/ui/tabs';
 import { Card } from '@/app/_components/ui/card';
 import { Background } from '@/app/_components/background';
 import { Profile } from '@/app/_components/profile';
 import { LoadingIndicator } from '@/app/_components/loading-indicator';
 import { Switch, Match } from '@/app/_components/switch';
 import { Calendar, Users, Building2, Phone, Mail, Hash } from 'lucide-react';
+import {CandidatePostsSingleWidget} from '@/app/_widgets/candidate-posts-single-widget'
 
 export const ProfileWidget: FC = () =>
 {
@@ -30,7 +37,18 @@ export const ProfileWidget: FC = () =>
               </div>
             </div>
           </div>
-          <div className='flex flex-col lg:flex-row gap-5'>
+
+          <Tabs defaultValue='info'>
+            <TabsList className='grid w-full grid-cols-2 mb-6'>
+              <TabsTrigger className="w-full" value="info">
+                المعلومات الاساسية
+              </TabsTrigger>
+              <TabsTrigger value='events'>
+                الفعاليات والمشاركات
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value='info'>
+            <div className='flex flex-col lg:flex-row gap-5'>
             <div className='space-y-4 bg-secondary p-3 rounded-md'>
             <div className='flex gap-4'>
               <Building2 />
@@ -56,6 +74,11 @@ export const ProfileWidget: FC = () =>
             <KpiItem Icon={<Users />} kpi={data?.data?.candidateSerial} title='مرتبة المرشح في القائمة'/>
           </div>
           </div>
+            </TabsContent>
+            <TabsContent value='events'>
+              <CandidatePostsSingleWidget />
+            </TabsContent>
+          </Tabs>
         </Card>
       </Match>
       <Match when={isLoading}>
