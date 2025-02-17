@@ -1,21 +1,17 @@
 'use client';
-import { usePathname } from 'next/navigation';
 import { type FC } from 'react';
-import { useUserQuery } from '@/app/_services/fetchApi';
+import { useCurrentUserQuery } from '@/app/_services/fetchApi';
 import {KpiItem} from '@/app/_components/kpi-item'
 import { Card } from '@/app/_components/ui/card';
 import { Background } from '@/app/_components/background';
 import { Profile } from '@/app/_components/profile';
-import { LoadingIndicator } from '@/app/_components/loading-indicator';
+import { Spinner } from '@/app/_components/spinner';
 import { Switch, Match } from '@/app/_components/switch';
 import { Calendar, Users, Building2, Phone, Mail, Hash } from 'lucide-react';
 
-export const ProfileWidget: FC = () =>
-{
-  const pathname = usePathname();
-  const id = pathname.split( '/' ).reverse().at( 0 );
-  
-  const { data, isLoading, isSuccess } = useUserQuery({params: id, query: 'Role=104'});
+export const CurrentProfileWidget: FC = () => {
+  const { data, isLoading, isSuccess } = useCurrentUserQuery('');
+
   return (
     <Switch>
       <Match when={isSuccess}>
@@ -25,7 +21,7 @@ export const ProfileWidget: FC = () =>
             <div className="absolute -bottom-16 right-14 flex justify-center items-center gap-4">
               <Profile image={data?.data?.profileImg} className="border-4 border-white" />
               <div className="flex flex-col">
-                <h1>{data?.data?.name}</h1>
+                <h1>{data.data.name}</h1>
                 <p className="text-xs text-gray-600 mt-1">مرشح بغداد - الكرادة</p>
               </div>
             </div>
@@ -59,7 +55,7 @@ export const ProfileWidget: FC = () =>
         </Card>
       </Match>
       <Match when={isLoading}>
-        <LoadingIndicator />
+        <Spinner />
       </Match>
     </Switch>
   );

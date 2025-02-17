@@ -1,12 +1,12 @@
 'use client';
 import { type NextPage } from 'next';
 import { Container } from '@/app/_components/container';
-import {DataEntriesWidget} from '@/app/_widgets/data-entries-widget'
+import {PostsWidget} from '@/app/_widgets/posts-widget'
 const EventsPage: NextPage = () => {
   return (
     <Container>
           <div>
-            <DataEntriesWidget />
+            <PostsWidget />
           </div>
     </Container>
   );

@@ -43,7 +43,6 @@ export const useAddNotification = () => {
     defaultValues: {
 		 title: '',
 		 content: '',
-		 role: 0
     }
   });
 

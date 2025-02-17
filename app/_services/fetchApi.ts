@@ -2,8 +2,40 @@ import { tatweerApi } from '@/app/_services/api';
 
 const fetchDataApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
+    post: builder.query( {
+      query: (params) => `posts/${params}`,
+      transformResponse: ( response: any ) =>
+        {
+          return response.data          
+        }
+    }),
+    posts: builder.query( {
+      query: (query) => `posts?${query}`,
+      transformResponse: ( response: any ) =>
+        {
+          const items = response.data.items;
+          return {
+            items,
+            pageNumber: response.data.pageNumber,
+            pageSize: response.data.pageSize,
+            totalCount: response.data.totalCount,
+            totalPages: response.data.totalPages
+          };
+        }
+    }),
     notification: builder.query( {
-      query: () => 'notifications'
+      query: () => 'notifications',
+      transformResponse: ( response: any ) =>
+      {
+        const items = response.data.items;
+        return {
+          items,
+          pageNumber: response.data.pageNumber,
+          pageSize: response.data.pageSize,
+          totalCount: response.data.totalCount,
+          totalPages: response.data.totalPages
+        };
+      }
     }),
     votersAgeStatistics: builder.query({
       query: () => 'statistics/voters/ages',
@@ -90,7 +122,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       query: () => 'govs'
     }),
     pollingCenters: builder.query({
-      query: (params) => `pollingcenters?${params}`,
+      query: (query) => `pollingcenters?${query}`,
       transformResponse: (response: any) => {
         const items = response.data.items;
         return {
@@ -120,6 +152,9 @@ const fetchDataApi = tatweerApi.injectEndpoints({
     }),
     users: builder.query({
       query: (query) => `users?${query}`
+    } ),
+    user: builder.query( {
+      query: ({params, query}) => `users/${params}?${query}`
     }),
     currentUser: builder.query({
       query: () => 'users/current'
@@ -182,5 +217,8 @@ export const {
   useComplaintsQuery,
   useCandidatesActivitiesStatisticsQuery,
   useVotersAgeStatisticsQuery,
-  useNotificationQuery
+  useNotificationQuery,
+  useUserQuery,
+  usePostsQuery,
+  usePostQuery
 } = fetchDataApi;

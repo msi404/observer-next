@@ -1,13 +1,13 @@
 'use client';
-import { type FC } from 'react';
+import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectCurrentMessage,
-  selectMessageStatus,
-  setMessage
-} from '@/app/_lib/features/complaintsSlice';
+  selectCurrentNotification,
+  selectNotificationStatus,
+  setNotification
+} from '@/app/_lib/features/notificationsSlice';
 import NextImage from 'next/image';
-import { useComplaintsQuery } from '@/app/_services/fetchApi';
+import { useNotificationQuery } from '@/app/_services/fetchApi';
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { Badge } from '@/app/_components/ui/badge';
 import { FetchCard } from '@/app/_components/fetch-card';
@@ -20,7 +20,7 @@ import {
   CardDescription,
   CardContent
 } from '@/app/_components/ui/card';
-import { MessageSquareX } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { For } from '@/app/_components/for';
 import { Switch, Match } from '@/app/_components/switch';
 import { Retry } from '@/app/_components/retry';
@@ -41,7 +41,7 @@ const Message: FC<{
   }
   const onMessageClick = () => {
     dispatch(
-      setMessage({
+      setNotification({
         image: img,
         sender: creator,
         date: createdAt,
@@ -132,20 +132,27 @@ const MessagesCoaster: FC<{ messages: any[] }> = ({ messages }) => {
 const EmptyComplaints = () => {
   return (
     <div className="flex flex-col justify-center items-center w-full gap-4">
-      <MessageSquareX size={150} />
+      <Bell size={150} />
       <div className="text-center space-y-2">
-        <h1 className="font-semibold text-xl">انت لم تختر اي شكوى بعد</h1>
-        <p className="text-sm text-gray-500">يرجى تحديد شكوى لعرضها</p>
+        <h1 className="font-semibold text-xl">انت لم تختر اي اشعار بعد</h1>
+        <p className="text-sm text-gray-500">يرجى تحديد اشعار لعرضه</p>
       </div>
     </div>
   );
 };
 
 export const NotificationsWidget = () => {
-  const currentMessage = useSelector(selectCurrentMessage);
-  const messageStatus = useSelector(selectMessageStatus);
+  const currentNotification = useSelector(selectCurrentNotification);
+  const notificationStatus = useSelector(selectNotificationStatus);
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
-    useComplaintsQuery('');
+    useNotificationQuery( '' );
+  useEffect( () =>
+  {
+    if ( !isLoading )
+    {
+      console.log(data);
+    }
+  }, [isLoading, isFetching, data])
   return (
     <Card className="p-4 flex flex-col lg:flex-row h-screen">
       <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
@@ -164,18 +171,18 @@ export const NotificationsWidget = () => {
           </Match>
         </Switch>
         <Switch>
-          <Match when={!messageStatus}>
+          <Match when={!notificationStatus}>
             <div className="px-3 w-full">
               <Message
-                img={currentMessage.date}
-                title={currentMessage.title}
-                content={currentMessage.description}
-                createdAt={currentMessage.date}
-                creator={currentMessage.sender}
+                img={currentNotification.date}
+                title={currentNotification.title}
+                content={currentNotification.description}
+                createdAt={currentNotification.date}
+                creator={currentNotification.sender}
               />
             </div>
           </Match>
-          <Match when={messageStatus}>
+          <Match when={notificationStatus}>
             <EmptyComplaints />
           </Match>
         </Switch>

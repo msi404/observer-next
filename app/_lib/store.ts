@@ -5,14 +5,15 @@ import authReducer from '@/app/_lib/features/authSlice';
 import editorReducer from '@/app/_lib/features/editorSlice';
 import paginationReucer from '@/app/_lib/features/paginationSlice'
 import complaintsReducer from '@/app/_lib/features/complaintsSlice'
-
+import notificationsReducer from '@/app/_lib/features/notificationsSlice'
 export const store = configureStore({
   reducer: {
     [tatweerApi.reducerPath]: tatweerApi.reducer,
     auth: authReducer,
     editor: editorReducer,
     pagination: paginationReucer,
-    complaints: complaintsReducer
+    complaints: complaintsReducer,
+    notifications: notificationsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(

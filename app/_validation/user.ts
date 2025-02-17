@@ -21,7 +21,7 @@ export const addUserSchema = z.object({
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().default( new Date() ),
-  govId:z.string().transform( ( value ) =>
+  govId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
       {

@@ -1,7 +1,8 @@
 'use client';
+import Link from 'next/link';
 import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/basic-dialog';
-import { Trash, Pencil } from 'lucide-react';
+import { Trash, Pencil, Eye } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
   Form,
@@ -15,14 +16,15 @@ import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { Show } from '@/app/_components/show'
-import {Dropzone} from '@/app/_components/dropzone'
+import { Show } from '@/app/_components/show';
+import { Dropzone } from '@/app/_components/dropzone';
 import { useEditCandidate } from '@/app/_hooks/actions/use-edit-candidate';
 interface EditDataEntryFormProps {
-  item: any; // Ideally, replace `any` with a proper interface
+  item: any;
+  id: string;// Ideally, replace `any` with a proper interface
 }
 
-export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
+export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -38,6 +40,21 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
   } = useEditCandidate({ item });
   return (
     <div className="flex gap-4 items-center">
+      <Link href={`candidate/${id}`}>
+        <motion.button
+          whileHover={{
+            scale: 1.1,
+            transition: {
+              damping: 0,
+              ease: 'linear',
+              duration: 0.2
+            }
+          }}
+          className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-destructive"
+        >
+          <Eye size="20px" />
+        </motion.button>
+      </Link>
       <BasicDialog
         open={openDelete}
         onOpenChange={setOpenDelete}
@@ -279,14 +296,18 @@ export const EditCandidateForm = ({ item }: EditDataEntryFormProps) => {
                   disabled={isLoadingUpdate || isLoadingFile}
                 >
                   تعديل
-                  {isLoadingUpdate || isLoadingFile && (
-                    <div className=" scale-125">
-                      <Spinner />
-                    </div>
-                  )}
+                  {isLoadingUpdate ||
+                    (isLoadingFile && (
+                      <div className=" scale-125">
+                        <Spinner />
+                      </div>
+                    ))}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingUpdate || isLoadingFile}>
+                  <Button
+                    variant="outline"
+                    disabled={isLoadingUpdate || isLoadingFile}
+                  >
                     الغاء
                   </Button>
                 </DialogClose>

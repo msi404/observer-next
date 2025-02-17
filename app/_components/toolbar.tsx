@@ -122,7 +122,7 @@ const HeadingLevelButton = () => {
 };
 
 export const Toolbar = () => {
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>();
   const [open, setOpen] = useState<boolean>(false);
   const editor = useSelector(selectEditor);
   const sections: {

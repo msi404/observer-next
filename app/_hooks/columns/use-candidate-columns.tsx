@@ -7,7 +7,6 @@ import { hasPermission } from '@/app/_auth/auth-rbac';
 import { DataTableColumnHeader } from '@/app/_components/table-header';
 import { Zoom } from '@/app/_components/zoom';
 import { EditCandidateForm } from '@/app/_components/forms/edit-candidate-form'
-
 export const useCandidateColumns = () => {
   const user = useSelector(selectUser);
   const { t } = useTranslation();
@@ -21,7 +20,7 @@ export const useCandidateColumns = () => {
           column={column}
           title='اسم المرشح'
         />
-      )
+      ),
     },
     {
       id: 'candidateSerial',
@@ -67,7 +66,7 @@ export const useCandidateColumns = () => {
       header: 'الاجرائات',
       cell: ({ row }: { row: any }) => {
         return (
-            <EditCandidateForm item={row.original} />
+            <EditCandidateForm id={row.original.id} item={row.original} />
         );
       }
     }
