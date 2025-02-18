@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -12,7 +13,8 @@ import {
 } from '@/app/_services/mutationApi';
 import {
   useUsersQuery,
-  useGovCentersQuery
+  useGovCentersQuery,
+  usePollingCentersQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -21,7 +23,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addObserverSchema } from '@/app/_validation/user';
 import { baseURL } from '@/app/_services/api';
 
-export const useEditObserver = ({ item }: { item: User }) => {
+export const useEditObserver = ( { item }: { item: User; } ) =>
+{
+  const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
@@ -34,15 +38,22 @@ export const useEditObserver = ({ item }: { item: User }) => {
   );
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
-  >([]);
+    >( [] );
+    const [pollingCentersSearch, setPollingCentersSearch] = useState<
+  { value: string; label: string }[]
+  >( [] );
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [ openDelete, setOpenDelete ] = useState<boolean>( false );
-  
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
+
   const {
     data: govCenters,
     isLoading: isLoadingGovCenters,
     refetch: refetchGovCenters
-  } = useGovCentersQuery('');
+  } = useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+  
+  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
+  usePollingCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
 
   const fileRef = useRef<File | null>(null);
 
@@ -108,7 +119,17 @@ export const useEditObserver = ({ item }: { item: User }) => {
           }))
         );
       }
-    }, [govCenters, isLoadingGovCenters, openUpdate]);
+      refetchPollingCenters()
+      if ( !isLoadingPollingCenters )
+      {
+        setPollingCentersSearch(
+          pollingCenters?.items.map((pollingCenter: any) => ({
+            value: pollingCenter.id,
+            label: pollingCenter.name
+          }))
+        );
+      }
+    }, [govCenters, isLoadingGovCenters, pollingCenters, isLoadingPollingCenters,openUpdate]);
   
 
   const onDelete = async () => {
@@ -126,6 +147,7 @@ export const useEditObserver = ({ item }: { item: User }) => {
     isLoadingDelete,
     isLoadingUpdate,
     govCentersSearch,
+    pollingCentersSearch,
     fileRef,
     isLoadingFile
   };

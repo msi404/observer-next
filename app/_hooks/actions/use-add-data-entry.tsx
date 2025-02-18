@@ -1,7 +1,7 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -23,7 +23,9 @@ import { useCreateUserMutation } from '@/app/_services/mutationApi';
 // Validation Schemas
 import { addDataEntrySchema } from '@/app/_validation/user';
 
-export const useAddDataEntry = () => {
+export const useAddDataEntry = () =>
+{
+  const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
@@ -37,10 +39,11 @@ export const useAddDataEntry = () => {
   { value: string; label: string }[]
   >( [] );
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
-  
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
+
     // Query Data
     const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-      useGovCentersQuery( '' );
+      useGovCentersQuery( `ElectoralEntityId=${electoralEntityId}` );
 
   // Toast Hook
   const { toast } = useToast();

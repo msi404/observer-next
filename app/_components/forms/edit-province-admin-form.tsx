@@ -8,7 +8,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import {Combobox} from '@/app/_components/combobox'
 import { Input } from '@/app/_components/ui/input';
@@ -164,6 +165,7 @@ export const EditProvniceAdminForm = ({ item }: EditProvinceAdminsFormProps) => 
                         onChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

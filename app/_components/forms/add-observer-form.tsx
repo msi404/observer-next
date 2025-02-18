@@ -15,7 +15,8 @@ import {
   FormControl,
   FormItem,
   FormField,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import { Combobox } from '@/app/_components/combobox';
 import { Separator } from '@/app/_components/ui/separator';
@@ -37,6 +38,7 @@ export const AddObserverForm = () => {
     isLoadingUser,
     isLoadingFile,
     govCentersSearch,
+    pollingCentersSearch,
     fileRef
   } = useAddObserver();
 
@@ -144,6 +146,7 @@ export const AddObserverForm = () => {
                       onChange={field.onChange}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -203,6 +206,29 @@ export const AddObserverForm = () => {
                       disabled={isLoadingUser}
                       className={cn(
                         form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+<FormField
+              control={form.control}
+              name="pollingCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مركز الاقتراع</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={pollingCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مركز اقتراع"
+                      disabled={isLoadingUser || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.pollingCenterId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
                       )}
                     />

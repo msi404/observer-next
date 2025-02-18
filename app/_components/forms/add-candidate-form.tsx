@@ -15,7 +15,8 @@ import {
   FormControl,
   FormItem,
   FormField,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
 
@@ -185,6 +186,7 @@ export const AddCandidateForm = () => {
                       onChange={field.onChange}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -198,17 +200,15 @@ export const AddCandidateForm = () => {
                   <FormLabel>رقم المرشح</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type='number'
                       className={cn(
                         form.formState.errors.candidateSerial &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      )}
+                      ) }
                       placeholder="رقم المرشح "
                       disabled={isLoadingCandidate || isLoadingFile}
                       {...field}
-                      onChange={(value) => {
-                        field.onChange(value.target.valueAsNumber);
-                      }}
+ 
                     />
                   </FormControl>
                 </FormItem>
@@ -231,15 +231,12 @@ export const AddCandidateForm = () => {
                       placeholder="رقم القائمة "
                       disabled={isLoadingCandidate || isLoadingFile}
                       {...field}
-                      onChange={(value) => {
-                        field.onChange(value.target.valueAsNumber);
-                      }}
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-              <FormField
+            <FormField
               control={form.control}
               name="govCenterId"
               render={({ field }) => (

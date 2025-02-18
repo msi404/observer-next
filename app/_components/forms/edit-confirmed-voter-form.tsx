@@ -8,7 +8,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
@@ -181,6 +182,7 @@ export const EditConfirmedVoterForm = ({
                         onChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

@@ -8,7 +8,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import { Combobox } from '@/app/_components/combobox';
 import { Input } from '@/app/_components/ui/input';
@@ -36,6 +37,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
     openUpdate,
     fileRef,
     govCentersSearch,
+    pollingCentersSearch,
     isLoadingFile,
     form
   } = useEditObserver({ item });
@@ -168,6 +170,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                         onChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -234,6 +237,30 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   </FormItem>
                 )}
               />
+
+
+<FormField
+              control={form.control}
+              name="pollingCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مركز الاقتراع</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={pollingCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مركز اقتراع"
+                      disabled={isLoadingUpdate || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.pollingCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile: any) => (fileRef.current = voterFile)}

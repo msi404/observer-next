@@ -42,7 +42,7 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 		{
 			toast({
 				title: "Error",
-				description: error.data,
+				description: error.data?.msg || 'An unexpected error occurred',
 				variant: "destructive",
 			});
 		}

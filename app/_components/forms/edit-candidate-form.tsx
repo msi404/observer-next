@@ -9,7 +9,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import { Combobox } from '@/app/_components/combobox';
 import { Input } from '@/app/_components/ui/input';
@@ -225,6 +226,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         onChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -246,9 +248,6 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         placeholder="رقم المرشح "
                         disabled={isLoadingUpdate || isLoadingFile}
                         {...field}
-                        onChange={(value) => {
-                          field.onChange(value.target.valueAsNumber);
-                        }}
                       />
                     </FormControl>
                   </FormItem>
@@ -271,9 +270,6 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         placeholder="رقم القائمة "
                         disabled={isLoadingUpdate || isLoadingFile}
                         {...field}
-                        onChange={(value) => {
-                          field.onChange(value.target.valueAsNumber);
-                        }}
                       />
                     </FormControl>
                   </FormItem>

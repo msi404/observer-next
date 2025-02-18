@@ -1,9 +1,10 @@
 'use client';
 import { z } from 'zod';
+import { calcAge } from '@/app/_utils/calc-age'
 
 export const addUserSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date(),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المسخدم لا يقل عن 18 عام'}),
   govId: z.string().min(3),
   pollingCenterId: z.string().min(3),
   electoralEntityId: z.string().min(3),
@@ -20,7 +21,7 @@ export const addUserSchema = z.object({
 
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date(),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المرشح لا يقل عن 18 عام'}),
   govCenterId: z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {
@@ -49,13 +50,19 @@ export const addCandidateSchema = z.object({
   role: z.number(),
   phone: z.string().min(5),
   email: z.string().email(),
-  candidateSerial: z.number().min(1),
-  candidateListSerial: z.number().min(1)
+  candidateSerial: z.string().min( 1 ).transform( ( value ) =>
+  {
+    return Number(value)
+  }),
+  candidateListSerial: z.string().min(1).transform( ( value ) =>
+    {
+      return Number(value)
+    }),
 } );
 
 export const addDataEntrySchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر مدخل البيانات لا يقل عن 18 عام'}),
   govCenterId:z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {
@@ -88,18 +95,9 @@ export const addDataEntrySchema = z.object({
 
 export const addObserverSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المراقب لا يقل عن 18 عام'}),
   govCenterId:z.string().min(3),
-  pollingCenterId: z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
+  pollingCenterId: z.string().min(3),
   electoralEntityId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -121,7 +119,7 @@ export const addObserverSchema = z.object({
 
 export const addElectralAdminSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر ممثل الكيان لا يقل عن 18 عام'}),
   govId:z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -154,7 +152,7 @@ export const addElectralAdminSchema = z.object({
 
 export const addProvinceAdminSchema = z.object({
   name: z.string().min(3),
-  dateOfBirth: z.date().default( new Date() ),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر مدير المحافظة لا يقل عن 18 عام'}),
   govCenterId :z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {

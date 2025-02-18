@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -19,14 +20,17 @@ import { useToast } from '@/app/_hooks/use-toast';
 
 import {
   useUsersQuery,
-  useGovCentersQuery
+  useGovCentersQuery,
+  usePollingCentersQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation, useUploadFileMutation } from '@/app/_services/mutationApi';
 
 // Validation Schemas
 import { addObserverSchema } from '@/app/_validation/user';
 
-export const useAddObserver = () => {
+export const useAddObserver = () =>
+{
+  const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
@@ -38,12 +42,17 @@ export const useAddObserver = () => {
   const [govCentersSearch, setGovCentersSearch] = useState<
   { value: string; label: string }[]
   >( [] );
+  const [pollingCentersSearch, setPollingCentersSearch] = useState<
+  { value: string; label: string }[]
+  >( [] );
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
 
       // Query Data
       const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-      useGovCentersQuery( '' );
-
+      useGovCentersQuery( `ElectoralEntityId=${electoralEntityId}` );
+      const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
+      usePollingCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
   
     // Refs
     const fileRef = useRef<File | null>(null);
@@ -115,9 +124,21 @@ export const useAddObserver = () => {
             }))
           );
         }
+        refetchPollingCenters()
+        if ( !isLoadingPollingCenters )
+        {
+          setPollingCentersSearch(
+            pollingCenters?.items.map((pollingCenter: any) => ({
+              value: pollingCenter.id,
+              label: pollingCenter.name
+            }))
+          );
+        }
       }, [
         govCenters,
+        pollingCenters,
         isLoadingGovCenters,
+        isLoadingPollingCenters,
         openAdd
       ] );
   
@@ -129,6 +150,7 @@ export const useAddObserver = () => {
     isLoadingUser,
     isLoadingFile,
     govCentersSearch,
+    pollingCentersSearch,
     fileRef
   };
 };

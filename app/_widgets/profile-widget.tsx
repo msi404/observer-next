@@ -71,7 +71,7 @@ export const ProfileWidget: FC = () =>
             <KpiItem Icon={<Calendar />} kpi={data?.data?.totalPosts} title='عدد المشاركات والفعاليات'/>
             <KpiItem Icon={<Users />} kpi={data?.data?.totalVoters} title='عدد الناخبين المحتملين'/>
             <KpiItem Icon={<Users />} kpi={data?.data?.totalVoters} title='عدد الناخبين المؤكدين'/>
-            <KpiItem Icon={<Users />} kpi={data?.data?.candidateSerial} title='مرتبة المرشح في القائمة'/>
+            <KpiItem Icon={<Users />} kpi={data?.data?.candidateListSerial} title='مرتبة المرشح في القائمة'/>
           </div>
           </div>
             </TabsContent>

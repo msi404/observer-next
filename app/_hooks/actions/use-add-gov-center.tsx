@@ -53,7 +53,6 @@ export const useAddGovCenter = () => {
   const form = useForm<z.infer<typeof addGovCenterSchema>>({
     resolver: zodResolver(addGovCenterSchema),
     defaultValues: {
-      serial: '',
       name: '',
       govId: ''
     }

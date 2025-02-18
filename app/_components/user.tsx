@@ -7,7 +7,6 @@ import Avvvatars from 'avvvatars-react';
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage
 } from '@/app/_components/ui/avatar';
 import {
   DropdownMenu,

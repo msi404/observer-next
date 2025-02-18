@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -18,7 +19,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addCandidateSchema } from '@/app/_validation/user';
 import { baseURL } from '@/app/_services/api';
 
-export const useEditCandidate = ({ item }: { item: User }) => {
+export const useEditCandidate = ( { item }: { item: User; } ) =>
+{
+  const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
@@ -35,12 +38,13 @@ export const useEditCandidate = ({ item }: { item: User }) => {
   >([]);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
 
   const {
     data: govCenters,
     isLoading: isLoadingGovCenters,
     refetch: refetchGovCenters
-  } = useGovCentersQuery('');
+  } = useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
 
   const fileRef = useRef<File | null>(null);
 

@@ -15,7 +15,8 @@ import {
   FormControl,
   FormItem,
   FormField,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import {
   Select,
@@ -127,6 +128,7 @@ export const AddPossibleVoterForm = () => {
                         onChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

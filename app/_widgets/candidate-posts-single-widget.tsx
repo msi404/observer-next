@@ -35,7 +35,8 @@ import { Calendar } from 'lucide-react';
 import { Post } from '@/app/_components/post';
 import { formatDate } from '@/app/_utils/format-date';
 
-export const CandidatePostsSingleWidget: FC = () => {
+export const CandidatePostsSingleWidget: FC = () =>
+{
   const pathname = usePathname();
   const id = pathname.split('/').reverse().at(0);
   const dispatch = useDispatch();
@@ -83,7 +84,7 @@ export const CandidatePostsSingleWidget: FC = () => {
             >
               <RefreshCcw size="35px" />
             </motion.button>
-            <AddPostForm />
+            {/* <AddPostForm /> */}
           </div>
         </Show>
       </div>
@@ -99,7 +100,7 @@ export const CandidatePostsSingleWidget: FC = () => {
             <SkeletonCard />
           </Match>
           <Match when={isSuccess && data.items.length === 0}>
-            <EmptyCard permission='view:addCandidate' Add={<AddPostForm />} retry={refetch} />
+            <EmptyCard permission='view:addCandidate' retry={refetch} />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -128,9 +129,9 @@ export const CandidatePostsSingleWidget: FC = () => {
                         <Link className="flex-1" href={`events/${item.id}`}>
                           <Button className="w-full">عرض</Button>
                         </Link>
-                        <div>
+                        {/* <div>
                           <EditPostForm item={item} />
-                        </div>
+                        </div> */}
                       </div>
                     }
                   />

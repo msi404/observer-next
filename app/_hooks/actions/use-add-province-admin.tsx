@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -28,7 +29,9 @@ import {
 // Validation Schemas
 import { addProvinceAdminSchema } from '@/app/_validation/user';
 
-export const useAddProvinceAdmin = () => {
+export const useAddProvinceAdmin = () =>
+{
+  const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
@@ -45,9 +48,10 @@ export const useAddProvinceAdmin = () => {
 
   // State Management
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
-  
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
+
       const { data: goveCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-        useGovCentersQuery('');
+        useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
 
   // Refs
   const fileRef = useRef<File | null>(null);

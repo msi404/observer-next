@@ -1,5 +1,4 @@
 'use client';
-import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -100,7 +99,7 @@ export const useElectionsResultsColumns = () => {
       cell: ({ cell }: { cell: any }) => {
         return (
           <div className='text-center'>
-          <h1 className="text-lg text-primary">{cell.getValue()}</h1>
+          <h1 className="text-lg text-primary">{cell.getValue() ?? 'لا يوجد'}</h1>
           <span className="text-xs text-gray-600">
             تسلسل القائمة
           </span>
@@ -115,7 +114,7 @@ export const useElectionsResultsColumns = () => {
       cell: ({ cell }: { cell: any }) => {
         return (
           <div className='text-center'>
-          <h1 className="text-lg text-primary">{cell.getValue()}</h1>
+          <h1 className="text-lg text-primary">{cell.getValue() ?? 'لايوجد'}</h1>
           <span className="text-xs text-gray-600">
             تسلسل مركز التسجيل
           </span>
@@ -132,7 +131,7 @@ export const useElectionsResultsColumns = () => {
           <div className='text-center'>
           <h1 className="text-lg text-primary">{cell.getValue()}</h1>
           <span className="text-xs text-gray-600">
-            تسلسل مركز التسجيل
+            تسلسل مكتب المحافظة
           </span>
         </div>
         )

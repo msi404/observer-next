@@ -16,7 +16,8 @@ import {
   FormControl,
   FormItem,
   FormField,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
 
@@ -144,6 +145,7 @@ export const AddProvinceAdminForm = () => {
                       onChange={field.onChange}
                     />
                   </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
             />

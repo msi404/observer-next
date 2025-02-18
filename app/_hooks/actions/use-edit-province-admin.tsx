@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -19,7 +20,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addProvinceAdminSchema } from '@/app/_validation/user';
 
-export const useEditProvinceAdmins = ({ item }: { item: User }) => {
+export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
+{
+  const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
@@ -36,10 +39,10 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
   // Query Data
   const { data: govCenters, isLoading: isLoadingGovCenters} =
-    useGovCentersQuery('');
+    useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
 
   // Toast Hook
   const { toast } = useToast();
