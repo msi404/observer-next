@@ -22,8 +22,8 @@ export const useDataEntryColumns = () => {
       )
     },
     {
-      id: 'provinceOffice',
-      accessorKey: 'gov.name',
+      id: 'govCenter',
+      accessorKey: 'govCenter.name',
       header: ({ column }: any) => (
         <DataTableColumnHeader
           column={column}

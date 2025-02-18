@@ -37,17 +37,8 @@ export const useCandidateColumns = () => {
         }
     },
     {
-      id: 'candidateListSerial',
-      accessorKey: 'candidateListSerial',
-      header: 'رقم القائمة',
-      cell: ( { cell }: { cell: any; } ) =>
-        {
-          return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
-        }
-    },
-    {
-      id: 'pollingCenter',
-      accessorKey: 'pollingCenter.name',
+      id: 'govCenter',
+      accessorKey: 'govCenter.name',
       header: 'مكتب المحافظة',
       cell: ( { cell }: { cell: any; } ) =>
       {

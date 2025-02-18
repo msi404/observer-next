@@ -51,14 +51,14 @@ export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
 	const form = useForm<z.infer<typeof addGovCenterSchema>>({
 		resolver: zodResolver(addGovCenterSchema),
     defaultValues: {
-      serial: item.name,
-      name: item.serial,
+      serial: item.serial,
+      name: item.name,
 		  govId: item.gov.id
 		}
 	 });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addGovCenterSchema>) => {
+  const onUpdate = async () => {
     try {
       await updateGovCenter({
         govCenter: addGovCenterSchema.parse(form.getValues()),
@@ -66,22 +66,11 @@ export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
       });
     } catch (error: any) {
       console.log(error); // Full error log for debugging
-
-      if (error instanceof z.ZodError) {
-        toast({
-          title: 'Validation Error',
-          description: error.issues
-            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-            .join(', '),
-          variant: 'destructive'
-        });
-      } else {
         toast({
           title: 'Error',
-          description: error.data || 'An unexpected error occurred',
+          description: error.data?.msg || 'An unexpected error occurred',
           variant: 'destructive'
         });
-      }
     }
     finally
     {

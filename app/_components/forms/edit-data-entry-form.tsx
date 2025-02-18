@@ -15,6 +15,7 @@ import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
+import { Combobox } from '@/app/_components/combobox';
 import { cn } from '@/app/_lib/utils';
 import { useEditDataEntry } from '@/app/_hooks/actions/use-edit-data-entry';
 interface EditDataEntryFormProps {
@@ -31,6 +32,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
+    govCentersSearch,
     form
   } = useEditDataEntry({ item });
   return (
@@ -202,6 +204,28 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                         placeholder="البريد الالكتروني"
                         disabled={isLoadingUpdate}
                         {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="govCenterId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={govCentersSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="اختيار مكتب المحافظة"
+                        disabled={isLoadingUpdate}
+                        className={cn(
+                          form.formState.errors.govCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
                       />
                     </FormControl>
                   </FormItem>

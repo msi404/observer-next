@@ -63,7 +63,7 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
   });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addProvinceAdminSchema>) => {
+  const onUpdate = async () => {
     try {
       form.setValue('role', 102);
       await updateUser({
@@ -84,7 +84,7 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
       } else {
         toast({
           title: 'Error',
-          description: error.data || 'An unexpected error occurred',
+          description: error.data?.msg || 'An unexpected error occurred',
           variant: 'destructive'
         });
       }

@@ -110,7 +110,7 @@ export const useElectionsResultsColumns = () => {
     },
     {
       id: 'pollingCenterSerial',
-      accessorKey: 'totalVoters',
+      accessorKey: 'pollingCenter.serial',
       header: 'تسلسل مركز التسجيل',
       cell: ({ cell }: { cell: any }) => {
         return (
@@ -125,7 +125,7 @@ export const useElectionsResultsColumns = () => {
     },
     {
       id: 'provinceSerial',
-      accessorKey: 'totalVoters',
+      accessorKey: 'govCenter.serial',
       header: 'تسلسل مكتب المحافظة',
       cell: ({ cell }: { cell: any }) => {
         return (

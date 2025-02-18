@@ -36,6 +36,7 @@ export const AddCandidateForm = () => {
     onSubmit,
     isLoadingCandidate,
     isLoadingFile,
+    govCentersSearch,
     fileRef
   } = useAddCandidate();
 
@@ -238,6 +239,29 @@ export const AddCandidateForm = () => {
                 </FormItem>
               )}
             />
+              <FormField
+              control={form.control}
+              name="govCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={govCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مكتب المحافظة"
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             {/* Image Upload */}
             <Dropzone
               setFile={(voterFile) => (fileRef.current = voterFile)}

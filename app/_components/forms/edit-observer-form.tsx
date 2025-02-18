@@ -10,12 +10,15 @@ import {
   FormItem,
   FormLabel
 } from '@/app/_components/ui/form';
+import { Combobox } from '@/app/_components/combobox';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
+import { Show } from '@/app/_components/show';
+import { Dropzone } from '@/app/_components/dropzone';
 import { useEditObserver } from '@/app/_hooks/actions/use-edit-observer';
 interface EditObserverFormProps {
   item: any; // Ideally, replace `any` with a proper interface
@@ -31,6 +34,9 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
+    fileRef,
+    govCentersSearch,
+    isLoadingFile,
     form
   } = useEditObserver({ item });
   return (
@@ -206,6 +212,39 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="govCenterId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={govCentersSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="اختيار مكتب المحافظة"
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        className={cn(
+                          form.formState.errors.govCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              {/* Image Upload */}
+              <Dropzone
+                setFile={(voterFile: any) => (fileRef.current = voterFile)}
+                label="اختيار صورة بطاقة الناخب"
+                defaultImage={item.profileImg}
+              />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">
+                  يجب رفع صورة بطاقة الناخب
+                </span>
+              </Show>
             </div>
 
             {/* Separator */}

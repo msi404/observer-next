@@ -37,7 +37,7 @@ const Message: FC<{
   const dispatch = useDispatch();
 
   function checkURL(url: string) {
-    return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+    return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
   const onMessageClick = () => {
     dispatch(
@@ -62,7 +62,7 @@ const Message: FC<{
       onClick={onMessageClick}
     >
       <Badge variant="destructive" className="absolute -top-2 right-0">
-        شكوى
+        اشعار
       </Badge>
       <CardHeader className="w-full">
         <div className="flex flex-col gap-2 justify-between w-full">
@@ -91,7 +91,7 @@ const Message: FC<{
                 </Match>
               </Switch>
               <div>
-                <CardTitle className="text-primary">{creator}</CardTitle>
+                <CardTitle className="text-primary text-xs my-2">{creator}</CardTitle>
                 <h1 className="text-sm">{title}</h1>
               </div>
             </div>
@@ -118,7 +118,7 @@ const MessagesCoaster: FC<{ messages: any[] }> = ({ messages }) => {
             <Message
               title={item.title}
               content={item.content}
-              creator={item.creator.name}
+              creator={item.actorName}
               img={item.img}
               createdAt={item.createdAt}
             />

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -9,9 +9,7 @@ import {
   useUpdateUserMutation,
   useDeleteUserMutation
 } from '@/app/_services/mutationApi';
-import {
-  useUsersQuery
-} from '@/app/_services/fetchApi';
+import { useUsersQuery, useGovCentersQuery } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -27,11 +25,18 @@ export const useEditDataEntry = ({ item }: { item: User }) => {
   const { refetch } = useUsersQuery(
     `Role=100&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
-
+  const [govCentersSearch, setGovCentersSearch] = useState<
+    { value: string; label: string }[]
+  >([]);
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
+  const {
+    data: govCenters,
+    isLoading: isLoadingGovCenters,
+    refetch: refetchGovCenters
+  } = useGovCentersQuery('');
 
   // Toast Hook
   const { toast } = useToast();
@@ -43,9 +48,9 @@ export const useEditDataEntry = ({ item }: { item: User }) => {
       name: item.name,
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
-      govId: null,
-      pollingCenterId: null,
-      electoralEntityId: null,
+      govCenterId: item.govCenter?.id,
+      pollingCenterId: item.pollingCenter?.id,
+      electoralEntityId: item.electoralEntity?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
       username: item?.username,
       phone: item?.phone,
@@ -55,7 +60,7 @@ export const useEditDataEntry = ({ item }: { item: User }) => {
   });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addDataEntrySchema>) => {
+  const onUpdate = async () => {
     try {
       form.setValue('role', 100);
       await updateUser({
@@ -64,29 +69,29 @@ export const useEditDataEntry = ({ item }: { item: User }) => {
       });
     } catch (error: any) {
       console.log(error); // Full error log for debugging
-
-      if (error instanceof z.ZodError) {
-        toast({
-          title: 'Validation Error',
-          description: error.issues
-            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-            .join(', '),
-          variant: 'destructive'
-        });
-      } else {
         toast({
           title: 'Error',
-          description: error.data || 'An unexpected error occurred',
+          description: error.data?.msg || 'An unexpected error occurred',
           variant: 'destructive'
         });
-      }
-    }
-    finally
-    {
+    } finally {
       refetch();
       setOpenUpdate(false);
     }
   };
+
+  // Effect to Update Search Options
+  useEffect(() => {
+    refetchGovCenters();
+    if (!isLoadingGovCenters) {
+      setGovCentersSearch(
+        govCenters?.items.map((govCenter: any) => ({
+          value: govCenter.id,
+          label: govCenter.name
+        }))
+      );
+    }
+  }, [govCenters, isLoadingGovCenters, openUpdate]);
 
   const onDelete = async () => {
     await deleteUser(item.id);
@@ -102,5 +107,6 @@ export const useEditDataEntry = ({ item }: { item: User }) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
+    govCentersSearch
   };
 };

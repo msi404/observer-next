@@ -28,7 +28,7 @@ import { RefreshCcw } from 'lucide-react';
 import { DynamicPagination } from '@/app/_components/dynamic-pagination';
 import { AddElectoralEntityForm } from '@/app/_components/forms/add-electoral-entity-form'
 import {EditElectoralEntityForm} from '@/app/_components/forms/edit-electoral-entity-form'
-import { Landmark } from 'lucide-react';
+import { Component } from 'lucide-react';
 
 const Details: FC<{
   name: string
@@ -113,7 +113,7 @@ export const ElectoralEntitiesWidget: FC = () => {
               <For each={data?.items}>
                 {(item: any) => (
                   <ItemCard
-                    Header={<Landmark size={70} />}
+                    Header={<Component size={70} />}
                     Content={
                       <Details
                         name={item.name}

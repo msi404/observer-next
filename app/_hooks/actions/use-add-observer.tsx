@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -18,7 +18,8 @@ import { baseURL } from '@/app/_services/api';
 import { useToast } from '@/app/_hooks/use-toast';
 
 import {
-  useUsersQuery
+  useUsersQuery,
+  useGovCentersQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation, useUploadFileMutation } from '@/app/_services/mutationApi';
 
@@ -34,8 +35,15 @@ export const useAddObserver = () => {
   const { refetch } = useUsersQuery(
     `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
-
+  const [govCentersSearch, setGovCentersSearch] = useState<
+  { value: string; label: string }[]
+  >( [] );
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
+
+      // Query Data
+      const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
+      useGovCentersQuery( '' );
+
   
     // Refs
     const fileRef = useRef<File | null>(null);
@@ -50,7 +58,7 @@ export const useAddObserver = () => {
       name: '',
       // @ts-ignore
       dateOfBirth: '',
-      govId: '',
+      govCenterId: '',
       pollingCenterId: '',
       electoralEntityId: '',
       username: '',
@@ -86,7 +94,7 @@ export const useAddObserver = () => {
        } catch (error: any) {
          toast({
            title: 'Error',
-           description: error.data,
+           description: error.data?.msg || 'An unexpected error occurred',
            variant: 'destructive'
          });
          console.log(error);
@@ -95,6 +103,24 @@ export const useAddObserver = () => {
          setOpenAdd(false);
        }
   };
+
+   // Effect to Update Search Options
+      useEffect(() => {
+        refetchGovCenters();
+        if (!isLoadingGovCenters) {
+          setGovCentersSearch(
+            govCenters?.items.map((govCenter: any) => ({
+              value: govCenter.id,
+              label: govCenter.name
+            }))
+          );
+        }
+      }, [
+        govCenters,
+        isLoadingGovCenters,
+        openAdd
+      ] );
+  
   return {
     openAdd,
     setOpenAdd,
@@ -102,6 +128,7 @@ export const useAddObserver = () => {
     onSubmit,
     isLoadingUser,
     isLoadingFile,
+    govCentersSearch,
     fileRef
   };
 };

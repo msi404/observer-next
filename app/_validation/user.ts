@@ -21,16 +21,7 @@ export const addUserSchema = z.object({
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date(),
-  govId: z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }).optional(),
+  govCenterId: z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -65,16 +56,7 @@ export const addCandidateSchema = z.object({
 export const addDataEntrySchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().default( new Date() ),
-  govId:z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
+  govCenterId:z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -107,16 +89,7 @@ export const addDataEntrySchema = z.object({
 export const addObserverSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().default( new Date() ),
-  govId:z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
+  govCenterId:z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
     {
       if ( value === '' )

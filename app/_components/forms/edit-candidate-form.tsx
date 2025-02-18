@@ -11,6 +11,7 @@ import {
   FormItem,
   FormLabel
 } from '@/app/_components/ui/form';
+import { Combobox } from '@/app/_components/combobox';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
@@ -37,6 +38,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
     isLoadingFile,
     openUpdate,
     fileRef,
+    govCentersSearch,
     form
   } = useEditCandidate({ item });
   return (
@@ -277,6 +279,28 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
+               <FormField
+              control={form.control}
+              name="govCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={govCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مكتب المحافظة"
+                      disabled={isLoadingUpdate || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile: any) => (fileRef.current = voterFile)}

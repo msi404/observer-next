@@ -77,7 +77,7 @@ export const useEditPost = ({ item }: { item: PostItem }) => {
        } catch (error: any) {
          toast({
            title: 'Error',
-           description: error.data,
+           description: error.data?.msg || 'An unexpected error occurred',
            variant: 'destructive'
          });
          console.log(error);

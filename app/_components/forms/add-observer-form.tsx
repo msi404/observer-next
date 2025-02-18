@@ -17,6 +17,7 @@ import {
   FormField,
   FormLabel
 } from '@/app/_components/ui/form';
+import { Combobox } from '@/app/_components/combobox';
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
@@ -35,6 +36,7 @@ export const AddObserverForm = () => {
     onSubmit,
     isLoadingUser,
     isLoadingFile,
+    govCentersSearch,
     fileRef
   } = useAddObserver();
 
@@ -186,6 +188,29 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
+                            <FormField
+              control={form.control}
+              name="govCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={govCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مكتب المحافظة"
+                      disabled={isLoadingUser}
+                      className={cn(
+                        form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             {/* Image Upload */}
             <Dropzone
               setFile={(voterFile) => (fileRef.current = voterFile)}

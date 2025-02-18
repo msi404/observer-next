@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -7,54 +7,56 @@ import {
 } from '@/app/_lib/features/paginationSlice';
 import {
   useUpdateUserMutation,
+  useUploadFileMutation,
   useDeleteUserMutation
 } from '@/app/_services/mutationApi';
 import {
-  useUsersQuery
+  useUsersQuery,
+  useGovCentersQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addUserSchema } from '@/app/_validation/user';
+import { addObserverSchema } from '@/app/_validation/user';
+import { baseURL } from '@/app/_services/api';
 
-interface ObserverItem {
-  id: string;
-  name: string;
-  birth: string;
-  pollingCenter: { id: string };
-  electoralEntity: { id: string };
-  govId: string;
-  phone: string;
-  password: string;
-  username: string;
-  email: string;
-}
-
-export const useEditObserver = ({ item }: { item: ObserverItem }) => {
+export const useEditObserver = ({ item }: { item: User }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
+  const [ deleteUser, { isLoading: isLoadingDelete } ] = useDeleteUserMutation();
+  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
+
   const { refetch } = useUsersQuery(
     `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
-
+  const [govCentersSearch, setGovCentersSearch] = useState<
+    { value: string; label: string }[]
+  >([]);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-  const [openDelete, setOpenDelete] = useState<boolean>(false);
+  const [ openDelete, setOpenDelete ] = useState<boolean>( false );
+  
+  const {
+    data: govCenters,
+    isLoading: isLoadingGovCenters,
+    refetch: refetchGovCenters
+  } = useGovCentersQuery('');
+
+  const fileRef = useRef<File | null>(null);
 
   // Toast Hook
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addUserSchema>>({
-    resolver: zodResolver(addUserSchema),
+  const form = useForm<z.infer<typeof addObserverSchema>>({
+    resolver: zodResolver(addObserverSchema),
     defaultValues: {
       name: item.name,
       // @ts-ignore
       dateOfBirth: new Date(item.birth),
-      govId: item.govId,
+      govCenterId: item.govCenter?.id,
       pollingCenterId: item.pollingCenter?.id,
       electoralEntityId: item.electoralEntity?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
@@ -66,38 +68,48 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
   });
 
   // Form Submission Handler
-  const onUpdate = async (values: z.infer<typeof addUserSchema>) => {
-    try {
-      form.setValue('role', 104);
-      await updateUser({
-        user: addUserSchema.parse(form.getValues()),
-        id: item.id
-      });
-    } catch (error: any) {
-      console.log(error); // Full error log for debugging
-
-      if (error instanceof z.ZodError) {
-        toast({
-          title: 'Validation Error',
-          description: error.issues
-            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-            .join(', '),
-          variant: 'destructive'
-        });
-      } else {
-        toast({
-          title: 'Error',
-          description: error.data || 'An unexpected error occurred',
-          variant: 'destructive'
-        });
-      }
-    }
-    finally
-    {
-      refetch();
-      setOpenUpdate(false);
-    }
+  const onUpdate = async () => {
+   try {
+         if (fileRef.current) {
+           const formData = new FormData();
+           formData.append('file', fileRef.current as File);
+   
+           const response = await uploadFile(formData).unwrap();
+           form.setValue('profileImg', `${baseURL}/${response?.data}`);
+         } else {
+           form.setValue('profileImg', item.profileImg);
+         }
+         form.setValue('role', 102);
+         await updateUser({
+           user: addObserverSchema.parse(form.getValues()),
+           id: item.id
+         });
+       } catch (error: any) {
+         console.log(error); // Full error log for debugging
+           toast({
+             title: 'Error',
+             description: error.data?.msg || 'An unexpected error occurred',
+             variant: 'destructive'
+           });
+       } finally {
+         refetch();
+         setOpenUpdate(false);
+       }
   };
+
+    // Effect to Update Search Options
+    useEffect(() => {
+      refetchGovCenters();
+      if (!isLoadingGovCenters) {
+        setGovCentersSearch(
+          govCenters?.items.map((govCenter: any) => ({
+            value: govCenter.id,
+            label: govCenter.name
+          }))
+        );
+      }
+    }, [govCenters, isLoadingGovCenters, openUpdate]);
+  
 
   const onDelete = async () => {
     await deleteUser(item.id);
@@ -113,5 +125,8 @@ export const useEditObserver = ({ item }: { item: ObserverItem }) => {
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
+    govCentersSearch,
+    fileRef,
+    isLoadingFile
   };
 };

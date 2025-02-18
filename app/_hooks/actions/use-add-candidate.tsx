@@ -17,7 +17,8 @@ import { useToast } from '@/app/_hooks/use-toast';
 // API Services
 import { baseURL } from '@/app/_services/api';
 import {
-  useUsersQuery
+  useUsersQuery,
+  useGovCentersQuery
 } from '@/app/_services/fetchApi';
 import {
   useUploadFileMutation,
@@ -39,18 +40,16 @@ export const useAddCandidate = () => {
   );
 
   // State Management
-  const [usersSearch, setUsersSearch] = useState<
+  const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
-  >([]);
+    >( [] );
+  
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const {
-    data: users,
-    isLoading: isLoadingUsers,
-    refetch: refetchUsers
-  } = useUsersQuery('Role=102');
-
+    const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
+      useGovCentersQuery( '' );
+  
   // Refs
   const fileRef = useRef<File | null>(null);
 
@@ -62,11 +61,11 @@ export const useAddCandidate = () => {
     resolver: zodResolver(addCandidateSchema),
     defaultValues: {
       name: '',
-      govId: '',
       username: '',
       password: '',
       phone: '',
       email: '',
+      govCenterId: '',
       // @ts-ignore
       candidateSerial: '',
       // @ts-ignore
@@ -102,7 +101,7 @@ export const useAddCandidate = () => {
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.data.title,
+        description: error.data?.msg || 'An unexpected error occurred',
         variant: 'destructive'
       });
       console.log(error);
@@ -113,18 +112,18 @@ export const useAddCandidate = () => {
   };
   // Effect to Update Search Options
   useEffect(() => {
-    refetchUsers();
-    if (!isLoadingUsers) {
-      setUsersSearch(
-        users?.data.items.map((user: any) => ({
-          value: user.id,
-          label: user.name
+    refetchGovCenters();
+    if (!isLoadingGovCenters) {
+      setGovCentersSearch(
+        govCenters?.items.map((govCenter: any) => ({
+          value: govCenter.id,
+          label: govCenter.name
         }))
       );
     }
   }, [
-    users,
-    isLoadingUsers,
+    govCenters,
+    isLoadingGovCenters,
     openAdd
   ]);
   return {
@@ -134,7 +133,7 @@ export const useAddCandidate = () => {
     onSubmit,
     isLoadingFile,
     isLoadingCandidate,
-    usersSearch,
+    govCentersSearch,
     fileRef
   };
 };

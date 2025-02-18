@@ -83,22 +83,11 @@ export const useEditPartiesRepresenters = ({ item }: { item: PartiesRepresenters
       });
     } catch (error: any) {
       console.log(error); // Full error log for debugging
-
-      if (error instanceof z.ZodError) {
-        toast({
-          title: 'Validation Error',
-          description: error.issues
-            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-            .join(', '),
-          variant: 'destructive'
-        });
-      } else {
         toast({
           title: 'Error',
-          description: error.data || 'An unexpected error occurred',
+          description: error.data?.msg || 'An unexpected error occurred',
           variant: 'destructive'
         });
-      }
     }
     finally
     {
