@@ -102,7 +102,6 @@ const ROLES = {
     "view:candidate-tab",
     "view:data-entries-tab",
     "view:observers-tab",
-    "view:addPollingCenter",
   ],
 
   12: [

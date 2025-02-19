@@ -11,7 +11,6 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -25,8 +24,6 @@ import {
 } from '@/app/_components/ui/sidebar';
 import { Show } from '@/app/_components/show';
 import {Switch, Match} from '@/app/_components/switch'
-
-import { LanguageSwitcher } from '@/app/_components/language-switcher';
 
 export const User = ({
   user
@@ -115,14 +112,6 @@ export const User = ({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <LanguageSwitcher />
-                <p>اللغة</p>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogoutClick}>
               <LogOut />
