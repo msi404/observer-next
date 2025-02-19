@@ -24,7 +24,7 @@ import { Dropzone } from '@/app/_components/dropzone';
 import { useEditCandidate } from '@/app/_hooks/actions/use-edit-candidate';
 interface EditDataEntryFormProps {
   item: any;
-  id: string;// Ideally, replace `any` with a proper interface
+  id: string; // Ideally, replace `any` with a proper interface
 }
 
 export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
@@ -226,7 +226,29 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         onChange={field.onChange}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="govCenterId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={govCentersSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="اختيار مكتب المحافظة"
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        className={cn(
+                          form.formState.errors.govCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
@@ -247,7 +269,6 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         )}
                         placeholder="رقم المرشح "
                         disabled={isLoadingUpdate || isLoadingFile}
-                        {...field}
                       />
                     </FormControl>
                   </FormItem>
@@ -269,34 +290,17 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         )}
                         placeholder="رقم القائمة "
                         disabled={isLoadingUpdate || isLoadingFile}
-                        {...field}
+                        value={field.value ?? ''} // Ensures it's always defined
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value ? Number(e.target.value) : ''
+                          )
+                        }
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-               <FormField
-              control={form.control}
-              name="govCenterId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>مكتب المحافظة</FormLabel>
-                  <FormControl>
-                    <Combobox
-                      options={govCentersSearch}
-                      value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
-                      label="اختيار مكتب المحافظة"
-                      disabled={isLoadingUpdate || isLoadingFile}
-                      className={cn(
-                        form.formState.errors.govCenterId &&
-                          'border-destructive focus:border-destructive focus:ring-destructive'
-                      )}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile: any) => (fileRef.current = voterFile)}
@@ -323,12 +327,11 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   disabled={isLoadingUpdate || isLoadingFile}
                 >
                   تعديل
-                  {
-                    (isLoadingUpdate || isLoadingFile) && (
-                      <div className=" scale-125">
-                        <Spinner />
-                      </div>
-                    )}
+                  {(isLoadingUpdate || isLoadingFile) && (
+                    <div className=" scale-125">
+                      <Spinner />
+                    </div>
+                  )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
                   <Button

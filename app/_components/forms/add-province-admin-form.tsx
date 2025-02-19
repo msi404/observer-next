@@ -149,6 +149,28 @@ export const AddProvinceAdminForm = () => {
                 </FormItem>
               )}
             />
+                            <FormField
+              control={form.control}
+              name="govCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={govCenterSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار مكتب المحافظة"
+                      disabled={isLoadingProvinceAdmin || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="phone"
@@ -185,28 +207,6 @@ export const AddProvinceAdminForm = () => {
                       placeholder="البريد الالكتروني"
                       disabled={isLoadingProvinceAdmin || isLoadingFile}
                       {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-                <FormField
-              control={form.control}
-              name="govCenterId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>مكتب المحافظة</FormLabel>
-                  <FormControl>
-                    <Combobox
-                      options={govCenterSearch}
-                      value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
-                      label="اختيار مكتب المحافظة"
-                      disabled={isLoadingProvinceAdmin || isLoadingFile}
-                      className={cn(
-                        form.formState.errors.govCenterId &&
-                          'border-destructive focus:border-destructive focus:ring-destructive'
-                      )}
                     />
                   </FormControl>
                 </FormItem>

@@ -102,6 +102,7 @@ const ROLES = {
     "view:candidate-tab",
     "view:data-entries-tab",
     "view:observers-tab",
+    "view:addPollingCenter",
   ],
 
   12: [
@@ -122,8 +123,9 @@ const ROLES = {
     "view:data-entries-tab",
     "view:voters",
     "view:observers-tab",
-    "view:default-tab-gov"
-
+    "view:default-tab-gov",
+    "view:addPollingCenter",
+    "view:addStation"
   ],
 
   100: [
@@ -135,7 +137,8 @@ const ROLES = {
     'view:addObserver',
     'view:voters',
     'view:total-comfirmed-voters',
-    'view:total-possible-voters'
+    'view:total-possible-voters',
+    "view:addVoter"
   ],
 
   102: [

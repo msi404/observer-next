@@ -71,7 +71,7 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
       profileImg: item.profileImg,
-      role: 102
+      role: 102,
     }
   });
 

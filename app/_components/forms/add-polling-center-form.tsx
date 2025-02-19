@@ -76,6 +76,26 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
                   </FormItem>
                 )}
             />
+              <FormField
+                control={form.control}
+                name="serial"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الرقم التسلسلي</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.serial &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingPollingCenter}
+                        placeholder="الرقم التسلسلي"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+            />
             </div>
 
             {/* Separator */}

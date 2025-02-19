@@ -15,6 +15,15 @@ type Gov = Dateable & Identifiable &  {
 type PollingCenter = Dateable & Identifiable & {
 	govCenter: GovCenter;
 	name: string;
+	serial: string,
+	totalObservers: number,
+}
+
+type Station = Dateable & Identifiable & {
+	pollingCenter: PollingCenter;
+	name: string;
+	serial: string;
+	totalObservers: number
 }
 
 type GovCenter = Dateable & Identifiable & {

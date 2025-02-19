@@ -58,7 +58,8 @@ export const useAddGovCenter = () =>
     resolver: zodResolver(addGovCenterSchema),
     defaultValues: {
       name: '',
-      govId: ''
+      govId: '',
+      serial: '',
     }
   });
 

@@ -45,7 +45,7 @@ export const useAddConfirmedVoter = () => {
       ? `&ElectoralEntityId=${electoralEntityId}`
       : '';
   const { refetch } = useVotersQuery(
-    `State=2${electoralEntityIdQuery}&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=2&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   // State Management

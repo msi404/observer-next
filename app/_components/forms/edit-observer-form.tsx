@@ -174,48 +174,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.phone &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="رقم الهاتف"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.email &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="البريد الالكتروني"
-                        disabled={isLoadingUpdate}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
+                        <FormField
                 control={form.control}
                 name="govCenterId"
                 render={({ field }) => (
@@ -261,6 +220,47 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 </FormItem>
               )}
             />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>رقم الهاتف</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.phone &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUpdate}
+                        placeholder="رقم الهاتف"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>البريد الالكتروني</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.email &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        placeholder="البريد الالكتروني"
+                        disabled={isLoadingUpdate}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile: any) => (fileRef.current = voterFile)}

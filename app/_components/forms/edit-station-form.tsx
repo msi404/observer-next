@@ -11,17 +11,17 @@ import {
   FormItem,
   FormLabel
 } from '@/app/_components/ui/form';
-import { Combobox } from '@/app/_components/combobox';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { useEditGovCenter } from '@/app/_hooks/actions/use-edit-gov-center';
-interface EditGovCenterFormProps {
+import {useEditStation} from '@/app/_hooks/actions/use-edit-station'
+interface EditStationFormProps
+{
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
+export const EditStationForm = ({ item }: EditStationFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -31,9 +31,8 @@ export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
-    govSearch,
     form
-  } = useEditGovCenter({ item });
+  } = useEditStation({ item });
 
   return (
     <div className="flex gap-4 items-center">
@@ -55,7 +54,7 @@ export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف مكتب محافظة"
+        title="حذف محطةاقتراع"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
       >
         <DialogFooter>
@@ -98,55 +97,13 @@ export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
             <Pencil size="20px" />
           </motion.button>
         }
-        title="تعديل مكتب محافظة"
+        title="تعديل محطة اقتراع"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
             <div className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>اسم مكتب المحافظة</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.name &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم مكتب المحافظة"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-                            <FormField
-                control={form.control}
-                name="govId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>المحافظة</FormLabel>
-                    <FormControl>
-                      <Combobox
-                        options={govSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="المحافظة"
-                        disabled={isLoadingUpdate}
-                        className={cn(
-                          form.formState.errors.govId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="serial"

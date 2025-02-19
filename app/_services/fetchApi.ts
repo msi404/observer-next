@@ -148,6 +148,19 @@ const fetchDataApi = tatweerApi.injectEndpoints({
         };
       }
     }),
+    stations: builder.query({
+      query: (query) => `stations?${query}`,
+      transformResponse: (response: any) => {
+        const items = response.data.items;
+        return {
+          items,
+          pageNumber: response.data.pageNumber,
+          pageSize: response.data.pageSize,
+          totalCount: response.data.totalCount,
+          totalPages: response.data.totalPages
+        };
+      }
+    }),
     govCenters: builder.query({
       query: (query) => `govcenters?${query}`,
       transformResponse: (response: any) => {
@@ -198,7 +211,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     statistics: builder.query({
-      query: () => 'statistics',
+      query: (query) => `statistics?${query}`,
       transformResponse: (response: any) => {
         return {
           totalCandidates: response.data.totalCandidates,
@@ -224,6 +237,7 @@ export const {
   useGovCentersQuery,
   useComplaintsStatisticsQuery,
   useGenderStatisticsQuery,
+  useStationsQuery,
   useVotersStatisticsQuery,
   useComplaintsQuery,
   useCandidatesActivitiesStatisticsQuery,

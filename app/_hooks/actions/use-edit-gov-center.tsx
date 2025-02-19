@@ -21,7 +21,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addGovCenterSchema } from '@/app/_validation/gov-center'
 
-export const useEditGovCenter = ( { item }: { item: GovCenter; } ) =>
+export const useEditGovCenter = ( { item }: { item: GovCenter} ) =>
 {
   const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);

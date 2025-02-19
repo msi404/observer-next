@@ -78,7 +78,7 @@ export const useAddCandidate = () =>
       // @ts-ignore
       birth: '',
       profileImg: '',
-      role: 102
+      role: 102,
     }
   });
 

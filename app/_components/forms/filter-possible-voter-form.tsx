@@ -33,6 +33,7 @@ export const FilterPossibleVotersForm = (table: Table<any>) => {
       title="تصفية"
       description="ادخل المعطيات الاتية لتصفية العناصر"
     >
+      <h1>المحافظة</h1>
       <Combobox
         options={governoratesSearch}
         value={filters.find((filter) => filter.id === 'province')?.value || ''}
@@ -41,6 +42,7 @@ export const FilterPossibleVotersForm = (table: Table<any>) => {
         }
         label="المحافظة"
       />
+      <h1>مركز الاقتراع</h1>
       <Combobox
         options={pollingCentersSearch}
         value={
@@ -51,6 +53,7 @@ export const FilterPossibleVotersForm = (table: Table<any>) => {
         }
         label="مركز الاقتراع"
       />
+      <h1>المرشح</h1>
       <Combobox
         options={usersSearch}
         value={filters.find((filter) => filter.id === 'candidate')?.value || ''}

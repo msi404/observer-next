@@ -15,36 +15,34 @@ import { z } from 'zod';
 import { useToast } from '@/app/_hooks/use-toast';
 
 // API Services
-import { useCreatePollingCenterMutation } from '@/app/_services/mutationApi';
+import { useCreateStationMutation } from '@/app/_services/mutationApi';
 import {
-  usePollingCentersQuery
+  useStationsQuery
 } from '@/app/_services/fetchApi';
 
 // Validation Schemas
-import { addPollingCenterSchema } from '@/app/_validation/polling-center';
-
-export const useAddPollingCenter = (govCenterId: string) => {
+import {addStationSchema} from '@/app/_validation/station'
+export const useAddStation = (pollingCenterId: string) => {
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createPollingCenter, { isLoading: isLoadingPollingCenter }] =
-    useCreatePollingCenterMutation();
+  const [createStation, { isLoading: isLoadingStation }] =
+    useCreateStationMutation();
 
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { refetch: refetchPollingCenters } = usePollingCentersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${govCenterId}`
+  const { refetch: refetchStations } = useStationsQuery(
+    `PageNumber=${currentPage}&PageSize=${pageSize}&PollingCenterId=${pollingCenterId}`
   );
   // Toast Hook
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addPollingCenterSchema>>({
-    resolver: zodResolver(addPollingCenterSchema),
+  const form = useForm<z.infer<typeof addStationSchema>>({
+    resolver: zodResolver(addStationSchema),
     defaultValues: {
-      name: '',
-      govCenterId: '',
+      pollingCenterId: '',
       serial: ''
     }
   });
@@ -53,9 +51,9 @@ export const useAddPollingCenter = (govCenterId: string) => {
   const onSubmit = async () => {
     try
     {
-      form.setValue('govCenterId', govCenterId)
-      const result = await createPollingCenter(
-        addPollingCenterSchema.parse(form.getValues())
+      form.setValue('pollingCenterId', pollingCenterId)
+      const result = await createStation(
+        addStationSchema.parse(form.getValues())
       ).unwrap();
 
       console.log(result);
@@ -67,7 +65,7 @@ export const useAddPollingCenter = (govCenterId: string) => {
       });
       console.log(error);
     } finally {
-      refetchPollingCenters();
+      refetchStations();
       setOpenAdd( false );
       form.reset()
     }
@@ -77,6 +75,6 @@ export const useAddPollingCenter = (govCenterId: string) => {
     setOpenAdd,
     form,
     onSubmit,
-    isLoadingPollingCenter
+    isLoadingStation
   };
 };

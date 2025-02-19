@@ -85,12 +85,12 @@ export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
     defaultValues: {
       name: item.name,
       dateOfBirth: new Date(item.birth),
-      card: item.card,
+      img: item.card,
       address: item.address,
       state: 2,
       // @ts-ignore
       gender: String(item.gender), // ✅ Convert to string
-      pollingCenterId: item.pollingCenter?.id,
+      pollingCenterId: item.pollingCenter?.id ?? '',
       candidateId: item.candidate?.id ?? '',
       serial: item.serial
     }

@@ -95,7 +95,8 @@ export const useAddObserver = () =>
          formData.append('file', fileRef.current as File);
    
          const response = await uploadFile(formData).unwrap();
-         form.setValue('profileImg', `${baseURL}/${response?.data}`);
+         form.setValue( 'profileImg', `${ baseURL }/${ response?.data }` );
+         form.setValue('electoralEntityId', electoralEntityId)
          const result = await createUser(
            addObserverSchema.parse(form.getValues())
          ).unwrap();

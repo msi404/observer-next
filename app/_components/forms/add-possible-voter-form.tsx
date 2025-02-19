@@ -131,55 +131,8 @@ export const AddPossibleVoterForm = () => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-
-              {/* Serial Number */}
-              <FormField
-                control={form.control}
-                name="serial"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>رقم بطاقة الناخب</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.serial &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="رقم بطاقة الناخب"
-                        disabled={isLoadingVoter}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              {/* Gender */}
-              <FormField
-                control={form.control}
-                name="gender"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>الجنس</FormLabel>
-                    <FormControl>
-                      <Select
-                        disabled={isLoadingVoter}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="الجنس" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0">ذكر</SelectItem>
-                          <SelectItem value="1">انثى</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+            />
+            
 
               {/* Polling Center */}
               <FormField
@@ -225,6 +178,54 @@ export const AddPossibleVoterForm = () => {
                               'border-destructive focus:border-destructive focus:ring-destructive'
                           )}
                         />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Serial Number */}
+              <FormField
+                control={form.control}
+                name="serial"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>رقم بطاقة الناخب</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.serial &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        placeholder="رقم بطاقة الناخب"
+                        disabled={isLoadingVoter}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              {/* Gender */}
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الجنس</FormLabel>
+                    <FormControl>
+                      <Select
+                        disabled={isLoadingVoter}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="الجنس" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">ذكر</SelectItem>
+                          <SelectItem value="1">انثى</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                   </FormItem>
                 )}

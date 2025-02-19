@@ -181,7 +181,52 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="pollingCenterId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>مركز الاقتراع</FormLabel>
+                    <FormControl>
+                    <Combobox
+                    options={pollingCentersSearch}
+                    value={field.value} // Controlled by React Hook Form
+                    onChange={field.onChange} // Updates React Hook Form on change
+                    label="مركز الاقتراع"
+                    disabled={isLoadingUpdate}
+                    className={cn(
+                      form.formState.errors.pollingCenterId &&
+                        'border-destructive focus:border-destructive focus:ring-destructive'
+                    )}
+                  />
+                    </FormControl>
+                 </FormItem>
+                )}
+              />
 
+              <FormField
+                control={form.control}
+                name="candidateId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>المرشح</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={usersSearch}
+                        //@ts-ignore
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        label="المرشح"
+                        disabled={isLoadingUpdate}
+                        className={cn(
+                          form.formState.errors.candidateId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               {/* Serial Number */}
               <FormField
                 control={form.control}
@@ -225,52 +270,6 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
                           <SelectItem value="1">انثى</SelectItem>
                         </SelectContent>
                       </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="pollingCenterId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>مركز الاقتراع</FormLabel>
-                    <FormControl>
-                    <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingUpdate}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
-                    </FormControl>
-                 </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="candidateId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>المرشح</FormLabel>
-                    <FormControl>
-                      <Combobox
-                        options={usersSearch}
-                        //@ts-ignore
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="المرشح"
-                        disabled={isLoadingUpdate}
-                        className={cn(
-                          form.formState.errors.candidateId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
                     </FormControl>
                   </FormItem>
                 )}

@@ -3,29 +3,24 @@ import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
+import { Input } from '@/app/_components/ui/input';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage
+  FormLabel
 } from '@/app/_components/ui/form';
-import { Combobox } from '@/app/_components/combobox';
-import { Input } from '@/app/_components/ui/input';
-import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
-interface EditPartiesRepresentersProps {
+import {useEditPollingCenter} from '@/app/_hooks/actions/use-edit-polling-center'
+interface EditPollingCenterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditPartiesRepresentersForm = ({
-  item
-}: EditPartiesRepresentersProps) => {
+export const EditPollingCenterForm = ({ item }: EditPollingCenterFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -35,9 +30,9 @@ export const EditPartiesRepresentersForm = ({
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
-    electoralEntitiesSearch,
     form
-  } = useEditPartiesRepresenters({ item });
+  } = useEditPollingCenter({ item });
+
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -58,7 +53,7 @@ export const EditPartiesRepresentersForm = ({
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف ممثل كيان"
+        title="حذف مركز اقتراع"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
       >
         <DialogFooter>
@@ -101,20 +96,19 @@ export const EditPartiesRepresentersForm = ({
             <Pencil size="20px" />
           </motion.button>
         }
-        title="تعديل ممثل كيان"
+        title="تعديل مركز اقتراع"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
             <div className="grid gap-4">
-              {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم الثلاثي</FormLabel>
+                    <FormLabel>اسم مركز الاقتراع</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -122,7 +116,7 @@ export const EditPartiesRepresentersForm = ({
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
                         disabled={isLoadingUpdate}
-                        placeholder="اسم الموظف الثلاثي"
+                        placeholder="اسم مكتب المحافظة"
                         {...field}
                       />
                     </FormControl>
@@ -131,103 +125,18 @@ export const EditPartiesRepresentersForm = ({
               />
               <FormField
                 control={form.control}
-                name="username"
+                name="serial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
+                    <FormLabel>الرقم التسلسلي</FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
-                          form.formState.errors.username &&
+                          form.formState.errors.serial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
+                        ) }
                         disabled={isLoadingUpdate}
-                        placeholder="اسم المستخدم"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Date of Birth */}
-              <FormField
-                control={form.control}
-                name="dateOfBirth"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>تاريخ الميلاد</FormLabel>
-                    <FormControl>
-                      <DatePicker
-                        className={cn(
-                          form.formState.errors.dateOfBirth &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-                            <FormField
-                control={form.control}
-                name="electoralEntityId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>الكيان السياسي</FormLabel>
-                    <FormControl>
-                      <Combobox
-                        options={electoralEntitiesSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="الكيان السياسي"
-                        disabled={isLoadingUpdate}
-                        className={cn(
-                          form.formState.errors.electoralEntityId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.phone &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="رقم الهاتف"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.email &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="البريد الالكتروني"
-                        disabled={isLoadingUpdate}
+                        placeholder="الرقم التسلسلي"
                         {...field}
                       />
                     </FormControl>

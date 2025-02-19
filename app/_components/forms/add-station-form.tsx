@@ -1,38 +1,37 @@
 'use client';
 // External libraries
+import {type FC} from 'react'
 import { motion } from 'motion/react';
 import { PenSquare } from 'lucide-react';
 
 // Hooks
-import {useAddGovCenter} from '@/app/_hooks/actions/use-add-gov-center'
+import {useAddStation} from '@/app/_hooks/actions/use-add-station'
 // UI Components
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
+import { Input } from '@/app/_components/ui/input';
 import {
   Form,
-  FormField,
   FormControl,
   FormItem,
+  FormField,
   FormLabel
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
-import {Input} from '@/app/_components/ui/input'
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Spinner } from '@/app/_components/spinner';
-import { Combobox } from '@/app/_components/combobox';
 // Utils
 import { cn } from '@/app/_lib/utils';
-export const AddGovCenterForm = () => {
+export const AddStationForm: FC<{pollingCenter: string | undefined}> = ({pollingCenter}) => {
   const {
 	  openAdd,
 	  setOpenAdd,
 	  form,
 	  onSubmit,
-    isLoadingGovCenter,
-    govSearch
-  } = useAddGovCenter();
+    isLoadingStation,
+  } = useAddStation(pollingCenter!);
 
   return (
       <BasicDialog
@@ -49,56 +48,14 @@ export const AddGovCenterForm = () => {
             <PenSquare size="35px" />
           </motion.button>
         }
-        title="اضافة مكتب محافظة"
+        title="اضافة محطة اقتراع"
         description="ادخل المعطيات الاتية لاضافة عنصر"
       >
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             {/* Form Fields */}
-          <div className="grid gap-4">
-          <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>اسم مكتب المحافظة</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.name &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingGovCenter}
-                        placeholder="اسم مكتب المحافظة"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-            />
-                     <FormField
-                control={form.control}
-                name="govId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>مكتب المحافظة</FormLabel>
-                    <FormControl>
-                    <Combobox
-                    options={govSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مكتب المحافظة"
-                    disabled={isLoadingGovCenter}
-                    className={cn(
-                      form.formState.errors.govId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-                <FormField
+            <div className="grid gap-4">
+              <FormField
                 control={form.control}
                 name="serial"
                 render={({ field }) => (
@@ -109,16 +66,15 @@ export const AddGovCenterForm = () => {
                         className={cn(
                           form.formState.errors.serial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        ) }
-                        disabled={isLoadingGovCenter}
+                        )}
+                        disabled={isLoadingStation}
                         placeholder="الرقم التسلسلي"
-                        { ...field }
-                        
+                        {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
-              />
+            />
             </div>
 
             {/* Separator */}
@@ -129,9 +85,9 @@ export const AddGovCenterForm = () => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingGovCenter}>
+                <Button type="submit" disabled={isLoadingStation}>
                   اضافة
-                  {isLoadingGovCenter && (
+                  {isLoadingStation && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
@@ -140,7 +96,7 @@ export const AddGovCenterForm = () => {
                 <DialogClose asChild aria-label="Close">
                   <Button
                     variant="outline"
-                    disabled={isLoadingGovCenter}
+                    disabled={isLoadingStation}
                   >
                     الغاء
                   </Button>

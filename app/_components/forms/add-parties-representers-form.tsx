@@ -140,6 +140,28 @@ export const AddPartiesRepresentersForm = () => {
                 </FormItem>
               )}
             />
+                            <FormField
+              control={form.control}
+              name="electoralEntityId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>الكيان السياسي</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={electoralEntitiesSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار الكيان السياسي"
+                      disabled={isLoadingUser}
+                      className={cn(
+                        form.formState.errors.electoralEntityId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="phone"
@@ -176,28 +198,6 @@ export const AddPartiesRepresentersForm = () => {
                       placeholder="البريد الالكتروني"
                       disabled={isLoadingUser}
                       {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-                 <FormField
-              control={form.control}
-              name="electoralEntityId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>الكيان السياسي</FormLabel>
-                  <FormControl>
-                    <Combobox
-                      options={electoralEntitiesSearch}
-                      value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
-                      label="اختيار الكيان السياسي"
-                      disabled={isLoadingUser}
-                      className={cn(
-                        form.formState.errors.electoralEntityId &&
-                          'border-destructive focus:border-destructive focus:ring-destructive'
-                      )}
                     />
                   </FormControl>
                 </FormItem>

@@ -2,7 +2,6 @@
 import { useMounted } from '@mantine/hooks'
 import { resetPaginationState } from '@/app/_lib/features/paginationSlice'
 import {hasPermission} from '@/app/_auth/auth-rbac'
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +16,7 @@ import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
-import { usePollingCentersQuery } from '@/app/_services/fetchApi';
+import { useStationsQuery } from '@/app/_services/fetchApi';
 import { Switch, Match } from '@/app/_components/switch';
 import { For } from '@/app/_components/for';
 import {
@@ -30,35 +29,30 @@ import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
 import { DynamicPagination } from '@/app/_components/dynamic-pagination';
-import { AddPollingCenterForm } from '@/app/_components/forms/add-polling-center-form';
-import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center-fomr'
-import { Building } from 'lucide-react';
+import { AddStationForm } from '@/app/_components/forms/add-station-form'
+import {EditStationForm} from '@/app/_components/forms/edit-station-form'
+import { Vote } from 'lucide-react';
 import { Show } from '@/app/_components/show'
 
 const Details: FC<{
-  pollingCenter: string;
-  observers: string;
-  stations: number;
-}> = ({ pollingCenter, observers, stations }) => {
+  serial: string;
+  photos: string;
+}> = ({serial, photos}) => {
   return (
     <div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
-        <h1>المركز الانتخابي</h1>
-        <h1>{pollingCenter}</h1>
+        <h1>رقم المحطة الانتخابية</h1>
+        <h1>{serial}</h1>
       </div>
       <div className="flex justify-between rounded-lg p-2">
-        <h1>عدد المحطات الانتخابية</h1>
-        <h1>{stations}</h1>
-      </div>
-      <div className="flex justify-between bg-slate-100 rounded-lg p-2">
-        <h1>عدد المراقبين للمركز</h1>
-        <h1>{observers}</h1>
+        <h1>عدد الصور الملتقطة</h1>
+        <h1>{photos}</h1>
       </div>
     </div>
   );
 };
 
-export const PollingCentersWidget: FC = () =>
+export const StationsWidget: FC = () =>
 {
   const mounted = useMounted()
   const user = useSelector(selectUser)
@@ -67,10 +61,9 @@ export const PollingCentersWidget: FC = () =>
   const pageSize = useSelector(selectPageSize);
   const pathname = usePathname();
   const id = pathname.split('/').reverse().at(0);
-
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
-    usePollingCentersQuery(
-      `PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${id}`
+    useStationsQuery(
+      `PageNumber=${currentPage}&PageSize=${pageSize}&PollingCenterId=${id}`
     );
 
   useEffect(() => {
@@ -92,7 +85,7 @@ export const PollingCentersWidget: FC = () =>
     <Card className="py-12 px-6">
     <div className="flex justify-between items-center">
       <CardHeader>
-        <CardTitle>مراكز التسجيل</CardTitle>
+        <CardTitle>المحطات</CardTitle>
       </CardHeader>
       <Show when={isSuccess && data.items.length > 0}>
         <div>
@@ -110,8 +103,8 @@ export const PollingCentersWidget: FC = () =>
           >
             <RefreshCcw size="35px" />
           </motion.button>
-          <Show when={hasPermission(user, 'view:addPollingCenter')}>
-            <AddPollingCenterForm govCenter={id} />
+          <Show when={hasPermission(user, 'view:addStation')}>
+            <AddStationForm pollingCenter={id} />
           </Show>
         </div>
       </Show>
@@ -129,8 +122,8 @@ export const PollingCentersWidget: FC = () =>
         </Match>
         <Match when={isSuccess && data.items.length === 0}>
           <EmptyCard
-            permission="view:addPollingCenter"
-              Add={ <AddPollingCenterForm govCenter={id} />}
+            permission="view:addStation"
+              Add={ <AddStationForm pollingCenter={id} />}
             retry={refetch}
           />
         </Match>
@@ -139,25 +132,19 @@ export const PollingCentersWidget: FC = () =>
             <For each={data?.items}>
               {(item: any) => (
                 <ItemCard
-                  Header={<Building size={70} />}
+                  Header={<Vote size={70} />}
                   Content={
                     <Details
-                      pollingCenter={item.name}
-                      stations={item.totalPollingCenters}
-                      observers={item.totalObservers}
+                      serial={item.serial}
+                      photos={item.totalObservers}
                     />
                   }
                   Footer={
                     <div className="flex justify-between gap-3 w-full">
-                      <Link
-                        className="flex-1"
-                        href={`${id}/stations/${item.id}`}
-                      >
-                        <Button className="w-full">عرض المحطات الانتخابية</Button>
-                      </Link>
+                        <Button className="w-full flex-1">عرض صور شريط الاقتراع</Button>
                       <div>
-                        <Show when={hasPermission(user, 'view:addPollingCenter')}>
-                          <EditPollingCenterForm item={item} />
+                        <Show when={hasPermission(user, 'view:addStation')}>
+                          <EditStationForm item={item} />
                         </Show>
                       </div>
                     </div>

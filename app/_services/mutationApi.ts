@@ -76,6 +76,39 @@ const mutationApi = tatweerApi.injectEndpoints({
         body: item
       })
     }),
+    updatePollingCenter: builder.mutation( {
+      query: ( {id, pollingCenter} ) => ( {
+        url: `pollingcenters/${id}`,
+        method: 'PUT',
+        body: pollingCenter
+      })
+    }),
+    deletePollingCenter: builder.mutation( {
+      query: (id) => ( {
+        url: `pollingcenters/${id}`,
+        method: 'DELETE',
+      })
+    }),
+    createStation: builder.mutation( {
+      query: ( item ) => ( {
+        url: 'stations',
+        method: 'POST',
+        body: item
+      })
+    }),
+    updateStation: builder.mutation( {
+      query: ( {id, station} ) => ( {
+        url: `stations/${id}`,
+        method: 'PUT',
+        body: station
+      })
+    }),
+    deleteStation: builder.mutation( {
+      query: (id) => ( {
+        url: `stations/${id}`,
+        method: 'DELETE',
+      })
+    }),
     uploadFile: builder.mutation({
       query: (file) => ({
         url: 'attachments',
@@ -145,5 +178,10 @@ export const {
   useUpdatePostMutation,
   useCreateElectoralEntityMutation,
   useDeleteElectoralEntityMutation,
-  useUpdateElectoralEntityMutation
+  useUpdateElectoralEntityMutation,
+  useUpdatePollingCenterMutation,
+  useDeletePollingCenterMutation,
+  useCreateStationMutation,
+  useUpdateStationMutation,
+  useDeleteStationMutation
 } = mutationApi;
