@@ -37,8 +37,8 @@ const fetchDataApi = tatweerApi.injectEndpoints({
           };
         }
     }),
-    notification: builder.query( {
-      query: () => 'notifications',
+    myNotification: builder.query( {
+      query: (query) => `notifications/mine?${query}`,
       transformResponse: ( response: any ) =>
       {
         const items = response.data.items;
@@ -73,7 +73,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     complaints: builder.query({
-      query: (params) => `complaints?${params}`,
+      query: (query) => `complaints?${query}`,
       transformResponse: (response: any) => {
         const items = response.data.items;
         return {
@@ -228,7 +228,7 @@ export const {
   useComplaintsQuery,
   useCandidatesActivitiesStatisticsQuery,
   useVotersAgeStatisticsQuery,
-  useNotificationQuery,
+  useMyNotificationQuery,
   useUserQuery,
   usePostsQuery,
   usePostQuery

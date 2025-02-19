@@ -13,14 +13,14 @@ import {
 
 export const useGraph = () => {
   const user = useSelector(selectUser);
-  const queryVotersAge = hasPermission(user, 'view:addConfirmedVoter')
+  const queryVotersAge = hasPermission(user, 'view:voterAgeChart')
     ? ''
     : skipToken;
-  const queryCandidates = hasPermission(user, 'view:addConfirmedVoter')
+  const queryCandidates = hasPermission(user, 'view:candidatesChart')
     ? ''
     : skipToken;
-  const queryVoters = hasPermission(user, 'view:candidates') ? '' : skipToken;
-  const queryGenders = hasPermission(user, 'view:total-issues-chart')
+  const queryVoters = hasPermission(user, 'view:votersByState') ? '' : skipToken;
+  const queryGenders = hasPermission(user, 'view:gendersChart')
     ? ''
     : skipToken;
   const queryComplaints = hasPermission(user, 'view:total-issues-chart')

@@ -22,28 +22,36 @@ const UserMangementPage: NextPage = () =>
 {
   const user = useSelector(selectUser)
   const { t } = useTranslation();
-
+ const defaultValue = hasPermission(user, "view:default-tab-gov") ? "data-entries" : hasPermission(user, "view:default-tab-province") ? "province-admins": ""
   return (
     <Container>
-      <Tabs defaultValue="province-admins">
+      <Tabs defaultValue={defaultValue}>
         <TabsList className="grid w-full grid-cols-5 mb-6">
+          <Show when={hasPermission(user, 'view:province-admins-tab')}>
           <TabsTrigger className="w-full" value="province-admins">
              مدراء المحافظات
           </TabsTrigger>
+        </Show>
           <Show when={hasPermission(user, 'view:parties-representers-tab')}>
           <TabsTrigger value="parties-representers">
             ممثلين الكيان
           </TabsTrigger>
           </Show>
+          <Show when={hasPermission(user, 'view:candidate-tab')}>
           <TabsTrigger value="candidates">
             المرشحين
           </TabsTrigger>
+         </Show>
+          <Show when={hasPermission(user, 'view:data-entries-tab')}>
           <TabsTrigger value="data-entries">
             مدخلين البيانات
           </TabsTrigger>
+          </Show>
+          <Show when={hasPermission(user, 'view:observers-tab')}>
           <TabsTrigger value="observers">
             المراقبين
           </TabsTrigger>
+          </Show>
         </TabsList>
         <TabsContent value="province-admins">
           <motion.div

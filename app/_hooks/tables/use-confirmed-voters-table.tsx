@@ -27,9 +27,11 @@ export const useConfirmedVotersTable = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
+  const pageSize = useSelector( selectPageSize );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const fetchConfirmedVotersQuery = hasPermission(user, 'view:voters')
-    ? `State=2&PageNumber=${currentPage}&PageSize=${pageSize}`
+    ? `State=2&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
     : skipToken;
   
   const {

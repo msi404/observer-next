@@ -55,11 +55,11 @@ export const PossibleVotersWidget = () =>
         <FetchTable />
       </Match>
       <Match when={isSuccessPossibleVoter && possibleVoters?.items.length === 0}>
-        <EmptyTable permission='view:addPossibleVoter' Add={<AddPossibleVoterForm />} retry={refetchPossibleVoters} />
+        <EmptyTable permission='view:addVoter' Add={<AddPossibleVoterForm />} retry={refetchPossibleVoters} />
       </Match>
       <Match when={isSuccessPossibleVoter && possibleVoters?.items.length > 0}>
         <Table
-          permission='view:addPossibleVoter'
+          permission='view:addVoter'
           Retry={<Retry refetch={refetchPossibleVoters} />}
           Filter={FilterPossibleVotersForm}
           Add={AddPossibleVoterForm}

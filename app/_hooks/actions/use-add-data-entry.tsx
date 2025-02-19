@@ -27,23 +27,23 @@ export const useAddDataEntry = () =>
 {
   const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
-  const currentPage = useSelector(selectCurrentPage);
+  const currentPage = useSelector( selectCurrentPage );
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
+  
   const { refetch } = useUsersQuery(
-    `Role=100&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=100&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   const [govCentersSearch, setGovCentersSearch] = useState<
   { value: string; label: string }[]
   >( [] );
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
-
     // Query Data
     const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-      useGovCentersQuery( `ElectoralEntityId=${electoralEntityId}` );
+      useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
 
   // Toast Hook
   const { toast } = useToast();

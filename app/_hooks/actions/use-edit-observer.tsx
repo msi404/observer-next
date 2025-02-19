@@ -32,9 +32,10 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [ deleteUser, { isLoading: isLoadingDelete } ] = useDeleteUserMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useUsersQuery(
-    `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=104&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
@@ -44,16 +45,14 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
   >( [] );
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [ openDelete, setOpenDelete ] = useState<boolean>( false );
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
-
   const {
     data: govCenters,
     isLoading: isLoadingGovCenters,
     refetch: refetchGovCenters
-  } = useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+  } = useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
   
   const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-  usePollingCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+  usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
 
   const fileRef = useRef<File | null>(null);
 

@@ -53,16 +53,16 @@ export const useDataEntryColumns = () => {
           return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
         }
 	  },
-     {
-      id: 'actions',
-      accessorKey: 'actions',
-      header: 'الاجرائات',
-      cell: ({ row }: { row: any }) => {
-        return (
-            <EditDataEntryForm item={row.original} />
-        );
-      }
-    }
+     hasPermission(user, 'view:addDataEntry') && {
+           id: 'actions',
+           accessorKey: 'actions',
+           header: 'الاجرائات',
+           cell: ({ row }: { row: any }) => {
+             return (
+                 <EditDataEntryForm item={row.original} />
+             );
+           }
+         }
   ].filter(Boolean);
 
   return {

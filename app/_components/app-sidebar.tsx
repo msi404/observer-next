@@ -49,7 +49,7 @@ export const AppSidebar = () =>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className='flex justify-center items-center mb-6'>
-            <Image src={CompanyLogo.src} width={80} height={70} alt='Company Logo'/>
+            <Image src={CompanyLogo.src} width={120} height={100} alt='Company Logo'/>
           </SidebarGroupLabel>
           <SidebarContent>
             <SidebarMenu className='overflow-x-hidden'>

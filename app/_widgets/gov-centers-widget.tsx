@@ -1,6 +1,6 @@
 'use client';
-import { useMounted } from '@mantine/hooks'
-import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
+import { useMounted } from '@mantine/hooks';
+import { resetPaginationState } from '@/app/_lib/features/paginationSlice';
 import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,14 +9,14 @@ import {
   selectPageSize,
   setTotalPages
 } from '@/app/_lib/features/paginationSlice';
-import {selectUser} from '@/app/_lib/features/authSlice'
-import {EmptyCard} from '@/app/_components/empty-card'
+import { selectUser } from '@/app/_lib/features/authSlice';
+import { EmptyCard } from '@/app/_components/empty-card';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
 import { useGovCentersQuery } from '@/app/_services/fetchApi';
-import {Show} from '@/app/_components/show'
+import { Show } from '@/app/_components/show';
 import { Switch, Match } from '@/app/_components/switch';
 import { For } from '@/app/_components/for';
 import {
@@ -32,14 +32,13 @@ import { DynamicPagination } from '@/app/_components/dynamic-pagination';
 import { AddGovCenterForm } from '@/app/_components/forms/add-gov-center-form';
 import { EditGovCenterForm } from '@/app/_components/forms/edit-gov-center-form';
 import { Landmark } from 'lucide-react';
-import {hasPermission} from '@/app/_auth/auth-rbac'
+import { hasPermission } from '@/app/_auth/auth-rbac';
 
 const Details: FC<{
   gov: string;
   pollingCenters: number;
   observers: number;
-}> = ( { gov, pollingCenters, observers } ) =>
-{
+}> = ({ gov, pollingCenters, observers }) => {
   return (
     <div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
@@ -60,28 +59,26 @@ const Details: FC<{
 
 export const GovCentersWidget: FC = () => {
   const dispatch = useDispatch();
-  const mounted = useMounted()
+  const mounted = useMounted();
   const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector( selectPageSize );
-  const user = useSelector(selectUser)
-
+  const pageSize = useSelector(selectPageSize);
+  const user = useSelector(selectUser);
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
-    useGovCentersQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
+    useGovCentersQuery(`PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`);
 
   useEffect(() => {
     if (!isLoading) {
       dispatch(setTotalPages(data?.totalPages));
     }
-  }, [ isLoading, data, dispatch ] );
-  
-  useEffect( () =>
-    {
-      if ( mounted )
-      {
-        dispatch(resetPaginationState())
-      }
-    }, [mounted])
-  
+  }, [isLoading, data, dispatch]);
+
+  useEffect(() => {
+    if (mounted) {
+      dispatch(resetPaginationState());
+    }
+  }, [mounted]);
 
   return (
     <Card className="py-12 px-6">
@@ -90,26 +87,26 @@ export const GovCentersWidget: FC = () => {
           <CardTitle>مكاتب المحافظات</CardTitle>
         </CardHeader>
         <Show when={isSuccess && data.items.length > 0}>
-        <div>
-          <motion.button
-            onClick={refetch}
-            whileHover={{
-              scale: 1.1,
-              transition: {
-                damping: 0,
-                ease: 'linear',
-                duration: 0.2
-              }
-            }}
-            className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
-          >
-            <RefreshCcw size="35px" />
-          </motion.button>
+          <div>
+            <motion.button
+              onClick={refetch}
+              whileHover={{
+                scale: 1.1,
+                transition: {
+                  damping: 0,
+                  ease: 'linear',
+                  duration: 0.2
+                }
+              }}
+              className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+            >
+              <RefreshCcw size="35px" />
+            </motion.button>
             <Show when={hasPermission(user, 'view:addGovCenter')}>
-            <AddGovCenterForm />
-          </Show>
-        </div>
-      </Show>
+              <AddGovCenterForm />
+            </Show>
+          </div>
+        </Show>
       </div>
       <div className="mt-6">
         <Switch>
@@ -123,7 +120,11 @@ export const GovCentersWidget: FC = () => {
             <SkeletonCard />
           </Match>
           <Match when={isSuccess && data.items.length === 0}>
-            <EmptyCard permission='view:addGovCenter' Add={<AddGovCenterForm />} retry={refetch} />
+            <EmptyCard
+              permission="view:addGovCenter"
+              Add={<AddGovCenterForm />}
+              retry={refetch}
+            />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -147,7 +148,9 @@ export const GovCentersWidget: FC = () => {
                           <Button className="w-full">عرض مراكز التسجيل</Button>
                         </Link>
                         <div>
-                          <EditGovCenterForm item={item} />
+                          <Show when={hasPermission(user, 'view:addGovCenter')}>
+                            <EditGovCenterForm item={item} />
+                          </Show>
                         </div>
                       </div>
                     }
@@ -159,9 +162,9 @@ export const GovCentersWidget: FC = () => {
         </Switch>
       </div>
       <Show when={isSuccess && data.items.length > 0}>
-      <CardFooter>
-        <DynamicPagination />
-      </CardFooter>
+        <CardFooter>
+          <DynamicPagination />
+        </CardFooter>
       </Show>
     </Card>
   );

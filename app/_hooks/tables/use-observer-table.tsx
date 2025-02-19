@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '@/app/_lib/features/authSlice';
 import { selectCurrentPage, selectPageSize, setTotalPages } from '@/app/_lib/features/paginationSlice';
 import {
   useReactTable,
@@ -18,12 +19,13 @@ import { useUsersQuery } from '@/app/_services/fetchApi';
 
 export const useObserversTable = () => {
   const dispatch = useDispatch();
-
+  const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
-  
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const { data: users, isLoading, isError, isFetching, isSuccess, refetch } =
-    useUsersQuery( `Role=104&PageNumber=${ currentPage }&PageSize=${ pageSize }` );
+    useUsersQuery( `Role=104&PageNumber=${ currentPage }${electoralEntityIdQuery}&PageSize=${ pageSize }` );
   
   const [ observers, setObservers ] = useState( [] );
   

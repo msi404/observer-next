@@ -52,6 +52,7 @@ type User = Dateable & Identifiable & {
 	electoralEntity: ElectoralEntity;
 	govCenter: GovCenter;
 	pollingCenter: PollingCenter;
+	stationCenter: string;
 	role: number;
 	email: string;
 	phone: string;

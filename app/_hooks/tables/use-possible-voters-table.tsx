@@ -19,19 +19,19 @@ import {
   type SortingState
 } from '@tanstack/react-table';
 
-import { useConfirmedVotersColumns } from '@/app/_hooks/columns/use-confirmed-voter-columns';
 import { usePossibleVotersColumns } from '@/app/_hooks/columns/use-possible-voter-columns';
 import { useVotersQuery } from '@/app/_services/fetchApi';
 import { usePossibleVotersFilter } from '@/app/_hooks/filters/use-possible-voters-filter';
-import { useConfirmedVotersFilter } from '@/app/_hooks/filters/use-confirmed-voters-filter';
 
 export const usePossibleVotersTable = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
+  const pageSize = useSelector( selectPageSize );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const fetchPossibleVotersQuery = hasPermission(user, 'view:voters')
-    ? `State=0&PageNumber=${currentPage}&PageSize=${pageSize}`
+    ? `State=0&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
     : skipToken;
   
   const {

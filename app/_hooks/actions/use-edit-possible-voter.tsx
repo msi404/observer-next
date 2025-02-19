@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -32,7 +33,9 @@ interface VoterItem
   serial: string;
 }
 
-export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
+export const useEditPossibleVoter = ( { item }: { item: VoterItem; } ) =>
+{
+      const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
@@ -40,8 +43,11 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
     useUpdateVoterMutation();
   const [deleteVoter, { isLoading: isLoadingDelete }] =
     useDeleteVoterMutation();
+  
+    const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useVotersQuery(
-    `State=0&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=0&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -56,8 +62,8 @@ export const useEditPossibleVoter = ({ item }: { item: VoterItem }) => {
 
   // Query Data
   const { data: pollingCenters, isLoading: isLoadingPollingCenters} =
-    usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers} = useUsersQuery('Role=102');
+    usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+  const { data: users, isLoading: isLoadingUsers} = useUsersQuery(`Role=102&${electoralEntityIdQuery}`);
 
   // Toast Hook
   const { toast } = useToast();

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -25,7 +26,9 @@ import { usePostsQuery } from '@/app/_services/fetchApi';
 // Validation Schemas
 import { addPostSchema } from '@/app/_validation/post';
 
-export const useAddPost = () => {
+export const useAddPost = () =>
+{
+  const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
@@ -33,10 +36,11 @@ export const useAddPost = () => {
   const [createPost, { isLoading: isLoadingPost }] = useCreatePostMutation();
 
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&UserElectoralEntityId=${ electoralEntityId }` : '';
   // Query Data
   const { refetch: refetchPosts } = usePostsQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+    `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
   // Toast Hook
   const { toast } = useToast();

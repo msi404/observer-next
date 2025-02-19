@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -30,13 +31,21 @@ import {
 import { addConfirmedVoterSchema } from '@/app/_validation/voter';
 
 export const useAddConfirmedVoter = () => {
+  const user = useSelector(selectUser);
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
   const [createVoter, { isLoading: isLoadingVoter }] = useCreateVoterMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
   const { refetch } = useVotersQuery(
-    `State=2&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=2${electoralEntityIdQuery}&PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -49,9 +58,16 @@ export const useAddConfirmedVoter = () => {
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-    usePollingCentersQuery('');
-  const { data: users, isLoading: isLoadingUsers, refetch: refetchUsers } = useUsersQuery('Role=102');
+  const {
+    data: pollingCenters,
+    isLoading: isLoadingPollingCenters,
+    refetch: refetchPollingCenters
+  } = usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+  const {
+    data: users,
+    isLoading: isLoadingUsers,
+    refetch: refetchUsers
+  } = useUsersQuery(`Role=102&PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -67,8 +83,8 @@ export const useAddConfirmedVoter = () => {
       // @ts-ignore
       dateOfBirth: '',
       img: '',
-		address: '',
-		state: 2,
+      address: '',
+      state: 2,
       pollingCenterId: '',
       candidateId: '',
       serial: ''
@@ -109,9 +125,8 @@ export const useAddConfirmedVoter = () => {
     }
   };
   // Effect to Update Search Options
-	useEffect( () =>
-  {
-    refetchUsers()
+  useEffect(() => {
+    refetchUsers();
     if (!isLoadingUsers) {
       setUsersSearch(
         users?.data.items.map((user: any) => ({
@@ -120,9 +135,8 @@ export const useAddConfirmedVoter = () => {
         }))
       );
     }
-    refetchPollingCenters()
-    if ( !isLoadingPollingCenters )
-    {
+    refetchPollingCenters();
+    if (!isLoadingPollingCenters) {
       setPollingCentersSearch(
         pollingCenters?.items.map((pollingCenter: any) => ({
           value: pollingCenter.id,

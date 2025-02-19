@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -20,7 +21,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addGovCenterSchema } from '@/app/_validation/gov-center'
 
-export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
+export const useEditGovCenter = ( { item }: { item: GovCenter; } ) =>
+{
+  const user = useSelector(selectUser)
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
@@ -35,10 +38,11 @@ export const useEditGovCenter = ({ item }: { item: GovCenter }) => {
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   // Query Data
   const { refetch } = useGovCentersQuery(
-	`PageNumber=${currentPage}&PageSize=${pageSize}`
+	`PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 	
 	 const { data: provinces, isLoading: isLoadingProvinces } =

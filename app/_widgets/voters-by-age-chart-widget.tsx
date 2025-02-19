@@ -8,7 +8,6 @@ import { FetchCard } from '@/app/_components/fetch-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { Switch, Match } from '@/app/_components/switch';
 import { StackChart } from '@/app/_components/stack-chart';
-import { voterByAgeData, candidatesActivitiesData } from '@/app/_utils/faker';
 
 export const VotersByAgeChartWidget = () => {
   const { t } = useTranslation();

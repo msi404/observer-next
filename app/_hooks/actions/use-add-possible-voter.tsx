@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -24,13 +25,17 @@ import { useCreateVoterMutation } from '@/app/_services/mutationApi';
 // Validation Schemas
 import { addPossibleVoterSchema } from '@/app/_validation/voter';
 
-export const useAddPossibleVoter = () => {
+export const useAddPossibleVoter = () =>
+{
+    const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
-  const [createVoter, { isLoading: isLoadingVoter }] = useCreateVoterMutation();
+  const [ createVoter, { isLoading: isLoadingVoter } ] = useCreateVoterMutation();
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useVotersQuery(
-    `State=0&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `State=0&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -47,12 +52,12 @@ export const useAddPossibleVoter = () => {
     data: pollingCenters,
     isLoading: isLoadingPollingCenters,
     refetch: refetchPollingCenters
-  } = usePollingCentersQuery('');
+  } = usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
   const {
     data: users,
     isLoading: isLoadingUsers,
     refetch: refetchUsers
-  } = useUsersQuery('Role=102');
+  } = useUsersQuery(`Role=102&${electoralEntityIdQuery}`);
 
   // Toast Hook
   const { toast } = useToast();
@@ -73,7 +78,7 @@ export const useAddPossibleVoter = () => {
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addPossibleVoterSchema>) => {
+  const onSubmit = async () => {
     try {
       form.setValue('state', 0);
       const result = await createVoter(

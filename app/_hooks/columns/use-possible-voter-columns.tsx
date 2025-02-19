@@ -84,7 +84,7 @@ export const usePossibleVotersColumns = () => {
       accessorKey: 'serial',
       header: 'رقم بطاقة الناخب'
     },
-    hasPermission(user, 'view:confirmedVotersActions') && {
+    hasPermission(user, 'view:addVoter') && {
       id: 'actions',
       accessorKey: 'actions',
       header: 'الاجرائات',

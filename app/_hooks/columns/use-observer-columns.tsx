@@ -53,16 +53,16 @@ export const useObserverColumns = () => {
           return <span className='text-xs'>{cell.getValue() ?? 'لا يوجد'}</span>;
         }
 	  },
-     {
-      id: 'actions',
-      accessorKey: 'actions',
-      header: 'الاجرائات',
-      cell: ({ row }: { row: any }) => {
-        return (
-            <EditObserverForm item={row.original} />
-        );
-      }
-    }
+ hasPermission(user, 'view:addObserver') && {
+           id: 'actions',
+           accessorKey: 'actions',
+           header: 'الاجرائات',
+           cell: ({ row }: { row: any }) => {
+             return (
+                 <EditObserverForm item={row.original} />
+             );
+           }
+         }
   ].filter(Boolean);
 
   return {

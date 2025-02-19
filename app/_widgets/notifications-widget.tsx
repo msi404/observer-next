@@ -1,13 +1,14 @@
 'use client';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentNotification,
   selectNotificationStatus,
   setNotification
 } from '@/app/_lib/features/notificationsSlice';
 import NextImage from 'next/image';
-import { useNotificationQuery } from '@/app/_services/fetchApi';
+import { useMyNotificationQuery } from '@/app/_services/fetchApi';
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { Badge } from '@/app/_components/ui/badge';
 import { FetchCard } from '@/app/_components/fetch-card';
@@ -141,11 +142,15 @@ const EmptyComplaints = () => {
   );
 };
 
-export const NotificationsWidget = () => {
+export const NotificationsWidget = () =>
+{
+  const user = useSelector(selectUser);
   const currentNotification = useSelector(selectCurrentNotification);
-  const notificationStatus = useSelector(selectNotificationStatus);
+  const notificationStatus = useSelector( selectNotificationStatus );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
-    useNotificationQuery( '' );
+    useMyNotificationQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
   useEffect( () =>
   {
     if ( !isLoading )

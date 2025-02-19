@@ -101,7 +101,7 @@ export const useConfirmedVotersColumns = () => {
         return <Zoom className='border w-16 h-12' preview={value} />;
       }
     },
-    hasPermission(user, 'view:confirmedVotersActions') && {
+    hasPermission(user, 'view:addVoter') && {
       id: 'actions',
       accessorKey: 'actions',
       header: 'الاجرائات',

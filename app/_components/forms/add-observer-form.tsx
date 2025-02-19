@@ -191,7 +191,7 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
-                            <FormField
+            <FormField
               control={form.control}
               name="govCenterId"
               render={({ field }) => (
@@ -214,7 +214,7 @@ export const AddObserverForm = () => {
               )}
             />
 
-<FormField
+            <FormField
               control={form.control}
               name="pollingCenterId"
               render={({ field }) => (
@@ -229,6 +229,28 @@ export const AddObserverForm = () => {
                       disabled={isLoadingUser || isLoadingFile}
                       className={cn(
                         form.formState.errors.pollingCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="stationCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>محطة التسجيل</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={pollingCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={field.onChange} // Updates React Hook Form on change
+                      label="اختيار محطة التسجيل"
+                      disabled={isLoadingUser || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.stationCenterId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
                       )}
                     />

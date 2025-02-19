@@ -27,9 +27,17 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
-  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
+  const [ uploadFile, { isLoading: isLoadingFile } ] = useUploadFileMutation();
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
+  
   const { refetch } = useUsersQuery(
-    `Role=102&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=102&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   // State Management
@@ -38,13 +46,11 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
   >([]);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
-
   const {
     data: govCenters,
     isLoading: isLoadingGovCenters,
     refetch: refetchGovCenters
-  } = useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+  } = useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
 
   const fileRef = useRef<File | null>(null);
 

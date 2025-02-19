@@ -36,8 +36,10 @@ export const useAddObserver = () =>
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useUsersQuery(
-    `Role=104&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=104&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
   const [govCentersSearch, setGovCentersSearch] = useState<
   { value: string; label: string }[]
@@ -46,13 +48,11 @@ export const useAddObserver = () =>
   { value: string; label: string }[]
   >( [] );
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
-
       // Query Data
       const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-      useGovCentersQuery( `ElectoralEntityId=${electoralEntityId}` );
+      useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
       const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-      usePollingCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+      usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
   
     // Refs
     const fileRef = useRef<File | null>(null);
@@ -70,6 +70,7 @@ export const useAddObserver = () =>
       govCenterId: '',
       pollingCenterId: '',
       electoralEntityId: '',
+      stationCenterId: '',
       username: '',
       phone: '',
       profileImg: '',
@@ -80,7 +81,7 @@ export const useAddObserver = () =>
   });
 
   // Form Submission Handler
-  const onSubmit = async (values: z.infer<typeof addObserverSchema>) => {
+  const onSubmit = async () => {
     if (!fileRef.current) {
          toast({
            title: 'لايوجد صورة',

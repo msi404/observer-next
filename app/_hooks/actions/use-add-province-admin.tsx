@@ -37,9 +37,11 @@ export const useAddProvinceAdmin = () =>
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingProvinceAdmin }] =
     useCreateUserMutation();
-  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
+  const [ uploadFile, { isLoading: isLoadingFile } ] = useUploadFileMutation();
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useUsersQuery(
-    `Role=12&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=12&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   const [govCenterSearch, setGovCenterSearchSearch] = useState<
@@ -48,10 +50,9 @@ export const useAddProvinceAdmin = () =>
 
   // State Management
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
 
       const { data: goveCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-        useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+        useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
 
   // Refs
   const fileRef = useRef<File | null>(null);

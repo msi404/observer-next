@@ -11,9 +11,12 @@ import {
   UserRoundSearch
 } from 'lucide-react';
 
-export const useStatistics = () => {
-  const { data, isLoading, isError, isSuccess, isFetching,refetch } = useStatisticsQuery('');
-  const user = useSelector(selectUser);
+export const useStatistics = () =>
+{
+  const user = useSelector( selectUser );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `ElectoralEntityId=${electoralEntityId}` : '';
+  const { data, isLoading, isError, isSuccess, isFetching,refetch } = useStatisticsQuery(electoralEntityIdQuery);
 
   const statistics = [
     {

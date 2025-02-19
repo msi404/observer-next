@@ -63,7 +63,7 @@ export const useCandidateColumns = () => {
         return <Zoom preview={value} />;
       }
     },
-    hasPermission(user, 'view:confirmedVotersActions') && {
+    hasPermission(user, 'view:addCandidate') && {
       id: 'actions',
       accessorKey: 'actions',
       header: 'الاجرائات',

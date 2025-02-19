@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -16,23 +17,32 @@ import { useToast } from '@/app/_hooks/use-toast';
 
 // API Services
 import { useCreateNotificationMutation } from '@/app/_services/mutationApi';
-import {useNotificationQuery} from '@/app/_services/fetchApi'
+import {useMyNotificationQuery} from '@/app/_services/fetchApi'
 
 // Validation Schemas
 import { addNotificationSchema } from '@/app/_validation/notifications';
 
-export const useAddNotification = () => {
+export const useAddNotification = () =>
+{
+  const user = useSelector(selectUser);
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
   const [createNotification, { isLoading: isLoadingNotification }] =
     useCreateNotificationMutation();
 
-  const [openAdd, setOpenAdd] = useState<boolean>(false);
+  const [ openAdd, setOpenAdd ] = useState<boolean>( false );
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
 
   // Query Data
-  const { refetch: refetchNotifications } = useNotificationQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+  const { refetch: refetchNotifications } = useMyNotificationQuery(
+    `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
   // Toast Hook
   const { toast } = useToast();

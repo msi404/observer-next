@@ -24,9 +24,11 @@ export const useEditDataEntry = ( { item }: { item: User; } ) =>
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
+  const [ deleteUser, { isLoading: isLoadingDelete } ] = useDeleteUserMutation();
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useUsersQuery(
-    `Role=100&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=100&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
@@ -34,13 +36,11 @@ export const useEditDataEntry = ( { item }: { item: User; } ) =>
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id;
-
   const {
     data: govCenters,
     isLoading: isLoadingGovCenters,
     refetch: refetchGovCenters
-  } = useGovCentersQuery(`ElectoralEntityId=${electoralEntityId}`);
+  } = useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
 
   // Toast Hook
   const { toast } = useToast();

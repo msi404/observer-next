@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -24,7 +25,9 @@ import {
 // Validation Schemas
 import { addGovCenterSchema } from '@/app/_validation/gov-center';
 
-export const useAddGovCenter = () => {
+export const useAddGovCenter = () =>
+{
+  const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
@@ -37,10 +40,11 @@ export const useAddGovCenter = () => {
   >([]);
 
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   // Query Data
   const { refetch: refetchGovCenters } = useGovCentersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}`
+    `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
 
   const { data: provinces, isLoading: isLoadingProvinces } =

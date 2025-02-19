@@ -56,14 +56,14 @@ export const ConfirmedVotersWidget = () =>
               </Match>
               <Match when={isSuccessConfirmedVoter && confirmedVoters?.items.length === 0}>
         <EmptyTable
-          permission='view:addConfirmedVoter'
+          permission='view:addVoter'
                   Add={<AddConfirmVoterForm />}
                   retry={refetchConfirmedVoters}
                 />
               </Match>
               <Match when={isSuccessConfirmedVoter && confirmedVoters?.items.length > 0}>
         <Table
-          permission='view:addConfirmedVoter'
+          permission='view:addVoter'
                   Filter={FilterConfirmedVotersForm}
                   Add={AddConfirmVoterForm}
                   Retry={<Retry refetch={refetchConfirmedVoters} />}

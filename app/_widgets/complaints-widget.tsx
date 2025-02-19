@@ -1,6 +1,7 @@
 'use client';
 import { type FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentMessage,
   selectMessageStatus,
@@ -142,9 +143,12 @@ const EmptyComplaints = () => {
 
 export const ComplaintsWidget = () => {
   const currentMessage = useSelector(selectCurrentMessage);
-  const messageStatus = useSelector(selectMessageStatus);
+  const messageStatus = useSelector( selectMessageStatus );
+  const user = useSelector(selectUser);
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&CreatorElectoralEntityId=${electoralEntityId}` : '';
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
-    useComplaintsQuery('');
+    useComplaintsQuery(electoralEntityIdQuery);
   return (
     <Card className="p-4 flex flex-col lg:flex-row h-screen">
       <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
