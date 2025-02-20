@@ -47,6 +47,8 @@ export const EditConfirmedVoterForm = ({
     openUpdate,
     pollingCentersSearch,
     usersSearch,
+    onPollingCenterScrollEnd,
+    onUserScrollEnd,
     fileRef,
     form
   } = useEditConfirmedVoter({ item });
@@ -186,26 +188,27 @@ export const EditConfirmedVoterForm = ({
                   </FormItem>
                 )}
               />
-                           <FormField
+              <FormField
                 control={form.control}
                 name="pollingCenterId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>مركز الاقتراع</FormLabel>
                     <FormControl>
-                    <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingUpdate || isLoadingFile}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
+                      <Combobox
+                        options={pollingCentersSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onScrollEnd={onPollingCenterScrollEnd}
+                        label="مركز الاقتراع"
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        className={cn(
+                          form.formState.errors.pollingCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
                     </FormControl>
-                 </FormItem>
+                  </FormItem>
                 )}
               />
 
@@ -220,7 +223,8 @@ export const EditConfirmedVoterForm = ({
                         options={usersSearch}
                         //@ts-ignore
                         value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
+                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onScrollEnd={onUserScrollEnd}
                         label="المرشح"
                         disabled={isLoadingUpdate || isLoadingFile}
                         className={cn(

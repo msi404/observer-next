@@ -65,7 +65,8 @@ const ROLES = {
     "view:data-entries-tab",
     "view:observers-tab",
     "view:province-admins-tab",
-    "view:default-tab-province"
+    "view:default-tab-province",
+    'view:addGovCenter',
   ],
 
   10: [
@@ -78,7 +79,6 @@ const ROLES = {
     "view:voterAgeChart",
     "view:candidatesChart",
     'view:polling-management',
-    'view:addGovCenter',
     'view:state-mangement',
     'view:election-results',
     'view:user-mangement',
@@ -107,6 +107,7 @@ const ROLES = {
   12: [
     'view:home',
     'view:candidatesChart',
+    'view:addObserver',
     'view:total-issues-chart',
     'view:total-candidates',
     'view:total-observers',
@@ -133,7 +134,6 @@ const ROLES = {
     'view:notifications',
     'view:election-base',
     'view:total-observers',
-    'view:addObserver',
     'view:voters',
     'view:total-comfirmed-voters',
     'view:total-possible-voters',

@@ -13,8 +13,8 @@ import {
 } from '@/app/_services/mutationApi';
 import {
   useVotersQuery,
-  usePollingCentersQuery,
-  useUsersQuery
+  useLazyPollingCentersQuery,
+  useLazyUsersQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -30,16 +30,23 @@ interface VoterItem {
   card: string;
   address: string,
   gender: string | number;
-  pollingCenter: { id: string };
-  candidate: { id: string };
+  pollingCenter: { id: string, name: string };
+  candidate: { id: string, name: string };
   serial: string;
 }
 
 export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
 {
     const user = useSelector(selectUser);
-  const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
+    const [pollingCentersCurrentPage, setPollingCentersCurrentPage] = useState(1);
+    const [pollingCentersTotalPages, setPollingCentersTotalPages] = useState(1);
+    const [candidatesCurrentPage, setCandidatesCurrentPage] = useState(1);
+    const [candidatesCentersTotalPages, setCandidatesTotalPages] = useState(1);
+    const pageSize = 10; // Fixed page size
+  
+    const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector( selectCurrentPage );
+  
   // API Mutations & Queries
   const [updateVoter, { isLoading: isLoadingUpdate }] =
     useUpdateVoterMutation();
@@ -55,7 +62,7 @@ export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
       ? `&ElectoralEntityId=${electoralEntityId}`
       : '';
   const { refetch } = useVotersQuery(
-    `State=2&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `State=2&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
 
   // State Management
@@ -68,10 +75,19 @@ export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
+
   // Query Data
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters } =
-    usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
-  const { data: users, isLoading: isLoadingUsers } = useUsersQuery(`Role=102&PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+  // Lazy Query for Polling Centers
+  const [
+    fetchPollingCenters,
+    {
+      data: lazyPollingCenters,
+      isFetching: isFetchingLazyPollingCenter,
+    }
+  ] = useLazyPollingCentersQuery();
+
+  const [fetchUsers, {data: lazyUsers, isFetching: isFetchingLazyUsers}] = useLazyUsersQuery();
+
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -94,7 +110,88 @@ export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
       candidateId: item.candidate?.id ?? '',
       serial: item.serial
     }
-  });
+  } );
+  
+  // Fetch Initial
+  useEffect(() => {
+    fetchPollingCenters( `PageNumber=1&PageSize=${ pageSize }${ electoralEntityIdQuery }` );
+    fetchUsers( `Role=102&PageNumber=1&PageSize=${pageSize}${electoralEntityIdQuery}`)
+  }, []);
+
+  // Update When Data Changes
+  useEffect(() => {
+    if (lazyPollingCenters) {
+      setPollingCentersSearch((prev) => {
+        // Convert previous values to a Set for quick lookup
+        const existingIds = new Set(prev.map((pc) => pc.value));
+  
+        // Add only new unique items from API response
+        const updatedOptions = lazyPollingCenters.items
+          .map((pollingCenter: any) => ({
+            value: pollingCenter.id,
+            label: pollingCenter.name
+          }))
+          .filter((pc: any) => !existingIds.has(pc.value));
+  
+        // Ensure the selected polling center is included without duplication
+        const selectedPollingCenter = item.pollingCenter
+          ? { value: item.pollingCenter.id, label: item.pollingCenter.name }
+          : null;
+  
+        return selectedPollingCenter && !existingIds.has(selectedPollingCenter.value)
+          ? [selectedPollingCenter, ...prev, ...updatedOptions]
+          : [...prev, ...updatedOptions];
+      });
+  
+      setPollingCentersTotalPages(lazyPollingCenters.totalPages);
+    }
+  }, [ lazyPollingCenters ] );
+  
+  useEffect(() => {
+    if (lazyUsers) {
+      setUsersSearch((prev) => {
+        // Convert previous values to a Set for quick lookup
+        const existingIds = new Set(prev.map((u) => u.value));
+  
+        // Add only new unique items from API response
+        const updatedOptions = lazyUsers.data.items
+          .map((user: any) => ({
+            value: user.id,
+            label: user.name
+          }))
+          .filter((u: any) => !existingIds.has(u.value));
+  
+        // Ensure the selected candidate is included without duplication
+        const selectedCandidate = item.candidate
+          ? { value: item.candidate.id, label: item.candidate.name }
+          : null;
+  
+        return selectedCandidate && !existingIds.has(selectedCandidate.value)
+          ? [selectedCandidate, ...prev, ...updatedOptions]
+          : [...prev, ...updatedOptions];
+      });
+  
+      setCandidatesTotalPages(lazyUsers.totalPages);
+    }
+  }, [lazyUsers]);
+  
+  
+
+// Scroll Event Handler for Infinite Scroll
+const onPollingCenterScrollEnd = () => {
+  if (pollingCentersCurrentPage < pollingCentersTotalPages && !isFetchingLazyPollingCenter) {
+    setPollingCentersCurrentPage((prev) => prev + 1);
+    fetchPollingCenters(`PageNumber=${pollingCentersCurrentPage + 1}&PageSize=${pageSize}${electoralEntityIdQuery}`);
+  }
+};
+
+const onUserScrollEnd = () => {
+  if (candidatesCurrentPage < candidatesCentersTotalPages && !isFetchingLazyUsers) {
+    setCandidatesCurrentPage((prev) => prev + 1);
+    fetchUsers(`PageNumber=${candidatesCurrentPage + 1}&PageSize=${pageSize}${electoralEntityIdQuery}`);
+  }
+};
+
   // Form Submission Handler
   const onUpdate = async () => {
     try {
@@ -124,27 +221,6 @@ export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
     }
   };
 
-  // Effect to Update Search Options
-  useEffect( () =>
-  {
-    if (!isLoadingUsers) {
-      setUsersSearch(
-        users?.data.items.map((user: any) => ({
-          value: user.id,
-          label: user.name
-        }))
-      );
-    }
-    if (!isLoadingPollingCenters) {
-      setPollingCentersSearch(
-        pollingCenters?.items.map((pollingCenter: any) => ({
-          value: pollingCenter.id,
-          label: pollingCenter.name
-        }))
-      );
-    }
-  }, [users, isLoadingUsers, pollingCenters, isLoadingPollingCenters, openUpdate]);
-
   const onDelete = async () => {
     await deleteVoter(item.id);
     refetch();
@@ -162,6 +238,8 @@ export const useEditConfirmedVoter = ( { item }: { item: VoterItem; } ) =>
     form,
     isLoadingFile,
     pollingCentersSearch,
+    onPollingCenterScrollEnd,
+    onUserScrollEnd,
     usersSearch,
     fileRef
   };

@@ -21,14 +21,6 @@ export const CandidatesActivitiesChartWidget = () => {
     isLoadingCandidates,
     refetchCandidates
   } = useGraph();
-
-  useEffect( () =>
-  {
-    if ( !isLoadingCandidates )
-    {
-      console.log(candidatesActivites);
-    }
-  }, [isLoadingCandidates, candidatesActivites, isFetchingCandidates])
   return (
     <Switch>
       <Match when={isErrorCandidates}>

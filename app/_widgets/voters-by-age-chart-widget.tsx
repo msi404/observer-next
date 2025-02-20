@@ -22,14 +22,6 @@ export const VotersByAgeChartWidget = () => {
     refetchVoterByAge
   } = useGraph();
 
-  useEffect( () =>
-  {
-    if ( !isLoadingVoterByAge )
-    {
-      console.log(voterByAge);
-    }
-  }, [isLoadingVoterByAge, isFetchingVoterByAge, voterByAge])
-
   return (
     <Switch>
       <Match when={isErrorVoterByAge}>

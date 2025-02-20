@@ -63,10 +63,8 @@ export const GovCentersWidget: FC = () => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   const user = useSelector(selectUser);
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
-  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
-    useGovCentersQuery(`PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`);
+    useGovCentersQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
 
   useEffect(() => {
     if (!isLoading) {

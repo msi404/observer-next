@@ -98,15 +98,13 @@ export const useAddConfirmedVoter = () =>
     }
   } );
 
-   `Role=102&PageNumber=1&PageSize=30${electoralEntityIdQuery}`
-
-    // Fetch Initial Polling Centers
+    // Fetch Initial
     useEffect(() => {
       fetchPollingCenters( `PageNumber=1&PageSize=${ pageSize }${ electoralEntityIdQuery }` );
       fetchUsers( `Role=102&PageNumber=1&PageSize=${pageSize}${electoralEntityIdQuery}`)
     }, []);
   
-    // Update Polling Centers When Data Changes
+    // Update When Data Changes
     useEffect(() => {
       if (lazyPollingCenters) {
         setPollingCentersSearch((prev) => [

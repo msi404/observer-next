@@ -16,7 +16,7 @@ import { useToast } from '@/app/_hooks/use-toast';
 
 import {
   useUsersQuery,
-  useGovCentersQuery
+  useLazyGovCentersQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
@@ -26,15 +26,19 @@ import { addDataEntrySchema } from '@/app/_validation/user';
 export const useAddDataEntry = () =>
 {
   const user = useSelector(selectUser)
-  const pageSize = useSelector(selectPageSize);
-  const currentPage = useSelector( selectCurrentPage );
+  const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
+  const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector(selectCurrentPage);
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   
   const { refetch } = useUsersQuery(
-    `Role=100&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `Role=100&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
 
   const [govCentersSearch, setGovCentersSearch] = useState<
@@ -42,9 +46,14 @@ export const useAddDataEntry = () =>
   >( [] );
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
     // Query Data
-    const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-      useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
-
+// Lazy Query for Polling Centers
+  const [
+    fetchGovCenters,
+    {
+      data: lazyGovCenters,
+      isFetching: isFetchingLazyGovCenter,
+    }
+  ] = useLazyGovCentersQuery();
   // Toast Hook
   const { toast } = useToast();
 
@@ -64,7 +73,34 @@ export const useAddDataEntry = () =>
       password: '',
       role: 100
     }
-  });
+  } );
+  
+      // Fetch Initial
+      useEffect(() => {
+        fetchGovCenters( `PageNumber=1&PageSize=${ pageSize }` );
+      }, [] );
+  
+   // Update When Data Changes
+   useEffect(() => {
+    if (lazyGovCenters) {
+      setGovCentersSearch((prev) => [
+        ...prev,
+        ...lazyGovCenters.items.map((govCenter: any) => ({
+          value: govCenter.id,
+          label: govCenter.name
+        }))
+      ]);
+      setGovCentersTotalPages(lazyGovCenters.totalPages);
+    }
+  }, [lazyGovCenters]);
+
+// Scroll Event Handler for Infinite Scroll
+const onGovCenterScrollEnd = () => {
+  if (govCentersCurrentPage < govCentersTotalPages && !isFetchingLazyGovCenter) {
+    setGovCentersCurrentPage((prev) => prev + 1);
+    fetchGovCenters(`PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`);
+  }
+};
 
   // Form Submission Handler
   const onSubmit = async (values: z.infer<typeof addDataEntrySchema>) => {
@@ -87,23 +123,6 @@ export const useAddDataEntry = () =>
       setOpenAdd(false);
     }
   }; 
-
-    // Effect to Update Search Options
-    useEffect(() => {
-      refetchGovCenters();
-      if (!isLoadingGovCenters) {
-        setGovCentersSearch(
-          govCenters?.items.map((govCenter: any) => ({
-            value: govCenter.id,
-            label: govCenter.name
-          }))
-        );
-      }
-    }, [
-      govCenters,
-      isLoadingGovCenters,
-      openAdd
-    ] );
   
   return {
     openAdd,
@@ -111,6 +130,7 @@ export const useAddDataEntry = () =>
     form,
     onSubmit,
     isLoadingUser,
-    govCentersSearch
+    govCentersSearch,
+    onGovCenterScrollEnd
   };
 };

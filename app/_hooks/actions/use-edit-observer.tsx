@@ -13,8 +13,9 @@ import {
 } from '@/app/_services/mutationApi';
 import {
   useUsersQuery,
-  useGovCentersQuery,
-  usePollingCentersQuery
+  useLazyGovCentersQuery,
+  useLazyPollingCentersQuery,
+  useLazyStationsQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -26,8 +27,26 @@ import { baseURL } from '@/app/_services/api';
 export const useEditObserver = ( { item }: { item: User; } ) =>
 {
   const user = useSelector(selectUser)
-  const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
+  const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
+  const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
+  const [pollingCentersCurrentPage, setPollingCentersCurrentPage] = useState(1);
+  const [pollingCentersTotalPages, setPollingCentersTotalPages] = useState(1);
+  const [stationsCurrentPage, setStationsCurrentPage] = useState(1);
+  const [stationsTotalPages, setStationsTotalPages] = useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector( selectCurrentPage );
+
+    // State to track selected values
+    const [selectedGovCenter, setSelectedGovCenter] = useState<string | null>(
+      null
+    );
+    const [selectedPollingCenter, setSelectedPollingCenter] = useState<
+      string | null
+    >(null);
+  
+  
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [ deleteUser, { isLoading: isLoadingDelete } ] = useDeleteUserMutation();
@@ -35,24 +54,37 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useUsersQuery(
-    `Role=104&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `Role=104&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
+
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
-    >( [] );
-    const [pollingCentersSearch, setPollingCentersSearch] = useState<
-  { value: string; label: string }[]
-  >( [] );
+  >([]);
+  const [pollingCentersSearch, setPollingCentersSearch] = useState<
+    { value: string; label: string }[]
+  >([]);
+  const [stationsSearch, setStationsSearch] = useState<
+    { value: string; label: string }[]
+  >([]);
+
+
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [ openDelete, setOpenDelete ] = useState<boolean>( false );
-  const {
-    data: govCenters,
-    isLoading: isLoadingGovCenters,
-    refetch: refetchGovCenters
-  } = useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+
+    // Lazy Query for Polling Centers
+    const [
+      fetchGovCenters,
+      { data: lazyGovCenters, isFetching: isFetchingLazyGovCenter }
+    ] = useLazyGovCentersQuery();
   
-  const { data: pollingCenters, isLoading: isLoadingPollingCenters, refetch: refetchPollingCenters } =
-  usePollingCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+    const [
+      fetchPollingCenters,
+      { data: lazyPollingCenters, isFetching: isFetchingLazyPollingCenter }
+    ] = useLazyPollingCentersQuery();
+    const [
+      fetchStations,
+      { data: lazyStations, isFetching: isFetchingLazyStations }
+    ] = useLazyStationsQuery();
 
   const fileRef = useRef<File | null>(null);
 
@@ -65,17 +97,132 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
     defaultValues: {
       name: item.name,
       // @ts-ignore
-      dateOfBirth: new Date(item.birth),
+      dateOfBirth: new Date( item.dateOfBirth ),
+      electoralEntityId: item.electoralEntity?.id,
       govCenterId: item.govCenter?.id,
       pollingCenterId: item.pollingCenter?.id,
-      electoralEntityId: item.electoralEntity?.id,
+      stationId: item.station?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
       username: item?.username,
       phone: item?.phone,
       email: item?.email,
       role: 104
     }
-  });
+  } );
+
+  useEffect( () =>
+  {
+    setSelectedGovCenter(item.govCenter.id)
+    setSelectedPollingCenter( item.pollingCenter.id )
+  }, [])
+  
+  // Fetch Initial
+  useEffect( () =>
+    {
+      setStationsSearch([])
+      setPollingCentersSearch([])
+      fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+    }, []);
+  
+    // When a GovCenter is selected, fetch Polling Centers
+    useEffect( () =>
+    {
+      setPollingCentersSearch([]) // Clear previous polling centers
+      if (selectedGovCenter) {
+        fetchPollingCenters(
+          `PageNumber=1&PageSize=${pageSize}&GovCenterId=${selectedGovCenter}`
+        );
+      } else {
+        setPollingCentersSearch([]); // Reset if no selection
+      }
+    }, [selectedGovCenter]);
+  
+    // When a Polling Center is selected, fetch Stations
+    useEffect(() => {
+      setStationsSearch([]); // Clear previous stations
+      if (selectedPollingCenter) {
+        fetchStations(
+          `PageNumber=1&PageSize=${pageSize}&PollingCenterId=${selectedPollingCenter}`
+        );
+      } else {
+        setStationsSearch([]); // Reset if no selection
+      }
+    }, [selectedPollingCenter]);
+  
+    // Update When Data Changes
+  
+    useEffect(() => {
+      if (lazyGovCenters) {
+        setGovCentersSearch((prev) => [
+          ...prev,
+          ...lazyGovCenters.items.map((govCenter: any) => ({
+            value: govCenter.id,
+            label: govCenter.name
+          }))
+        ]);
+        setGovCentersTotalPages(lazyGovCenters.totalPages);
+      }
+    }, [lazyGovCenters]);
+    useEffect(() => {
+      if (lazyPollingCenters) {
+        setPollingCentersSearch((prev) => [
+          ...prev,
+          ...lazyPollingCenters.items.map((pollingCenter: any) => ({
+            value: pollingCenter.id,
+            label: pollingCenter.name
+          }))
+        ]);
+        setPollingCentersTotalPages(lazyPollingCenters.totalPages);
+      }
+    }, [lazyPollingCenters]);
+    useEffect(() => {
+      if (lazyStations) {
+        setStationsSearch((prev) => [
+          ...prev,
+          ...lazyStations.items.map((station: any) => ({
+            value: station.id,
+            label: station.serial
+          }))
+        ]);
+        setStationsTotalPages(lazyStations.totalPages);
+      }
+    }, [lazyStations]);
+  
+    // Scroll Event Handler for Infinite Scroll
+    const onGovCenterScrollEnd = () => {
+      if (
+        govCentersCurrentPage < govCentersTotalPages &&
+        !isFetchingLazyGovCenter
+      ) {
+        setGovCentersCurrentPage((prev) => prev + 1);
+        fetchGovCenters(
+          `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+        );
+      }
+    };
+    const onPollingCenterScrollEnd = () => {
+      if (
+        pollingCentersCurrentPage < pollingCentersTotalPages &&
+        !isFetchingLazyPollingCenter
+      ) {
+        setPollingCentersCurrentPage((prev) => prev + 1);
+        fetchPollingCenters(
+          `PageNumber=${
+            pollingCentersCurrentPage + 1
+          }&PageSize=${pageSize}&GovCenterId=${selectedGovCenter}`
+        );
+      }
+    };
+    const onStationScrollEnd = () => {
+      if (stationsCurrentPage < stationsTotalPages && !isFetchingLazyStations) {
+        setStationsCurrentPage((prev) => prev + 1);
+        fetchStations(
+          `PageNumber=${
+            stationsCurrentPage + 1
+          }&PageSize=${pageSize}&PollingCenterId=${selectedPollingCenter}`
+        );
+      }
+    };
 
   // Form Submission Handler
   const onUpdate = async () => {
@@ -89,6 +236,7 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
          } else {
            form.setValue('profileImg', item.profileImg);
          }
+         form.setValue('electoralEntityId', electoralEntityId);
          form.setValue('role', 102);
          await updateUser({
            user: addObserverSchema.parse(form.getValues()),
@@ -106,31 +254,7 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
          setOpenUpdate(false);
        }
   };
-
-    // Effect to Update Search Options
-    useEffect(() => {
-      refetchGovCenters();
-      if (!isLoadingGovCenters) {
-        setGovCentersSearch(
-          govCenters?.items.map((govCenter: any) => ({
-            value: govCenter.id,
-            label: govCenter.name
-          }))
-        );
-      }
-      refetchPollingCenters()
-      if ( !isLoadingPollingCenters )
-      {
-        setPollingCentersSearch(
-          pollingCenters?.items.map((pollingCenter: any) => ({
-            value: pollingCenter.id,
-            label: pollingCenter.name
-          }))
-        );
-      }
-    }, [govCenters, isLoadingGovCenters, pollingCenters, isLoadingPollingCenters,openUpdate]);
   
-
   const onDelete = async () => {
     await deleteUser(item.id);
     refetch();
@@ -147,6 +271,14 @@ export const useEditObserver = ( { item }: { item: User; } ) =>
     isLoadingUpdate,
     govCentersSearch,
     pollingCentersSearch,
+    stationsSearch,
+    onGovCenterScrollEnd,
+    onPollingCenterScrollEnd,
+    onStationScrollEnd,
+    setSelectedGovCenter,
+    setSelectedPollingCenter,
+    selectedGovCenter,
+    selectedPollingCenter,
     fileRef,
     isLoadingFile
   };

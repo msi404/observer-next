@@ -33,6 +33,7 @@ import { DynamicPagination } from '@/app/_components/dynamic-pagination';
 import { AddPollingCenterForm } from '@/app/_components/forms/add-polling-center-form';
 import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center-fomr'
 import { Building } from 'lucide-react';
+import {BackButton} from '@/app/_components/ui/back-button'
 import { Show } from '@/app/_components/show'
 
 const Details: FC<{
@@ -67,10 +68,11 @@ export const PollingCentersWidget: FC = () =>
   const pageSize = useSelector(selectPageSize);
   const pathname = usePathname();
   const id = pathname.split('/').reverse().at(0);
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
     usePollingCentersQuery(
-      `PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${id}`
+      `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}&GovCenterId=${id}`
     );
 
   useEffect(() => {
@@ -92,7 +94,10 @@ export const PollingCentersWidget: FC = () =>
     <Card className="py-12 px-6">
     <div className="flex justify-between items-center">
       <CardHeader>
-        <CardTitle>مراكز التسجيل</CardTitle>
+          <div className='flex justify-center items-center gap-4'>
+          <BackButton backLink='/polling-management'/>
+          <CardTitle>مراكز التسجيل</CardTitle>
+        </div>
       </CardHeader>
       <Show when={isSuccess && data.items.length > 0}>
         <div>

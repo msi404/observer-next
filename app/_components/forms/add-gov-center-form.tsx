@@ -31,7 +31,7 @@ export const AddGovCenterForm = () => {
 	  form,
 	  onSubmit,
     isLoadingGovCenter,
-    govSearch
+    govSearch,
   } = useAddGovCenter();
 
   return (
@@ -81,13 +81,13 @@ export const AddGovCenterForm = () => {
                 name="govId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormLabel>المحافظة</FormLabel>
                     <FormControl>
                     <Combobox
                     options={govSearch}
                     value={field.value} // Controlled by React Hook Form
                     onChange={field.onChange} // Updates React Hook Form on change
-                    label="مكتب المحافظة"
+                    label="المحافظة"
                     disabled={isLoadingGovCenter}
                     className={cn(
                       form.formState.errors.govId &&

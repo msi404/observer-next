@@ -67,8 +67,8 @@ export const Combobox: FC<ComboboxType> = ({
           <CommandList ref={listRef} onScroll={handleScroll} className="max-h-44 overflow-y-auto">
             <CommandEmpty>لم يتم العثور على العنصر</CommandEmpty>
             <CommandGroup>
-              {options.map((option, i) => (
-                <CommandItem key={`${option.value}-${i}`} onSelect={() => {onChange(option.value), setOpen(false)}}>
+              {options.map((option) => (
+                <CommandItem key={option.value} onSelect={() => {onChange(option.value), setOpen(false)}}>
                   <Check className={cn('h-4 w-4 mr-2', value === option.value ? 'opacity-100' : 'opacity-0')} />
                   {option.label}
                 </CommandItem>

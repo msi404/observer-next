@@ -33,6 +33,7 @@ import { AddStationForm } from '@/app/_components/forms/add-station-form'
 import {EditStationForm} from '@/app/_components/forms/edit-station-form'
 import { Vote } from 'lucide-react';
 import { Show } from '@/app/_components/show'
+import { BackButton } from '@/app/_components/ui/back-button'
 
 const Details: FC<{
   serial: string;
@@ -60,6 +61,7 @@ export const StationsWidget: FC = () =>
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   const pathname = usePathname();
+  const pollingManagementId = pathname.split( '/stations' ).at(0)
   const id = pathname.split('/').reverse().at(0);
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
     useStationsQuery(
@@ -85,7 +87,10 @@ export const StationsWidget: FC = () =>
     <Card className="py-12 px-6">
     <div className="flex justify-between items-center">
       <CardHeader>
-        <CardTitle>المحطات</CardTitle>
+          <div className='flex justify-center items-center gap-4'>
+            <BackButton backLink={pollingManagementId} />
+            <CardTitle>المحطات</CardTitle>
+        </div>
       </CardHeader>
       <Show when={isSuccess && data.items.length > 0}>
         <div>

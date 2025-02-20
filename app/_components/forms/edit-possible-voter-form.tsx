@@ -43,6 +43,8 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
     openUpdate,
     pollingCentersSearch,
     usersSearch,
+    onPollingCenterScrollEnd,
+    onUserScrollEnd,
     form
   } = useEditPossibleVoter({ item });
   return (
@@ -188,19 +190,20 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
                   <FormItem>
                     <FormLabel>مركز الاقتراع</FormLabel>
                     <FormControl>
-                    <Combobox
-                    options={pollingCentersSearch}
-                    value={field.value} // Controlled by React Hook Form
-                    onChange={field.onChange} // Updates React Hook Form on change
-                    label="مركز الاقتراع"
-                    disabled={isLoadingUpdate}
-                    className={cn(
-                      form.formState.errors.pollingCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                    )}
-                  />
+                      <Combobox
+                        options={pollingCentersSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        onScrollEnd={onPollingCenterScrollEnd}
+                        label="مركز الاقتراع"
+                        disabled={isLoadingUpdate}
+                        className={cn(
+                          form.formState.errors.pollingCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
                     </FormControl>
-                 </FormItem>
+                  </FormItem>
                 )}
               />
 
@@ -216,6 +219,7 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
                         //@ts-ignore
                         value={field.value} // Controlled by React Hook Form
                         onChange={field.onChange} // Updates React Hook Form on change
+                        onScrollEnd={onUserScrollEnd}
                         label="المرشح"
                         disabled={isLoadingUpdate}
                         className={cn(
@@ -284,10 +288,7 @@ export const EditPossilbeVoterForm = ({ item }: EditPossibleVoterFormProps) => {
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button
-                  type="submit"
-                  disabled={isLoadingUpdate}
-                >
+                <Button type="submit" disabled={isLoadingUpdate}>
                   تحديث
                   {isLoadingUpdate && (
                     <div className=" scale-125">

@@ -39,6 +39,14 @@ export const AddObserverForm = () => {
     isLoadingFile,
     govCentersSearch,
     pollingCentersSearch,
+    stationsSearch,
+    onGovCenterScrollEnd,
+    onPollingCenterScrollEnd,
+    onStationScrollEnd,
+    setSelectedGovCenter,
+    setSelectedPollingCenter,
+    selectedGovCenter,
+    selectedPollingCenter,
     fileRef
   } = useAddObserver();
 
@@ -150,7 +158,7 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
-                        <FormField
+            <FormField
               control={form.control}
               name="govCenterId"
               render={({ field }) => (
@@ -160,9 +168,15 @@ export const AddObserverForm = () => {
                     <Combobox
                       options={govCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
+                      onChange={ ( value ) =>
+                      {
+                        field.onChange( value );
+                        setSelectedGovCenter( value )
+                        setSelectedPollingCenter(null)
+                      }} // Updates React Hook Form on change
+                      onScrollEnd={onGovCenterScrollEnd}
                       label="اختيار مكتب المحافظة"
-                      disabled={isLoadingUser}
+                      disabled={isLoadingUser || isLoadingFile}
                       className={cn(
                         form.formState.errors.govCenterId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
@@ -183,9 +197,14 @@ export const AddObserverForm = () => {
                     <Combobox
                       options={pollingCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
+                      onChange={ ( value ) =>
+                      {
+                        field.onChange( value );
+                        setSelectedPollingCenter(value)
+                      }} // Updates React Hook Form on change
+                      onScrollEnd={onPollingCenterScrollEnd}
                       label="اختيار مركز اقتراع"
-                      disabled={isLoadingUser || isLoadingFile}
+                      disabled={isLoadingUser || isLoadingFile || !selectedGovCenter}
                       className={cn(
                         form.formState.errors.pollingCenterId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
@@ -197,19 +216,20 @@ export const AddObserverForm = () => {
             />
             <FormField
               control={form.control}
-              name="stationCenterId"
+              name="stationId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>محطة التسجيل</FormLabel>
                   <FormControl>
                     <Combobox
-                      options={pollingCentersSearch}
+                      options={stationsSearch}
                       value={field.value} // Controlled by React Hook Form
                       onChange={field.onChange} // Updates React Hook Form on change
+                      onScrollEnd={onStationScrollEnd}
                       label="اختيار محطة التسجيل"
-                      disabled={isLoadingUser || isLoadingFile}
+                      disabled={isLoadingUser || isLoadingFile || !selectedPollingCenter}
                       className={cn(
-                        form.formState.errors.stationCenterId &&
+                        form.formState.errors.stationId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
                       )}
                     />

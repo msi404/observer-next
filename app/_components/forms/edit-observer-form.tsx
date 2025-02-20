@@ -38,6 +38,14 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
     fileRef,
     govCentersSearch,
     pollingCentersSearch,
+    stationsSearch,
+    onGovCenterScrollEnd,
+    onPollingCenterScrollEnd,
+    onStationScrollEnd,
+    setSelectedGovCenter,
+    setSelectedPollingCenter,
+    selectedGovCenter,
+    selectedPollingCenter,
     isLoadingFile,
     form
   } = useEditObserver({ item });
@@ -170,11 +178,11 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                         onChange={field.onChange}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-                        <FormField
+              <FormField
                 control={form.control}
                 name="govCenterId"
                 render={({ field }) => (
@@ -184,7 +192,12 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                       <Combobox
                         options={govCentersSearch}
                         value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
+                        onChange={(value) => {
+                          field.onChange(value);
+                          setSelectedGovCenter(value);
+                          setSelectedPollingCenter(null);
+                        }} // Updates React Hook Form on change
+                        onScrollEnd={onGovCenterScrollEnd}
                         label="اختيار مكتب المحافظة"
                         disabled={isLoadingUpdate || isLoadingFile}
                         className={cn(
@@ -196,23 +209,49 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   </FormItem>
                 )}
               />
-
-
-<FormField
+              <FormField
+                control={form.control}
+                name="pollingCenterId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>مركز الاقتراع</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={pollingCentersSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={ ( value ) =>
+                          {
+                            field.onChange( value );
+                            setSelectedPollingCenter(value)
+                        } } // Updates React Hook Form on change
+                        onScrollEnd={onPollingCenterScrollEnd}
+                        label="اختيار مركز اقتراع"
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        className={cn(
+                          form.formState.errors.pollingCenterId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+                    <FormField
               control={form.control}
-              name="pollingCenterId"
+              name="stationId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مركز الاقتراع</FormLabel>
+                  <FormLabel>محطة التسجيل</FormLabel>
                   <FormControl>
                     <Combobox
-                      options={pollingCentersSearch}
+                      options={stationsSearch}
                       value={field.value} // Controlled by React Hook Form
                       onChange={field.onChange} // Updates React Hook Form on change
-                      label="اختيار مركز اقتراع"
-                      disabled={isLoadingUpdate || isLoadingFile}
+                      onScrollEnd={onStationScrollEnd}
+                      label="اختيار محطة التسجيل"
+                      disabled={isLoadingUpdate || isLoadingFile || !selectedPollingCenter}
                       className={cn(
-                        form.formState.errors.pollingCenterId &&
+                        form.formState.errors.stationId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
                       )}
                     />

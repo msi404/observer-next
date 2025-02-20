@@ -42,6 +42,8 @@ export const AddPossibleVoterForm = () => {
     isLoadingVoter,
     pollingCentersSearch,
     usersSearch,
+    onPollingCenterScrollEnd,
+    onUserScrollEnd
    } = useAddPossibleVoter();
 
   return (
@@ -145,7 +147,8 @@ export const AddPossibleVoterForm = () => {
                     <Combobox
                           options={pollingCentersSearch}
                           value={field.value} // Controlled by React Hook Form
-                          onChange={field.onChange} // Updates React Hook Form on change
+                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onScrollEnd={onPollingCenterScrollEnd}
                           label="مركز الاقتراع"
                           disabled={isLoadingVoter}
                           className={cn(
@@ -170,7 +173,8 @@ export const AddPossibleVoterForm = () => {
                         options={ usersSearch }
                         //@ts-ignore
                           value={field.value} // Controlled by React Hook Form
-                          onChange={field.onChange} // Updates React Hook Form on change
+                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onScrollEnd={onUserScrollEnd}
                           label="المرشح"
                           disabled={isLoadingVoter}
                           className={cn(

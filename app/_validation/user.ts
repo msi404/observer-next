@@ -98,7 +98,7 @@ export const addObserverSchema = z.object({
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المراقب لا يقل عن 18 عام'}),
   govCenterId:z.string().min(3),
   pollingCenterId: z.string().min( 3 ),
-  stationCenterId: z.string().min(3),
+  stationId: z.string().min(3),
   electoralEntityId: z.string().transform( ( value ) =>
     {
       if ( value === '' )

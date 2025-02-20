@@ -52,7 +52,7 @@ export const useAddProvinceAdmin = () =>
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
 
       const { data: goveCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-        useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+        useGovCentersQuery(`PageNumber=1&PageSize=30`);
 
   // Refs
   const fileRef = useRef<File | null>(null);

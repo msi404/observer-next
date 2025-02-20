@@ -28,8 +28,15 @@ import { Combobox } from '@/app/_components/combobox';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddDataEntryForm = () => {
-  const { openAdd, setOpenAdd, form, onSubmit, isLoadingUser, govCentersSearch } =
-    useAddDataEntry();
+  const {
+    openAdd,
+    setOpenAdd,
+    form,
+    onSubmit,
+    isLoadingUser,
+    govCentersSearch,
+    onGovCenterScrollEnd
+  } = useAddDataEntry();
 
   return (
     <BasicDialog
@@ -140,7 +147,7 @@ export const AddDataEntryForm = () => {
               )}
             />
 
-<FormField
+            <FormField
               control={form.control}
               name="govCenterId"
               render={({ field }) => (
@@ -150,7 +157,8 @@ export const AddDataEntryForm = () => {
                     <Combobox
                       options={govCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
+                      onChange={ field.onChange } // Updates React Hook Form on change
+                      onScrollEnd={onGovCenterScrollEnd}
                       label="اختيار مكتب المحافظة"
                       disabled={isLoadingUser}
                       className={cn(
