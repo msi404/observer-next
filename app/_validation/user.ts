@@ -121,26 +121,6 @@ export const addObserverSchema = z.object({
 export const addElectralAdminSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر ممثل الكيان لا يقل عن 18 عام'}),
-  govId:z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
-  pollingCenterId: z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
   electoralEntityId: z.string().min(3),
   username: z.string().min(3).max(16),
   password: z.string().min(6),

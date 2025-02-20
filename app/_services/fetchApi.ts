@@ -236,6 +236,7 @@ export const {
   usePollingCentersQuery,
   useLazyPollingCentersQuery,
   useElectoralEntitiesQuery,
+  useLazyElectoralEntitiesQuery,
   useGovCentersQuery,
   useLazyGovCentersQuery,
   useComplaintsStatisticsQuery,

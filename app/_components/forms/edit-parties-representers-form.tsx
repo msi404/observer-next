@@ -36,6 +36,7 @@ export const EditPartiesRepresentersForm = ({
     isLoadingUpdate,
     openUpdate,
     electoralEntitiesSearch,
+    onElectoralEntitiesScrollEnd,
     form
   } = useEditPartiesRepresenters({ item });
   return (
@@ -181,7 +182,8 @@ export const EditPartiesRepresentersForm = ({
                       <Combobox
                         options={electoralEntitiesSearch}
                         value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
+                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onScrollEnd={onElectoralEntitiesScrollEnd}
                         label="الكيان السياسي"
                         disabled={isLoadingUpdate}
                         className={cn(

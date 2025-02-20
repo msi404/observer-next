@@ -29,7 +29,7 @@ import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
 
 export const AddPartiesRepresentersForm = () => {
-  const { openAdd, setOpenAdd, form, onSubmit, isLoadingUser, electoralEntitiesSearch } =
+  const { openAdd, setOpenAdd, form, onSubmit, isLoadingUser, electoralEntitiesSearch, onElectoralEntitiesScrollEnd } =
     useAddPartiesRepresenters();
 
   return (
@@ -150,7 +150,8 @@ export const AddPartiesRepresentersForm = () => {
                     <Combobox
                       options={electoralEntitiesSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
+                      onChange={ field.onChange } // Updates React Hook Form on change
+                      onScrollEnd={onElectoralEntitiesScrollEnd}
                       label="اختيار الكيان السياسي"
                       disabled={isLoadingUser}
                       className={cn(

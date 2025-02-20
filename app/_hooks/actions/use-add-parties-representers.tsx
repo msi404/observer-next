@@ -16,7 +16,7 @@ import { useToast } from '@/app/_hooks/use-toast';
 
 import {
   useUsersQuery,
-  useElectoralEntitiesQuery
+  useLazyElectoralEntitiesQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
@@ -24,22 +24,33 @@ import { useCreateUserMutation } from '@/app/_services/mutationApi';
 import { addElectralAdminSchema } from '@/app/_validation/user';
 
 export const useAddPartiesRepresenters = () => {
-  const pageSize = useSelector(selectPageSize);
-  const currentPage = useSelector(selectCurrentPage);
+  const [electoralEntitiesCurrentPage, setElectoralEntitiesCurrentPage] =
+    useState(1);
+  const [electoralEntitiessTotalPages, setElectoralEntitiesTotalPages] =
+    useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector(selectCurrentPage);
+
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
 
   const { refetch } = useUsersQuery(
-    `Role=10&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=10&PageNumber=${globalCurrentPage}&PageSize=${globalPageSize}`
   );
 
   const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
-  { value: string; label: string }[]
->([]);
+    { value: string; label: string }[]
+  >([]);
+
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
-    const { data: electoralEntities, isLoading: isLoadingElectoralEntities, refetch: refetchElectoralEntities } =
-      useElectoralEntitiesQuery('');
+  const [
+    fetchElectoralEntities,
+    { data: lazyElectoralEntities, isFetching: isFetchingLazyElectoralEntities }
+  ] = useLazyElectoralEntitiesQuery();
+
   // Toast Hook
   const { toast } = useToast();
 
@@ -59,7 +70,34 @@ export const useAddPartiesRepresenters = () => {
       password: '',
       role: 10
     }
-  });
+  } );
+  
+     // Fetch Initial
+     useEffect(() => {
+      fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage }&PageSize=${ pageSize }`);
+     }, [] );
+  
+  // Update When Data Changes
+  useEffect(() => {
+    if (lazyElectoralEntities) {
+      setElectoralEntitiesSearch((prev) => [
+        ...prev,
+        ...lazyElectoralEntities.items.map((electoralEntity: any) => ({
+          value: electoralEntity.id,
+          label: electoralEntity.name
+        }))
+      ]);
+      setElectoralEntitiesTotalPages(lazyElectoralEntities.totalPages);
+    }
+  }, [lazyElectoralEntities]);
+
+// Scroll Event Handler for Infinite Scroll
+const onElectoralEntitiesScrollEnd = () => {
+  if (electoralEntitiesCurrentPage < electoralEntitiessTotalPages && !isFetchingLazyElectoralEntities) {
+    setElectoralEntitiesCurrentPage((prev) => prev + 1);
+    fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage + 1}&PageSize=${ pageSize }`);
+  }
+};
 
   // Form Submission Handler
   const onSubmit = async () => {
@@ -83,25 +121,13 @@ export const useAddPartiesRepresenters = () => {
     }
   };
 
-    // Effect to Update Search Options
-    useEffect( () =>
-    {
-      refetchElectoralEntities()
-      if (!isLoadingElectoralEntities) {
-        setElectoralEntitiesSearch(
-          electoralEntities?.items.map((electoralEntity: any) => ({
-            value: electoralEntity.id,
-            label: electoralEntity.name
-          }))
-        );
-      }
-    }, [electoralEntities, isLoadingElectoralEntities, openAdd]);
   return {
     openAdd,
     setOpenAdd,
     form,
     onSubmit,
     isLoadingUser,
-    electoralEntitiesSearch
+    electoralEntitiesSearch,
+    onElectoralEntitiesScrollEnd
   };
 };
