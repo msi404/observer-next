@@ -1,4 +1,5 @@
 import { tatweerApi } from '@/app/_services/api';
+import {formatter} from '@/app/_utils/format-number'
 
 const fetchDataApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
@@ -100,7 +101,8 @@ const fetchDataApi = tatweerApi.injectEndpoints({
     }),
     genderStatistics: builder.query({
       query: () => 'statistics/voters/gender',
-      transformResponse: (response: any) => {
+      transformResponse: ( response: any ) =>
+      {
         return [
           {
             type: 'male',

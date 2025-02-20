@@ -13,7 +13,7 @@ import {Show} from '@/app/_components/show'
 
 export const StatisticsCard: FC<{
 	icon: ReactNode;
-	total: number;
+	total: number | string;
 	description: string;
 	url?: string;
 }> = ({ icon, total, description, url}) => {

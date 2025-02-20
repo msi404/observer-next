@@ -7,7 +7,8 @@ import { FetchCard } from '@/app/_components/fetch-card'
 import {StatisticsCard} from '@/app/_components/statistics-card'
 import {Switch, Match} from '@/app/_components/switch'
 import {For} from '@/app/_components/for'
-import {Show} from '@/app/_components/show'
+import { Show } from '@/app/_components/show'
+import {formatter} from '@/app/_utils/format-number'
 
 export const KpiWidget = () =>
 {
@@ -30,7 +31,7 @@ export const KpiWidget = () =>
 							  url={item.url}
 							  icon={item.icon}
 							  description={t(item.description)}
-							  total={item.total}
+							  total={formatter(item.total)}
 							/>
 						 </Match>
 						 <Match when={item.isFetching}>
