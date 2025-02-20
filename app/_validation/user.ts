@@ -13,7 +13,7 @@ export const addUserSchema = z.object({
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
   role: z.number(),
-  phone: z.string(),
+  phone: z.string().min(11).max(16),
   email: z.string().email(),
   candidateSerial: z.number().optional(),
   candidateListSerial: z.number().optional()
@@ -48,7 +48,7 @@ export const addCandidateSchema = z.object({
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
   role: z.number(),
-  phone: z.string().min(5),
+  phone: z.string().min(11).max(16),
   email: z.string().email(),
   candidateSerial: z.string().min( 1 ).transform( ( value ) =>
   {
@@ -89,7 +89,7 @@ export const addDataEntrySchema = z.object({
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
   role: z.number(),
-  phone: z.string().min(5),
+  phone: z.string().min(11).max(16),
   email: z.string().email(),
 } );
 
@@ -114,7 +114,7 @@ export const addObserverSchema = z.object({
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
   role: z.number(),
-  phone: z.string().min(5),
+  phone: z.string().min(11).max(16),
   email: z.string().email(),
 } );
 
@@ -127,7 +127,7 @@ export const addElectralAdminSchema = z.object({
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
   role: z.number(),
-  phone: z.string().min(5),
+  phone: z.string().min(11).max(16),
   email: z.string().email(),
 } );
 
@@ -160,6 +160,6 @@ export const addProvinceAdminSchema = z.object({
   profileImg: z.string().optional(),
   coverImg: z.string().optional(),
   role: z.number(),
-  phone: z.string().min(5),
+  phone: z.string().min(11).max(16),
   email: z.string().email(),
 });

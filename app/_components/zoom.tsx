@@ -16,7 +16,7 @@ export const Zoom: FC<{ preview: string, className?: string, width?: number, hei
           width={width}
           height={height}
           src={preview}
-          alt="صورة البطاقة"
+          alt="صورة"
           className={cn(className, "cursor-pointer object-cover z-10")}
         />
       </PhotoView>

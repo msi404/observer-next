@@ -45,5 +45,6 @@ export const addPossibleVoterSchema = z.object({
       {
         return value
       }
-    }),  serial: z.string().min(3)
+  } ),
+  serial: z.string().min( 3 )
 });

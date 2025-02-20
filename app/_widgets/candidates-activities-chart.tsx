@@ -1,5 +1,4 @@
 'use client';
-import {useEffect} from 'react'
 import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
