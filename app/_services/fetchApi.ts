@@ -229,10 +229,12 @@ const fetchDataApi = tatweerApi.injectEndpoints({
 export const {
   useProvincesQuery,
   useUsersQuery,
+  useLazyUsersQuery,
   useVotersQuery,
   useCurrentUserQuery,
   useStatisticsQuery,
   usePollingCentersQuery,
+  useLazyPollingCentersQuery,
   useElectoralEntitiesQuery,
   useGovCentersQuery,
   useComplaintsStatisticsQuery,

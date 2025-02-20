@@ -46,7 +46,9 @@ export const AddConfirmVoterForm = () => {
     isLoadingFile,
     pollingCentersSearch,
     usersSearch,
-    fileRef
+    fileRef,
+    onPollingCenterScrollEnd,
+    onUserScrollEnd
   } = useAddConfirmedVoter();
 
   return (
@@ -138,7 +140,7 @@ export const AddConfirmVoterForm = () => {
               )}
             />
 
-<FormField
+            <FormField
               control={form.control}
               name="pollingCenterId"
               render={({ field }) => (
@@ -149,6 +151,7 @@ export const AddConfirmVoterForm = () => {
                       options={pollingCentersSearch}
                       value={field.value} // Controlled by React Hook Form
                       onChange={field.onChange} // Updates React Hook Form on change
+                      onScrollEnd={onPollingCenterScrollEnd}
                       label="اختيار مركز اقتراع"
                       disabled={isLoadingVoter || isLoadingFile}
                       className={cn(
@@ -169,7 +172,8 @@ export const AddConfirmVoterForm = () => {
                   <FormLabel>المرشح</FormLabel>
                   <FormControl>
                     <Combobox
-                      options={usersSearch}
+                      options={ usersSearch }
+                      onScrollEnd={onUserScrollEnd}
                       //@ts-ignore
                       value={field.value} // Controlled by React Hook Form
                       onChange={field.onChange} // Updates React Hook Form on change
@@ -233,7 +237,7 @@ export const AddConfirmVoterForm = () => {
               )}
             />
 
-            {/* Image Upload */ }
+            {/* Image Upload */}
             <Dropzone
               setFile={(voterFile) => (fileRef.current = voterFile)}
               label="اختيار صورة بطاقة الناخب"

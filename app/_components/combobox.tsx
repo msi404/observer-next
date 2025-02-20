@@ -1,5 +1,4 @@
-'use client';
-import { type FC, useState } from 'react';
+import { type FC, useState, useRef } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/app/_components/ui/button';
 import {
@@ -24,6 +23,7 @@ type ComboboxType = {
   label: string;
   className?: string;
   disabled?: boolean;
+  onScrollEnd?: () => void; // New prop for handling scroll
 };
 
 export const Combobox: FC<ComboboxType> = ({
@@ -32,13 +32,19 @@ export const Combobox: FC<ComboboxType> = ({
   onChange,
   label,
   className,
-  disabled
+  disabled,
+  onScrollEnd
 }) => {
-  const [open, setOpen] = useState(false); // Add Popover state control
+  const [open, setOpen] = useState(false);
+  const listRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (selectedValue: string) => {
-    onChange(selectedValue); // Update the form value
-    setOpen(false); // Close the Popover after selection
+  const handleScroll = () => {
+    if (listRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        onScrollEnd?.();
+      }
+    }
   };
 
   return (
@@ -55,31 +61,20 @@ export const Combobox: FC<ComboboxType> = ({
           <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent  className="w-64 p-2" 
-    side="bottom" 
-    align="start" 
-    avoidCollisions={false}>
+      <PopoverContent className="w-64 p-2" side="bottom" align="start" avoidCollisions={false}>
         <Command>
           <CommandInput placeholder="ابحث..." className="h-9" />
-          <CommandList className='max-h-64 overflow-y-auto'>
-              <CommandEmpty>لم يتم العثور على العنصر</CommandEmpty>
-              <CommandGroup>
-                {options.map((option) => (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => handleSelect(option.value)}
-                  >
-                    <Check
-                      className={cn(
-                        'h-4 w-4 mr-2',
-                        value === option.value ? 'opacity-100' : 'opacity-0'
-                      )}
-                    />
-                    {option.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
+          <CommandList ref={listRef} onScroll={handleScroll} className="max-h-44 overflow-y-auto">
+            <CommandEmpty>لم يتم العثور على العنصر</CommandEmpty>
+            <CommandGroup>
+              {options.map((option, i) => (
+                <CommandItem key={`${option.value}-${i}`} onSelect={() => {onChange(option.value), setOpen(false)}}>
+                  <Check className={cn('h-4 w-4 mr-2', value === option.value ? 'opacity-100' : 'opacity-0')} />
+                  {option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
