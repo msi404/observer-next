@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { selectToken } from '@/app/_lib/features/authSlice';
-import { Fingerprint } from 'lucide-react';
 
 import { Container } from '@/app/_components/container';
 import { LoginForm } from '@/app/_components/login-form';

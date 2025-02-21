@@ -1,4 +1,4 @@
-import { differenceInYears, parse } from 'date-fns';
+import { differenceInYears } from 'date-fns';
 
 export const calcAge = ( dob: string ) =>
 {
