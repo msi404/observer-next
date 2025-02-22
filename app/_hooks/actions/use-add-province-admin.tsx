@@ -19,7 +19,8 @@ import { useToast } from '@/app/_hooks/use-toast';
 import { baseURL } from '@/app/_services/api';
 import {
   useUsersQuery,
-  useGovCentersQuery
+  useLazyGovCentersQuery,
+  useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import {
   useUploadFileMutation,
@@ -32,27 +33,40 @@ import { addProvinceAdminSchema } from '@/app/_validation/user';
 export const useAddProvinceAdmin = () =>
 {
   const user = useSelector(selectUser)
-  const pageSize = useSelector(selectPageSize);
-  const currentPage = useSelector(selectCurrentPage);
+  const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
+  const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector(selectCurrentPage);
+
+  const [username, setUsername] = useState('')
+
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingProvinceAdmin }] =
     useCreateUserMutation();
   const [ uploadFile, { isLoading: isLoadingFile } ] = useUploadFileMutation();
+
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useUsersQuery(
-    `Role=12&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `Role=12&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
 
-  const [govCenterSearch, setGovCenterSearchSearch] = useState<
-  { value: string; label: string }[]
->([]);
+    const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
+  
+  const [govCentersSearch, setGovCentersSearch] = useState<
+    { value: string; label: string }[]
+  >([]);
 
   // State Management
   const [ openAdd, setOpenAdd ] = useState<boolean>( false );
+  
+  const [
+    fetchGovCenters,
+    { data: lazyGovCenters, isFetching: isFetchingLazyGovCenter }
+  ] = useLazyGovCentersQuery();
 
-      const { data: goveCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-        useGovCentersQuery(`PageNumber=1&PageSize=30`);
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -77,8 +91,45 @@ export const useAddProvinceAdmin = () =>
       password: '',
       role: 12
     }
-  });
+  } );
 
+    // Fetch Initial
+    useEffect( () =>
+      {
+        fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+      }, []);
+  
+      useEffect(() => {
+        if (lazyGovCenters) {
+          setGovCentersSearch((prev) => [
+            ...prev,
+            ...lazyGovCenters.items.map((govCenter: any) => ({
+              value: govCenter.id,
+              label: govCenter.name
+            }))
+          ]);
+          setGovCentersTotalPages(lazyGovCenters.totalPages);
+        }
+      }, [ lazyGovCenters ] );
+    // Scroll Event Handler for Infinite Scroll
+    const onGovCenterScrollEnd = () => {
+      if (
+        govCentersCurrentPage < govCentersTotalPages &&
+        !isFetchingLazyGovCenter
+      ) {
+        setGovCentersCurrentPage((prev) => prev + 1);
+        fetchGovCenters(
+          `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+        );
+      }
+    };
+  
+    const onCheckUsernameTaken = () =>
+      {
+        setUsername( form.getValues( 'username' ) )
+        refetchIsUsernameTaken()
+      }
+  
   // Form Submission Handler
   const onSubmit = async () => {
     if (!fileRef.current) {
@@ -109,23 +160,11 @@ export const useAddProvinceAdmin = () =>
       console.log(error);
     } finally {
       refetch();
-      setOpenAdd(false);
+      setOpenAdd( false );
+      setUsername('')
     }
   };
 
-      // Effect to Update Search Options
-      useEffect( () =>
-      {
-        refetchGovCenters()
-        if (!isLoadingGovCenters) {
-          setGovCenterSearchSearch(
-            goveCenters?.items.map((govCenter: any) => ({
-              value: govCenter.id,
-              label: govCenter.name
-            }))
-          );
-        }
-      }, [goveCenters, isLoadingGovCenters, openAdd]);
   return {
     openAdd,
     setOpenAdd,
@@ -133,7 +172,11 @@ export const useAddProvinceAdmin = () =>
     onSubmit,
     isLoadingFile,
     isLoadingProvinceAdmin,
-    govCenterSearch,
+    govCentersSearch,
+    onGovCenterScrollEnd,
+    isUsernameTakenSuccess,
+    isUsernameTaken,
+    onCheckUsernameTaken,
     fileRef
   };
 };

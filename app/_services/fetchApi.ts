@@ -227,7 +227,10 @@ const fetchDataApi = tatweerApi.injectEndpoints({
           totalPendingVoters: response.data.totalPendingVoters
         };
       }
-    })
+    } ),
+    isUsernameTaken: builder.query( {
+      query: (username) => `global/is-username-taken/${username}`
+    }),
   }),
   overrideExisting: false
 });
@@ -257,5 +260,6 @@ export const {
   useUnseenNotificationQuery,
   useUserQuery,
   usePostsQuery,
-  usePostQuery
+  usePostQuery,
+  useIsUsernameTakenQuery
 } = fetchDataApi;

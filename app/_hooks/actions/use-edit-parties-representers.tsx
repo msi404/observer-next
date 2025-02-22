@@ -11,7 +11,8 @@ import {
 } from '@/app/_services/mutationApi';
 import {
   useUsersQuery,
-  useLazyElectoralEntitiesQuery
+  useLazyElectoralEntitiesQuery,
+  useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
@@ -41,13 +42,15 @@ const pageSize = 10; // Fixed page size
 
 const globalPageSize = useSelector(selectPageSize);
   const globalCurrentPage = useSelector( selectCurrentPage );
-  
+  const [username, setUsername] = useState('')
+
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const { refetch } = useUsersQuery(
     `Role=10&PageNumber=${globalCurrentPage}&PageSize=${globalPageSize}`
   );  
+  const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
 
   const [electoralEntitiesSearch, setElectoralEntitiesSearch] = useState<
   { value: string; label: string }[]
@@ -143,6 +146,12 @@ const onElectoralEntitiesScrollEnd = () => {
     fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage + 1}&PageSize=${ pageSize }`);
   }
 };
+  
+const onCheckUsernameTaken = () =>
+  {
+    setUsername( form.getValues( 'username' ) )
+    refetchIsUsernameTaken()
+  }
 
   const onDelete = async () => {
     await deleteUser(item.id);
@@ -160,6 +169,9 @@ const onElectoralEntitiesScrollEnd = () => {
     isLoadingDelete,
     isLoadingUpdate,
     electoralEntitiesSearch,
-    onElectoralEntitiesScrollEnd
+    onElectoralEntitiesScrollEnd,
+    isUsernameTakenSuccess,
+    isUsernameTaken,
+    onCheckUsernameTaken
   };
 };

@@ -10,7 +10,7 @@ import { useAddProvinceAdmin } from '@/app/_hooks/actions/use-add-province-admin
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
-import {Combobox} from '@/app/_components/combobox'
+import { Combobox } from '@/app/_components/combobox';
 import {
   Form,
   FormControl,
@@ -27,6 +27,7 @@ import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
 import { Dropzone } from '@/app/_components/dropzone';
 import { Show } from '@/app/_components/show';
+import { Switch, Match } from '@/app/_components/switch';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddProvinceAdminForm = () => {
@@ -37,7 +38,11 @@ export const AddProvinceAdminForm = () => {
     onSubmit,
     isLoadingProvinceAdmin,
     isLoadingFile,
-    govCenterSearch,
+    govCentersSearch,
+    onGovCenterScrollEnd,
+    onCheckUsernameTaken,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
     fileRef
   } = useAddProvinceAdmin();
 
@@ -91,16 +96,40 @@ export const AddProvinceAdminForm = () => {
                 <FormItem>
                   <FormLabel>اسم المستخدم</FormLabel>
                   <FormControl>
-                    <Input
-                      className={cn(
-                        form.formState.errors.username &&
-                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      )}
-                      disabled={isLoadingProvinceAdmin || isLoadingFile}
-                      placeholder="اسم المستخدم"
-                      {...field}
-                    />
+                    <div className="*:not-first:mt-2">
+                      <div className="flex rounded-md shadow-xs">
+                        <Input
+                          className={cn(
+                            form.formState.errors.username &&
+                              'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                            '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
+                          )}
+                          disabled={isLoadingProvinceAdmin || isLoadingFile}
+                          placeholder="اسم المستخدم"
+                          {...field}
+                        />
+                        <button
+                          onClick={onCheckUsernameTaken}
+                          type="button"
+                          className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          التحقق
+                        </button>
+                      </div>
+                    </div>
                   </FormControl>
+                  <Switch>
+                    <Match when={isUsernameTaken === true}>
+                      <p className="text-destructive font-medium text-xs">
+                        اسم المستخدم قيد الاستخدام
+                      </p>
+                    </Match>
+                    <Match when={isUsernameTaken === false}>
+                      <p className="text-green-600 font-medium text-xs">
+                        اسم المستخدم متاح
+                      </p>
+                    </Match>
+                  </Switch>
                 </FormItem>
               )}
             />
@@ -145,11 +174,11 @@ export const AddProvinceAdminForm = () => {
                       onChange={field.onChange}
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-                            <FormField
+            <FormField
               control={form.control}
               name="govCenterId"
               render={({ field }) => (
@@ -157,9 +186,10 @@ export const AddProvinceAdminForm = () => {
                   <FormLabel>مكتب المحافظة</FormLabel>
                   <FormControl>
                     <Combobox
-                      options={govCenterSearch}
+                      options={govCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
+                      onChange={ field.onChange } // Updates React Hook Form on change
+                      onScrollEnd={onGovCenterScrollEnd}
                       label="اختيار مكتب المحافظة"
                       disabled={isLoadingProvinceAdmin || isLoadingFile}
                       className={cn(
@@ -230,7 +260,10 @@ export const AddProvinceAdminForm = () => {
           {/* Form Actions */}
           <DialogFooter>
             <div className="flex justify-between w-full">
-              <Button type="submit" disabled={isLoadingProvinceAdmin || isLoadingFile}>
+              <Button
+                type="submit"
+                disabled={isLoadingProvinceAdmin || isLoadingFile}
+              >
                 اضافة
                 {(isLoadingProvinceAdmin || isLoadingFile) && (
                   <div className=" scale-125">

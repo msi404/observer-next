@@ -19,6 +19,7 @@ import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
 import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
+import {Switch, Match} from '@/app/_components/switch'
 interface EditPartiesRepresentersProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
@@ -37,6 +38,9 @@ export const EditPartiesRepresentersForm = ({
     openUpdate,
     electoralEntitiesSearch,
     onElectoralEntitiesScrollEnd,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken,
     form
   } = useEditPartiesRepresenters({ item });
   return (
@@ -130,26 +134,42 @@ export const EditPartiesRepresentersForm = ({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
-                    <FormControl>
+ <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>اسم المستخدم</FormLabel>
+                  <FormControl>
+                    <div className="*:not-first:mt-2">
+                      <div className="flex rounded-md shadow-xs">
                       <Input
-                        className={cn(
-                          form.formState.errors.username &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم المستخدم"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+                      className={cn(
+                        form.formState.errors.username &&
+                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                        '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
+                      )}
+                      disabled={isLoadingUpdate}
+                      placeholder="اسم المستخدم"
+                      {...field}
+                    />
+                    <button onClick={onCheckUsernameTaken} type='button' className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50">
+                      التحقق
+                      </button>
+                      </div>
+                   </div>
+                  </FormControl>
+                  <Switch>
+                  <Match when={isUsernameTaken === true}>
+                      <p className='text-destructive font-medium text-xs'>اسم المستخدم قيد الاستخدام</p>
+                  </Match>
+                  <Match when={isUsernameTaken === false}>
+                      <p className='text-green-600 font-medium text-xs'>اسم المستخدم متاح</p>
+                  </Match>
+                    </Switch>
+                </FormItem>
+              )}
+            />
               {/* Date of Birth */}
               <FormField
                 control={form.control}

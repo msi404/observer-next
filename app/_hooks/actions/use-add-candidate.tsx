@@ -19,7 +19,8 @@ import { useToast } from '@/app/_hooks/use-toast';
 import { baseURL } from '@/app/_services/api';
 import {
   useUsersQuery,
-  useGovCentersQuery
+  useLazyGovCentersQuery,
+  useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import {
   useUploadFileMutation,
@@ -32,8 +33,13 @@ import { addCandidateSchema } from '@/app/_validation/user';
 export const useAddCandidate = () =>
 {
   const user = useSelector(selectUser)
-  const pageSize = useSelector(selectPageSize);
-  const currentPage = useSelector(selectCurrentPage);
+  const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
+  const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector( selectCurrentPage );
+  const [username, setUsername] = useState('')
   // API Mutations & Queries
   const [createVoter, { isLoading: isLoadingCandidate }] =
     useCreateUserMutation();
@@ -46,8 +52,10 @@ export const useAddCandidate = () =>
       ? `&ElectoralEntityId=${electoralEntityId}`
       : '';
   const { refetch } = useUsersQuery(
-    `Role=102&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `Role=102&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
+
+  const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
 
   // State Management
   const [govCentersSearch, setGovCentersSearch] = useState<
@@ -55,10 +63,11 @@ export const useAddCandidate = () =>
     >( [] );
   
   const [openAdd, setOpenAdd] = useState<boolean>(false);
-  // Query Data
-    const { data: govCenters, isLoading: isLoadingGovCenters, refetch: refetchGovCenters } =
-      useGovCentersQuery( `PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
-  
+  const [
+    fetchGovCenters,
+    { data: lazyGovCenters, isFetching: isFetchingLazyGovCenter }
+  ] = useLazyGovCentersQuery();
+
   // Refs
   const fileRef = useRef<File | null>(null);
 
@@ -81,7 +90,43 @@ export const useAddCandidate = () =>
       role: 102,
     }
   });
-
+    // Fetch Initial
+    useEffect( () =>
+      {
+        fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+      }, []);
+  
+  
+      useEffect(() => {
+        if (lazyGovCenters) {
+          setGovCentersSearch((prev) => [
+            ...prev,
+            ...lazyGovCenters.items.map((govCenter: any) => ({
+              value: govCenter.id,
+              label: govCenter.name
+            }))
+          ]);
+          setGovCentersTotalPages(lazyGovCenters.totalPages);
+        }
+      }, [ lazyGovCenters ] );
+    // Scroll Event Handler for Infinite Scroll
+    const onGovCenterScrollEnd = () => {
+      if (
+        govCentersCurrentPage < govCentersTotalPages &&
+        !isFetchingLazyGovCenter
+      ) {
+        setGovCentersCurrentPage((prev) => prev + 1);
+        fetchGovCenters(
+          `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+        );
+      }
+    };
+  
+    const onCheckUsernameTaken = () =>
+      {
+        setUsername( form.getValues( 'username' ) )
+        refetchIsUsernameTaken()
+      }
   // Form Submission Handler
   const onSubmit = async () => {
     if (!fileRef.current) {
@@ -115,22 +160,7 @@ export const useAddCandidate = () =>
       setOpenAdd(false);
     }
   };
-  // Effect to Update Search Options
-  useEffect(() => {
-    refetchGovCenters();
-    if (!isLoadingGovCenters) {
-      setGovCentersSearch(
-        govCenters?.items.map((govCenter: any) => ({
-          value: govCenter.id,
-          label: govCenter.name
-        }))
-      );
-    }
-  }, [
-    govCenters,
-    isLoadingGovCenters,
-    openAdd
-  ]);
+
   return {
     openAdd,
     setOpenAdd,
@@ -139,6 +169,10 @@ export const useAddCandidate = () =>
     isLoadingFile,
     isLoadingCandidate,
     govCentersSearch,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken,
+    onGovCenterScrollEnd,
     fileRef
   };
 };

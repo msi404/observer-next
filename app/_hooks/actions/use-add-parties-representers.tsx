@@ -16,7 +16,8 @@ import { useToast } from '@/app/_hooks/use-toast';
 
 import {
   useUsersQuery,
-  useLazyElectoralEntitiesQuery
+  useLazyElectoralEntitiesQuery,
+  useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
@@ -31,10 +32,13 @@ export const useAddPartiesRepresenters = () => {
   const pageSize = 10; // Fixed page size
 
   const globalPageSize = useSelector(selectPageSize);
-  const globalCurrentPage = useSelector(selectCurrentPage);
+  const globalCurrentPage = useSelector( selectCurrentPage );
+  const [username, setUsername] = useState('')
 
   // API Mutations & Queries
-  const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
+  const [ createUser, { isLoading: isLoadingUser } ] = useCreateUserMutation();
+  
+  const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
 
   const { refetch } = useUsersQuery(
     `Role=10&PageNumber=${globalCurrentPage}&PageSize=${globalPageSize}`
@@ -98,6 +102,12 @@ const onElectoralEntitiesScrollEnd = () => {
     fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage + 1}&PageSize=${ pageSize }`);
   }
 };
+  
+  const onCheckUsernameTaken = () =>
+  {
+    setUsername( form.getValues( 'username' ) )
+    refetchIsUsernameTaken()
+  }
 
   // Form Submission Handler
   const onSubmit = async () => {
@@ -106,7 +116,6 @@ const onElectoralEntitiesScrollEnd = () => {
       const result = await createUser(
         addElectralAdminSchema.parse(form.getValues())
       ).unwrap();
-
       console.log(result);
     } catch (error: any) {
       toast({
@@ -117,7 +126,8 @@ const onElectoralEntitiesScrollEnd = () => {
       console.log(error);
     } finally {
       refetch();
-      setOpenAdd(false);
+      setOpenAdd( false );
+      setUsername('')
     }
   };
 
@@ -128,6 +138,9 @@ const onElectoralEntitiesScrollEnd = () => {
     onSubmit,
     isLoadingUser,
     electoralEntitiesSearch,
-    onElectoralEntitiesScrollEnd
+    onElectoralEntitiesScrollEnd,
+    onCheckUsernameTaken,
+    isUsernameTakenSuccess,
+    isUsernameTaken
   };
 };

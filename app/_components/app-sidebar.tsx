@@ -89,7 +89,7 @@ export const AppSidebar = () => {
                             } hover:bg-slate-200/20`}
                             href={item.url}
                           >
-                            <Show when={item.isNotes && isSuccessNotes}>
+                            <Show when={item.isNotes && notes?.data > 0 && isSuccessNotes}>
                             <Badge className='bg-red-500'>{notes?.data}</Badge>
                             </Show>
                             <Dynamic

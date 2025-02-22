@@ -1,17 +1,18 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
 } from '@/app/_lib/features/paginationSlice';
 import {
   useUpdateUserMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useUploadFileMutation
 } from '@/app/_services/mutationApi';
 import {
-  useGovCentersQuery,
+  useLazyGovCentersQuery,
+  useIsUsernameTakenQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
@@ -19,31 +20,46 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addProvinceAdminSchema } from '@/app/_validation/user';
+import { baseURL } from '@/app/_services/api';
 
-export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
-{
-  const user = useSelector(selectUser)
-  const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
+export const useEditProvinceAdmins = ({ item }: { item: User }) => {
+  const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
+  const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector(selectCurrentPage);
+
+  const [username, setUsername] = useState('');
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
-  const [ deleteUser, { isLoading: isLoadingDelete } ] = useDeleteUserMutation();
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
-  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : ''; 
+  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
+  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
+
   const { refetch } = useUsersQuery(
-    `Role=12&PageNumber=${currentPage}&PageSize=${pageSize}`
+    `Role=12&PageNumber=${globalCurrentPage}&PageSize=${globalPageSize}`
   );
+  const {
+    data: isUsernameTaken,
+    isSuccess: isUsernameTakenSuccess,
+    refetch: refetchIsUsernameTaken
+  } = useIsUsernameTakenQuery(username);
 
   // State Management
-  const [govCenterSearch, setGovCenterSearch] = useState<
+  const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
 
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-  const [ openDelete, setOpenDelete ] = useState<boolean>( false );
-  // Query Data
-  const { data: govCenters, isLoading: isLoadingGovCenters} =
-    useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
+
+  const [
+    fetchGovCenters,
+    { data: lazyGovCenters, isFetching: isFetchingLazyGovCenter }
+  ] = useLazyGovCentersQuery();
+
+  // Refs
+  const fileRef = useRef<File | null>(null);
 
   // Toast Hook
   const { toast } = useToast();
@@ -60,15 +76,78 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
       electoralEntityId: item.electoralEntity?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
       username: item?.username,
+      profileImg: item?.profileImg,
       phone: item?.phone,
       email: item?.email,
       role: 102
     }
   });
 
+  // Fetch Initial
+  useEffect(() => {
+    fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+  }, []);
+
+  // Update When Data Changes
+  useEffect(() => {
+    if (lazyGovCenters) {
+      setGovCentersSearch((prev) => {
+        // Convert previous values to a Set for quick lookup
+        const existingIds = new Set(prev.map((pc) => pc.value));
+
+        // Add only new unique items from API response
+        const updatedOptions = lazyGovCenters.items
+          .map((pollingCenter: any) => ({
+            value: pollingCenter.id,
+            label: pollingCenter.name
+          }))
+          .filter((pc: any) => !existingIds.has(pc.value));
+
+        // Ensure the selected polling center is included without duplication
+        const selectedPollingCenter = item.pollingCenter
+          ? { value: item.pollingCenter.id, label: item.pollingCenter.name }
+          : null;
+
+        return selectedPollingCenter &&
+          !existingIds.has(selectedPollingCenter.value)
+          ? [selectedPollingCenter, ...prev, ...updatedOptions]
+          : [...prev, ...updatedOptions];
+      });
+
+      setGovCentersCurrentPage(lazyGovCenters.totalPages);
+    }
+  }, [lazyGovCenters]);
+
+  // Scroll Event Handler for Infinite Scroll
+  const onGovCenterScrollEnd = () => {
+    if (
+      govCentersCurrentPage < govCentersTotalPages &&
+      !isFetchingLazyGovCenter
+    ) {
+      setGovCentersCurrentPage((prev) => prev + 1);
+      fetchGovCenters(
+        `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+      );
+    }
+  };
+
+  const onCheckUsernameTaken = () => {
+    setUsername(form.getValues('username'));
+    refetchIsUsernameTaken();
+  };
+
   // Form Submission Handler
   const onUpdate = async () => {
     try {
+      if (fileRef.current) {
+        const formData = new FormData();
+        formData.append('file', fileRef.current as File);
+
+        const response = await uploadFile(formData).unwrap();
+        form.setValue('profileImg', `${baseURL}/${response?.data}`);
+      } else {
+        form.setValue('profileImg', item.profileImg);
+      }
       form.setValue('role', 102);
       await updateUser({
         user: addProvinceAdminSchema.parse(form.getValues()),
@@ -92,29 +171,11 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
           variant: 'destructive'
         });
       }
-    }
-    finally
-    {
+    } finally {
       refetch();
       setOpenUpdate(false);
     }
   };
-  // Effect to Update Search Options
-  useEffect( () =>
-  {
-    if (!isLoadingGovCenters) {
-      setGovCenterSearch(
-        govCenters?.items.map((govCenter: any) => ({
-          value: govCenter.id,
-          label: govCenter.name
-        }))
-      );
-    }
-  }, [
-    govCenters,
-    isLoadingGovCenters,
-    openUpdate
-  ]);
 
   const onDelete = async () => {
     await deleteUser(item.id);
@@ -130,6 +191,12 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
     onDelete,
     isLoadingDelete,
     isLoadingUpdate,
-    govCenterSearch,
+    govCentersSearch,
+    onGovCenterScrollEnd,
+    isUsernameTakenSuccess,
+    isUsernameTaken,
+    onCheckUsernameTaken,
+    isLoadingFile,
+    fileRef
   };
 };
