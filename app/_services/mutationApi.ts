@@ -48,6 +48,12 @@ const mutationApi = tatweerApi.injectEndpoints({
         method: 'POST',
         body: item
       })
+    } ),
+    switchSeenNotification: builder.mutation( {
+      query: ( id ) => ( {
+        url: `notifications/${ id }/switch-seen`,
+        method: 'PUT'
+      })
     }),
     createGovCenter: builder.mutation( {
       query: ( item ) => ( {
@@ -183,5 +189,6 @@ export const {
   useDeletePollingCenterMutation,
   useCreateStationMutation,
   useUpdateStationMutation,
-  useDeleteStationMutation
+  useDeleteStationMutation,
+  useSwitchSeenNotificationMutation
 } = mutationApi;

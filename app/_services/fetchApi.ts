@@ -37,6 +37,10 @@ const fetchDataApi = tatweerApi.injectEndpoints({
             totalPages: response.data.totalPages
           };
         }
+    } ),
+    unseenNotification: builder.query( {
+      query: ( query ) => 'notifications/count-unseen',
+      
     }),
     myNotification: builder.query( {
       query: (query) => `notifications/mine?${query}`,
@@ -250,6 +254,7 @@ export const {
   useCandidatesActivitiesStatisticsQuery,
   useVotersAgeStatisticsQuery,
   useMyNotificationQuery,
+  useUnseenNotificationQuery,
   useUserQuery,
   usePostsQuery,
   usePostQuery

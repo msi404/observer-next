@@ -9,6 +9,7 @@ import {
 } from '@/app/_lib/features/notificationsSlice';
 import NextImage from 'next/image';
 import { useMyNotificationQuery } from '@/app/_services/fetchApi';
+import {useSwitchSeenNotificationMutation} from '@/app/_services/mutationApi'
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { Badge } from '@/app/_components/ui/badge';
 import { FetchCard } from '@/app/_components/fetch-card';
@@ -29,27 +30,30 @@ import { AddNotificationsForm } from '@/app/_components/forms/add-notification-f
 import Placeholder from '@/app/_assets/images/placeholder.png';
 
 const Message: FC<{
+  id: string;
   creator: string;
   title: string;
   content: string;
   img: string;
   createdAt: string;
-}> = ({ creator, content, title, createdAt, img }) => {
+}> = ({ creator, content, title, createdAt, img, id }) => {
   const dispatch = useDispatch();
-
+  const [switchSeenNotification] = useSwitchSeenNotificationMutation()
   function checkURL(url: string) {
     return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
-  const onMessageClick = () => {
+  const onMessageClick = async () => {
     dispatch(
       setNotification({
         image: img,
         sender: creator,
         date: createdAt,
         description: content,
-        title: title
-      })
+        title: title,
+        id: id
+      } )
     );
+   await switchSeenNotification(id)
   };
   var options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
@@ -101,7 +105,7 @@ const Message: FC<{
             </div>
           </div>
           <CardDescription className="text-xs">
-            <div className="">{content}</div>
+            <div>{content}</div>
           </CardDescription>
         </div>
       </CardHeader>
@@ -117,6 +121,7 @@ const MessagesCoaster: FC<{ messages: any[] }> = ({ messages }) => {
         <For each={messages}>
           {(item) => (
             <Message
+              id={item.id}
               title={item.title}
               content={item.content}
               creator={item.actorName}
@@ -150,7 +155,7 @@ export const NotificationsWidget = () =>
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
-    useMyNotificationQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+    useMyNotificationQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`, {pollingInterval: 10000, skipPollingIfUnfocused: true});
   useEffect( () =>
   {
     if ( !isLoading )
@@ -179,6 +184,7 @@ export const NotificationsWidget = () =>
           <Match when={!notificationStatus}>
             <div className="px-3 w-full">
               <Message
+                id={currentNotification.id}
                 img={currentNotification.date}
                 title={currentNotification.title}
                 content={currentNotification.description}

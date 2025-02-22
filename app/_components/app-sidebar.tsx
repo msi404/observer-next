@@ -2,13 +2,16 @@
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import Image from 'next/image'
+import Image from 'next/image';
 import Link from 'next/link';
-import {useCurrentUserQuery} from '@/app/_services/fetchApi'
+import {
+  useCurrentUserQuery,
+  useUnseenNotificationQuery
+} from '@/app/_services/fetchApi';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
-import CompanyLogo from '@/app/_assets/company.png'
+import CompanyLogo from '@/app/_assets/company.png';
 
 import {
   Sidebar,
@@ -22,20 +25,24 @@ import {
   SidebarMenuItem,
   SidebarRail
 } from '@/app/_components/ui/sidebar';
-import {Separator} from '@/app/_components/ui/separator'
+import { Badge } from '@/app/_components/ui/badge';
+import { Separator } from '@/app/_components/ui/separator';
 import { User } from '@/app/_components/user';
 import { SkeletonUser } from '@/app/_components/skeleton-user';
-import { ErrorUser } from '@/app/_components/error-user'
-import {FetchUser} from '@/app/_components/fetch-user'
+import { ErrorUser } from '@/app/_components/error-user';
+import { FetchUser } from '@/app/_components/fetch-user';
 import { Show } from '@/app/_components/show';
 import { For } from '@/app/_components/for';
-import {Switch, Match} from '@/app/_components/switch'
+import { Switch, Match } from '@/app/_components/switch';
 import { Dynamic } from '@/app/_components/dynamic';
 import { motion } from 'motion/react';
 
-export const AppSidebar = () =>
-{
-  const {data, isLoading, isError, isSuccess, isFetching, refetch} = useCurrentUserQuery('')
+export const AppSidebar = () => {
+  const { data, isLoading, isError, isSuccess, isFetching, refetch } =
+    useCurrentUserQuery('');
+  const { data: notes,isSuccess: isSuccessNotes } = useUnseenNotificationQuery( '', {pollingInterval: 10000, skipPollingIfUnfocused: true} );
+  console.log(notes);
+
   const user = useSelector(selectUser);
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
@@ -48,11 +55,16 @@ export const AppSidebar = () =>
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className='flex justify-center items-center mb-6'>
-            <Image src={CompanyLogo.src} width={120} height={100} alt='Company Logo'/>
+          <SidebarGroupLabel className="flex justify-center items-center mb-6">
+            <Image
+              src={CompanyLogo.src}
+              width={120}
+              height={100}
+              alt="Company Logo"
+            />
           </SidebarGroupLabel>
           <SidebarContent>
-            <SidebarMenu className='overflow-x-hidden'>
+            <SidebarMenu className="overflow-x-hidden">
               <For each={SIDEBAR_ITEMS}>
                 {(item, index) => (
                   <Show
@@ -77,6 +89,9 @@ export const AppSidebar = () =>
                             } hover:bg-slate-200/20`}
                             href={item.url}
                           >
+                            <Show when={item.isNotes && isSuccessNotes}>
+                            <Badge className='bg-red-500'>{notes?.data}</Badge>
+                            </Show>
                             <Dynamic
                               component={item.icon}
                               className="mx-2"
@@ -96,20 +111,20 @@ export const AppSidebar = () =>
       </SidebarContent>
       <Separator />
       <SidebarFooter>
-      <Switch>
-        <Match when={ isLoading }>
+        <Switch>
+          <Match when={isLoading}>
             <SkeletonUser />
           </Match>
           <Match when={isError}>
-              <ErrorUser retry={refetch}/>
+            <ErrorUser retry={refetch} />
           </Match>
           <Match when={isSuccess}>
-              <User user={data?.data}/>
+            <User user={data?.data} />
           </Match>
           <Match when={isFetching}>
             <FetchUser />
           </Match>
-      </Switch>
+        </Switch>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

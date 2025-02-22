@@ -8,6 +8,7 @@ interface Notification
   description: string;
   sender: string;
   date: string;
+  id: string;
 }
 
 interface NotificationsState
@@ -23,7 +24,8 @@ const initialState: NotificationsState = {
     image: '',
     description: '',
     sender: '',
-    date: ''
+    date: '',
+    id: ''
   }
 };
 

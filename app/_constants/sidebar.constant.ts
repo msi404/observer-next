@@ -23,6 +23,7 @@ type SidebarItem = {
   title: string;
   url: string;
   icon: React.ElementType;
+  isNotes?: boolean; 
 };
 
 export const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -108,7 +109,8 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     persmission: 'view:notifications',
     title: 'الاشعارات',
     url: '/notifications',
-    icon: Bell
+    icon: Bell,
+    isNotes: true
   },
   {
     persmission: 'view:issues',
