@@ -6,6 +6,7 @@ import {
   selectCurrentPage,
   selectPageSize
 } from '@/app/_lib/features/paginationSlice';
+import {selectUser} from '@/app/_lib/features/authSlice'
 // External libraries
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,9 +24,13 @@ import {
 // Validation Schemas
 import { addPollingCenterSchema } from '@/app/_validation/polling-center';
 
-export const useAddPollingCenter = (govCenterId: string) => {
+export const useAddPollingCenter = ( govCenterId: string ) =>
+{
+  const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
-  const currentPage = useSelector(selectCurrentPage);
+  const currentPage = useSelector( selectCurrentPage );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   // API Mutations & Queries
   const [createPollingCenter, { isLoading: isLoadingPollingCenter }] =
     useCreatePollingCenterMutation();
@@ -34,7 +39,7 @@ export const useAddPollingCenter = (govCenterId: string) => {
 
   // Query Data
   const { refetch: refetchPollingCenters } = usePollingCentersQuery(
-    `PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${govCenterId}`
+    `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}&GovCenterId=${govCenterId}`
   );
   // Toast Hook
   const { toast } = useToast();

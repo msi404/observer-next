@@ -64,16 +64,6 @@ export const addDataEntrySchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر مدخل البيانات لا يقل عن 18 عام'}),
   govCenterId:z.string().min(3),
-  pollingCenterId: z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
   electoralEntityId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -135,16 +125,6 @@ export const addProvinceAdminSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر مدير المحافظة لا يقل عن 18 عام'}),
   govCenterId :z.string().min(3),
-  pollingCenterId: z.string().transform( ( value ) =>
-    {
-      if ( value === '' )
-      {
-        return null
-      } else
-      {
-        return value
-      }
-    }),
   electoralEntityId: z.string().transform( ( value ) =>
     {
       if ( value === '' )

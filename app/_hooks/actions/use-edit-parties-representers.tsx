@@ -88,8 +88,59 @@ const globalPageSize = useSelector(selectPageSize);
       fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage }&PageSize=${ pageSize }`);
      }, [] );
 
-  // Form Submission Handler
-  const onUpdate = async () => {
+  useEffect(() => {
+    if (lazyElectoralEntities) {
+      setElectoralEntitiesSearch((prev) => {
+        // Convert previous values to a Map for quick lookup
+        const existingItemsMap = new Map(prev.map((pc) => [pc.value, pc]));
+  
+        // Add new unique items from API response
+        lazyElectoralEntities.items.forEach((electoralEntity: any) => {
+          if (!existingItemsMap.has(electoralEntity.id)) {
+            existingItemsMap.set(electoralEntity.id, {
+              value: electoralEntity.id,
+              label: electoralEntity.name
+            });
+          }
+        });
+  
+        // Ensure the selected electoral entity is included without duplication
+        if (item.electoralEntity && !existingItemsMap.has(item.electoralEntity.id)) {
+          existingItemsMap.set(item.electoralEntity.id, {
+            value: item.electoralEntity.id,
+            label: item.electoralEntity.name
+          });
+        }
+  
+        return Array.from(existingItemsMap.values());
+      });
+  
+      setElectoralEntitiesTotalPages(lazyElectoralEntities.totalPages);
+    }
+  }, [lazyElectoralEntities, item.electoralEntity]);
+  
+  
+  // Scroll Event Handler for Infinite Scroll
+const onElectoralEntitiesScrollEnd = () => {
+  if (electoralEntitiesCurrentPage < electoralEntitiessTotalPages && !isFetchingLazyElectoralEntities) {
+    setElectoralEntitiesCurrentPage((prev) => prev + 1);
+    fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage + 1}&PageSize=${ pageSize }`);
+  }
+};
+  
+const onCheckUsernameTaken = () =>
+  {
+    setUsername( form.getValues( 'username' ) )
+    refetchIsUsernameTaken()
+  }
+
+  const onDelete = async () => {
+    await deleteUser(item.id);
+    refetch();
+  };
+
+   // Form Submission Handler
+   const onUpdate = async () => {
     try {
       form.setValue('role', 10);
       await updateUser({
@@ -109,53 +160,6 @@ const globalPageSize = useSelector(selectPageSize);
       refetch();
       setOpenUpdate(false);
     }
-  };
-  // Update When Data Changes
-  useEffect(() => {
-    if (lazyElectoralEntities) {
-      setElectoralEntitiesSearch((prev) => {
-        // Convert previous values to a Set for quick lookup
-        const existingIds = new Set(prev.map((pc) => pc.value));
-  
-        // Add only new unique items from API response
-        const updatedOptions = lazyElectoralEntities.items
-          .map((pollingCenter: any) => ({
-            value: pollingCenter.id,
-            label: pollingCenter.name
-          }))
-          .filter((pc: any) => !existingIds.has(pc.value));
-  
-        // Ensure the selected polling center is included without duplication
-        const selectedElectoralEntites = item.electoralEntity
-          ? { value: item.electoralEntity.id, label: item.electoralEntity.name }
-          : null;
-  
-        return selectedElectoralEntites && !existingIds.has(selectedElectoralEntites.value)
-          ? [selectedElectoralEntites, ...prev, ...updatedOptions]
-          : [...prev, ...updatedOptions];
-      });
-  
-      setElectoralEntitiesTotalPages(lazyElectoralEntities.totalPages);
-    }
-  }, [ lazyElectoralEntities ] );
-  
-  // Scroll Event Handler for Infinite Scroll
-const onElectoralEntitiesScrollEnd = () => {
-  if (electoralEntitiesCurrentPage < electoralEntitiessTotalPages && !isFetchingLazyElectoralEntities) {
-    setElectoralEntitiesCurrentPage((prev) => prev + 1);
-    fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage + 1}&PageSize=${ pageSize }`);
-  }
-};
-  
-const onCheckUsernameTaken = () =>
-  {
-    setUsername( form.getValues( 'username' ) )
-    refetchIsUsernameTaken()
-  }
-
-  const onDelete = async () => {
-    await deleteUser(item.id);
-    refetch();
   };
 
   return {

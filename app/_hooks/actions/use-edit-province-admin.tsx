@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentPage,
   selectPageSize
@@ -22,7 +23,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addProvinceAdminSchema } from '@/app/_validation/user';
 import { baseURL } from '@/app/_services/api';
 
-export const useEditProvinceAdmins = ({ item }: { item: User }) => {
+export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
+{
+    const user = useSelector(selectUser)
+  
   const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
   const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
   const pageSize = 10; // Fixed page size
@@ -35,9 +39,10 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
-
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
   const { refetch } = useUsersQuery(
-    `Role=12&PageNumber=${globalCurrentPage}&PageSize=${globalPageSize}`
+    `Role=12&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
   const {
     data: isUsernameTaken,
@@ -72,7 +77,6 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
       govCenterId: item.govCenter?.id,
-      pollingCenterId: item.pollingCenter?.id,
       electoralEntityId: item.electoralEntity?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
       username: item?.username,
@@ -85,49 +89,44 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
 
   // Fetch Initial
   useEffect(() => {
-    fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+    fetchGovCenters(`PageNumber=${govCentersCurrentPage}&PageSize=${pageSize}`);
   }, []);
 
-  // Update When Data Changes
   useEffect(() => {
     if (lazyGovCenters) {
       setGovCentersSearch((prev) => {
-        // Convert previous values to a Set for quick lookup
-        const existingIds = new Set(prev.map((pc) => pc.value));
-
-        // Add only new unique items from API response
-        const updatedOptions = lazyGovCenters.items
-          .map((pollingCenter: any) => ({
-            value: pollingCenter.id,
-            label: pollingCenter.name
-          }))
-          .filter((pc: any) => !existingIds.has(pc.value));
-
-        // Ensure the selected polling center is included without duplication
-        const selectedPollingCenter = item.pollingCenter
-          ? { value: item.pollingCenter.id, label: item.pollingCenter.name }
-          : null;
-
-        return selectedPollingCenter &&
-          !existingIds.has(selectedPollingCenter.value)
-          ? [selectedPollingCenter, ...prev, ...updatedOptions]
-          : [...prev, ...updatedOptions];
+        // Convert previous values to a Map for quick lookup
+        const existingItemsMap = new Map(prev.map((pc) => [pc.value, pc]));
+  
+        // Add new unique items from API response
+        lazyGovCenters.items.forEach((govCenter: any) => {
+          if (!existingItemsMap.has(govCenter.id)) {
+            existingItemsMap.set(govCenter.id, {
+              value: govCenter.id,
+              label: govCenter.name
+            });
+          }
+        });
+  
+        // Ensure the selected gov center is included without duplication
+        if (item.govCenter && !existingItemsMap.has(item.govCenter.id)) {
+          existingItemsMap.set(item.govCenter.id, {
+            value: item.govCenter.id,
+            label: item.govCenter.name
+          });
+        }
+  
+        return Array.from(existingItemsMap.values());
       });
-
-      setGovCentersCurrentPage(lazyGovCenters.totalPages);
+  
+      setGovCentersTotalPages(lazyGovCenters.totalPages);
     }
-  }, [lazyGovCenters]);
-
+  }, [lazyGovCenters, item.govCenter]);
   // Scroll Event Handler for Infinite Scroll
   const onGovCenterScrollEnd = () => {
-    if (
-      govCentersCurrentPage < govCentersTotalPages &&
-      !isFetchingLazyGovCenter
-    ) {
+    if (govCentersCurrentPage < govCentersTotalPages && !isFetchingLazyGovCenter) {
       setGovCentersCurrentPage((prev) => prev + 1);
-      fetchGovCenters(
-        `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
-      );
+      fetchGovCenters(`PageNumber=${ govCentersCurrentPage + 1}&PageSize=${ pageSize }`);
     }
   };
 

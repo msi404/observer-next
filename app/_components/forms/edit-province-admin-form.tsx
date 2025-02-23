@@ -169,12 +169,12 @@ export const EditProvniceAdminForm = ({
                       </div>
                     </FormControl>
                     <Switch>
-                      <Match when={isUsernameTaken === true}>
+                      <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
                         <p className="text-destructive font-medium text-xs">
                           اسم المستخدم قيد الاستخدام
                         </p>
                       </Match>
-                      <Match when={isUsernameTaken === false}>
+                      <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
                         <p className="text-green-600 font-medium text-xs">
                           اسم المستخدم متاح
                         </p>
@@ -273,6 +273,7 @@ export const EditProvniceAdminForm = ({
               <Dropzone
                 setFile={(file) => (fileRef.current = file)}
                 label="اختيار صورة الشخصية"
+                defaultImage={item.profileImg}
               />
               <Show when={fileRef.current === null}>
                 <span className="text-destructive">يجب رفع صورة الشخصية</span>

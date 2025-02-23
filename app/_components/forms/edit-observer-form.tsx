@@ -21,6 +21,8 @@ import { cn } from '@/app/_lib/utils';
 import { Show } from '@/app/_components/show';
 import { Dropzone } from '@/app/_components/dropzone';
 import { useEditObserver } from '@/app/_hooks/actions/use-edit-observer';
+import { Switch, Match } from '@/app/_components/switch';
+
 interface EditObserverFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
@@ -44,9 +46,11 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
     onStationScrollEnd,
     setSelectedGovCenter,
     setSelectedPollingCenter,
-    selectedGovCenter,
     selectedPollingCenter,
     isLoadingFile,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken,
     form
   } = useEditObserver({ item });
   return (
@@ -147,16 +151,40 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   <FormItem>
                     <FormLabel>اسم المستخدم</FormLabel>
                     <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.username &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        disabled={isLoadingUpdate}
-                        placeholder="اسم المستخدم"
-                        {...field}
-                      />
+                      <div className="*:not-first:mt-2">
+                        <div className="flex rounded-md shadow-xs">
+                          <Input
+                            className={cn(
+                              form.formState.errors.username &&
+                                'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                              '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
+                            )}
+                            disabled={isLoadingUpdate}
+                            placeholder="اسم المستخدم"
+                            {...field}
+                          />
+                          <button
+                            onClick={onCheckUsernameTaken}
+                            type="button"
+                            className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            التحقق
+                          </button>
+                        </div>
+                      </div>
                     </FormControl>
+                    <Switch>
+                      <Match when={isUsernameTaken === true}>
+                        <p className="text-destructive font-medium text-xs">
+                          اسم المستخدم قيد الاستخدام
+                        </p>
+                      </Match>
+                      <Match when={isUsernameTaken === false}>
+                        <p className="text-green-600 font-medium text-xs">
+                          اسم المستخدم متاح
+                        </p>
+                      </Match>
+                    </Switch>
                   </FormItem>
                 )}
               />
@@ -219,11 +247,10 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                       <Combobox
                         options={pollingCentersSearch}
                         value={field.value} // Controlled by React Hook Form
-                        onChange={ ( value ) =>
-                          {
-                            field.onChange( value );
-                            setSelectedPollingCenter(value)
-                        } } // Updates React Hook Form on change
+                        onChange={(value) => {
+                          field.onChange(value);
+                          setSelectedPollingCenter(value);
+                        }} // Updates React Hook Form on change
                         onScrollEnd={onPollingCenterScrollEnd}
                         label="اختيار مركز اقتراع"
                         disabled={isLoadingUpdate || isLoadingFile}
@@ -236,29 +263,33 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   </FormItem>
                 )}
               />
-                    <FormField
-              control={form.control}
-              name="stationId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>محطة التسجيل</FormLabel>
-                  <FormControl>
-                    <Combobox
-                      options={stationsSearch}
-                      value={field.value} // Controlled by React Hook Form
-                      onChange={field.onChange} // Updates React Hook Form on change
-                      onScrollEnd={onStationScrollEnd}
-                      label="اختيار محطة التسجيل"
-                      disabled={isLoadingUpdate || isLoadingFile || !selectedPollingCenter}
-                      className={cn(
-                        form.formState.errors.stationId &&
-                          'border-destructive focus:border-destructive focus:ring-destructive'
-                      )}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="stationId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>محطة التسجيل</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        options={stationsSearch}
+                        value={field.value} // Controlled by React Hook Form
+                        onChange={field.onChange} // Updates React Hook Form on change
+                        onScrollEnd={onStationScrollEnd}
+                        label="اختيار محطة التسجيل"
+                        disabled={
+                          isLoadingUpdate ||
+                          isLoadingFile ||
+                          !selectedPollingCenter
+                        }
+                        className={cn(
+                          form.formState.errors.stationId &&
+                            'border-destructive focus:border-destructive focus:ring-destructive'
+                        )}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="phone"

@@ -27,6 +27,7 @@ import { Dropzone } from '@/app/_components/dropzone';
 import { Show } from '@/app/_components/show';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
+import {Switch, Match} from '@/app/_components/switch'
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddObserverForm = () => {
@@ -47,6 +48,9 @@ export const AddObserverForm = () => {
     setSelectedPollingCenter,
     selectedGovCenter,
     selectedPollingCenter,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken,
     fileRef
   } = useAddObserver();
 
@@ -93,23 +97,47 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
-            <FormField
+<FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>اسم المستخدم</FormLabel>
                   <FormControl>
-                    <Input
-                      className={cn(
-                        form.formState.errors.username &&
-                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      )}
-                      disabled={isLoadingUser || isLoadingFile}
-                      placeholder="اسم المستخدم"
-                      {...field}
-                    />
+                    <div className="*:not-first:mt-2">
+                      <div className="flex rounded-md shadow-xs">
+                        <Input
+                          className={cn(
+                            form.formState.errors.username &&
+                              'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                            '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
+                          )}
+                          disabled={isLoadingUser || isLoadingFile}
+                          placeholder="اسم المستخدم"
+                          {...field}
+                        />
+                        <button
+                          onClick={onCheckUsernameTaken}
+                          type="button"
+                          className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          التحقق
+                        </button>
+                      </div>
+                    </div>
                   </FormControl>
+                  <Switch>
+                    <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
+                      <p className="text-destructive font-medium text-xs">
+                        اسم المستخدم قيد الاستخدام
+                      </p>
+                    </Match>
+                    <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
+                      <p className="text-green-600 font-medium text-xs">
+                        اسم المستخدم متاح
+                      </p>
+                    </Match>
+                  </Switch>
                 </FormItem>
               )}
             />

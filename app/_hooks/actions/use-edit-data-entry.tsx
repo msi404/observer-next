@@ -53,7 +53,6 @@ export const useEditDataEntry = ( { item }: { item: User; } ) =>
       // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
       govCenterId: item.govCenter?.id,
-      pollingCenterId: item.pollingCenter?.id,
       electoralEntityId: item.electoralEntity?.id,
       password: 'defaultPassword123', // Placeholder; handle securely in production
       username: item?.username,

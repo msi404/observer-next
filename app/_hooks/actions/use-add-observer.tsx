@@ -22,7 +22,8 @@ import {
   useUsersQuery,
   useLazyGovCentersQuery,
   useLazyPollingCentersQuery,
-  useLazyStationsQuery
+  useLazyStationsQuery,
+  useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import {
   useCreateUserMutation,
@@ -44,6 +45,7 @@ export const useAddObserver = () => {
 
   const globalPageSize = useSelector(selectPageSize);
   const globalCurrentPage = useSelector(selectCurrentPage);
+  const [username, setUsername] = useState('')
 
   // State to track selected values
   const [selectedGovCenter, setSelectedGovCenter] = useState<string | null>(
@@ -66,6 +68,7 @@ export const useAddObserver = () => {
   const { refetch } = useUsersQuery(
     `Role=104&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
+      const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
   
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
@@ -228,7 +231,11 @@ export const useAddObserver = () => {
       );
     }
   };
-
+  const onCheckUsernameTaken = () =>
+    {
+      setUsername( form.getValues( 'username' ) )
+      refetchIsUsernameTaken()
+    }
   // Form Submission Handler
   const onSubmit = async () => {
     if (!fileRef.current) {
@@ -281,6 +288,9 @@ export const useAddObserver = () => {
     setSelectedPollingCenter,
     selectedGovCenter,
     selectedPollingCenter,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken,
     fileRef
   };
 };

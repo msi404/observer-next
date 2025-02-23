@@ -148,7 +148,7 @@ export const PollingCentersWidget: FC = () =>
                   Content={
                     <Details
                       pollingCenter={item.name}
-                      stations={item.totalPollingCenters}
+                      stations={6}
                       observers={item.totalObservers}
                     />
                   }
