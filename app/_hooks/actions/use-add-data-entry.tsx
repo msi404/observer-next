@@ -16,7 +16,8 @@ import { useToast } from '@/app/_hooks/use-toast';
 
 import {
   useUsersQuery,
-  useLazyGovCentersQuery
+  useLazyGovCentersQuery,
+  useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import { useCreateUserMutation } from '@/app/_services/mutationApi';
 
@@ -31,12 +32,15 @@ export const useAddDataEntry = () =>
   const pageSize = 10; // Fixed page size
 
   const globalPageSize = useSelector(selectPageSize);
-  const globalCurrentPage = useSelector(selectCurrentPage);
+  const globalCurrentPage = useSelector( selectCurrentPage );
+  const [username, setUsername] = useState('')
+
   // API Mutations & Queries
   const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
-  
+  const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
+
   const { refetch } = useUsersQuery(
     `Role=100&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
@@ -101,6 +105,12 @@ const onGovCenterScrollEnd = () => {
     fetchGovCenters(`PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`);
   }
 };
+  
+const onCheckUsernameTaken = () =>
+  {
+    setUsername( form.getValues( 'username' ) )
+    refetchIsUsernameTaken()
+  }
 
   // Form Submission Handler
   const onSubmit = async (values: z.infer<typeof addDataEntrySchema>) => {
@@ -131,6 +141,9 @@ const onGovCenterScrollEnd = () => {
     onSubmit,
     isLoadingUser,
     govCentersSearch,
-    onGovCenterScrollEnd
+    onGovCenterScrollEnd,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken
   };
 };

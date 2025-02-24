@@ -144,7 +144,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
+               <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
@@ -159,7 +159,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                                 'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
                               '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
                             )}
-                            disabled={isLoadingUpdate}
+                            disabled={isLoadingUpdate || isLoadingFile}
                             placeholder="اسم المستخدم"
                             {...field}
                           />
@@ -174,12 +174,12 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                       </div>
                     </FormControl>
                     <Switch>
-                      <Match when={isUsernameTaken === true}>
+                      <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
                         <p className="text-destructive font-medium text-xs">
                           اسم المستخدم قيد الاستخدام
                         </p>
                       </Match>
-                      <Match when={isUsernameTaken === false}>
+                      <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
                         <p className="text-green-600 font-medium text-xs">
                           اسم المستخدم متاح
                         </p>
