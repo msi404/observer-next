@@ -1,5 +1,4 @@
 import { tatweerApi } from '@/app/_services/api';
-import {formatter} from '@/app/_utils/format-number'
 
 const fetchDataApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
@@ -39,7 +38,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
         }
     } ),
     unseenNotification: builder.query( {
-      query: ( query ) => 'notifications/count-unseen',
+      query: () => 'notifications/count-unseen',
       
     }),
     myNotification: builder.query( {
@@ -57,7 +56,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     votersAgeStatistics: builder.query({
-      query: () => 'statistics/voters/ages',
+      query: (query) => `statistics/voters/ages?${query}`,
       transformResponse: (response: any) => {
         const items = response.data.chart.map((item: any) => ({
           age: item.age,
@@ -68,7 +67,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     candidatesActivitiesStatistics: builder.query({
-      query: () => 'statistics/candidates/posts',
+      query: (query) => `statistics/candidates/posts?${query}`,
       transformResponse: (response: any) => {
         const items = response.data.graph.map((item: any) => ({
           month: item.date,
@@ -91,7 +90,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     votersStatistics: builder.query({
-      query: () => 'statistics/voters/regions',
+      query: (query) => `statistics/voters/regions?${query}`,
       transformResponse: (response: any) => {
         const items = response.data.chart.map((item: any) => {
           return {
@@ -104,7 +103,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     genderStatistics: builder.query({
-      query: () => 'statistics/voters/gender',
+      query: (query) => `statistics/voters/gender?${query}`,
       transformResponse: ( response: any ) =>
       {
         return [
@@ -122,7 +121,7 @@ const fetchDataApi = tatweerApi.injectEndpoints({
       }
     }),
     complaintsStatistics: builder.query({
-      query: () => 'statistics/complaints',
+      query: (query) => `statistics/complaints?${query}`,
       transformResponse: (response: any) => {
         return [
           {

@@ -12,19 +12,23 @@ import {
 } from '@/app/_services/fetchApi';
 
 export const useGraph = () => {
-  const user = useSelector(selectUser);
+  const user = useSelector( selectUser );
+  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
+  const electoralEntityIdQuery = electoralEntityId !== undefined ? `ElectoralEntityId=${ electoralEntityId }` : '';
+  const complaintsElectoralEntityIdQuery = electoralEntityId !== undefined ? `ElectoralEntityId=${ electoralEntityId }` : '';
+  
   const queryVotersAge = hasPermission(user, 'view:voterAgeChart')
-    ? ''
+    ? electoralEntityIdQuery
     : skipToken;
   const queryCandidates = hasPermission(user, 'view:candidatesChart')
-    ? ''
+    ? electoralEntityIdQuery
     : skipToken;
-  const queryVoters = hasPermission(user, 'view:votersByState') ? '' : skipToken;
+  const queryVoters = hasPermission(user, 'view:votersByState') ? electoralEntityIdQuery : skipToken;
   const queryGenders = hasPermission(user, 'view:gendersChart')
-    ? ''
+    ? electoralEntityIdQuery
     : skipToken;
   const queryComplaints = hasPermission(user, 'view:total-issues-chart')
-    ? ''
+    ? electoralEntityIdQuery
     : skipToken;
 
   const {
