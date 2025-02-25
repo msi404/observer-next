@@ -1,6 +1,5 @@
 'use client';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
@@ -10,7 +9,6 @@ import { TrendingUp } from 'lucide-react';
 
 export const useElectionsResultsColumns = () => {
   const user = useSelector(selectUser);
-  const { t } = useTranslation();
   // @ts-ignore
   const electionResultsColumns: ColumnDef<ConfirmedVoters>[] = [
     {

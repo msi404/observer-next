@@ -28,7 +28,7 @@ export const useStatistics = () =>
       url: '/candidates',
       total: data?.totalCandidates,
       icon: <UsersRound />,
-      description: 'home:cards.totalOfCandidates'
+      description: 'اجمالي عدد المرشحين'
     },
     {
       permission: hasPermission(user, 'view:total-observers'),
@@ -39,7 +39,7 @@ export const useStatistics = () =>
       url: '/observers',
       total: data?.totalObservers,
       icon: <Eye />,
-      description: 'home:cards.totalOfObservers'
+      description: 'اجمالي عدد المراقبين'
     },
     {
     	permission: hasPermission( user, 'view:total-complaints' ),
@@ -50,7 +50,7 @@ export const useStatistics = () =>
       url: '/issues',
       total: data?.totalComplaints,
       icon: <CircleAlert />,
-      description: 'home:cards.totalOfComplaints'
+      description: 'اجمالي عدد الشكاوى'
     },
     {
     	permission: hasPermission( user, 'view:total-comfirmed-voters' ),
@@ -61,7 +61,7 @@ export const useStatistics = () =>
       url: '/election-base',
       total: data?.totalConfirmedVoters,
       icon: <UserRoundCheck />,
-      description: 'home:cards.totalOfConfirmedVoters'
+      description: 'اجمالي عدد الناخبين المؤكدين'
     },
     {
     	permission: hasPermission( user, 'view:total-possible-voters' ),
@@ -72,7 +72,7 @@ export const useStatistics = () =>
       url: '/election-base',
       total: data?.totalPendingVoters,
       icon: <UserRoundSearch />,
-      description: 'home:cards.totalOfPossibleVoters'
+      description: 'اجمالي عدد الناخبين المحتملين'
     },
   ];
 
@@ -97,7 +97,7 @@ export const useStatistics = () =>
       url: '/observers',
       total: data?.totalObservers,
       icon: <Eye />,
-      description: 'home:cards.totalOfObservers'
+      description: 'اجمالي عدد المراقبين'
     },
     {
     	permission: hasPermission( user, 'view:total-complaints' ),
@@ -108,7 +108,7 @@ export const useStatistics = () =>
       url: '/issues',
       total: data?.totalComplaints,
       icon: <CircleAlert />,
-      description: 'home:cards.totalOfComplaints'
+      description: 'اجمالي عدد المرشحين'
     },
     {
     	permission: hasPermission( user, 'view:total-comfirmed-voters' ),
@@ -119,7 +119,7 @@ export const useStatistics = () =>
       url: '/election-base',
       total: data?.totalConfirmedVoters,
       icon: <UserRoundCheck />,
-      description: 'home:cards.totalOfConfirmedVoters'
+      description: 'اجمالي عدد الناخبين المؤكدين'
     },
     {
     	permission: hasPermission( user, 'view:total-possible-voters' ),
@@ -130,7 +130,7 @@ export const useStatistics = () =>
       url: '/election-base',
       total: data?.totalPendingVoters,
       icon: <UserRoundSearch />,
-      description: 'home:cards.totalOfPossibleVoters'
+      description: 'اجمالي عدد الناخبين المحتملين'
     },
   ];
 

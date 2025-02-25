@@ -1,118 +1,125 @@
 import { tatweerApi } from '@/app/_services/api';
 
 const mutationApi = tatweerApi.injectEndpoints({
-  endpoints: ( builder ) => ( {
-    createElectoralEntity: builder.mutation( {
-      query: ( item ) => ( {
+  endpoints: (builder) => ({
+    createElectoralEntity: builder.mutation({
+      query: (item) => ({
         url: 'electoralentities',
         method: 'POST',
         body: item
       })
-    } ),
-    deleteElectoralEntity: builder.mutation( {
-      query: ( id ) => ( {
+    }),
+    deleteElectoralEntity: builder.mutation({
+      query: (id) => ({
         url: `electoralentities/${id}`,
-        method: 'DELETE',
+        method: 'DELETE'
       })
-    } ),
-    updateElectoralEntity: builder.mutation( {
-      query: ( {id, electoralEntity} ) => ( {
+    }),
+    updateElectoralEntity: builder.mutation({
+      query: ({ id, electoralEntity }) => ({
         url: `electoralentities/${id}`,
         method: 'PUT',
         body: electoralEntity
       })
     }),
-    createPost: builder.mutation( {
-      query: ( item ) => ( {
+    createPost: builder.mutation({
+      query: (item) => ({
         url: 'posts',
         method: 'POST',
         body: item
       })
     }),
-    updatePost: builder.mutation( {
-      query: ( {id, post} ) => ( {
+    updatePost: builder.mutation({
+      query: ({ id, post }) => ({
         url: `posts/${id}`,
         method: 'PUT',
         body: post
       })
     }),
-    deletePost: builder.mutation( {
-      query: ( params ) => ( {
+    deletePost: builder.mutation({
+      query: (params) => ({
         url: `posts/${params}`,
-        method: 'DELETE',
+        method: 'DELETE'
       })
     }),
-    createNotification: builder.mutation( {
-      query: ( item ) => ( {
+    updateComplaint: builder.mutation({
+      query: ({ complaint, id }) => ({
+        url: `complaints/${id}`,
+        method: 'PUT',
+        body: complaint
+      })
+    }),
+    createNotification: builder.mutation({
+      query: (item) => ({
         url: 'notifications',
         method: 'POST',
         body: item
       })
-    } ),
-    switchSeenNotification: builder.mutation( {
-      query: ( id ) => ( {
-        url: `notifications/${ id }/switch-seen`,
+    }),
+    switchSeenNotification: builder.mutation({
+      query: (id) => ({
+        url: `notifications/${id}/switch-seen`,
         method: 'PUT'
       })
     }),
-    createGovCenter: builder.mutation( {
-      query: ( item ) => ( {
+    createGovCenter: builder.mutation({
+      query: (item) => ({
         url: 'govcenters',
         method: 'POST',
         body: item
       })
-    } ),
-    deleteGovCenter: builder.mutation( {
-      query: (id) => ( {
-        url: `govcenters/${ id }`,
+    }),
+    deleteGovCenter: builder.mutation({
+      query: (id) => ({
+        url: `govcenters/${id}`,
         method: 'DELETE'
       })
     }),
-    updateGovCenter: builder.mutation( {
-      query: ({govCenter, id}) => ( {
-        url: `govcenters/${ id }`,
+    updateGovCenter: builder.mutation({
+      query: ({ govCenter, id }) => ({
+        url: `govcenters/${id}`,
         method: 'PUT',
         body: govCenter
       })
     }),
-    createPollingCenter: builder.mutation( {
-      query: ( item ) => ( {
+    createPollingCenter: builder.mutation({
+      query: (item) => ({
         url: 'pollingcenters',
         method: 'POST',
         body: item
       })
     }),
-    updatePollingCenter: builder.mutation( {
-      query: ( {id, pollingCenter} ) => ( {
+    updatePollingCenter: builder.mutation({
+      query: ({ id, pollingCenter }) => ({
         url: `pollingcenters/${id}`,
         method: 'PUT',
         body: pollingCenter
       })
     }),
-    deletePollingCenter: builder.mutation( {
-      query: (id) => ( {
+    deletePollingCenter: builder.mutation({
+      query: (id) => ({
         url: `pollingcenters/${id}`,
-        method: 'DELETE',
+        method: 'DELETE'
       })
     }),
-    createStation: builder.mutation( {
-      query: ( item ) => ( {
+    createStation: builder.mutation({
+      query: (item) => ({
         url: 'stations',
         method: 'POST',
         body: item
       })
     }),
-    updateStation: builder.mutation( {
-      query: ( {id, station} ) => ( {
+    updateStation: builder.mutation({
+      query: ({ id, station }) => ({
         url: `stations/${id}`,
         method: 'PUT',
         body: station
       })
     }),
-    deleteStation: builder.mutation( {
-      query: (id) => ( {
+    deleteStation: builder.mutation({
+      query: (id) => ({
         url: `stations/${id}`,
-        method: 'DELETE',
+        method: 'DELETE'
       })
     }),
     uploadFile: builder.mutation({
@@ -127,7 +134,7 @@ const mutationApi = tatweerApi.injectEndpoints({
         url: 'voters',
         method: 'POST',
         body: voter
-      } ),
+      })
     }),
     createUser: builder.mutation({
       query: (user) => ({
@@ -137,7 +144,7 @@ const mutationApi = tatweerApi.injectEndpoints({
       })
     }),
     updateUser: builder.mutation({
-      query: ({ user, id }: { user: any, id: string }) => ({
+      query: ({ user, id }: { user: any; id: string }) => ({
         url: `users/${id}`,
         method: 'PUT',
         body: user
@@ -146,7 +153,7 @@ const mutationApi = tatweerApi.injectEndpoints({
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `users/${id}`,
-        method: 'DELETE',
+        method: 'DELETE'
       })
     }),
     deleteVoter: builder.mutation({
@@ -154,14 +161,14 @@ const mutationApi = tatweerApi.injectEndpoints({
         url: `voters/${id}`,
         method: 'DELETE'
       })
-    } ),
+    }),
     updateVoter: builder.mutation({
-      query: ({ voter, id }: { voter: any, id: string }) => ({
+      query: ({ voter, id }: { voter: any; id: string }) => ({
         url: `voters/${id}`,
         method: 'PUT',
         body: voter
       })
-    }),
+    })
   }),
   overrideExisting: false
 });
@@ -190,5 +197,6 @@ export const {
   useCreateStationMutation,
   useUpdateStationMutation,
   useDeleteStationMutation,
-  useSwitchSeenNotificationMutation
+  useSwitchSeenNotificationMutation,
+  useUpdateComplaintMutation
 } = mutationApi;

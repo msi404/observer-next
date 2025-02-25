@@ -1,6 +1,5 @@
 'use client';
 import { useMemo } from 'react';
-import {useTranslation} from 'react-i18next'
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
 import { PiChart } from '@/app/_components/pi-chart';
@@ -11,7 +10,6 @@ import { Switch, Match } from '@/app/_components/switch';
 
 export const ComplaintsChartWidget = () =>
 {
-	const {t} = useTranslation()
   const {
     complaints,
     isErrorComplaints,
@@ -45,9 +43,9 @@ export const ComplaintsChartWidget = () =>
             chartData={complaints}
             dataKey="total"
             nameKey="type"
-            title={t('home:charts.issuesNumber.title')}
-            description={t('home:charts.issuesNumber.description')}
-            label={t('home:charts.issuesNumber.label')}
+            title='عدد الشكاوى'
+            description='عدد الشكاوى التي تم الرد عليها والتي لم يتم الرد عليه'
+            label='شكوى'
           />
 		</Match>
     </Switch>

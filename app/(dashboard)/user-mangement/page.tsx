@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux'
 import {selectUser} from '@/app/_lib/features/authSlice'
 import { type NextPage } from 'next';
 import { motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 import { hasPermission } from '@/app/_auth/auth-rbac'
 import {Show} from '@/app/_components/show'
 import { Container } from '@/app/_components/container';
@@ -21,7 +20,6 @@ import { PartiesRepresentersWidget } from '@/app/_widgets/parties-representers-w
 const UserMangementPage: NextPage = () =>
 {
   const user = useSelector(selectUser)
-  const { t } = useTranslation();
  const defaultValue = hasPermission(user, "view:default-tab-gov") ? "data-entries" : hasPermission(user, "view:default-tab-province") ? "province-admins": ""
   return (
     <Container>

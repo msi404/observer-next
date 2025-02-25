@@ -1,6 +1,5 @@
 'use client';
 import {type FC} from 'react'
-import { useTranslation } from 'react-i18next'
 import { useStatistics } from '@/app/_hooks/use-statistics';
 import { SkeletonCard } from '@/app/_components/skeleton-card'
 import { ErrorCard } from '@/app/_components/error-card'
@@ -13,7 +12,6 @@ import {Logs, TrendingUp} from 'lucide-react'
 
 export const KpiResultsWidget: FC<{list: number, pollingCenter: number, votes: number}> = ({list, pollingCenter, votes}) =>
 {
-	const { t } = useTranslation();
 	const { statistics, refetch } = useStatistics();
 	return (
 		<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -31,7 +29,7 @@ export const KpiResultsWidget: FC<{list: number, pollingCenter: number, votes: n
 							<StatisticsCard
 							  url={item.url}
 							  icon={item.icon}
-							  description={t(item.description)}
+							  description={item.description}
 							  total={item.total}
 							/>
 						 </Match>

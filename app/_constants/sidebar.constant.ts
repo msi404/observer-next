@@ -40,6 +40,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: Component
   },
   {
+    // @ts-ignore
     persmission: 'view:parties-representers',
     title: 'ممثلين الكيان',
     url: '/parties-representers',
@@ -70,6 +71,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: CircleUserRound
   },
   {
+    // @ts-ignore
     persmission: 'view:candidates',
     title: 'المرشحين',
     url: '/candidates',

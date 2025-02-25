@@ -1,7 +1,6 @@
 'use client';
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
@@ -11,7 +10,6 @@ import { Zoom } from '@/app/_components/zoom';
 import {EditConfirmedVoterForm} from '@/app/_components/forms/edit-confirmed-voter-form'
 export const useConfirmedVotersColumns = () => {
   const user = useSelector(selectUser);
-  const { t } = useTranslation();
   // @ts-ignore
   const confirmedVotersColumns: ColumnDef<ConfirmedVoters>[] = [
     {

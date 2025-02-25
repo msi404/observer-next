@@ -1,5 +1,4 @@
 'use client';
-import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
 import { ErrorCard } from '@/app/_components/error-card';
@@ -9,7 +8,6 @@ import { Switch, Match } from '@/app/_components/switch';
 import { BasicChart } from '@/app/_components/basic-chart';
 
 export const CandidatesActivitiesChartWidget = () => {
-  const { t } = useTranslation();
   const { candidatesActivitiesChartConfig } = useCharts();
 
   const {
@@ -38,8 +36,8 @@ export const CandidatesActivitiesChartWidget = () => {
           chartConfig={candidatesActivitiesChartConfig}
           dataKey="month"
           nameKey="candidatesActivities"
-          title={t('home:charts.candidatesActivities.title')}
-          description={t('home:charts.candidatesActivities.description')}
+          title='نشاطات المرشحين'
+          description='ملخص لنشاط المرشحين خلال السنة'
         />
       </Match>
     </Switch>

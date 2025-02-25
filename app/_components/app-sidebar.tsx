@@ -1,7 +1,6 @@
 'use client';
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -45,12 +44,10 @@ export const AppSidebar = () => {
 
   const user = useSelector(selectUser);
   const pathname = usePathname();
-  const { t, i18n } = useTranslation();
-  const currentLanguage = i18n.language;
   return (
     <Sidebar
       collapsible="icon"
-      side={currentLanguage === 'ar' ? 'right' : 'left'}
+      side='right'
     >
       <SidebarHeader />
       <SidebarContent>
@@ -97,7 +94,7 @@ export const AppSidebar = () => {
                               className="mx-2"
                               size={50}
                             />
-                            <span>{t(item.title)}</span>
+                            <span>{item.title}</span>
                           </Link>
                         </SidebarMenuButton>
                       </motion.div>

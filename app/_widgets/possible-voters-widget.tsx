@@ -3,7 +3,6 @@ import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 import { useMounted } from '@mantine/hooks'
 import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
-import { useTranslation } from 'react-i18next';
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
@@ -33,7 +32,6 @@ export const PossibleVotersWidget = () =>
     possibleVotersColumnFilter,
     clearPossibleVotersFilter
   } = usePossibleVotersTable();
-  const { t } = useTranslation();
 
   useEffect( () =>
     {

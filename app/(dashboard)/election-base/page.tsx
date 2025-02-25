@@ -1,6 +1,5 @@
 'use client';
 import { motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
 
 import { Container } from '@/app/_components/container';
 import {
@@ -17,16 +16,15 @@ import {type NextPage } from 'next';
 const VotersPage: NextPage = () =>
 {
   
-  const { t } = useTranslation();
   return (
     <Container>
       <Tabs defaultValue="political-entities">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger className="w-full" value="political-entities">
-            {t('electionBase:confirmedVoters.tabTitle')}
+          الناخبين المؤكدين
           </TabsTrigger>
           <TabsTrigger value="electoral-distribution">
-            {t('electionBase:possibleVoters.tabTitle')}
+          الناخبين المحتملين
           </TabsTrigger>
         </TabsList>
         <TabsContent value="political-entities">

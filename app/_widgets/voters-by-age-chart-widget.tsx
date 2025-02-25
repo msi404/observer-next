@@ -1,5 +1,4 @@
 'use client';
-import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
 import { ErrorCard } from '@/app/_components/error-card';
@@ -9,7 +8,6 @@ import { Switch, Match } from '@/app/_components/switch';
 import { StackChart } from '@/app/_components/stack-chart';
 
 export const VotersByAgeChartWidget = () => {
-  const { t } = useTranslation();
   const { votersByAgeChartConfig } =
     useCharts();
   const {

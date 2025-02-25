@@ -7,7 +7,7 @@ import { Toaster } from "@/app/_components/ui/toaster";
 import { AppSidebar } from "@/app/_components/app-sidebar"
 import { AppBreadcrumb } from '@/app/_components/app-breadcrumb'
 import {Protected} from '@/app/_components/protected'
-import "../../_style/globals.css"
+import "../_style/globals.css"
 
 export const metadata: Metadata = {
   title: "برنامج المراقب",

@@ -1,5 +1,4 @@
 'use client';
-import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
 import { ErrorCard } from '@/app/_components/error-card';
@@ -18,7 +17,6 @@ export const VoterStatesChartWidget = () => {
     isSuccessVoters,
     refetchVoters
   } = useGraph();
-  const { t } = useTranslation();
   return (
     <Switch>
       <Match when={isErrorVoters}>

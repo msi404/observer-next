@@ -1,6 +1,5 @@
 'use client';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
@@ -9,7 +8,6 @@ import { Zoom } from '@/app/_components/zoom';
 import { EditCandidateForm } from '@/app/_components/forms/edit-candidate-form'
 export const useCandidateColumns = () => {
   const user = useSelector(selectUser);
-  const { t } = useTranslation();
   // @ts-ignore
   const candidatesColumns: ColumnDef<ConfirmedVoters>[] = [
     {
@@ -63,7 +61,7 @@ export const useCandidateColumns = () => {
         return <Zoom preview={value} />;
       }
     },
-    hasPermission(user, 'view:addCandidate') && {
+    hasPermission(user, 'view:editCandidate') && {
       id: 'actions',
       accessorKey: 'actions',
       header: 'الاجرائات',

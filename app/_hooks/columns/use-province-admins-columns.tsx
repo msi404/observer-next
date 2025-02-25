@@ -1,6 +1,5 @@
 'use client';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
@@ -9,7 +8,6 @@ import { Zoom } from '@/app/_components/zoom';
 import {EditProvniceAdminForm} from '@/app/_components/forms/edit-province-admin-form'
 export const useProvniceAdminsColumns = () => {
   const user = useSelector(selectUser);
-  const { t } = useTranslation();
   // @ts-ignore
   const provinceAdminsColumns: ColumnDef<ConfirmedVoters>[] = [
     {

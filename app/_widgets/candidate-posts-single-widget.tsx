@@ -99,7 +99,7 @@ export const CandidatePostsSingleWidget: FC = () =>
           <Match when={isLoading}>
             <SkeletonCard />
           </Match>
-          <Match when={isSuccess && data.items.length === 0}>
+          <Match when={ isSuccess && data.items.length === 0 }>
             <EmptyCard permission='view:addCandidate' retry={refetch} />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>

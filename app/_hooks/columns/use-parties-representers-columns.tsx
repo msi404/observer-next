@@ -1,6 +1,5 @@
 'use client';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
@@ -9,7 +8,6 @@ import {EditPartiesRepresentersForm} from '@/app/_components/forms/edit-parties-
 export const usePartiesRepresentersColumns = () =>
 {
   const user = useSelector(selectUser);
-  const { t } = useTranslation();
   // @ts-ignore
   const partiesRepresentersColumns: ColumnDef<User>[] = [
     {

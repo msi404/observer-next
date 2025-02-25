@@ -1,6 +1,5 @@
 'use client';
 import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
@@ -8,7 +7,6 @@ import { DataTableColumnHeader } from '@/app/_components/table-header';
 import {EditObserverForm} from '@/app/_components/forms/edit-observer-form'
 export const useObserverColumns = () => {
   const user = useSelector(selectUser);
-  const { t } = useTranslation();
   // @ts-ignore
   const observersColumns: ColumnDef<ConfirmedVoters>[] = [
     {

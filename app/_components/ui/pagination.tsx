@@ -1,8 +1,6 @@
 'use client'
 import * as React from "react";
-import {useTranslation} from 'react-i18next'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
-import {Show} from '@/app/_components/show'
 import { cn } from "@/app/_lib/utils"
 import { ButtonProps, buttonVariants } from "@/app/_components/ui/button"
 
@@ -65,8 +63,6 @@ const PaginationPrevious = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink> ) => {
-  const { i18n, t } = useTranslation()
-  const currentLanguage = i18n.language
  
   return (
     <PaginationLink
@@ -75,10 +71,8 @@ const PaginationPrevious = ({
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <Show when={currentLanguage === 'en'} fallback={<ChevronRight className="h-4 w-4"/>}>
-    <ChevronLeft className="h-4 w-4" />
-    </Show>
-      <span>{t('common:pagination.previous')}</span>
+    <ChevronRight className="h-4 w-4"/>
+      <span>السابق</span>
   </PaginationLink>
   )
 }
@@ -89,8 +83,6 @@ const PaginationNext = ( {
   ...props
 }: React.ComponentProps<typeof PaginationLink> ) =>
 {
-  const { i18n, t } = useTranslation()
-  const currentLanguage = i18n.language
   return (
     <PaginationLink
     aria-label="Go to next page"
@@ -98,10 +90,8 @@ const PaginationNext = ( {
     className={ cn( "gap-1 pr-2.5", className ) }
     { ...props }
   >
-    <span>{t('common:pagination.next')}</span>
-    <Show when={ currentLanguage === 'en' } fallback={ <ChevronLeft className="h-4 w-4" /> }>
-      <ChevronRight className="h-4 w-4" />
-    </Show>
+    <span>التالي</span>
+    <ChevronLeft className="h-4 w-4" />
   </PaginationLink>
  )
 };

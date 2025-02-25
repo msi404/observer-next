@@ -1,6 +1,5 @@
 'use client';
 import {useMemo} from 'react'
-import { useTranslation } from 'react-i18next';
 import { useGraph } from '@/app/_hooks/use-graph';
 import { useCharts } from '@/app/_hooks/use-charts';
 import { PiChart } from '@/app/_components/pi-chart';
@@ -11,7 +10,6 @@ import {Switch, Match} from '@/app/_components/switch'
 
 export const GenderChartWidget = () =>
 {
-	const { t } = useTranslation()
 	const {
 		genders,
 		isErrorGenders,
