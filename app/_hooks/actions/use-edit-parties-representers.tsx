@@ -85,7 +85,7 @@ const globalPageSize = useSelector(selectPageSize);
   
      // Fetch Initial
      useEffect(() => {
-      fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage }&PageSize=${ pageSize }`);
+      fetchElectoralEntities('');
      }, [] );
 
   useEffect(() => {

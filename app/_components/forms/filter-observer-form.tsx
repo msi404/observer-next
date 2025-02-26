@@ -34,9 +34,9 @@ export const FilterObserversForm = (table: Table<any>) => {
     >
       <Combobox
         options={governoratesSearch}
-        value={filters.find((filter) => filter.id === 'provinceOffice')?.value || ''}
+        value={filters.find((filter) => filter.id === 'govCenter')?.value || ''}
         onChange={(value) =>
-          setFilters((prev) => updateFilter(prev, 'provinceOffice', value))
+          setFilters((prev) => updateFilter(prev, 'govCenter', value))
         }
         label="المحافظة"
       />

@@ -12,7 +12,8 @@ export const FilterPartiesRepresentersForm = (table: Table<any>) => {
   const {
     open,
     setOpen,
-    governoratesSearch,
+    electoralEntitiesSearch,
+    onElectoralEntitiesScrollEnd,
 	  filters,
 	  updateFilter,
 	  setFilters,
@@ -32,12 +33,13 @@ export const FilterPartiesRepresentersForm = (table: Table<any>) => {
       description="ادخل المعطيات الاتية لتصفية العناصر"
     >
       <Combobox
-        options={governoratesSearch}
-        value={filters.find((filter) => filter.id === 'provinceOffice')?.value || ''}
-        onChange={(value) =>
-          setFilters((prev) => updateFilter(prev, 'provinceOffice', value))
+        options={electoralEntitiesSearch}
+        value={ filters.find( ( filter ) => filter.id === 'electoralEntity' )?.value || '' }
+        onScrollEnd={onElectoralEntitiesScrollEnd}
+        onChange={ ( value ) =>
+          setFilters((prev) => updateFilter(prev, 'electoralEntity', value))
         }
-        label="المحافظة"
+        label="الكيان"
       />
       <div className="relative">
         <Separator className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 w-screen" />

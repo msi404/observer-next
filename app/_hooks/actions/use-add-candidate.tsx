@@ -85,7 +85,7 @@ export const useAddCandidate = () =>
       email: '',
       govCenterId: '',
       // @ts-ignore
-      birth: '',
+      dateOfBirth: '',
       profileImg: '',
       role: 102,
     }

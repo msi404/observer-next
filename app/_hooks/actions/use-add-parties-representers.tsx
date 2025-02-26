@@ -78,7 +78,7 @@ export const useAddPartiesRepresenters = () => {
   
      // Fetch Initial
      useEffect(() => {
-      fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage }&PageSize=${ pageSize }`);
+      fetchElectoralEntities(`PageNumber=1&PageSize=${ pageSize }`);
      }, [] );
   
   // Update When Data Changes

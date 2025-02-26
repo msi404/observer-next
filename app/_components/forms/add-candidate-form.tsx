@@ -263,7 +263,8 @@ export const AddCandidateForm = () => {
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                       )}
                       placeholder="رقم المرشح "
-                      disabled={isLoadingCandidate || isLoadingFile}
+                      disabled={ isLoadingCandidate || isLoadingFile }
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>

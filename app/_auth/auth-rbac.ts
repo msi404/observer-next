@@ -68,6 +68,7 @@ const ROLES = {
     'view:home',
     'view:addPronviceAdmin',
     'view:voters',
+    'view:addCandidate',
     "view:votersByState",
     "view:gendersChart",
     "view:voterAgeChart",
