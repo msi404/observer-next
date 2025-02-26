@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <h1>This is offline fallback page</h1>
-      <h2>When offline, any page route will fallback to this page</h2>
+      <h1>يبدو ان هناك مشكلة في الانترنت</h1>
+      <h2>يرجى اعادة المحاولة لاحقاً</h2>
     </>
   );
 }
