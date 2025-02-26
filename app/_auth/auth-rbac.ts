@@ -27,6 +27,7 @@ const ROLES = {
   0: [
     'view:home',
     'view:voters',
+    'view:events',
     'view:addPost',
     'view:addElectoralEnttity',
     'view:addElectoralEntityAdmin',

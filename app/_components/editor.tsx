@@ -2,7 +2,9 @@
 import { useDispatch } from 'react-redux'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import {setEditor} from '@/app/_lib/features/editorSlice'
+import { TextAlign } from '@tiptap/extension-text-align'
+import {Underline} from '@tiptap/extension-underline'
+import {setEditor, setContent} from '@/app/_lib/features/editorSlice'
 
 export const Editor = () =>
 {
@@ -10,7 +12,8 @@ export const Editor = () =>
 	const editor = useEditor( {
 		onCreate ( {editor} )
 		{
-			dispatch(setEditor(editor))
+			dispatch( setEditor( editor ) )
+			dispatch(setContent(editor?.getHTML()))
 		},
 		onDestroy ()
 		{
@@ -18,7 +21,8 @@ export const Editor = () =>
 		},
 		onUpdate ( {editor} )
 		{
-			dispatch(setEditor(editor))
+			dispatch( setEditor( editor ) )
+			dispatch(setContent(editor?.getHTML()))
 		},
 		onSelectionUpdate ( {editor} )
 		{
@@ -40,15 +44,17 @@ export const Editor = () =>
 		{
 			dispatch(setEditor(editor))
 		},
-		extensions: [ StarterKit ],
-		content: '<p>مرحبا، بالعالم</p>',
+		extensions: [ StarterKit, Underline,TextAlign.configure( {
+			types: ['heading', 'paragraph']
+		}) ],
+		content: '<p>ابدأ بكتابة المحتوى...</p>',
 		editorProps: {
 			attributes: {
 				style: "padding-left: 56px; padding-right: 56px;",
-				class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-w-[1054px] min-h-[816px] pt-10 pr-14 pb-10 cursor-text'
+				class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 mx-auto focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-w-[1054px] min-h-[816px] pt-10 pr-14 pb-10 cursor-text'
 			}
 		}
-	})
+	} )
 	return (
 		<div className='size-full overflow-x-auto bg-[#F9F8FD] px-4 print:p-0 print:bg-white print:overflow-visible'>
 			<div className='min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0'>

@@ -28,9 +28,8 @@ import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
 import { DynamicPagination } from '@/app/_components/dynamic-pagination';
-import { AddPostForm } from '@/app//_components/forms/add-post-form'
 import {EditPostForm} from '@/app/_components/forms/edit-post-form'
-import {Calendar } from 'lucide-react';
+import {Calendar, PenSquare } from 'lucide-react';
 import { Post } from '@/app/_components/post'
 import {formatDate} from '@/app/_utils/format-date'
 
@@ -81,7 +80,17 @@ export const PostsWidget: FC = () => {
           >
             <RefreshCcw size="35px" />
           </motion.button>
-          <AddPostForm />
+          <Link href='/events/editor'>
+              <motion.button
+            whileHover={{
+              scale: 1.1,
+              transition: { damping: 0, ease: 'linear', duration: 0.2 }
+            }}
+            className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <PenSquare size="35px" />
+          </motion.button>
+            </Link>
         </div>
       </Show>
       </div>
@@ -97,7 +106,17 @@ export const PostsWidget: FC = () => {
             <SkeletonCard />
           </Match>
           <Match when={isSuccess && data.items.length === 0}>
-            <EmptyCard permission='view:addPost' Add={<AddPostForm />} retry={refetch} />
+            <EmptyCard permission='view:addPost' Add={ <Link href='/events/editor'>
+              <motion.button
+            whileHover={{
+              scale: 1.1,
+              transition: { damping: 0, ease: 'linear', duration: 0.2 }
+            }}
+            className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <PenSquare size="35px" />
+          </motion.button>
+            </Link>} retry={refetch} />
           </Match>
           <Match when={isSuccess && data.items.length > 0}>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

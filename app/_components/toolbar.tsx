@@ -1,16 +1,20 @@
 'use client';
-import { type FC, useState } from 'react';
+import { type FC } from 'react';
 import { useSelector } from 'react-redux';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import {
   ChevronDownIcon,
   PrinterIcon,
   Redo2Icon,
   SpellCheckIcon,
   Undo2Icon,
-  type LucideIcon
+  BoldIcon,
+  type LucideIcon,
+  AlignLeftIcon,
+  AlignCenterIcon,
+  AlignRightIcon,
+  AlignJustifyIcon,
+  ItalicIcon,
+  UnderlineIcon,
 } from 'lucide-react';
 import { cn } from '@/app/_lib/utils';
 import { For } from '@/app/_components/for';
@@ -33,9 +37,10 @@ import { Input } from '@/app/_components/ui/input';
 import { type Level } from '@tiptap/extension-heading';
 import { Dynamic } from '@/app/_components/dynamic';
 import { BasicDialog } from '@/app/_components/basic-dialog';
-import { addEventSchema } from '@/app/_validation/event';
 import { Spinner } from '@/app/_components/spinner';
-import {Dropzone} from '@/app/_components/dropzone'
+import { Dropzone } from '@/app/_components/dropzone';
+import { useAddPost } from '@/app/_hooks/actions/use-add-post';
+import { Show } from '@/app/_components/show';
 interface ToolbarButtonProps {
   onClick?: () => void;
   isActive?: boolean;
@@ -57,6 +62,58 @@ const ToolbarButton: FC<ToolbarButtonProps> = ({
     >
       <Dynamic component={Icon} className="size-4" />
     </button>
+  );
+};
+
+const AlignButton = () => {
+  const editor = useSelector(selectEditor);
+  const alignmens = [
+    {
+      label: 'Align Left',
+      value: 'left',
+      icon: AlignLeftIcon
+    },
+    {
+      label: 'Align Center',
+      value: 'center',
+      icon: AlignCenterIcon
+    },
+    {
+      label: 'Align Right',
+      value: 'right',
+      icon: AlignRightIcon
+    },
+    {
+      label: 'Align Justify',
+      value: 'justify',
+      icon: AlignJustifyIcon
+    }
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost'>
+          <AlignLeftIcon className="size-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {alignmens.map(({ label, value, icon: Icon }) => (
+          <Button
+            variant='ghost'
+            key={value}
+            onClick={() => editor?.chain().focus().setTextAlign(value).run()}
+            className={cn(
+              'flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80',
+              editor?.isActive({ textAlign: value }) && 'bg-neutral-200/80'
+            )}
+          >
+            <Icon className='size-4'/>
+            <span className='text-sm'>{label}</span>
+          </Button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -122,8 +179,15 @@ const HeadingLevelButton = () => {
 };
 
 export const Toolbar = () => {
-  const [file, setFile] = useState<File | null>();
-  const [open, setOpen] = useState<boolean>(false);
+  const {
+    onSubmit,
+    openAdd,
+    setOpenAdd,
+    isLoadingFile,
+    isLoadingPost,
+    form,
+    fileRef
+  } = useAddPost();
   const editor = useSelector(selectEditor);
   const sections: {
     label: string;
@@ -157,26 +221,38 @@ export const Toolbar = () => {
             current === 'false' ? 'true' : 'false'
           );
         }
+      },
+      {
+        label: 'Bold',
+        icon: BoldIcon,
+        isActive: editor?.isActive('bold'),
+        onClick: () => editor?.chain().focus().toggleBold().run()
+      },
+      {
+        label: 'Italic',
+        icon: ItalicIcon,
+        isActive: editor?.isActive('italic'),
+        onClick: () => editor?.chain().focus().toggleItalic().run()
+      },
+      {
+        label: 'Underline',
+        icon: UnderlineIcon,
+        isActive: editor?.isActive('underline'),
+        onClick: () => editor?.chain().focus().toggleUnderline().run()
       }
     ]
   ];
-  const form = useForm<z.infer<typeof addEventSchema>>({
-    resolver: zodResolver(addEventSchema),
-    defaultValues: {
-      title: '',
-      coverImage: ''
-    }
-  });
   return (
     <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-sm min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
       <For each={sections[0]}>
         {(item, index) => <ToolbarButton key={index} {...item} />}
       </For>
+      <AlignButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <HeadingLevelButton />
       <BasicDialog
-        open={open}
-        onOpenChange={setOpen}
+        open={openAdd}
+        onOpenChange={setOpenAdd}
         title="اضافة حدث"
         description="ادخل المعطيات الاتية لاضافة حدث"
         button={
@@ -184,12 +260,12 @@ export const Toolbar = () => {
             variant="outline"
             className="rtl:mr-auto rtl:ml-8 ltr:ml-auto ltr:mr-8"
           >
-            اضافة
+            حفظ
           </Button>
         }
       >
         <Form {...form}>
-          <form className="grid gap-5">
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-4">
               <FormField
                 control={form.control}
@@ -197,31 +273,47 @@ export const Toolbar = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} placeholder="العنوان" />
+                      <Input
+                        className={cn(
+                          form.formState.errors.title &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        placeholder="العنوان"
+                        disabled={isLoadingPost || isLoadingFile}
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
+
+              {/* Image Upload */}
               <Dropzone
-                setFile={(voterFile) => setFile(voterFile)}
-                label="اختيار صورة للحدث"
+                setFile={(file) => (fileRef.current = file)}
+                label="اختيار صورة الفعالية"
               />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">يجب رفع صورة الفعالية</span>
+              </Show>
             </div>
             <div className=" relative">
               <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
             </div>
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={false}>
-                  اضافة
-                  {false && (
+                <Button type="submit" disabled={isLoadingPost || isLoadingFile}>
+                  نشر
+                  {(isLoadingPost || isLoadingFile) && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={false}>
+                  <Button
+                    variant="outline"
+                    disabled={isLoadingPost || isLoadingFile}
+                  >
                     الغاء
                   </Button>
                 </DialogClose>

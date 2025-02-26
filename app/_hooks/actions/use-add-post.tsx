@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {selectUser} from '@/app/_lib/features/authSlice'
+import {selectContent} from '@/app/_lib/features/editorSlice'
+import { selectUser } from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize
@@ -28,6 +29,7 @@ import { addPostSchema } from '@/app/_validation/post';
 
 export const useAddPost = () =>
 {
+  const content = useSelector(selectContent)
   const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
   const currentPage = useSelector(selectCurrentPage);
@@ -47,13 +49,12 @@ export const useAddPost = () =>
 
   // Refs
   const fileRef = useRef<File | null>(null);
-
   // Form Setup
   const form = useForm<z.infer<typeof addPostSchema>>({
     resolver: zodResolver(addPostSchema),
     defaultValues: {
       title: '',
-      content: '',
+      content: content || '',
       img: ''
     }
   });
@@ -82,7 +83,7 @@ export const useAddPost = () =>
         } catch (error: any) {
           toast({
             title: 'Error',
-            description: error.data.title,
+            description: error.data?.msg,
             variant: 'destructive'
           });
         } finally
@@ -92,6 +93,10 @@ export const useAddPost = () =>
           setOpenAdd( false );
         }
   };
+   // Sync Redux content with form field
+   useEffect(() => {
+    form.setValue('content', content || '');
+  }, [content, form]);
 
   return {
     openAdd,
