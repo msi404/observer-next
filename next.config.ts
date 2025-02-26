@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 
-const withSerwist = withSerwistInit({
-  swSrc: "public/sw.ts",
+const withSerwist = withSerwistInit( {
+  cacheOnNavigation: true,
+  swSrc: "app/_config/sw.ts",
   swDest: "public/sw.js",
   reloadOnOnline: true
 });

@@ -68,6 +68,12 @@ importers:
       '@serwist/next':
         specifier: ^9.0.11
         version: 9.0.11(next@15.1.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
+      '@serwist/precaching':
+        specifier: ^9.0.12
+        version: 9.0.12(typescript@5.7.3)
+      '@serwist/sw':
+        specifier: ^9.0.12
+        version: 9.0.12(typescript@5.7.3)
       '@tanstack/react-table':
         specifier: ^8.20.6
         version: 8.20.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1137,6 +1143,22 @@ packages:
       typescript:
         optional: true
 
+  '@serwist/precaching@9.0.12':
+    resolution: {integrity: sha512-asu1W86/A9PLq9cFZGWP1w6eRM7DU0w9FHCEPf19MvYq5bC19AhUTGlLRnpklEG7LToYAnw6QZlJAdCa9p4D5g==}
+    peerDependencies:
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
+  '@serwist/sw@9.0.12':
+    resolution: {integrity: sha512-xod8Yzmx+FnAkWUk/MGLSufPA7BCGLJFIXl/s/p/nAGXVaw2RJJ0b2islFUCv7dFmIqM1cQJvgltODaaKGnTvg==}
+    peerDependencies:
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   '@serwist/webpack-plugin@9.0.11':
     resolution: {integrity: sha512-ZTxVJqv7nKlPWmhC3oMt7tZc0ssnd7SYr6L8zZLLF7ltJUub9TMyh1K1zL5TJtsr8DyfALNFPwPA/s2yjYSk+w==}
     engines: {node: '>=18.0.0'}
@@ -2111,6 +2133,9 @@ packages:
   idb@8.0.0:
     resolution: {integrity: sha512-l//qvlAKGmQO31Qn7xdzagVPPaHTxXx199MhrAFuVBTPqydcPYBWjkrbv4Y0ktB+GmWOiwHl237UUOrLmQxLvw==}
 
+  idb@8.0.2:
+    resolution: {integrity: sha512-CX70rYhx7GDDQzwwQMDwF6kDRQi5vVs6khHUumDrMecBylKkwvZ8HWvKV08AGb7VbpoGCWUQ4aHzNDgoUiOIUg==}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -2870,6 +2895,14 @@ packages:
 
   serwist@9.0.11:
     resolution: {integrity: sha512-oUuyOuIFZoj+ZYdwWnPYVsndOw5CoGsTy106mHJ2wxjnz01TrDhg2l26yrsoJek1qT/Doi0pzknYLLXTIFs5og==}
+    peerDependencies:
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
+  serwist@9.0.12:
+    resolution: {integrity: sha512-u5UIJfG/RwkHtffLzlHAaBjXTHQFkKIGvdLQu/zpCWG3cN/AdMbvmtT7Kx2360wQqfE6infDORMdNTtNXpIpjQ==}
     peerDependencies:
       typescript: '>=5.0.0'
     peerDependenciesMeta:
@@ -4151,6 +4184,18 @@ snapshots:
     transitivePeerDependencies:
       - webpack
 
+  '@serwist/precaching@9.0.12(typescript@5.7.3)':
+    dependencies:
+      serwist: 9.0.12(typescript@5.7.3)
+    optionalDependencies:
+      typescript: 5.7.3
+
+  '@serwist/sw@9.0.12(typescript@5.7.3)':
+    dependencies:
+      serwist: 9.0.12(typescript@5.7.3)
+    optionalDependencies:
+      typescript: 5.7.3
+
   '@serwist/webpack-plugin@9.0.11(typescript@5.7.3)':
     dependencies:
       '@serwist/build': 9.0.11(typescript@5.7.3)
@@ -5320,6 +5365,8 @@ snapshots:
 
   idb@8.0.0: {}
 
+  idb@8.0.2: {}
+
   ignore@5.3.2: {}
 
   immer@10.1.1: {}
@@ -6122,6 +6169,12 @@ snapshots:
   serwist@9.0.11(typescript@5.7.3):
     dependencies:
       idb: 8.0.0
+    optionalDependencies:
+      typescript: 5.7.3
+
+  serwist@9.0.12(typescript@5.7.3):
+    dependencies:
+      idb: 8.0.2
     optionalDependencies:
       typescript: 5.7.3
 

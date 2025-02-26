@@ -104,7 +104,7 @@ export const EditComplaintForm = () => {
                         form.formState.errors.title &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                       )}
-                      disabled={isLoadingNotification}
+                      disabled={isLoadingUpdate}
                       placeholder="العنوان"
                       {...field}
                     />
@@ -125,7 +125,7 @@ export const EditComplaintForm = () => {
                         form.formState.errors.content &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                       )}
-                      disabled={isLoadingNotification}
+                      disabled={isLoadingUpdate}
                       placeholder="المحتوى"
                       {...field}
                     />
@@ -143,16 +143,16 @@ export const EditComplaintForm = () => {
           {/* Form Actions */}
           <DialogFooter>
             <div className="flex justify-between w-full">
-              <Button type="submit" disabled={isLoadingNotification}>
+              <Button type="submit" disabled={isLoadingUpdate}>
                 ارسال
-                {isLoadingNotification && (
+                {isLoadingUpdate && (
                   <div className=" scale-125">
                     <Spinner />
                   </div>
                 )}
               </Button>
               <DialogClose asChild aria-label="Close">
-                <Button variant="outline" disabled={isLoadingNotification}>
+                <Button variant="outline" disabled={isLoadingUpdate}>
                   الغاء
                 </Button>
               </DialogClose>
