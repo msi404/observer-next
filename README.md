@@ -1,19 +1,19 @@
 # Main Features 
 
-✅ - **Next App Router**
-✅ - **Typescript**
-✅ - **Redux state mangement** 
-✅ - **Redux Query**
-✅ - **Shadcn ui**
-✅ - **Zod validation**
-✅ - **React-hook-form**
-✅ - **Motion**
-✅ - **Tailwindcss**
-✅ - **Lucide icons**
-✅ - **Tiptap editor**
-✅ - **Tanstack Table**
-✅ - **Serwist PWA**
-✅ - **RBAC based authorization system**
+✅ + **Next App Router**
+✅ + **Typescript**
+✅ + **Redux state mangement** 
+✅ + **Redux Query**
+✅ + **Shadcn ui**
+✅ + **Zod validation**
+✅ + **React-hook-form**
+✅ + **Motion**
+✅ + **Tailwindcss**
+✅ + **Lucide icons**
+✅ + **Tiptap editor**
+✅ + **Tanstack Table**
+✅ + **Serwist PWA**
+✅ + **RBAC based authorization system**
 
 ![screenshot of the system](/public/screenshot-1.png)
 ---
