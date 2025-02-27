@@ -117,6 +117,62 @@ const AlignButton = () => {
   );
 };
 
+const FontFamilyButton = () => {
+  const editor = useSelector(selectEditor);
+  const fonts = [
+    {
+      label: 'Arial',
+      value: 'Arial',
+    },
+    {
+      label: 'Times New Roman',
+      value: 'Times New Roman',
+    },
+    {
+      label: 'Courier New',
+      value: 'Courier New',
+    },
+    {
+      label: 'Georgia',
+      value: 'Georgia',
+    },
+    {
+      label: 'Verdana',
+      value: 'Verdana',
+    },
+  ];
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost'>
+          <span className="truncate">
+            {editor?.getAttributes('textStyle').fontFamily || 'Arial'}
+          </span>
+          <ChevronDownIcon className='ml-2 size-4 shrink-0'/>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+        {fonts.map(({ label, value}) => (
+          <Button
+            variant='ghost'
+            key={value}
+            onClick={() => editor?.chain().focus().setFontFamily(value).run()}
+            className={cn(
+              'flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80',
+              editor?.getAttributes('textStyle').fontFamily === value && 'bg-neutral-200/80'
+            ) }
+            style={{fontFamily: value}}
+          >
+            <span className='text-sm'>{label}</span>
+          </Button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+
 const HeadingLevelButton = () => {
   const editor = useSelector(selectEditor);
   const headings = [
@@ -243,13 +299,14 @@ export const Toolbar = () => {
     ]
   ];
   return (
-    <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-sm min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
+    <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-sm min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto print:hidden">
       <For each={sections[0]}>
         {(item, index) => <ToolbarButton key={index} {...item} />}
       </For>
       <AlignButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <HeadingLevelButton />
+      <FontFamilyButton />
       <BasicDialog
         open={openAdd}
         onOpenChange={setOpenAdd}
@@ -257,8 +314,8 @@ export const Toolbar = () => {
         description="ادخل المعطيات الاتية لاضافة حدث"
         button={
           <Button
-            variant="outline"
-            className="rtl:mr-auto rtl:ml-8 ltr:ml-auto ltr:mr-8"
+            variant='outline'
+            className="rtl:mr-auto rtl:ml-8 ltr:ml-auto ltr:mr-8 w-[10%]"
           >
             حفظ
           </Button>

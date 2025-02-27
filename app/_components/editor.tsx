@@ -2,6 +2,8 @@
 import { useDispatch } from 'react-redux'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { FontFamily } from '@tiptap/extension-font-family'
+import {TextStyle} from '@tiptap/extension-text-style'
 import { TextAlign } from '@tiptap/extension-text-align'
 import {Underline} from '@tiptap/extension-underline'
 import {setEditor, setContent} from '@/app/_lib/features/editorSlice'
@@ -44,7 +46,7 @@ export const Editor = () =>
 		{
 			dispatch(setEditor(editor))
 		},
-		extensions: [ StarterKit, Underline,TextAlign.configure( {
+		extensions: [ StarterKit, Underline, FontFamily, TextStyle,TextAlign.configure( {
 			types: ['heading', 'paragraph']
 		}) ],
 		content: '<p>ابدأ بكتابة المحتوى...</p>',
@@ -57,7 +59,7 @@ export const Editor = () =>
 	} )
 	return (
 		<div className='size-full overflow-x-auto bg-[#F9F8FD] px-4 print:p-0 print:bg-white print:overflow-visible'>
-			<div className='min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0'>
+			<div className='min-w-max flex justify-center w-[816px] py-4 print:px-0 mx-auto print:w-full print:min-w-0'>
 			<EditorContent editor={editor}/>
 			</div>
 		</div>

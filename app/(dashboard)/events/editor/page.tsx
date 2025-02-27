@@ -8,7 +8,7 @@ const EditorPage: NextPage = () =>
 {
 	return (
 		<Container>
-          <div className='flex mb-4 items-center gap-4'>
+          <div className='flex print:hidden mb-4 items-center gap-4'>
           <BackButton backLink='/events'/>
           <h1>الفعاليات</h1>
         </div>

@@ -13,7 +13,7 @@ export const BackButton = React.forwardRef<
   const isFirstPage = usePageTrackerStore((state: any) => state.isFirstPage);
   return (
     <Button
-      className={cn('rounded-full', className)}
+      className={cn('rounded-full print:hidden', className)}
       variant="outline"
       size="icon"
       ref={ref}
