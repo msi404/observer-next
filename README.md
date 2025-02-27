@@ -14,7 +14,7 @@
 + ✅ **Tanstack Table**
 + ✅ **Serwist PWA**
 + ✅ **RBAC based authorization system**
-+ ✅ **JWT based authintication system**
++ ✅ **JWT based authentication system**
 
 ![screenshot of the system](/public/screenshot-1.png)
 ---
