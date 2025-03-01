@@ -27,8 +27,6 @@ const ROLES = {
   0: [
     'view:home',
     'view:voters',
-    'view:events',
-    'view:addPost',
     'view:addElectoralEnttity',
     'view:addElectoralEntityAdmin',
     'view:polling-management',
@@ -140,6 +138,7 @@ const ROLES = {
   102: [
     'view:home',
     'view:voters',
+    'view:addPost',
     'view:profile',
     'view:observers',
     'view:events',

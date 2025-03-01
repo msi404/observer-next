@@ -2,6 +2,7 @@
 import { useDispatch } from 'react-redux'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
 import { FontFamily } from '@tiptap/extension-font-family'
 import {TextStyle} from '@tiptap/extension-text-style'
 import { TextAlign } from '@tiptap/extension-text-align'
@@ -46,10 +47,12 @@ export const Editor = () =>
 		{
 			dispatch(setEditor(editor))
 		},
-		extensions: [ StarterKit, Underline, FontFamily, TextStyle,TextAlign.configure( {
+		extensions: [ StarterKit, Underline, FontFamily, TextStyle, Placeholder.configure( {
+			placeholder: 'اكتب شيء...'
+		} ),
+			TextAlign.configure( {
 			types: ['heading', 'paragraph']
 		}) ],
-		content: '<p>ابدأ بكتابة المحتوى...</p>',
 		editorProps: {
 			attributes: {
 				style: "padding-left: 56px; padding-right: 56px;",

@@ -45,23 +45,27 @@ interface ToolbarButtonProps {
   onClick?: () => void;
   isActive?: boolean;
   icon: LucideIcon;
+  disabled?: boolean
 }
 
 const ToolbarButton: FC<ToolbarButtonProps> = ({
   onClick,
   isActive,
-  icon: Icon
+  icon: Icon,
+  disabled,
 }) => {
   return (
-    <button
-      onClick={onClick}
+    <Button
+      onClick={ onClick }
+      disabled={ disabled }
+      variant='ghost'
       className={cn(
         'text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-neutral-200/80',
         isActive && 'bg-neutral-200/80'
       )}
     >
       <Dynamic component={Icon} className="size-4" />
-    </button>
+    </Button>
   );
 };
 
@@ -250,17 +254,19 @@ export const Toolbar = () => {
     icon: LucideIcon;
     onClick: () => void;
     isActive?: boolean;
-  }[][] = [
-    [
+    disabled?: boolean;
+  }[] = [
       {
         label: 'Undo',
         icon: Undo2Icon,
-        onClick: () => editor?.chain().focus().undo().run()
+        onClick: () => editor?.chain().focus().undo().run(),
+        disabled: !editor?.can().undo()
       },
       {
         label: 'Redo',
         icon: Redo2Icon,
-        onClick: () => editor?.chain().focus().redo().run()
+        onClick: () => editor?.chain().focus().redo().run(),
+        disabled: !editor?.can().redo()
       },
       {
         label: 'Print',
@@ -296,11 +302,10 @@ export const Toolbar = () => {
         isActive: editor?.isActive('underline'),
         onClick: () => editor?.chain().focus().toggleUnderline().run()
       }
-    ]
   ];
   return (
     <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-sm min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto print:hidden">
-      <For each={sections[0]}>
+      <For each={sections}>
         {(item, index) => <ToolbarButton key={index} {...item} />}
       </For>
       <AlignButton />
