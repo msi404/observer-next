@@ -15,7 +15,6 @@ export const useGraph = () => {
   const user = useSelector( selectUser );
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `ElectoralEntityId=${ electoralEntityId }` : '';
-  const complaintsElectoralEntityIdQuery = electoralEntityId !== undefined ? `ElectoralEntityId=${ electoralEntityId }` : '';
   
   const queryVotersAge = hasPermission(user, 'view:voterAgeChart')
     ? electoralEntityIdQuery

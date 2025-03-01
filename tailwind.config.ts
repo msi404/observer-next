@@ -4,7 +4,8 @@ export default {
     darkMode: ["class"],
     content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/_components/**/*.{js,ts,jsx,tsx,mdx}",
+		 "./app/_components/**/*.{js,ts,jsx,tsx,mdx}",
+		 "./.storybook/**/*.{js,jsx,ts,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
