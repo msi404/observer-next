@@ -5,6 +5,7 @@
 + ✅ **Redux state mangement** 
 + ✅ **Redux Query**
 + ✅ **Shadcn ui**
++ ✅ **Storybook**
 + ✅ **Zod validation**
 + ✅ **React-hook-form**
 + ✅ **Motion**
