@@ -45,3 +45,5 @@ next-env.d.ts
 public/sw*
 public/swe-worker*
 *storybook.log
+# Storybook cache
+.storybook/cache/
