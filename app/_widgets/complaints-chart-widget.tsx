@@ -1,7 +1,7 @@
 'use client';
 import { useMemo } from 'react';
 import { useGraph } from '@/app/_hooks/use-graph';
-import { useCharts } from '@/app/_hooks/use-charts';
+import {issuesChartConfig} from '@/app/_config/chart-config'
 import { PiChart } from '@/app/_components/pi-chart';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
@@ -18,8 +18,6 @@ export const ComplaintsChartWidget = () =>
     isSuccessComplaints,
     refetchComplaints
   } = useGraph();
-
-  const { issuesChartConfig } = useCharts();
 
   const totalIssues = useMemo(() => {
     return complaints?.reduce((acc, curr) => acc + curr.total, 0);

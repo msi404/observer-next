@@ -1,7 +1,7 @@
 'use client';
 import {useMemo} from 'react'
 import { useGraph } from '@/app/_hooks/use-graph';
-import { useCharts } from '@/app/_hooks/use-charts';
+import {gendersChartConfig} from '@/app/_config/chart-config'
 import { PiChart } from '@/app/_components/pi-chart';
 import { ErrorCard } from '@/app/_components/error-card';
 import { FetchCard } from '@/app/_components/fetch-card';
@@ -19,8 +19,6 @@ export const GenderChartWidget = () =>
 		refetchGenders
 	 } = useGraph();
   
-	const { gendersChartConfig } = useCharts();
-
 	  const totalGenders = useMemo(() => {
 		 return genders?.reduce((acc, curr) => acc + curr.total, 0);
 	  }, [isLoadingGenders, genders]);

@@ -1,6 +1,6 @@
 'use client';
 import { useGraph } from '@/app/_hooks/use-graph';
-import { useCharts } from '@/app/_hooks/use-charts';
+import {candidatesActivitiesChartConfig} from '@/app/_config/chart-config'
 import { ErrorCard } from '@/app/_components/error-card';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
@@ -8,8 +8,6 @@ import { Switch, Match } from '@/app/_components/switch';
 import { BasicChart } from '@/app/_components/basic-chart';
 
 export const CandidatesActivitiesChartWidget = () => {
-  const { candidatesActivitiesChartConfig } = useCharts();
-
   const {
     candidatesActivites,
     isErrorCandidates,
