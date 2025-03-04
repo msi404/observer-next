@@ -83,11 +83,8 @@ export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
           </div>
         </DialogFooter>
       </BasicDialog>
-      <BasicDialog
-        open={openUpdate}
-        onOpenChange={setOpenUpdate}
-        button={
-          <motion.button
+      <Link href={`/events/${item.id}/edit`}>
+      <motion.button
             whileHover={{
               scale: 1.1,
               transition: {
@@ -100,94 +97,7 @@ export const EditPostFormSingle = ({ item }: EditPostFormProps) => {
           >
             <Pencil size="20px" />
           </motion.button>
-        }
-        title="تعديل فعالية"
-        description="ادخل المعطيات الاتية لتعديل عنصر"
-      >
-        <Form {...form}>
-          <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
-            {/* Form Fields */}
-            <div className="grid gap-4">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>العنوان</FormLabel>
-                    <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.title &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="العنوان"
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>المحتوى</FormLabel>
-                    <FormControl>
-                      <AutosizeTextarea
-                        maxHeight={400}
-                        className={cn(
-                          form.formState.errors.content &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="المحتوى"
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(file) => (fileRef.current = file)}
-                label="اختيار صورة العالية"
-                defaultImage={item.img}
-              />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة الفعالية
-                </span>
-              </Show>
-            </div>
-
-            {/* Separator */}
-            <div className="relative">
-              <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
-            </div>
-
-            {/* Form Actions */}
-            <DialogFooter>
-              <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingUpdate || isLoadingFile}>
-                  تعديل
-                  {(isLoadingUpdate || isLoadingFile) && (
-                    <div className=" scale-125">
-                      <Spinner />
-                    </div>
-                  )}
-                </Button>
-                <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingUpdate || isLoadingFile}>
-                    الغاء
-                  </Button>
-                </DialogClose>
-              </div>
-            </DialogFooter>
-          </form>
-        </Form>
-      </BasicDialog>
+      </Link>
     </div>
   );
 };

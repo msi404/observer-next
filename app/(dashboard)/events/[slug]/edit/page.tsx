@@ -1,20 +1,26 @@
 'use client';
-import {type NextPage} from 'next'
+import { type NextPage } from 'next'
+import { usePathname } from 'next/navigation';
+import {usePostQuery} from '@/app/_services/fetchApi'
 import {Container} from '@/app/_components/container'
-import { Editor } from '@/app/_components/editor'
+import { SingleEditor } from '@/app/_components/single-editor'
 import { Toolbar } from '@/app/_components/toolbar'
-import {BackButton} from '@/app/_components/ui/back-button'
-const EditorPage: NextPage = () =>
+import { BackButton } from '@/app/_components/ui/back-button'
+ 
+const EditEventPage: NextPage = () =>
 {
+	const pathname = usePathname();
+	const id = pathname.split( '/' ).reverse().at( 1 );
+	const {data} = usePostQuery(id)
 	return (
 		<Container>
 			 <div className='flex print:hidden mb-4 items-center gap-4'>
 			 <BackButton backLink='/events'/>
-			 <h1>الفعاليات</h1>
+			 <h1>رجوع</h1>
 		  </div>
 			<Toolbar />
-			<Editor />
+			<SingleEditor content={data.content} />
 		</Container>
 	)
 };
-export default EditorPage
+export default EditEventPage
