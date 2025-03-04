@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link'
 import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';

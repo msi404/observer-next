@@ -59,6 +59,46 @@ export const addCandidateSchema = z.object({
       return Number(value)
     }),
 } );
+export const editCandidateSchema = z.object({
+  name: z.string().min(3),
+  dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المرشح لا يقل عن 18 عام'}),
+  govCenterId: z.string().min(3),
+  pollingCenterId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }).optional(),
+  electoralEntityId: z.string().transform( ( value ) =>
+    {
+      if ( value === '' )
+      {
+        return null
+      } else
+      {
+        return value
+      }
+    }).optional(),
+  username: z.string().min(3).max(16),
+  password: z.string().min(6).optional(),
+  profileImg: z.string().optional(),
+  coverImg: z.string().optional(),
+  role: z.number(),
+  phone: z.string().min(11).max(16),
+  email: z.string().email(),
+  candidateSerial: z.number().min( 1 ).transform( ( value ) =>
+  {
+    return Number(value)
+  }),
+  candidateListSerial: z.number().min(1).transform( ( value ) =>
+    {
+      return Number(value)
+    }),
+} );
 
 export const addDataEntrySchema = z.object({
   name: z.string().min(3),

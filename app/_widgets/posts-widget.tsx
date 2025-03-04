@@ -5,6 +5,7 @@ import {Zoom} from '@/app/_components/zoom'
 import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
 import {
   selectCurrentPage,
   selectPageSize,
@@ -33,14 +34,16 @@ import {Calendar, PenSquare } from 'lucide-react';
 import { Post } from '@/app/_components/post'
 import {formatDate} from '@/app/_utils/format-date'
 
-export const PostsWidget: FC = () => {
+export const PostsWidget: FC = () =>
+{
+  const currentUser = useSelector(selectUser)
   const dispatch = useDispatch();
   const mounted = useMounted()
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
 
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
-    usePostsQuery(`PageNumber=${currentPage}&PageSize=${pageSize}`);
+    usePostsQuery(`UserId=${currentUser.id}&PageNumber=${currentPage}&PageSize=${pageSize}`);
 
   useEffect(() => {
     if (!isLoading) {

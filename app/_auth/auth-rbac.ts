@@ -150,7 +150,6 @@ const ROLES = {
     'view:candidate-activity-chart',
     'view:observer-by-state-chart',
     "view:addObserver",
-    "view:addVoter"
   ],
   104: [
     'view:home',

@@ -16,7 +16,7 @@ import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addCandidateSchema } from '@/app/_validation/user';
+import { editCandidateSchema } from '@/app/_validation/user';
 import { baseURL } from '@/app/_services/api';
 
 export const useEditCandidate = ( { item }: { item: User; } ) =>
@@ -58,8 +58,8 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
   const { toast } = useToast();
 
   // Form Setup
-  const form = useForm<z.infer<typeof addCandidateSchema>>({
-    resolver: zodResolver(addCandidateSchema),
+  const form = useForm<z.infer<typeof editCandidateSchema>>({
+    resolver: zodResolver(editCandidateSchema),
     defaultValues: {
       name: item.name,
       username: item.username,
@@ -89,7 +89,7 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
       }
       form.setValue('role', 102);
       await updateUser({
-        user: addCandidateSchema.parse(form.getValues()),
+        user: editCandidateSchema.parse(form.getValues()),
         id: item.id
       });
     } catch (error: any) {

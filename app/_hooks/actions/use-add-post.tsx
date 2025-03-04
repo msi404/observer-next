@@ -1,5 +1,5 @@
 'use client';
-
+import {useRouter} from 'next/navigation'
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {selectContent} from '@/app/_lib/features/editorSlice'
@@ -29,6 +29,7 @@ import { addPostSchema } from '@/app/_validation/post';
 
 export const useAddPost = () =>
 {
+  const router = useRouter()
   const content = useSelector(selectContent)
   const user = useSelector(selectUser)
   const pageSize = useSelector(selectPageSize);
@@ -89,6 +90,7 @@ export const useAddPost = () =>
         } finally
         {
           form.reset()
+          router.replace('/events')
           refetchPosts();
           setOpenAdd( false );
         }

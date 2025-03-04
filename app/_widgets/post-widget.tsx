@@ -76,7 +76,7 @@ export const PostWidget: FC = () => {
                       <p>{formatDate(data?.createdAt)}</p>
 							 </div>
 							 <div className='bg-secondary rounded-md p-4'>
-								 <p>{data?.content}</p>
+								 <div dangerouslySetInnerHTML={{__html: data?.content}} />
 							 </div>
                   </div>
                 }

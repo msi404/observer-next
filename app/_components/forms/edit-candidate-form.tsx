@@ -252,14 +252,13 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-
               {/* Serial Number */}
               <FormField
                 control={form.control}
                 name="candidateSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم المرشح</FormLabel>
+                    <FormLabel>رقم القائمة</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -269,6 +268,12 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                         )}
                         placeholder="رقم المرشح "
                         disabled={isLoadingUpdate || isLoadingFile}
+                        value={field.value ?? ''} // Ensures it's always defined
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value ? Number(e.target.value) : ''
+                          )
+                        }
                       />
                     </FormControl>
                   </FormItem>
