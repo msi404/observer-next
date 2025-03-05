@@ -150,6 +150,13 @@ const mutationApi = tatweerApi.injectEndpoints({
         body: user
       })
     }),
+    updateCurrentUser: builder.mutation({
+      query: ({ user}: { user: any}) => ({
+        url: 'users/current',
+        method: 'PUT',
+        body: user
+      })
+    }),
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `users/${id}`,
@@ -198,5 +205,6 @@ export const {
   useUpdateStationMutation,
   useDeleteStationMutation,
   useSwitchSeenNotificationMutation,
+  useUpdateCurrentUserMutation,
   useUpdateComplaintMutation
 } = mutationApi;

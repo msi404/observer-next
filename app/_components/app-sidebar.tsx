@@ -14,7 +14,7 @@ import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   setFullScreen,
   selectIsFullScreen
-} from '@/app/_lib/features/fullScreenSlice';
+} from '@/app/_lib/features/fullscreenSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
 import CompanyLogo from '@/app/_assets/company.png';

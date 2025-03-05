@@ -1,7 +1,6 @@
 'use client';
 import { type FC } from 'react'
 import Image from 'next/image'
-import { Zoom } from '@/app/_components/zoom'
 import PlaceholderBackground from '@/app/_assets/images/placeholderBackground.jpg'
 import {cn} from '@/app/_lib/utils'
 

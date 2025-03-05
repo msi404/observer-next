@@ -6,7 +6,7 @@ import editorReducer from '@/app/_lib/features/editorSlice';
 import paginationReucer from '@/app/_lib/features/paginationSlice'
 import complaintsReducer from '@/app/_lib/features/complaintsSlice'
 import notificationsReducer from '@/app/_lib/features/notificationsSlice'
-import fullscreenReducer from '@/app/_lib/features/fullScreenSlice'
+import fullscreenReducer from '@/app/_lib/features/fullscreenSlice'
 export const store = configureStore({
   reducer: {
     [tatweerApi.reducerPath]: tatweerApi.reducer,
