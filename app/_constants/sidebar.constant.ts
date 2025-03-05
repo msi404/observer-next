@@ -15,7 +15,6 @@ import {
   Inbox,
   Landmark,
   Codesandbox,
-  Monitor,
   Component
 } from 'lucide-react';
 
@@ -25,7 +24,6 @@ type SidebarItem = {
   url: string;
   icon: React.ElementType;
   isNotes?: boolean; 
-  isFullscreen?: boolean;
 };
 
 export const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -40,13 +38,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: 'الكيانات السياسية',
     url: '/electoral-entities',
     icon: Component
-  },
-  {
-    persmission: 'view:reports',
-    title: 'شاشة العرض',
-    url: '/fullscreen',
-    icon: Monitor,
-    isFullscreen: true
   },
   {
     // @ts-ignore

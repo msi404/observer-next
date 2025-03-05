@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { type RootState } from '@/app/_lib/store'
 
-
 interface PaginationState
 {
 	totalPages: number
