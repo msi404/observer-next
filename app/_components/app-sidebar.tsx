@@ -1,11 +1,9 @@
 'use client';
-import { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { DocumentFullScreen } from '@chiragrupani/fullscreen-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SidebarContext } from '@/app/_components/ui/sidebar';
 import {
   useCurrentUserQuery,
   useUnseenNotificationQuery
@@ -43,17 +41,10 @@ import { Switch, Match } from '@/app/_components/switch';
 import { Dynamic } from '@/app/_components/dynamic';
 import { motion } from 'motion/react';
 
-export const AppSidebar = () => {
-  function useSidebar() {
-    const context = useContext(SidebarContext);
-    if (!context) {
-      throw new Error('useSidebar must be used within a SidebarProvider.');
-    }
-    return context;
-  }
-  const { toggleSidebar } = useSidebar();
-  const dispatch = useDispatch();
+export const AppSidebar = () =>
+{
   const isFullScreen = useSelector(selectIsFullScreen);
+  const dispatch = useDispatch();
   const { data, isLoading, isError, isSuccess, isFetching, refetch } =
     useCurrentUserQuery('');
   const { data: notes, isSuccess: isSuccessNotes } = useUnseenNotificationQuery(

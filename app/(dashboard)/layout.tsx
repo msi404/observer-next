@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/app/_components/ui/sidebar'
 import { Toaster } from "@/app/_components/ui/toaster";
 import { AppSidebar } from "@/app/_components/app-sidebar"
-import {Protected} from '@/app/_components/protected'
+import { Protected } from '@/app/_components/protected'
+import {FullscreenButton} from '@/app/_components/fullscreen-button'
 import "../_style/globals.css"
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default async function RootLayout({
           <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
+              <FullscreenButton />
               <SidebarTrigger className="-ml-1 print:hidden" />
             </div>
           </header>
