@@ -9,12 +9,13 @@ import {
   UsersRound,
   CalendarFold,
   CircleUserRound,
-  HandHeart,
+  HeartHandshake,
   ChartBarBig,
   Bell,
   Inbox,
   Landmark,
   Codesandbox,
+  Monitor,
   Component
 } from 'lucide-react';
 
@@ -24,6 +25,7 @@ type SidebarItem = {
   url: string;
   icon: React.ElementType;
   isNotes?: boolean; 
+  isFullscreen?: boolean;
 };
 
 export const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -40,6 +42,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: Component
   },
   {
+    persmission: 'view:reports',
+    title: 'شاشة العرض',
+    url: '/fullscreen',
+    icon: Monitor,
+    isFullscreen: true
+  },
+  {
     // @ts-ignore
     persmission: 'view:parties-representers',
     title: 'ممثلين الكيان',
@@ -50,7 +59,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     persmission: 'view:polling-management',
     title: 'ادارة الاقتراع',
     url: '/polling-management',
-    icon: Archive
+    icon: Archive,
   },
   {
     persmission: 'view:data-entries',
@@ -93,7 +102,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     persmission: 'view:election-base',
     title: 'القاعدة الانتخابية',
     url: '/election-base',
-    icon: HandHeart
+    icon: HeartHandshake
   },
   {
     persmission: 'view:election-results',

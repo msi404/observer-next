@@ -6,6 +6,7 @@ import { hasPermission } from '@/app/_auth/auth-rbac';
 import { DataTableColumnHeader } from '@/app/_components/table-header';
 import { Zoom } from '@/app/_components/zoom';
 import { EditCandidateForm } from '@/app/_components/forms/edit-candidate-form'
+
 export const useCandidateColumns = () => {
   const user = useSelector(selectUser);
   // @ts-ignore

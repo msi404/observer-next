@@ -6,6 +6,7 @@ import editorReducer from '@/app/_lib/features/editorSlice';
 import paginationReucer from '@/app/_lib/features/paginationSlice'
 import complaintsReducer from '@/app/_lib/features/complaintsSlice'
 import notificationsReducer from '@/app/_lib/features/notificationsSlice'
+import fullscreenReducer from '@/app/_lib/features/fullScreenSlice'
 export const store = configureStore({
   reducer: {
     [tatweerApi.reducerPath]: tatweerApi.reducer,
@@ -13,7 +14,8 @@ export const store = configureStore({
     editor: editorReducer,
     pagination: paginationReucer,
     complaints: complaintsReducer,
-    notifications: notificationsReducer
+    notifications: notificationsReducer,
+    fullscreen: fullscreenReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(

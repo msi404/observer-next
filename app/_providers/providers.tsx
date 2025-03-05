@@ -10,10 +10,13 @@ type ProvidersType = {
 
 export const Providers: FC<ProvidersType> = ({
   children,
-}) => {
+} ) =>
+{
   return (
     <Provider store={store}>
-        <DirectionProvider dir='rtl'>{children}</DirectionProvider>
+      <DirectionProvider dir='rtl'>
+        {children}
+        </DirectionProvider>
     </Provider>
   );
 };

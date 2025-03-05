@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@chiragrupani/fullscreen-react':
+        specifier: ^1.2.5
+        version: 1.2.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@19.0.0))
@@ -351,6 +354,12 @@ packages:
 
   '@bundled-es-modules/tough-cookie@0.1.6':
     resolution: {integrity: sha512-dvMHbL464C0zI+Yqxbz6kZ5TOEp7GLW+pry/RWndAR8MJQAXZ2rPmIs8tziTZjeIyhSNZgZbCePtfSbdWqStJw==}
+
+  '@chiragrupani/fullscreen-react@1.2.5':
+    resolution: {integrity: sha512-J2Da01MLgHL7bE1UzIMQNtxZgcrZaBLXrRuw8BL6u5pLtSD3qBgqZb4W2CeFTFZyl1R+irazYzo9smAT6j2WEg==}
+    peerDependencies:
+      react: '>=17.0'
+      react-dom: '>=17.0'
 
   '@chromatic-com/storybook@3.2.5':
     resolution: {integrity: sha512-Y388ft6po5FmGKdkcqz3r2sW6aMF5DSBaatC0jvT5bI/Dh27RJw3gPTmXJcZVNjteNl6tpiP3qxZ9MswAk5luw==}
@@ -5383,6 +5392,11 @@ snapshots:
     dependencies:
       '@types/tough-cookie': 4.0.5
       tough-cookie: 4.1.4
+
+  '@chiragrupani/fullscreen-react@1.2.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   '@chromatic-com/storybook@3.2.5(react@19.0.0)(storybook@8.6.3)':
     dependencies:
