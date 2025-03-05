@@ -15,7 +15,7 @@ import {
 } from '@/app/_lib/features/fullscreenSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
-import CompanyLogo from '@/app/_assets/company.png';
+import CompanyLogo from '@/app/_assets/tatweer.png';
 
 import {
   Sidebar,

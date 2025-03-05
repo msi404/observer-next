@@ -8,7 +8,7 @@ import { selectToken } from '@/app/_lib/features/authSlice';
 import { Container } from '@/app/_components/container';
 import { LoginForm } from '@/app/_components/forms/login-form';
 import Logo from '@/app/_assets/logo.png';
-import CompanyLogo from '@/app/_assets/company.png';
+import CompanyLogo from '@/app/_assets/tatweer.png';
 
 const SignInPage: NextPage = () => {
   const token = useSelector(selectToken);
