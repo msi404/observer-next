@@ -78,9 +78,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir='ltr'>
+    <html lang="ar" dir='rtl'>
       <body className={ `${ noto.className } ${ inter.className } antialiased` }>
-        <Scan />
         <Providers>
           <main className="w-full" dir='rtl'>{children}</main>
           <Toaster />
