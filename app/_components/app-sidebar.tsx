@@ -61,6 +61,7 @@ export const AppSidebar = () =>
         dispatch(setFullScreen(isFull));
       }}
     >
+      <Show when={!isFullScreen}>
       <Sidebar collapsible="icon" side="right">
         <SidebarHeader />
         <SidebarContent>
@@ -146,6 +147,7 @@ export const AppSidebar = () =>
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
+      </Show>
     </DocumentFullScreen>
   );
 };

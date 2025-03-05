@@ -10,12 +10,11 @@ import { TextAlign } from '@tiptap/extension-text-align'
 import {Underline} from '@tiptap/extension-underline'
 import {setEditor, setContent} from '@/app/_lib/features/editorSlice'
 
-
-
 export const SingleEditor: FC<{content: any}> = ({content}) =>
 {
 	const dispatch = useDispatch()
 	const editor = useEditor( {
+		content,
 		onCreate ( {editor} )
 		{
 			dispatch( setEditor( editor ) )

@@ -29,7 +29,6 @@ import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
 import { DynamicPagination } from '@/app/_components/dynamic-pagination';
-import {EditPostForm} from '@/app/_components/forms/edit-post-form'
 import {Calendar, PenSquare } from 'lucide-react';
 import { Post } from '@/app/_components/post'
 import {formatDate} from '@/app/_utils/format-date'
@@ -146,9 +145,6 @@ export const PostsWidget: FC = () =>
                         >
                           <Button className="w-full">عرض</Button>
                         </Link>
-                        <div>
-                          <EditPostForm item={item} />
-                        </div>
                       </div>
                     }
                   />
