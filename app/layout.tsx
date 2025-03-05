@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Noto_Kufi_Arabic } from 'next/font/google';
 import { Providers } from '@/app/_providers/providers';
 import { Toaster } from '@/app/_components/ui/toaster';
-import { Scan } from '@/app/_components/scan';
 import './_style/globals.css';
 
 const inter = Inter({

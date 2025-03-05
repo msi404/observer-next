@@ -58,7 +58,7 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 					<div className="flex flex-col items-center gap-2 text-center">
 						<h1 className="text-2xl font-bold">تسجيل الدخول</h1>
 						<p className="text-balance text-sm text-muted-foreground">
-							ادخل اسم المستخدم لتسجيل الدخول
+							يرجى ادخال اسم المستخدم وكلمة المرور لتسجيل الدخول
 						</p>
 					</div>
 					<div className="grid gap-6">
