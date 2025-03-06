@@ -16,6 +16,7 @@ import {
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
 import CompanyLogo from '@/app/_assets/tatweer.png';
+import Logo from '@/app/_assets/logo.png'
 
 import {
   Sidebar,
@@ -65,11 +66,11 @@ export const AppSidebar = () =>
         <SidebarHeader />
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel className="flex justify-center items-center mb-6">
+            <SidebarGroupLabel className="flex  items-center mb-6">
               <Image
-                src={CompanyLogo.src}
-                width={120}
-                height={100}
+                src={Logo.src}
+                width={40}
+                height={30}
                 alt="Company Logo"
               />
             </SidebarGroupLabel>
@@ -126,7 +127,7 @@ export const AppSidebar = () =>
               </SidebarMenu>
             </SidebarContent>
           </SidebarGroup>
-        </SidebarContent>
+          </SidebarContent>
         <Separator />
         <SidebarFooter>
           <Switch>
@@ -143,7 +144,15 @@ export const AppSidebar = () =>
               <FetchUser />
             </Match>
           </Switch>
-        </SidebarFooter>
+          </SidebarFooter>
+          <div className='flex justify-center items-center mb-6'>
+          <Image
+                src={CompanyLogo.src}
+                width={120}
+                height={100}
+                alt="Company Logo"
+              />
+         </div>
         <SidebarRail />
       </Sidebar>
       </Show>

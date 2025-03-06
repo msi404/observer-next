@@ -21,7 +21,7 @@ const SignInPage: NextPage = () => {
           <div className="w-full max-w-xs">
             <LoginForm />
           </div>
-          <div className="flex justify-center gap-2 md:justify-start absolute bottom-4 ">
+          <div className="flex justify-center gap-2 md:justify-start translate-y-40">
             <div className="flex items-center justify-center rounded-md text-primary-foreground">
               <Image
                 src={CompanyLogo.src}

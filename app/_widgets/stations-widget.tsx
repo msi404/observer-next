@@ -146,7 +146,6 @@ export const StationsWidget: FC = () =>
                   }
                   Footer={
                     <div className="flex justify-between gap-3 w-full">
-                        <Button className="w-full flex-1">عرض صور شريط الاقتراع</Button>
                       <div>
                         <Show when={hasPermission(user, 'view:addStation')}>
                           <EditStationForm item={item} />
