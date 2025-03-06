@@ -19,7 +19,7 @@ import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
 import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
-import {Switch, Match} from '@/app/_components/switch'
+import { Switch, Match } from '@/app/_components/switch';
 interface EditPartiesRepresentersProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
@@ -134,7 +134,7 @@ export const EditPartiesRepresentersForm = ({
                   </FormItem>
                 )}
               />
-   <FormField
+              <FormField
                 control={form.control}
                 name="username"
                 render={({ field }) => (
@@ -164,12 +164,20 @@ export const EditPartiesRepresentersForm = ({
                       </div>
                     </FormControl>
                     <Switch>
-                      <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
+                      <Match
+                        when={
+                          isUsernameTaken === true && isUsernameTakenSuccess
+                        }
+                      >
                         <p className="text-destructive font-medium text-xs">
                           اسم المستخدم قيد الاستخدام
                         </p>
                       </Match>
-                      <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
+                      <Match
+                        when={
+                          isUsernameTaken === false && isUsernameTakenSuccess
+                        }
+                      >
                         <p className="text-green-600 font-medium text-xs">
                           اسم المستخدم متاح
                         </p>
@@ -210,7 +218,7 @@ export const EditPartiesRepresentersForm = ({
                       <Combobox
                         options={electoralEntitiesSearch}
                         value={field.value} // Controlled by React Hook Form
-                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onChange={field.onChange} // Updates React Hook Form on change
                         onScrollEnd={onElectoralEntitiesScrollEnd}
                         label="الكيان السياسي"
                         disabled={isLoadingUpdate}
@@ -231,6 +239,7 @@ export const EditPartiesRepresentersForm = ({
                     <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
+                        type='number'
                         className={cn(
                           form.formState.errors.phone &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'

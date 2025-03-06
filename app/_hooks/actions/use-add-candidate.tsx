@@ -81,7 +81,6 @@ export const useAddCandidate = () =>
       name: '',
       username: '',
       password: '',
-      phone: '',
       email: '',
       govCenterId: '',
       // @ts-ignore

@@ -46,7 +46,7 @@ export const useProvniceAdminsColumns = () => {
         return <Zoom className='border rounded-full w-16 h-16' preview={value} />;
       }
     },
-    hasPermission(user, 'view:addPronviceAdmin') && {
+    hasPermission(user!, 'view:addPronviceAdmin') && {
       id: 'actions',
       accessorKey: 'actions',
       header: 'الاجرائات',

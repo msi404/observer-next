@@ -238,6 +238,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                     <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
+                        type='number'
                         className={cn(
                           form.formState.errors.phone &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'

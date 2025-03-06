@@ -1,7 +1,7 @@
 import { tatweerApi } from '@/app/_services/api';
 
 const mutationApi = tatweerApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: ( builder ) => ( {
     createElectoralEntity: builder.mutation({
       query: (item) => ({
         url: 'electoralentities',
@@ -149,6 +149,13 @@ const mutationApi = tatweerApi.injectEndpoints({
         method: 'PUT',
         body: user
       })
+    } ),
+    changeUserPassword: builder.mutation({
+      query: ({ body, id}: { body: any, id: string}) => ({
+        url: `users/${id}/change-password`,
+        method: 'PUT',
+        body
+      })
     }),
     updateCurrentUser: builder.mutation({
       query: ({ user}: { user: any}) => ({
@@ -206,5 +213,6 @@ export const {
   useDeleteStationMutation,
   useSwitchSeenNotificationMutation,
   useUpdateCurrentUserMutation,
-  useUpdateComplaintMutation
+  useUpdateComplaintMutation,
+  useChangeUserPasswordMutation
 } = mutationApi;

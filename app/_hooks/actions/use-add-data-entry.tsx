@@ -72,7 +72,6 @@ export const useAddDataEntry = () =>
       pollingCenterId: '',
       electoralEntityId: '',
       username: '',
-      phone: '',
       email: '',
       password: '',
       role: 100

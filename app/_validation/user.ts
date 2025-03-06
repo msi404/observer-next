@@ -183,3 +183,8 @@ export const addProvinceAdminSchema = z.object({
   phone: z.string().min(11).max(16),
   email: z.string().email(),
 });
+
+export const changePasswordSchema = z.object( {
+  newPassword: z.string().min( 6 ).max( 16 ),
+  notify: z.boolean().default(false)
+})

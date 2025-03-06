@@ -69,7 +69,6 @@ export const useAddPartiesRepresenters = () => {
       pollingCenterId: '',
       electoralEntityId: '',
       username: '',
-      phone: '',
       email: '',
       password: '',
       role: 10

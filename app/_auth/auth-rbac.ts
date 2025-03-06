@@ -44,8 +44,6 @@ const ROLES = {
     'view:total-comfirmed-voters',
     'view:total-possible-voters',
     'view:confirmedVotersActions',
-    'view:addConfirmedVoter',
-    'view:addPossibleVoter',
     'view:reports',
     'view:candidate-activity-chart',
     'view:total-issues-chart',
@@ -68,10 +66,13 @@ const ROLES = {
     'view:addPronviceAdmin',
     'view:voters',
     'view:addCandidate',
+    'view:addObserver',
     "view:editCandidate",
     "view:votersByState",
     "view:gendersChart",
     "view:voterAgeChart",
+    'view:addDataEntry',
+    "view:addVoter",
     "view:candidatesChart",
     'view:polling-management',
     'view:state-mangement',
@@ -101,7 +102,6 @@ const ROLES = {
   12: [
     'view:home',
     'view:candidatesChart',
-    'view:addObserver',
     "view:updateComplaint",
     'view:total-issues-chart',
     'view:total-candidates',
@@ -132,7 +132,8 @@ const ROLES = {
     'view:voters',
     'view:total-comfirmed-voters',
     'view:total-possible-voters',
-    "view:addVoter"
+    "view:addVoter",
+    "view:addObserver"
   ],
 
   102: [

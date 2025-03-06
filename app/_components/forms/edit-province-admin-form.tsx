@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/basic-dialog';
-import { Trash, Pencil } from 'lucide-react';
+import { Trash, Pencil, KeyRound } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
   Form,
@@ -17,10 +17,11 @@ import { DatePicker } from '@/app/_components/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
-import {Dropzone} from '@/app/_components/dropzone'
+import { Dropzone } from '@/app/_components/dropzone';
 import { cn } from '@/app/_lib/utils';
+import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-password';
 import { useEditProvinceAdmins } from '@/app/_hooks/actions/use-edit-province-admin';
-import {Show} from '@/app/_components/show'
+import { Show } from '@/app/_components/show';
 import { Switch, Match } from '@/app/_components/switch';
 
 interface EditProvinceAdminsFormProps {
@@ -48,6 +49,14 @@ export const EditProvniceAdminForm = ({
     fileRef,
     form
   } = useEditProvinceAdmins({ item });
+
+  const {
+    isLoadingChangePassword,
+    onPasswordChange,
+    setChangePasswordOpen,
+    changePasswordOpen,
+    changePasswordform
+  } = useChangeUserPassword({ role: item.role, id: item.id });
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -93,6 +102,85 @@ export const EditProvniceAdminForm = ({
           </div>
         </DialogFooter>
       </BasicDialog>
+      <BasicDialog
+        open={changePasswordOpen}
+        onOpenChange={setChangePasswordOpen}
+        button={
+          <motion.button
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                damping: 0,
+                ease: 'linear',
+                duration: 0.2
+              }
+            }}
+            className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <KeyRound size="20px" />
+          </motion.button>
+        }
+        title="تغيير كلمة المرور"
+        description="ادخل المعطيات الاتية لتغيير كلمة المرور"
+      >
+        <Form {...changePasswordform}>
+          <form
+            className="grid gap-5"
+            onSubmit={changePasswordform.handleSubmit(onPasswordChange)}
+          >
+            {/* Form Fields */}
+            <div className="grid gap-4">
+              {/* Name */}
+              <FormField
+                control={changePasswordform.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>كلمة المرور الجديدة</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='password'
+                        className={cn(
+                          changePasswordform.formState.errors.newPassword &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingChangePassword}
+                        placeholder="******"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Separator */}
+            <div className="relative">
+              <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
+            </div>
+
+            {/* Form Actions */}
+            <DialogFooter>
+              <div className="flex justify-between w-full">
+                <Button type="submit" disabled={isLoadingChangePassword}>
+                  تغيير
+                  {isLoadingChangePassword && (
+                    <div className=" scale-125">
+                      <Spinner />
+                    </div>
+                  )}
+                </Button>
+                <DialogClose asChild aria-label="Close">
+                  <Button variant="outline" disabled={isLoadingChangePassword}>
+                    الغاء
+                  </Button>
+                </DialogClose>
+              </div>
+            </DialogFooter>
+          </form>
+        </Form>
+      </BasicDialog>
+
       <BasicDialog
         open={openUpdate}
         onOpenChange={setOpenUpdate}
@@ -169,12 +257,20 @@ export const EditProvniceAdminForm = ({
                       </div>
                     </FormControl>
                     <Switch>
-                      <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
+                      <Match
+                        when={
+                          isUsernameTaken === true && isUsernameTakenSuccess
+                        }
+                      >
                         <p className="text-destructive font-medium text-xs">
                           اسم المستخدم قيد الاستخدام
                         </p>
                       </Match>
-                      <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
+                      <Match
+                        when={
+                          isUsernameTaken === false && isUsernameTakenSuccess
+                        }
+                      >
                         <p className="text-green-600 font-medium text-xs">
                           اسم المستخدم متاح
                         </p>
@@ -215,7 +311,7 @@ export const EditProvniceAdminForm = ({
                       <Combobox
                         options={govCentersSearch}
                         value={field.value} // Controlled by React Hook Form
-                        onChange={ field.onChange } // Updates React Hook Form on change
+                        onChange={field.onChange} // Updates React Hook Form on change
                         onScrollEnd={onGovCenterScrollEnd}
                         label="اختيار مكتب محافظة"
                         disabled={isLoadingUpdate || isLoadingFile}
@@ -236,6 +332,7 @@ export const EditProvniceAdminForm = ({
                     <FormLabel>رقم الهاتف</FormLabel>
                     <FormControl>
                       <Input
+                        type="number"
                         className={cn(
                           form.formState.errors.phone &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -288,7 +385,10 @@ export const EditProvniceAdminForm = ({
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingUpdate || isLoadingFile}>
+                <Button
+                  type="submit"
+                  disabled={isLoadingUpdate || isLoadingFile}
+                >
                   تعديل
                   {isLoadingUpdate && (
                     <div className=" scale-125">
@@ -297,7 +397,10 @@ export const EditProvniceAdminForm = ({
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingUpdate || isLoadingFile}>
+                  <Button
+                    variant="outline"
+                    disabled={isLoadingUpdate || isLoadingFile}
+                  >
                     الغاء
                   </Button>
                 </DialogClose>

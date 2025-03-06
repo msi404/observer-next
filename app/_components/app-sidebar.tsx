@@ -40,7 +40,6 @@ import { For } from '@/app/_components/for';
 import { Switch, Match } from '@/app/_components/switch';
 import { Dynamic } from '@/app/_components/dynamic';
 import { motion } from 'motion/react';
-
 export const AppSidebar = () =>
 {
   const isFullScreen = useSelector(selectIsFullScreen);
@@ -123,7 +122,7 @@ export const AppSidebar = () =>
                       </SidebarMenuItem>
                     </Show>
                   )}
-                </For>
+                  </For>
               </SidebarMenu>
             </SidebarContent>
           </SidebarGroup>

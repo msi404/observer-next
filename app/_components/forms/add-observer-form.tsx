@@ -27,7 +27,7 @@ import { Dropzone } from '@/app/_components/dropzone';
 import { Show } from '@/app/_components/show';
 import { DatePicker } from '@/app/_components/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import {Switch, Match} from '@/app/_components/switch'
+import { Switch, Match } from '@/app/_components/switch';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddObserverForm = () => {
@@ -97,7 +97,7 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
-<FormField
+            <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
@@ -127,12 +127,16 @@ export const AddObserverForm = () => {
                     </div>
                   </FormControl>
                   <Switch>
-                    <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
+                    <Match
+                      when={isUsernameTaken === true && isUsernameTakenSuccess}
+                    >
                       <p className="text-destructive font-medium text-xs">
                         اسم المستخدم قيد الاستخدام
                       </p>
                     </Match>
-                    <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
+                    <Match
+                      when={isUsernameTaken === false && isUsernameTakenSuccess}
+                    >
                       <p className="text-green-600 font-medium text-xs">
                         اسم المستخدم متاح
                       </p>
@@ -196,11 +200,10 @@ export const AddObserverForm = () => {
                     <Combobox
                       options={govCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={ ( value ) =>
-                      {
-                        field.onChange( value );
-                        setSelectedGovCenter( value )
-                        setSelectedPollingCenter(null)
+                      onChange={(value) => {
+                        field.onChange(value);
+                        setSelectedGovCenter(value);
+                        setSelectedPollingCenter(null);
                       }} // Updates React Hook Form on change
                       onScrollEnd={onGovCenterScrollEnd}
                       label="اختيار مكتب المحافظة"
@@ -225,14 +228,15 @@ export const AddObserverForm = () => {
                     <Combobox
                       options={pollingCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={ ( value ) =>
-                      {
-                        field.onChange( value );
-                        setSelectedPollingCenter(value)
+                      onChange={(value) => {
+                        field.onChange(value);
+                        setSelectedPollingCenter(value);
                       }} // Updates React Hook Form on change
                       onScrollEnd={onPollingCenterScrollEnd}
                       label="اختيار مركز اقتراع"
-                      disabled={isLoadingUser || isLoadingFile || !selectedGovCenter}
+                      disabled={
+                        isLoadingUser || isLoadingFile || !selectedGovCenter
+                      }
                       className={cn(
                         form.formState.errors.pollingCenterId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
@@ -255,7 +259,9 @@ export const AddObserverForm = () => {
                       onChange={field.onChange} // Updates React Hook Form on change
                       onScrollEnd={onStationScrollEnd}
                       label="اختيار محطة التسجيل"
-                      disabled={isLoadingUser || isLoadingFile || !selectedPollingCenter}
+                      disabled={
+                        isLoadingUser || isLoadingFile || !selectedPollingCenter
+                      }
                       className={cn(
                         form.formState.errors.stationId &&
                           'border-destructive focus:border-destructive focus:ring-destructive'
@@ -273,6 +279,7 @@ export const AddObserverForm = () => {
                   <FormLabel>رقم الهاتف</FormLabel>
                   <FormControl>
                     <Input
+                      type='number'
                       className={cn(
                         form.formState.errors.phone &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'

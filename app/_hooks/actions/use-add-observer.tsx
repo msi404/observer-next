@@ -116,7 +116,6 @@ export const useAddObserver = () => {
       pollingCenterId: '',
       stationId: '',
       username: '',
-      phone: '',
       profileImg: '',
       email: '',
       password: '',

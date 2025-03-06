@@ -86,7 +86,6 @@ export const useAddProvinceAdmin = () =>
       electoralEntityId: '',
       username: '',
       profileImg: '',
-      phone: '',
       email: '',
       password: '',
       role: 12
