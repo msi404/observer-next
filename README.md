@@ -6,6 +6,7 @@
 + ✅ **Redux Query**
 + ✅ **Shadcn ui**
 + ✅ **Storybook**
++ ✅ **Husky**
 + ✅ **Zod validation**
 + ✅ **React-hook-form**
 + ✅ **Motion**
