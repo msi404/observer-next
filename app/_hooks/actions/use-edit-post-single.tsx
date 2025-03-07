@@ -68,6 +68,7 @@ export const useEditPostSingle = ( { item }: { item: PostItem; } ) =>
            post: addPostSchema.parse(form.getValues()),
            id: item.id
          });
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
        } catch (error: any) {
          toast({
            title: 'Error',
@@ -83,7 +84,7 @@ export const useEditPostSingle = ( { item }: { item: PostItem; } ) =>
 
   const onDelete = async () => {
     await deletePost(item.id);
-    router.back()
+    router.replace('/events')
   };
   return {
     openUpdate,
