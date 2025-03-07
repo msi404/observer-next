@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { useMounted } from '@mantine/hooks';
 import { resetPaginationState } from '@/app/_lib/features/paginationSlice';
-import { Zoom } from '@/app/_components/zoom';
+import { Zoom } from '@/app/_components/custom/zoom';
 import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,9 +16,9 @@ import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { usePostsQuery } from '@/app/_services/fetchApi';
-import { Show } from '@/app/_components/show';
-import { Switch, Match } from '@/app/_components/switch';
-import { For } from '@/app/_components/for';
+import { Show } from '@/app/_components/utils/show';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { For } from '@/app/_components/utils/for';
 import {
   Card,
   CardHeader,
@@ -28,9 +28,9 @@ import {
 import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
-import { DynamicPagination } from '@/app/_components/dynamic-pagination';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { Calendar } from 'lucide-react';
-import { Post } from '@/app/_components/post';
+import { Post } from '@/app/_components/custom/post';
 import { formatDate } from '@/app/_utils/format-date';
 
 export const CandidatePostsSingleWidget: FC = () =>

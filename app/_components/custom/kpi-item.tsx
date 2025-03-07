@@ -1,6 +1,6 @@
 'use client';
 import { ReactElement, type FC } from 'react';
-import {Dynamic} from '@/app/_components/dynamic'
+import {Dynamic} from '@/app/_components/utils/dynamic'
 
 export const KpiItem: FC<{Icon: ReactElement, title: string, kpi: number}> = ({Icon, title, kpi}) => {
   return (

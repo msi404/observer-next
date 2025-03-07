@@ -28,12 +28,12 @@ import {
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
-import { BasicDialog } from '@/app/_components/basic-dialog';
-import { DatePicker } from '@/app/_components/date-picker';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
+import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import { Dropzone } from '@/app/_components/dropzone';
-import { Combobox } from '@/app/_components/combobox';
-import { Show } from '@/app/_components/show';
+import { Dropzone } from '@/app/_components/custom/dropzone';
+import { Combobox } from '@/app/_components/custom/combobox';
+import { Show } from '@/app/_components/utils/show';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddConfirmVoterForm = () => {

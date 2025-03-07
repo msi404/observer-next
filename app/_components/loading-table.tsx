@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/app/_components/ui/card';
 import { Skeleton } from '@/app/_components/ui/skeleton';
-import { Container } from '@/app/_components/container';
-import { For } from '@/app/_components/for';
+import { Container } from '@/app/_components/containers/container';
+import { For } from '@/app/_components/utils/for';
 
 export const LoadingTable = () => {
   const arrayHeader = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }];

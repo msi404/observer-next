@@ -12,8 +12,8 @@ import {
   TableRow
 } from '@/app/_components/ui/table';
 
-import { For } from '@/app/_components/for';
-import { Show } from '@/app/_components/show';
+import { For } from '@/app/_components/utils/for';
+import { Show } from '@/app/_components/utils/show';
 
 interface DynamicTableProps {
   table: any;

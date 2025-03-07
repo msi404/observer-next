@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'motion/react';
-import { BasicDialog } from '@/app/_components/basic-dialog';
-import { Trash, Pencil } from 'lucide-react';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
+import { Trash, Pencil, KeyRound } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
   Form,
@@ -11,16 +11,18 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
-import { Combobox } from '@/app/_components/combobox';
+import { Combobox } from '@/app/_components/custom/combobox';
 import { Input } from '@/app/_components/ui/input';
-import { DatePicker } from '@/app/_components/date-picker';
+import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
+import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-password';
 import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
-import { Switch, Match } from '@/app/_components/switch';
+import { Switch, Match } from '@/app/_components/utils/switch';
 interface EditPartiesRepresentersProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any; // Ideally, replace `any` with a proper interface
 }
 
@@ -42,7 +44,15 @@ export const EditPartiesRepresentersForm = ({
     isUsernameTakenSuccess,
     onCheckUsernameTaken,
     form
-  } = useEditPartiesRepresenters({ item });
+  } = useEditPartiesRepresenters( { item } );
+  
+    const {
+      isLoadingChangePassword,
+      onPasswordChange,
+      setChangePasswordOpen,
+      changePasswordOpen,
+      changePasswordform
+    } = useChangeUserPassword({ role: item.role, id: item.id });
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -87,6 +97,84 @@ export const EditPartiesRepresentersForm = ({
             </DialogClose>
           </div>
         </DialogFooter>
+      </BasicDialog>
+      <BasicDialog
+        open={changePasswordOpen}
+        onOpenChange={setChangePasswordOpen}
+        button={
+          <motion.button
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                damping: 0,
+                ease: 'linear',
+                duration: 0.2
+              }
+            }}
+            className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <KeyRound size="20px" />
+          </motion.button>
+        }
+        title="تغيير كلمة المرور"
+        description="ادخل المعطيات الاتية لتغيير كلمة المرور"
+      >
+        <Form {...changePasswordform}>
+          <form
+            className="grid gap-5"
+            onSubmit={changePasswordform.handleSubmit(onPasswordChange)}
+          >
+            {/* Form Fields */}
+            <div className="grid gap-4">
+              {/* Name */}
+              <FormField
+                control={changePasswordform.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>كلمة المرور الجديدة</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='password'
+                        className={cn(
+                          changePasswordform.formState.errors.newPassword &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingChangePassword}
+                        placeholder="******"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Separator */}
+            <div className="relative">
+              <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
+            </div>
+
+            {/* Form Actions */}
+            <DialogFooter>
+              <div className="flex justify-between w-full">
+                <Button type="submit" disabled={isLoadingChangePassword}>
+                  تغيير
+                  {isLoadingChangePassword && (
+                    <div className=" scale-125">
+                      <Spinner />
+                    </div>
+                  )}
+                </Button>
+                <DialogClose asChild aria-label="Close">
+                  <Button variant="outline" disabled={isLoadingChangePassword}>
+                    الغاء
+                  </Button>
+                </DialogClose>
+              </div>
+            </DialogFooter>
+          </form>
+        </Form>
       </BasicDialog>
       <BasicDialog
         open={openUpdate}

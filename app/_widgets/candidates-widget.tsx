@@ -6,15 +6,15 @@ import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
-import { Table } from '@/app/_components/table';
-import { Switch, Match } from '@/app/_components/switch';
+import { Table } from '@/app/_components/custom/table';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
 import { useCandidatesTable } from '@/app/_hooks/tables/use-candidates-table'
 
 import { AddCandidateForm } from '@/app/_components/forms/add-candidate-form';
 import {FilterCandidateForm} from '@/app/_components/forms/filter-candidate-form'
-import { Retry } from '@/app/_components/retry';
+import { Retry } from '@/app/_components/custom/retry';
 
 export const CandidatesWidget = () =>
 {

@@ -1,5 +1,5 @@
 import { type NextPage } from 'next'
-import {Container} from '@/app/_components/container'
+import {Container} from '@/app/_components/containers/container'
 import { ComplaintsWidget } from '@/app/_widgets/complaints-widget'
 
 const IssuesPage: NextPage = () =>

@@ -3,7 +3,7 @@ import { Fragment, type FC, type ReactElement } from 'react';
 import { useSelector } from 'react-redux'
 import {selectUser} from '@/app/_lib/features/authSlice'
 import { motion } from 'motion/react';
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import {
   Card,
   CardContent,
@@ -12,9 +12,9 @@ import {
   CardDescription
 } from '@/app/_components/ui/card';
 import { ArchiveX, RefreshCcw } from 'lucide-react';
-import { Show } from '@/app/_components/show';
+import { Show } from '@/app/_components/utils/show';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { Dynamic } from '@/app//_components/dynamic';
+import { Dynamic } from '@/app/_components/utils/dynamic';
 import {type Permission} from '@/app/_auth/auth-rbac'
 export const EmptyCard: FC<{ retry: VoidFunction; Add?: ReactElement, permission: Permission; }> = ( {
   permission,

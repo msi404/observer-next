@@ -7,9 +7,9 @@ import {
   BreadCrumb,
   BreadCrumbItem,
   BreadCrumbSeparator
-} from '@/app/_components/breadcrumb';
-import { Switch, Match } from '@/app/_components/switch';
-import { For } from '@/app/_components/for';
+} from '@/app/_components/custom/breadcrumb';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { For } from '@/app/_components/utils/for';
 import { ChevronRight } from 'lucide-react';
 
 export const AppBreadcrumb = () => {

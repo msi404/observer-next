@@ -1,6 +1,6 @@
 'use client';
 import { type NextPage } from 'next';
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import { KpiWidget } from '@/app/_widgets/kpi-widget'
 import {VotersByAgeChartWidget} from '@/app/_widgets/voters-by-age-chart-widget'
 import {CandidatesActivitiesChartWidget} from '@/app/_widgets/candidates-activities-chart'

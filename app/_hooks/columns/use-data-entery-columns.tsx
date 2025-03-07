@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { DataTableColumnHeader } from '@/app/_components/table-header';
+import { DataTableColumnHeader } from '@/app/_components/custom/table-header';
 import {EditDataEntryForm} from '@/app/_components/forms/edit-data-entry-form'
 export const useDataEntryColumns = () => {
   const user = useSelector(selectUser);

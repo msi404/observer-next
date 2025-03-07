@@ -16,9 +16,9 @@ import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
 import { useGovCentersQuery } from '@/app/_services/fetchApi';
-import { Show } from '@/app/_components/show';
-import { Switch, Match } from '@/app/_components/switch';
-import { For } from '@/app/_components/for';
+import { Show } from '@/app/_components/utils/show';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { For } from '@/app/_components/utils/for';
 import {
   Card,
   CardHeader,
@@ -28,7 +28,7 @@ import {
 import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
-import { DynamicPagination } from '@/app/_components/dynamic-pagination';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddGovCenterForm } from '@/app/_components/forms/add-gov-center-form';
 import { EditGovCenterForm } from '@/app/_components/forms/edit-gov-center-form';
 import { Landmark } from 'lucide-react';

@@ -1,6 +1,6 @@
 'use client';
 import { type NextPage } from 'next';
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import {DataEntriesWidget} from '@/app/_widgets/data-entries-widget'
 const DataEntriesPage: NextPage = () => {
   return (

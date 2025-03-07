@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { DataTableColumnHeader } from '@/app/_components/table-header';
+import { DataTableColumnHeader } from '@/app/_components/custom/table-header';
 import { calcAge } from '@/app/_utils/calc-age';
-import { Zoom } from '@/app/_components/zoom';
+import { Zoom } from '@/app/_components/custom/zoom';
 import {EditConfirmedVoterForm} from '@/app/_components/forms/edit-confirmed-voter-form'
 export const useConfirmedVotersColumns = () => {
   const user = useSelector(selectUser);

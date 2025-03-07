@@ -1,19 +1,19 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { Zoom } from '@/app/_components/zoom';
+import { Zoom } from '@/app/_components/custom/zoom';
 import { type FC } from 'react';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { usePostQuery } from '@/app/_services/fetchApi';
-import { Show } from '@/app/_components/show';
-import { Switch, Match } from '@/app/_components/switch';
+import { Show } from '@/app/_components/utils/show';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import { Card } from '@/app/_components/ui/card';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
 import {EditPostFormSingle} from '@/app/_components/forms/edit-post-single-form'
 import { Calendar } from 'lucide-react';
-import { Post } from '@/app/_components/post';
+import { Post } from '@/app/_components/custom/post';
 import { formatDate } from '@/app/_utils/format-date';
 
 export const PostWidget: FC = () => {

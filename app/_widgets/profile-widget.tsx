@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { type FC } from 'react';
 import { useUserQuery } from '@/app/_services/fetchApi';
-import { KpiItem } from '@/app/_components/kpi-item'
+import { KpiItem } from '@/app/_components/custom/kpi-item'
 import {
   Tabs,
   TabsContent,
@@ -10,10 +10,10 @@ import {
   TabsTrigger
 } from '@/app/_components/ui/tabs';
 import { Card } from '@/app/_components/ui/card';
-import { Background } from '@/app/_components/background';
-import { Profile } from '@/app/_components/profile';
+import { Background } from '@/app/_components/custom/background';
+import { Profile } from '@/app/_components/custom/profile';
 import { LoadingIndicator } from '@/app/_components/loading-indicator';
-import { Switch, Match } from '@/app/_components/switch';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import { Calendar, Users, Building2, Phone, Mail, Hash } from 'lucide-react';
 import {CandidatePostsSingleWidget} from '@/app/_widgets/candidate-posts-single-widget'
 

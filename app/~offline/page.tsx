@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import {Container} from '@/app/_components/container'
+import {Container} from '@/app/_components/containers/container'
 export const metadata: Metadata = {
   title: "Offline",
 };

@@ -6,8 +6,8 @@ import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
-import { Table } from '@/app/_components/table';
-import { Switch, Match } from '@/app/_components/switch';
+import { Table } from '@/app/_components/custom/table';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
 import { usePossibleVotersTable } from '@/app/_hooks/tables/use-possible-voters-table';
@@ -15,7 +15,7 @@ import { usePossibleVotersTable } from '@/app/_hooks/tables/use-possible-voters-
 import { AddPossibleVoterForm } from '@/app/_components/forms/add-possible-voter-form';
 import { FilterPossibleVotersForm } from '@/app/_components/forms/filter-possible-voter-form';
 
-import { Retry } from '@/app/_components/retry';
+import { Retry } from '@/app/_components/custom/retry';
 
 export const PossibleVotersWidget = () =>
 {

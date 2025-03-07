@@ -1,4 +1,4 @@
-import {Container} from '@/app/_components/container'
+import {Container} from '@/app/_components/containers/container'
 import {LoadingIndicator} from '@/app/_components/loading-indicator'
 const Loading = () =>
 {

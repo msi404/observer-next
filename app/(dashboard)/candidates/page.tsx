@@ -1,7 +1,7 @@
 'use client';
 import { type NextPage } from 'next';
 
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import {CandidatesWidget} from '@/app/_widgets/candidates-widget'
 
 const CandidatesPage: NextPage = () => {

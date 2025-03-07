@@ -1,6 +1,6 @@
 import { Column } from "@tanstack/react-table"
 import { ArrowDown, ArrowUp } from "lucide-react"
-import {Show} from '@/app/_components/show'
+import {Show} from '@/app/_components/utils/show'
 import { cn } from "@/app/_lib/utils"
 import { Button } from "@/app/_components/ui/button"
 

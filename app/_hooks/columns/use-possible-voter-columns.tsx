@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { DataTableColumnHeader } from '@/app/_components/table-header';
+import { DataTableColumnHeader } from '@/app/_components/custom/table-header';
 import { calcAge } from '@/app/_utils/calc-age';
 import {EditPossilbeVoterForm} from '@/app/_components/forms/edit-possible-voter-form'
 export const usePossibleVotersColumns = () => {

@@ -19,9 +19,9 @@ import { Separator } from '@/app/_components/ui/separator';
 import {Input} from '@/app/_components/ui/input'
 
 // Shared Components
-import { BasicDialog } from '@/app/_components/basic-dialog';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Spinner } from '@/app/_components/spinner';
-import { Combobox } from '@/app/_components/combobox';
+import { Combobox } from '@/app/_components/custom/combobox';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddGovCenterForm = () => {

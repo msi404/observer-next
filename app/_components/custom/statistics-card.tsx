@@ -9,7 +9,7 @@ import {
 	CardTitle,
 	CardFooter
 } from "@/app/_components/ui/card";
-import {Show} from '@/app/_components/show'
+import {Show} from '@/app/_components/utils/show'
 
 export const StatisticsCard: FC<{
 	icon: ReactNode;

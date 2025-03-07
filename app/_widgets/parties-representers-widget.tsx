@@ -6,14 +6,14 @@ import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
-import { Table } from '@/app/_components/table';
-import { Switch, Match } from '@/app/_components/switch';
+import { Table } from '@/app/_components/custom/table';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
 import { usePartiesRepresentersTable } from '@/app/_hooks/tables/use-parties-representers-table'
 import {AddPartiesRepresentersForm} from '@/app/_components/forms/add-parties-representers-form'
 import {FilterPartiesRepresentersForm} from '@/app/_components/forms/filter-parties-representers-form'
-import { Retry } from '@/app/_components/retry';
+import { Retry } from '@/app/_components/custom/retry';
 
 export const PartiesRepresentersWidget = () =>
 {

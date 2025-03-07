@@ -23,9 +23,9 @@ import {
   CardContent
 } from '@/app/_components/ui/card';
 import { Bell } from 'lucide-react';
-import { For } from '@/app/_components/for';
-import { Switch, Match } from '@/app/_components/switch';
-import { Retry } from '@/app/_components/retry';
+import { For } from '@/app/_components/utils/for';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { Retry } from '@/app/_components/custom/retry';
 import { AddNotificationsForm } from '@/app/_components/forms/add-notification-form';
 import Placeholder from '@/app/_assets/images/placeholder.png';
 

@@ -1,5 +1,5 @@
 import { type NextPage } from 'next';
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import { ComplaintsChartWidget } from '@/app/_widgets/complaints-chart-widget';
 import { GenderChartWidget } from '@/app/_widgets/gender-chart-widget';
 import { VoterStatesChartWidget } from '@/app/_widgets/voter-states-chart-widget';

@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { DataTableColumnHeader } from '@/app/_components/table-header';
-import { Zoom } from '@/app/_components/zoom';
+import { DataTableColumnHeader } from '@/app/_components/custom/table-header';
+import { Zoom } from '@/app/_components/custom/zoom';
 import { TrendingUp } from 'lucide-react';
 
 export const useElectionsResultsColumns = () => {

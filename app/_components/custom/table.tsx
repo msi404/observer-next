@@ -5,19 +5,22 @@ import { selectUser } from '@/app/_lib/features/authSlice';
 import { Card, CardContent } from '@/app/_components/ui/card';
 import { Input } from '@/app/_components/ui/input';
 import { Button } from '@/app/_components/ui/button';
-import { Show } from '@/app/_components/show';
-import { Dynamic } from '@/app/_components//dynamic';
-import { DynamicTable } from '@/app/_components/dynamic-table';
+import { Show } from '@/app/_components/utils/show';
+import { Dynamic } from '@/app/_components/utils/dynamic';
+import { DynamicTable } from '@/app/_components/custom/dynamic-table';
 import { hasPermission } from '@/app/_auth/auth-rbac';
-import { DynamicPagination } from '@/app/_components/dynamic-pagination';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import {type Permission} from '@/app/_auth/auth-rbac'
 export const Table: FC<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   table: any;
   clearFilter: VoidFunction;
   permission: Permission;
   Add?: ComponentType;
   Retry: ReactElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Filter: (table: any) => ReactElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columnFilter: any;
 }> = ({ table, clearFilter, Add, Filter, columnFilter, Retry, permission }) => {
   const user = useSelector(selectUser);

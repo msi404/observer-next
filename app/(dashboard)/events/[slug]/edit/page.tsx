@@ -2,11 +2,11 @@
 import { type NextPage } from 'next'
 import { usePathname } from 'next/navigation';
 import {usePostQuery} from '@/app/_services/fetchApi'
-import {Container} from '@/app/_components/container'
-import { SingleEditor } from '@/app/_components/single-editor'
-import { SingleToolbar } from '@/app/_components/single-toolbar'
+import {Container} from '@/app/_components/containers/container'
+import { SingleEditor } from '@/app/_components/custom/single-editor'
+import { SingleToolbar } from '@/app/_components/custom/single-toolbar'
 import { BackButton } from '@/app/_components/ui/back-button'
-import {Show} from '@/app/_components/show'
+import {Show} from '@/app/_components/utils/show'
  
 const EditEventPage: NextPage = () =>
 {

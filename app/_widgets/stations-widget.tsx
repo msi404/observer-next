@@ -17,8 +17,8 @@ import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
 import { useStationsQuery } from '@/app/_services/fetchApi';
-import { Switch, Match } from '@/app/_components/switch';
-import { For } from '@/app/_components/for';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { For } from '@/app/_components/utils/for';
 import {
   Card,
   CardHeader,
@@ -28,11 +28,11 @@ import {
 import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
-import { DynamicPagination } from '@/app/_components/dynamic-pagination';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddStationForm } from '@/app/_components/forms/add-station-form'
 import {EditStationForm} from '@/app/_components/forms/edit-station-form'
 import { Vote } from 'lucide-react';
-import { Show } from '@/app/_components/show'
+import { Show } from '@/app/_components/utils/show'
 import { BackButton } from '@/app/_components/ui/back-button'
 
 const Details: FC<{

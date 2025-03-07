@@ -2,11 +2,11 @@
 import {useMemo} from 'react'
 import { useGraph } from '@/app/_hooks/use-graph';
 import {gendersChartConfig} from '@/app/_config/chart-config'
-import { PiChart } from '@/app/_components/pi-chart';
+import { PiChart } from '@/app/_components/custom/pi-chart';
 import { ErrorCard } from '@/app/_components/error-card';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { SkeletonPiChart } from '@/app/_components/skeleton-pi-chart';
-import {Switch, Match} from '@/app/_components/switch'
+import {Switch, Match} from '@/app/_components/utils/switch'
 
 export const GenderChartWidget = () =>
 {

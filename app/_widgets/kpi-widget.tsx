@@ -3,10 +3,10 @@ import { useStatistics } from '@/app/_hooks/use-statistics';
 import { SkeletonCard } from '@/app/_components/skeleton-card'
 import { ErrorCard } from '@/app/_components/error-card'
 import { FetchCard } from '@/app/_components/fetch-card'
-import {StatisticsCard} from '@/app/_components/statistics-card'
-import {Switch, Match} from '@/app/_components/switch'
-import {For} from '@/app/_components/for'
-import { Show } from '@/app/_components/show'
+import {StatisticsCard} from '@/app/_components/custom/statistics-card'
+import {Switch, Match} from '@/app/_components/utils/switch'
+import {For} from '@/app/_components/utils/for'
+import { Show } from '@/app/_components/utils/show'
 import {formatter} from '@/app/_utils/format-number'
 
 export const KpiWidget = () =>

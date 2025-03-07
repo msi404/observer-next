@@ -6,7 +6,7 @@ import {
   CardContent,
   CardFooter
 } from '@/app/_components/ui/card';
-import { Dynamic } from '@/app/_components/dynamic';
+import { Dynamic } from '@/app/_components/utils/dynamic';
 
 export const ItemCard: FC<{
   Content: ReactElement;

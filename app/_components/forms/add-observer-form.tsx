@@ -18,16 +18,16 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
-import { Combobox } from '@/app/_components/combobox';
+import { Combobox } from '@/app/_components/custom/combobox';
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
-import { BasicDialog } from '@/app/_components/basic-dialog';
-import { Dropzone } from '@/app/_components/dropzone';
-import { Show } from '@/app/_components/show';
-import { DatePicker } from '@/app/_components/date-picker';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
+import { Dropzone } from '@/app/_components/custom/dropzone';
+import { Show } from '@/app/_components/utils/show';
+import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import { Switch, Match } from '@/app/_components/switch';
+import { Switch, Match } from '@/app/_components/utils/switch';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddObserverForm = () => {

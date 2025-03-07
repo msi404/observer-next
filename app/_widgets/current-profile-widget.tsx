@@ -1,18 +1,18 @@
 'use client';
 import { type FC } from 'react';
 import { useCurrentUserQuery } from '@/app/_services/fetchApi';
-import {KpiItem} from '@/app/_components/kpi-item'
+import {KpiItem} from '@/app/_components/custom/kpi-item'
 import { Card } from '@/app/_components/ui/card';
-import { Background } from '@/app/_components/background';
+import { Background } from '@/app/_components/custom/background';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger
 } from '@/app/_components/ui/tabs';
-import { Profile } from '@/app/_components/profile';
+import { Profile } from '@/app/_components/custom/profile';
 import { Spinner } from '@/app/_components/spinner';
-import { Switch, Match } from '@/app/_components/switch';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import {CurrentCandidatePostsWidget} from '@/app/_widgets/current-candidate-posts-widget'
 import { Calendar, Users, Building2, Phone, Mail, Hash } from 'lucide-react';
 

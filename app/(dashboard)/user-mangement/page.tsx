@@ -4,8 +4,8 @@ import {selectUser} from '@/app/_lib/features/authSlice'
 import { type NextPage } from 'next';
 import { motion } from 'motion/react';
 import { hasPermission } from '@/app/_auth/auth-rbac'
-import {Show} from '@/app/_components/show'
-import { Container } from '@/app/_components/container';
+import {Show} from '@/app/_components/utils/show'
+import { Container } from '@/app/_components/containers/container';
 import {
   Tabs,
   TabsContent,

@@ -1,5 +1,5 @@
 import {type NextPage} from 'next'
-import { Container } from '@/app/_components/container'
+import { Container } from '@/app/_components/containers/container'
 import {CurrentProfileWidget} from '@/app/_widgets/current-profile-widget'
 const ProfilePage: NextPage = () =>
 {

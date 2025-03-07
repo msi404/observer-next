@@ -19,7 +19,7 @@ import { Separator } from '@/app/_components/ui/separator';
 import {Input} from '@/app/_components/ui/input'
 
 // Shared Components
-import { BasicDialog } from '@/app/_components/basic-dialog';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Spinner } from '@/app/_components/spinner';
 // Utils
 import { cn } from '@/app/_lib/utils';

@@ -1,7 +1,7 @@
 'use client';
 import { motion } from 'motion/react';
 
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import {
   Tabs,
   TabsContent,

@@ -17,7 +17,7 @@ import {
   UnderlineIcon,
 } from 'lucide-react';
 import { cn } from '@/app/_lib/utils';
-import { For } from '@/app/_components/for';
+import { For } from '@/app/_components/utils/for';
 import { selectEditor } from '@/app/_lib/features/editorSlice';
 import {
   DropdownMenu,
@@ -35,12 +35,12 @@ import {
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 import { type Level } from '@tiptap/extension-heading';
-import { Dynamic } from '@/app/_components/dynamic';
-import { BasicDialog } from '@/app/_components/basic-dialog';
+import { Dynamic } from '@/app/_components/utils/dynamic';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Spinner } from '@/app/_components/spinner';
-import { Dropzone } from '@/app/_components/dropzone';
+import { Dropzone } from '@/app/_components/custom/dropzone';
 import { useAddPost } from '@/app/_hooks/actions/use-add-post';
-import { Show } from '@/app/_components/show';
+import { Show } from '@/app/_components/utils/show';
 interface ToolbarButtonProps {
   onClick?: () => void;
   isActive?: boolean;

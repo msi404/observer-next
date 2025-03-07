@@ -14,9 +14,9 @@ import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
 import { useElectoralEntitiesQuery } from '@/app/_services/fetchApi';
-import {Show} from '@/app/_components/show'
-import { Switch, Match } from '@/app/_components/switch';
-import { For } from '@/app/_components/for';
+import {Show} from '@/app/_components/utils/show'
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { For } from '@/app/_components/utils/for';
 import {
   Card,
   CardHeader,
@@ -25,7 +25,7 @@ import {
 } from '@/app/_components/ui/card';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
-import { DynamicPagination } from '@/app/_components/dynamic-pagination';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddElectoralEntityForm } from '@/app/_components/forms/add-electoral-entity-form'
 import {EditElectoralEntityForm} from '@/app/_components/forms/edit-electoral-entity-form'
 import { Component } from 'lucide-react';

@@ -1,6 +1,6 @@
 'use client';
 import { type NextPage } from 'next';
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import { KpiResultsWidget } from '@/app/_widgets/kpi-results-widget'
 import {ElectionResultsWidget} from '@/app/_widgets/election-results-widget'
 const ElectionResultsPage: NextPage = () =>

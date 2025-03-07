@@ -4,8 +4,8 @@ import {votersByAgeChartConfig} from '@/app/_config/chart-config'
 import { ErrorCard } from '@/app/_components/error-card';
 import { FetchCard } from '@/app/_components/fetch-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
-import { Switch, Match } from '@/app/_components/switch';
-import { StackChart } from '@/app/_components/stack-chart';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { StackChart } from '@/app/_components/custom/stack-chart';
 
 export const VotersByAgeChartWidget = () => {
   const {

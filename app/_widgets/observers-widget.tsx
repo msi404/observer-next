@@ -6,8 +6,8 @@ import {resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import { EmptyTable } from '@/app/_components/empty-table';
 import { ErrorTable } from '@/app/_components/error-table';
 import { FetchTable } from '@/app/_components/fetch-table';
-import { Table } from '@/app/_components/table';
-import { Switch, Match } from '@/app/_components/switch';
+import { Table } from '@/app/_components/custom/table';
+import { Switch, Match } from '@/app/_components/utils/switch';
 import { LoadingTable } from '@/app/_components/loading-table';
 
 import {useObserversTable} from '@/app/_hooks/tables/use-observer-table'
@@ -15,7 +15,7 @@ import {useObserversTable} from '@/app/_hooks/tables/use-observer-table'
 import {AddObserverForm} from '@/app/_components/forms/add-observer-form'
 import { FilterObserversForm } from '@/app/_components/forms/filter-observer-form'
 
-import { Retry } from '@/app/_components/retry';
+import { Retry } from '@/app/_components/custom/retry';
 
 export const ObserversWidget = () =>
 {

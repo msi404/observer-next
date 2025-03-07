@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/app/_components/ui/sidebar'
 import { Toaster } from "@/app/_components/ui/toaster";
 import { AppSidebar } from "@/app/_components/app-sidebar"
-import { Protected } from '@/app/_components/protected'
-import {FullscreenButton} from '@/app/_components/fullscreen-button'
+import { Protected } from '@/app/_components/containers/protected'
+import {FullscreenButton} from '@/app/_components/custom/fullscreen-button'
 import "../_style/globals.css"
 
 export const metadata: Metadata = {

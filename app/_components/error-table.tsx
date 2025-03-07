@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { motion } from 'motion/react';
-import { Container } from '@/app/_components/container';
+import { Container } from '@/app/_components/containers/container';
 import {
   Card,
   CardContent,

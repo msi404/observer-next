@@ -32,14 +32,14 @@ import {
 } from '@/app/_components/ui/sidebar';
 import { Badge } from '@/app/_components/ui/badge';
 import { Separator } from '@/app/_components/ui/separator';
-import { User } from '@/app/_components/user';
+import { User } from '@/app/_components/custom/user';
 import { SkeletonUser } from '@/app/_components/skeleton-user';
 import { ErrorUser } from '@/app/_components/error-user';
 import { FetchUser } from '@/app/_components/fetch-user';
-import { Show } from '@/app/_components/show';
-import { For } from '@/app/_components/for';
-import { Switch, Match } from '@/app/_components/switch';
-import { Dynamic } from '@/app/_components/dynamic';
+import { Show } from '@/app/_components/utils/show';
+import { For } from '@/app/_components/utils/for';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { Dynamic } from '@/app/_components/utils/dynamic';
 import { motion } from 'motion/react';
 export const AppSidebar = () =>
 {

@@ -1,6 +1,6 @@
 'use client';
 import { type NextPage } from 'next';
-import {Container} from '@/app/_components/container'
+import {Container} from '@/app/_components/containers/container'
 import {PollingCentersWidget} from '@/app/_widgets/polling-centers-widget'
 const PollingCentersPage: NextPage = () =>
 {

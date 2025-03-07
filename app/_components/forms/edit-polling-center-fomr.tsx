@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'motion/react';
-import { BasicDialog } from '@/app/_components/basic-dialog';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Input } from '@/app/_components/ui/input';

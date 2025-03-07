@@ -1,8 +1,8 @@
 'use client' // Error boundaries must be Client Components
  
 import { useEffect } from 'react'
-import { Container } from '@/app/_components/container'
-import { Retry } from '@/app/_components/retry'
+import { Container } from '@/app/_components/containers/container'
+import { Retry } from '@/app/_components/custom/retry'
  import {Bug} from 'lucide-react'
 export default function Error({
   error,

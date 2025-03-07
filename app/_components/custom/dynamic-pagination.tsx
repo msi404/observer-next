@@ -14,8 +14,8 @@ import {
   PaginationPrevious
 } from '@/app/_components/ui/pagination';
 import { Button } from '@/app/_components/ui/button';
-import {Show} from '@/app/_components/show'
-import { For } from '@/app/_components/for';
+import {Show} from '@/app/_components/utils/show'
+import { For } from '@/app/_components/utils/for';
 
 export const DynamicPagination = () =>
 {

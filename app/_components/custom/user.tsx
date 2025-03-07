@@ -22,9 +22,9 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/app/_components/ui/sidebar';
-import {Customize} from '@/app/_components/customize'
-import { Show } from '@/app/_components/show';
-import {Switch, Match} from '@/app/_components/switch'
+import {Customize} from '@/app/_components/custom/customize'
+import { Show } from '@/app/_components/utils/show';
+import {Switch, Match} from '@/app/_components/utils/switch'
 
 export const User = ({
   user

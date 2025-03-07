@@ -2,8 +2,8 @@
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
-import { BasicDialog } from '@/app/_components/basic-dialog';
-import { Combobox } from '@/app/_components/combobox';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
+import { Combobox } from '@/app/_components/custom/combobox';
 import { useConfirmedVotersFilter } from '@/app/_hooks/filters/use-confirmed-voters-filter';
 import { Filter } from 'lucide-react';
 import { type Table } from '@tanstack/react-table';

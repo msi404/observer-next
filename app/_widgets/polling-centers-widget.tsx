@@ -18,8 +18,8 @@ import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
 import { ItemCard } from '@/app/_components/item-card';
 import { usePollingCentersQuery } from '@/app/_services/fetchApi';
-import { Switch, Match } from '@/app/_components/switch';
-import { For } from '@/app/_components/for';
+import { Switch, Match } from '@/app/_components/utils/switch';
+import { For } from '@/app/_components/utils/for';
 import {
   Card,
   CardHeader,
@@ -29,12 +29,12 @@ import {
 import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
-import { DynamicPagination } from '@/app/_components/dynamic-pagination';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddPollingCenterForm } from '@/app/_components/forms/add-polling-center-form';
 import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center-fomr'
 import { Building } from 'lucide-react';
 import {BackButton} from '@/app/_components/ui/back-button'
-import { Show } from '@/app/_components/show'
+import { Show } from '@/app/_components/utils/show'
 
 const Details: FC<{
   pollingCenter: string;

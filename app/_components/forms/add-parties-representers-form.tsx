@@ -10,7 +10,7 @@ import { useAddPartiesRepresenters } from '@/app/_hooks/actions/use-add-parties-
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
-import { Combobox } from '@/app/_components/combobox';
+import { Combobox } from '@/app/_components/custom/combobox';
 import {
   Form,
   FormControl,
@@ -22,10 +22,10 @@ import {
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
-import { BasicDialog } from '@/app/_components/basic-dialog';
-import { DatePicker } from '@/app/_components/date-picker';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
+import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import {Switch, Match} from '@/app/_components/switch'
+import {Switch, Match} from '@/app/_components/utils/switch'
 // Utils
 import { cn } from '@/app/_lib/utils';
 

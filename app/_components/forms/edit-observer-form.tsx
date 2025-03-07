@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'motion/react';
-import { BasicDialog } from '@/app/_components/basic-dialog';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
@@ -11,17 +11,17 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
-import { Combobox } from '@/app/_components/combobox';
+import { Combobox } from '@/app/_components/custom/combobox';
 import { Input } from '@/app/_components/ui/input';
-import { DatePicker } from '@/app/_components/date-picker';
+import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import { Show } from '@/app/_components/show';
-import { Dropzone } from '@/app/_components/dropzone';
+import { Show } from '@/app/_components/utils/show';
+import { Dropzone } from '@/app/_components/custom/dropzone';
 import { useEditObserver } from '@/app/_hooks/actions/use-edit-observer';
-import { Switch, Match } from '@/app/_components/switch';
+import { Switch, Match } from '@/app/_components/utils/switch';
 
 interface EditObserverFormProps {
   item: any; // Ideally, replace `any` with a proper interface

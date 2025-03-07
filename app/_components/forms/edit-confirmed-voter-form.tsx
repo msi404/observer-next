@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'motion/react';
-import { BasicDialog } from '@/app/_components/basic-dialog';
+import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
@@ -12,7 +12,7 @@ import {
   FormMessage
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
-import { DatePicker } from '@/app/_components/date-picker';
+import { DatePicker } from '@/app/_components/custom/date-picker';
 import {
   Select,
   SelectContent,
@@ -20,12 +20,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/app/_components/ui/select';
-import { Combobox } from '@/app/_components/combobox';
+import { Combobox } from '@/app/_components/custom/combobox';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
-import { Dropzone } from '@/app/_components/dropzone';
+import { Dropzone } from '@/app/_components/custom/dropzone';
 import { Spinner } from '@/app/_components/spinner';
-import { Show } from '@/app/_components/show';
+import { Show } from '@/app/_components/utils/show';
 import { cn } from '@/app/_lib/utils';
 import { useEditConfirmedVoter } from '@/app/_hooks/actions/use-edit-confirmed-voter';
 interface EditConfirmedVoterFormProps {
