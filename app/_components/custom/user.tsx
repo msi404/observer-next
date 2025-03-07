@@ -22,7 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/app/_components/ui/sidebar';
-import {Customize} from '@/app/_components/custom/customize'
+// import {Customize} from '@/app/_components/custom/customize'
 import { Show } from '@/app/_components/utils/show';
 import {Switch, Match} from '@/app/_components/utils/switch'
 
@@ -113,11 +113,11 @@ export const User = ({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Customize />
               تعديل الشكل
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogoutClick}>
               <LogOut />

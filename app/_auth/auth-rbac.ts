@@ -64,6 +64,7 @@ const ROLES = {
   10: [
     'view:home',
     'view:addPronviceAdmin',
+    'view:addPollingCenter',
     'view:voters',
     'view:addCandidate',
     'view:addObserver',

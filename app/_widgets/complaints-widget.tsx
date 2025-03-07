@@ -50,10 +50,11 @@ const Message: FC<{
       })
     );
   };
-  var options = { weekday: 'short' };
+  const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
     'en-US',
-    //@ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
     options
   )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
   return (
@@ -108,6 +109,7 @@ const Message: FC<{
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MessagesCoaster: FC<{ messages: any[] }> = ({ messages }) => {
   return (
     <ScrollArea className="w-full lg:w-1/2 border-l">

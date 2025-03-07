@@ -58,6 +58,8 @@ const DisplayedMessage: FC<{
   const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
     'en-US',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
     options
   )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
   return (
@@ -162,6 +164,8 @@ const Message: FC<{
   const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
     'en-US',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
     options
   )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
   return (
