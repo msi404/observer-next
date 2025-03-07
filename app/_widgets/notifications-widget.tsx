@@ -29,6 +29,110 @@ import { Retry } from '@/app/_components/custom/retry';
 import { AddNotificationsForm } from '@/app/_components/forms/add-notification-form';
 import Placeholder from '@/app/_assets/images/placeholder.png';
 
+const DisplayedMessage: FC<{
+  id: string;
+  creator: string;
+  title: string;
+  content: string;
+  img: string;
+  createdAt: string;
+}> = ({ creator, content, title, createdAt, img, id }) => {
+  const dispatch = useDispatch();
+  const [switchSeenNotification] = useSwitchSeenNotificationMutation()
+  function checkURL(url: string) {
+    return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
+  }
+  const onMessageClick = async () => {
+    dispatch(
+      setNotification({
+        image: img,
+        sender: creator,
+        date: createdAt,
+        description: content,
+        title: title,
+        id: id
+      } )
+    );
+   await switchSeenNotification(id)
+  };
+  const options = { weekday: 'short' };
+  const date = `${new Date(createdAt).toLocaleDateString(
+    'en-US',
+    options
+  )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
+  return (
+    <Card
+      className="h-full w-full flex relative cursor-pointer"
+      onClick={onMessageClick}
+    >
+      <Badge variant="destructive" className="absolute -top-2 right-0">
+        اشعار
+      </Badge>
+      <CardHeader className="w-full">
+        <div className="flex flex-col gap-2 justify-between w-full">
+          <div className="flex gap-2">
+            <div>
+              <Switch>
+                <Match when={checkURL(img)}>
+                  <NextImage
+                    blurDataURL={Placeholder.blurDataURL}
+                    className="rounded-full h-12"
+                    src={img}
+                    width={50}
+                    height={50}
+                    alt="Sender Image"
+                  />
+                </Match>
+                <Match when={!checkURL(img)}>
+                  <NextImage
+                    blurDataURL={Placeholder.blurDataURL}
+                    className="rounded-full h-12"
+                    src={Placeholder.src}
+                    width={50}
+                    height={50}
+                    alt="Sender Image"
+                  />
+                </Match>
+              </Switch>
+              <div>
+                <CardTitle className="text-primary text-xs my-2">{creator}</CardTitle>
+                <h1 className="text-sm">{title}</h1>
+              </div>
+            </div>
+            <div>
+              <h1 className="text-gray-500 text-xs">{date}</h1>
+            </div>
+          </div>
+          <CardDescription className="text-xs">
+            <div>{ content }</div>
+            <Switch>
+                <Match when={checkURL(img)}>
+                  <NextImage
+                    blurDataURL={Placeholder.blurDataURL}
+                    className="h-[300px] w-full"
+                    src={img}
+                    width={150}
+                    height={140}
+                    alt="Sender Image"
+                  />
+                </Match>
+                <Match when={!checkURL(img)}>
+                  <NextImage
+                    blurDataURL={Placeholder.blurDataURL}
+                    className="h-[300px] mx-auto mt-12"
+                    src={Placeholder.src}
+                    width={400}
+                  height={300}
+                    alt="Sender Image"
+                  />
+                </Match>
+              </Switch>
+          </CardDescription>
+        </div>
+      </CardHeader>
+    </Card>
+  );
+};
 const Message: FC<{
   id: string;
   creator: string;
@@ -55,10 +159,9 @@ const Message: FC<{
     );
    await switchSeenNotification(id)
   };
-  var options = { weekday: 'short' };
+  const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
     'en-US',
-    //@ts-ignore
     options
   )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
   return (
@@ -113,6 +216,7 @@ const Message: FC<{
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const MessagesCoaster: FC<{ messages: any[] }> = ({ messages }) => {
   return (
     <ScrollArea className="w-full lg:w-1/2 border-l">
@@ -183,7 +287,7 @@ export const NotificationsWidget = () =>
         <Switch>
           <Match when={!notificationStatus}>
             <div className="px-3 w-full">
-              <Message
+              <DisplayedMessage
                 id={currentNotification.id}
                 img={currentNotification.date}
                 title={currentNotification.title}
