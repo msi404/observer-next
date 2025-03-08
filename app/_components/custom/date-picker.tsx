@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 
 import { type FC } from 'react';
@@ -33,9 +34,9 @@ export const DatePicker: FC<{value: Date | null, onChange: VoidFunction, disable
         <Calendar
           disabled={disabled}
           mode="single"
-          // @ts-ignore
+          // @ts-expect-error
           selected={value}
-          captionLayout="dropdown-buttons"
+          captionLayout='dropdown-buttons'
           onSelect={onChange}
           initialFocus
           fromYear={ 1960 }
