@@ -61,7 +61,7 @@ export const useCandidateColumns = () => {
       header: 'الصورة الشخصية',
       cell: ({ cell }: any) => {
         const value = cell.getValue();
-        return <Zoom preview={value} className='rounded-full' />;
+        return <Zoom preview={value} className='rounded-full border w-12 h-12' />;
       }
     },
     hasPermission(user, 'view:editCandidate') && {
