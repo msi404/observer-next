@@ -40,7 +40,8 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: Component
   },
   {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     persmission: 'view:parties-representers',
     title: 'ممثلين الكيان',
     url: '/parties-representers',
@@ -71,7 +72,8 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: CircleUserRound
   },
   {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     persmission: 'view:candidates',
     title: 'المرشحين',
     url: '/candidates',
