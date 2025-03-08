@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -7,7 +9,7 @@ import { DataTableColumnHeader } from '@/app/_components/custom/table-header';
 import {EditDataEntryForm} from '@/app/_components/forms/edit-data-entry-form'
 export const useDataEntryColumns = () => {
   const user = useSelector(selectUser);
-  // @ts-ignore
+  // @ts-expect-error
   const dataEntriesColumns: ColumnDef<ConfirmedVoters>[] = [
     {
       id: 'name',

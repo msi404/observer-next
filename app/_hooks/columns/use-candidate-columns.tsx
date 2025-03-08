@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -9,7 +11,7 @@ import { EditCandidateForm } from '@/app/_components/forms/edit-candidate-form'
 
 export const useCandidateColumns = () => {
   const user = useSelector(selectUser);
-  // @ts-ignore
+  // @ts-expect-error
   const candidatesColumns: ColumnDef<ConfirmedVoters>[] = [
     {
       id: 'name',

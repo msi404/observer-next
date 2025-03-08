@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -41,7 +43,7 @@ export const useAddPossibleVoter = () =>
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { refetch } = useVotersQuery(
-    `State=0&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `State=0&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
 
   // State Management

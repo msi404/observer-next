@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useEffect, useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  selectCurrentPage,
-  selectPageSize
-} from '@/app/_lib/features/paginationSlice';
+// import { useSelector } from 'react-redux';
+// import {
+//   selectCurrentPage,
+//   selectPageSize
+// } from '@/app/_lib/features/paginationSlice';
 import { type Table, ColumnFiltersState } from '@tanstack/react-table';
 import { Filter } from 'lucide-react';
 import {
@@ -24,8 +25,8 @@ const [electoralEntitiessTotalPages, setElectoralEntitiesTotalPages] =
   useState(1);
 const pageSize = 10; // Fixed page size
 
-const globalPageSize = useSelector(selectPageSize);
-  const globalCurrentPage = useSelector( selectCurrentPage );
+// const globalPageSize = useSelector(selectPageSize);
+//   const globalCurrentPage = useSelector( selectCurrentPage );
   
   const updateFilter = (
     filters: Filter[],

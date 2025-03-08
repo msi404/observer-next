@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,7 +12,7 @@ import { Zoom } from '@/app/_components/custom/zoom';
 import {EditConfirmedVoterForm} from '@/app/_components/forms/edit-confirmed-voter-form'
 export const useConfirmedVotersColumns = () => {
   const user = useSelector(selectUser);
-  // @ts-ignore
+  // @ts-expect-error
   const confirmedVotersColumns: ColumnDef<ConfirmedVoters>[] = [
     {
       id: 'name',

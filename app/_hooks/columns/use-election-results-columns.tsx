@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import { useSelector } from 'react-redux';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -8,6 +11,7 @@ import { Zoom } from '@/app/_components/custom/zoom';
 import { TrendingUp } from 'lucide-react';
 
 export const useElectionsResultsColumns = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const user = useSelector(selectUser);
   // @ts-ignore
   const electionResultsColumns: ColumnDef<ConfirmedVoters>[] = [
