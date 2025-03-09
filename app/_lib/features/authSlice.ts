@@ -25,7 +25,6 @@ const userState: User = {
   token: null
 };
 
-
 let initialState: User = userState;
 
 if (typeof window !== 'undefined') {

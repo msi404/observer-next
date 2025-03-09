@@ -4,7 +4,7 @@ import { Card } from '@/app/_components/ui/card';
 import { RefreshCcw } from 'lucide-react';
 import {cn} from '@/app/_lib/utils'
 
-export const FetchCard: FC<{className?: string}> = ({className='h-28'}) => {
+export const FetchCard: FC<{className?: string}> = ({className='h-[1000px]'}) => {
   return (
     <Card className={cn(className,"flex items-center")}>
       <motion.div

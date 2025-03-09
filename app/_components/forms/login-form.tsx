@@ -23,7 +23,7 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 	className,
 	...props
 }) => {
-	const [login, { isLoading, isError }] = useLoginMutation();
+	const [login, { isLoading }] = useLoginMutation();
 	const { toast } = useToast();
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),

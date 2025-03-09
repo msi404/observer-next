@@ -14,6 +14,7 @@ type BasicDialog = {
   button: ReactNode;
   title: string;
   open: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onOpenChange: any;
   description: string;
   children: ReactNode;
@@ -34,7 +35,7 @@ export const BasicDialog: FC<BasicDialog> = ({
       <DialogTrigger asChild>
         {button}
       </DialogTrigger>
-      <DialogContent className={cn("max-w-[425px] max-h-[100%] overflow-y-auto", className)}>
+      <DialogContent className={cn("max-w-[425px] md:max-w-[600px] max-h-[100%] overflow-y-auto", className)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

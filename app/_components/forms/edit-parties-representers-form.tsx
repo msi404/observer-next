@@ -21,6 +21,7 @@ import { cn } from '@/app/_lib/utils';
 import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-password';
 import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import {RequiredBadge} from '@/app/_components/custom/required-badge'
 interface EditPartiesRepresentersProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any; // Ideally, replace `any` with a proper interface
@@ -56,6 +57,7 @@ export const EditPartiesRepresentersForm = ({
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -99,6 +101,7 @@ export const EditPartiesRepresentersForm = ({
         </DialogFooter>
       </BasicDialog>
       <BasicDialog
+        className='!max-w-[425px]'
         open={changePasswordOpen}
         onOpenChange={setChangePasswordOpen}
         button={
@@ -132,7 +135,7 @@ export const EditPartiesRepresentersForm = ({
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>كلمة المرور الجديدة</FormLabel>
+                    <FormLabel>كلمة المرور الجديدة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type='password'
@@ -200,14 +203,14 @@ export const EditPartiesRepresentersForm = ({
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم الثلاثي</FormLabel>
+                    <FormLabel>اسم المستخدم الثلاثي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -227,7 +230,7 @@ export const EditPartiesRepresentersForm = ({
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
+                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
                     <FormControl>
                       <div className="*:not-first:mt-2">
                         <div className="flex rounded-md shadow-xs">
@@ -280,7 +283,7 @@ export const EditPartiesRepresentersForm = ({
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد</FormLabel>
+                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                     <FormControl>
                       <DatePicker
                         className={cn(
@@ -301,7 +304,7 @@ export const EditPartiesRepresentersForm = ({
                 name="electoralEntityId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>الكيان السياسي</FormLabel>
+                    <FormLabel>الكيان السياسي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={electoralEntitiesSearch}
@@ -324,7 +327,7 @@ export const EditPartiesRepresentersForm = ({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
+                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -346,7 +349,7 @@ export const EditPartiesRepresentersForm = ({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
+                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(

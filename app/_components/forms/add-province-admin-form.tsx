@@ -28,6 +28,7 @@ import { Spinner } from '@/app/_components/spinner';
 import { Dropzone } from '@/app/_components/custom/dropzone';
 import { Show } from '@/app/_components/utils/show';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddProvinceAdminForm = () => {
@@ -58,7 +59,7 @@ export const AddProvinceAdminForm = () => {
           }}
           className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
         >
-          <PenSquare size="35px" />
+          <PenSquare size="25px" />
         </motion.button>
       }
       title="اضافة مدير محافظة"
@@ -67,14 +68,14 @@ export const AddProvinceAdminForm = () => {
       <Form {...form}>
         <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {/* Form Fields */}
-          <div className="grid gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {/* Name */}
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم الموظف الثلاثي</FormLabel>
+                  <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -94,7 +95,9 @@ export const AddProvinceAdminForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم</FormLabel>
+                  <FormLabel>
+                    اسم المستخدم <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
@@ -104,7 +107,7 @@ export const AddProvinceAdminForm = () => {
                               'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
                             '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
                           )}
-                          disabled={isLoadingProvinceAdmin || isLoadingFile}
+                          disabled={isLoadingProvinceAdmin}
                           placeholder="اسم المستخدم"
                           {...field}
                         />
@@ -119,12 +122,16 @@ export const AddProvinceAdminForm = () => {
                     </div>
                   </FormControl>
                   <Switch>
-                    <Match when={isUsernameTaken === true}>
+                    <Match
+                      when={isUsernameTaken === true && isUsernameTakenSuccess}
+                    >
                       <p className="text-destructive font-medium text-xs">
                         اسم المستخدم قيد الاستخدام
                       </p>
                     </Match>
-                    <Match when={isUsernameTaken === false}>
+                    <Match
+                      when={isUsernameTaken === false && isUsernameTakenSuccess}
+                    >
                       <p className="text-green-600 font-medium text-xs">
                         اسم المستخدم متاح
                       </p>
@@ -139,7 +146,7 @@ export const AddProvinceAdminForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور</FormLabel>
+                  <FormLabel>كلمة المرور <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -162,7 +169,7 @@ export const AddProvinceAdminForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد</FormLabel>
+                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -183,12 +190,12 @@ export const AddProvinceAdminForm = () => {
               name="govCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Combobox
                       options={govCentersSearch}
                       value={field.value} // Controlled by React Hook Form
-                      onChange={ field.onChange } // Updates React Hook Form on change
+                      onChange={field.onChange} // Updates React Hook Form on change
                       onScrollEnd={onGovCenterScrollEnd}
                       label="اختيار مكتب المحافظة"
                       disabled={isLoadingProvinceAdmin || isLoadingFile}
@@ -206,10 +213,10 @@ export const AddProvinceAdminForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف</FormLabel>
+                  <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
-                      type='number'
+                      type="number"
                       className={cn(
                         form.formState.errors.phone &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -222,13 +229,13 @@ export const AddProvinceAdminForm = () => {
                 </FormItem>
               )}
             />
-
+            <div className='grid md:col-span-2'>
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني</FormLabel>
+                  <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -243,14 +250,17 @@ export const AddProvinceAdminForm = () => {
                 </FormItem>
               )}
             />
-            {/* Image Upload */}
-            <Dropzone
-              setFile={(voterFile) => (fileRef.current = voterFile)}
-              label="اختيار صورة الشخصية"
-            />
-            <Show when={fileRef.current === null}>
-              <span className="text-destructive">يجب رفع صورة الشخصية</span>
-            </Show>
+              </div>
+            <div className='grid md:col-span-2'>
+              {/* Image Upload */}
+              <Dropzone
+                setFile={(voterFile) => (fileRef.current = voterFile)}
+                label="اختيار صورة الشخصية"
+              />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">يجب رفع صورة الشخصية</span>
+              </Show>
+            </div>
           </div>
 
           {/* Separator */}

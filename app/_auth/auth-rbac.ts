@@ -27,6 +27,10 @@ const ROLES = {
   0: [
     'view:home',
     'view:voters',
+    // review
+    'view:addObserver',
+    // review
+    'view:addPollingCenter',
     'view:addElectoralEnttity',
     'view:addElectoralEntityAdmin',
     'view:polling-management',
@@ -168,5 +172,5 @@ const ROLES = {
 } as const;
 
 export function hasPermission(user: User, permission: Permission) {
-  return (ROLES[user.role!] as readonly Permission[]).includes(permission);
+  return (ROLES[user.role!] as readonly Permission[])?.includes(permission);
 }

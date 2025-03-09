@@ -39,7 +39,7 @@ export const PostWidget: FC = () => {
               }}
               className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
             >
-              <RefreshCcw size="35px" />
+              <RefreshCcw size="25px" />
             </motion.button>
           </div>
         </Show>

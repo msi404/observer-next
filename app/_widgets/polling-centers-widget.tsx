@@ -35,12 +35,14 @@ import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center
 import { Building } from 'lucide-react';
 import {BackButton} from '@/app/_components/ui/back-button'
 import { Show } from '@/app/_components/utils/show'
+import {formatter} from '@/app/_utils/format-number'
 
 const Details: FC<{
   pollingCenter: string;
-  observers: string;
+  observers: number;
   stations: number;
-}> = ({ pollingCenter, observers, stations }) => {
+  serial: number
+}> = ({ pollingCenter, observers, stations, serial }) => {
   return (
     <div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
@@ -49,11 +51,15 @@ const Details: FC<{
       </div>
       <div className="flex justify-between rounded-lg p-2">
         <h1>عدد المحطات الانتخابية</h1>
-        <h1>{stations}</h1>
+        <h1>{formatter(stations)}</h1>
       </div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
         <h1>عدد المراقبين للمركز</h1>
-        <h1>{observers}</h1>
+        <h1>{formatter(observers)}</h1>
+      </div>
+      <div className="flex justify-between rounded-lg p-2">
+        <h1>رمز مركز التسجيل</h1>
+        <h1>{serial}</h1>
       </div>
     </div>
   );
@@ -135,8 +141,9 @@ export const PollingCentersWidget: FC = () =>
                   Content={
                     <Details
                       pollingCenter={item.name}
-                      stations={6}
-                      observers={item.totalObservers}
+                      stations={item.totalPollingCenters}
+                      observers={ item.totalObservers }
+                      serial={item.serial}
                     />
                   }
                   Footer={

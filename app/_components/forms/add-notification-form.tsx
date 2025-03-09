@@ -48,7 +48,7 @@ export const AddNotificationsForm = () => {
           }}
           className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
         >
-          <BellPlus size="35px" />
+          <BellPlus size="25px" />
         </motion.button>
       }
       title="ارسال اشعار"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useMounted } from '@mantine/hooks'
 import { resetPaginationState } from '@/app/_lib/features/paginationSlice'
@@ -25,7 +26,6 @@ import {
   CardFooter,
   CardTitle
 } from '@/app/_components/ui/card';
-import { Button } from '@/app/_components/ui/button';
 import { motion } from 'motion/react';
 import { RefreshCcw } from 'lucide-react';
 import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
@@ -106,7 +106,7 @@ export const StationsWidget: FC = () =>
             }}
             className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
           >
-            <RefreshCcw size="35px" />
+            <RefreshCcw size="25px" />
           </motion.button>
           <Show when={hasPermission(user, 'view:addStation')}>
             <AddStationForm pollingCenter={id} />
@@ -120,7 +120,7 @@ export const StationsWidget: FC = () =>
           <ErrorCard retry={refetch} />
         </Match>
         <Match when={isFetching}>
-          <FetchCard />
+          <FetchCard/>
         </Match>
         <Match when={isLoading}>
           <SkeletonCard />

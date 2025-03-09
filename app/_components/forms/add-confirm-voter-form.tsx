@@ -63,7 +63,7 @@ export const AddConfirmVoterForm = () => {
           }}
           className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
         >
-          <PenSquare size="35px" />
+          <PenSquare size="25px" />
         </motion.button>
       }
       title="اضافة ناخب مؤكد"

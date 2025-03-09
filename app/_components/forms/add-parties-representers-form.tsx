@@ -25,9 +25,10 @@ import { Separator } from '@/app/_components/ui/separator';
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import {Switch, Match} from '@/app/_components/utils/switch'
+import { Switch, Match } from '@/app/_components/utils/switch'
 // Utils
 import { cn } from '@/app/_lib/utils';
+import { RequiredBadge } from '@/app/_components/custom/required-badge'
 
 export const AddPartiesRepresentersForm = () => {
   const {
@@ -55,7 +56,7 @@ export const AddPartiesRepresentersForm = () => {
           }}
           className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
         >
-          <PenSquare size="35px" />
+          <PenSquare size="25px" />
         </motion.button>
       }
       title="اضافة ممثل كيان"
@@ -64,14 +65,14 @@ export const AddPartiesRepresentersForm = () => {
       <Form {...form}>
         <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {/* Form Fields */}
-          <div className="grid gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {/* Name */}
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم الموظف الثلاثي</FormLabel>
+                  <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -91,7 +92,7 @@ export const AddPartiesRepresentersForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم</FormLabel>
+                  <FormLabel>اسم المستخدم <RequiredBadge/></FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
@@ -128,7 +129,7 @@ export const AddPartiesRepresentersForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور</FormLabel>
+                  <FormLabel>كلمة المرور <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -151,7 +152,7 @@ export const AddPartiesRepresentersForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد</FormLabel>
+                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -172,7 +173,7 @@ export const AddPartiesRepresentersForm = () => {
               name="electoralEntityId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>الكيان السياسي</FormLabel>
+                  <FormLabel>الكيان السياسي <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Combobox
                       options={electoralEntitiesSearch}
@@ -195,7 +196,7 @@ export const AddPartiesRepresentersForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف</FormLabel>
+                  <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       type='number'
@@ -211,13 +212,13 @@ export const AddPartiesRepresentersForm = () => {
                 </FormItem>
               )}
             />
-
+            <div className='grid md:col-span-2'>
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني</FormLabel>
+                  <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -232,6 +233,7 @@ export const AddPartiesRepresentersForm = () => {
                 </FormItem>
               )}
             />
+           </div>
           </div>
 
           {/* Separator */}

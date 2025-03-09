@@ -19,7 +19,7 @@ export const StatisticsCard: FC<{
 }> = ({ icon, total, description, url}) => {
 	return (
 			<Card className="flex flex-col justify-between items-center">
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between w-full items-center">
 			<CardHeader>
 				<CardTitle className="text-3xl">{total}</CardTitle>
 				<CardDescription>{description}</CardDescription>

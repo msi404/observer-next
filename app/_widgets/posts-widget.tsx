@@ -80,7 +80,7 @@ export const PostsWidget: FC = () =>
             }}
             className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
           >
-            <RefreshCcw size="35px" />
+            <RefreshCcw size="25px" />
           </motion.button>
           <Link href='/events/editor'>
               <motion.button
@@ -90,7 +90,7 @@ export const PostsWidget: FC = () =>
             }}
             className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
           >
-            <PenSquare size="35px" />
+            <PenSquare size="25px" />
           </motion.button>
             </Link>
         </div>
@@ -116,7 +116,7 @@ export const PostsWidget: FC = () =>
             }}
             className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
           >
-            <PenSquare size="35px" />
+            <PenSquare size="25px" />
           </motion.button>
             </Link>} retry={refetch} />
           </Match>

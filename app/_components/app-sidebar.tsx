@@ -116,7 +116,7 @@ export const AppSidebar = () =>
                                 className="mx-2"
                                 size={50}
                               />
-                              <span>{item.title}</span>
+                              <span className='font-medium'>{item.title}</span>
                             </Link>
                           </SidebarMenuButton>
                         </motion.div>

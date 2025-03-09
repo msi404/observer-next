@@ -35,7 +35,7 @@ export const DynamicPagination = () =>
           </PaginationPrevious>
         </PaginationItem>
        </Show>
-        <PaginationItem>
+        <PaginationItem className='flex max-w-[800px] overflow-x-auto no-scrollbar'>
           <For each={Array.from({ length: totalPages }, (_, i) => i + 1)}>
             {(page: number) => (
               <Button

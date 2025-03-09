@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useMounted } from '@mantine/hooks';
 import { resetPaginationState } from '@/app/_lib/features/paginationSlice';
@@ -33,6 +34,7 @@ import { AddGovCenterForm } from '@/app/_components/forms/add-gov-center-form';
 import { EditGovCenterForm } from '@/app/_components/forms/edit-gov-center-form';
 import { Landmark } from 'lucide-react';
 import { hasPermission } from '@/app/_auth/auth-rbac';
+import {formatter} from '@/app/_utils/format-number'
 
 const Details: FC<{
   gov: string;
@@ -47,11 +49,11 @@ const Details: FC<{
       </div>
       <div className="flex justify-between rounded-lg p-2">
         <h1>عدد مراكز التسجيل</h1>
-        <h1>{pollingCenters}</h1>
+        <h1>{formatter(pollingCenters)}</h1>
       </div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
         <h1>عدد المراقبين للمحافظة</h1>
-        <h1>{observers}</h1>
+        <h1>{formatter(observers)}</h1>
       </div>
     </div>
   );
@@ -98,7 +100,7 @@ export const GovCentersWidget: FC = () => {
               }}
               className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
             >
-              <RefreshCcw size="35px" />
+              <RefreshCcw size="25px" />
             </motion.button>
             <Show when={hasPermission(user, 'view:addGovCenter')}>
               <AddGovCenterForm />

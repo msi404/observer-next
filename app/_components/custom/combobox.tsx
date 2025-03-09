@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { type FC, useState, useRef } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/app/_components/ui/button';
