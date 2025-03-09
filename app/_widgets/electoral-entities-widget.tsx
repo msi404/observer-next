@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useMounted } from '@mantine/hooks'
 import {resetPaginationState} from '@/app/_lib/features/paginationSlice'

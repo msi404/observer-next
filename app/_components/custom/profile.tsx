@@ -2,7 +2,6 @@
 import { type FC } from 'react'
 import {cn} from '@/app/_lib/utils'
 import { Zoom } from '@/app/_components/custom/zoom'
-import Placeholder from '@/app/_assets/images/placeholder.png'
 
 export const Profile: FC<{className?: string, image: string}> = ({className, image}) =>
 {

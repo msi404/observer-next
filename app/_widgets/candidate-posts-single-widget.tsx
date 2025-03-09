@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { usePathname } from 'next/navigation';
 import { useMounted } from '@mantine/hooks';

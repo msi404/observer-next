@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import Image from 'next/image';
 import { FC, useMemo, useState, useEffect } from 'react';

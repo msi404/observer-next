@@ -16,7 +16,7 @@ export const KpiResultsWidget: FC<{list: number, pollingCenter: number, votes: n
 	return (
 		<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			  <For each={statistics}>
-				 {(item, index) => (
+				 {(item) => (
 					<Show when={item.permission}>
 					  <Switch>
 						 <Match when={item.isLoading}>

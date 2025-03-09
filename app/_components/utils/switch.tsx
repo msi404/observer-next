@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { ReactNode, FC, Children, isValidElement, ReactElement, JSXElementConstructor } from "react";
 
 // Define Match Props

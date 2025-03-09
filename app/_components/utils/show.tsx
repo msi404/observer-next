@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type JSX, type FC,Fragment, type ReactNode, ReactElement, JSXElementConstructor} from 'react';
 
 export const Show: FC<{

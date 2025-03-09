@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
