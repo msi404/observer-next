@@ -1,6 +1,14 @@
 'use client';
-import { type FC } from 'react';
+import { type FC, useEffect } from 'react';
+import { useMounted } from '@mantine/hooks';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectCurrentPage,
+  selectPageSize,
+  setTotalPages,
+  resetPaginationState
+} from '@/app/_lib/features/paginationSlice';
+
 import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentMessage,
@@ -19,12 +27,15 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardFooter,
   CardContent
 } from '@/app/_components/ui/card';
 import { MessageSquareX } from 'lucide-react';
 import { For } from '@/app/_components/utils/for';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import { Show } from '@/app/_components/utils/show';
 import { Retry } from '@/app/_components/custom/retry';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import Placeholder from '@/app/_assets/images/placeholder.png';
 
 const Message: FC<{
@@ -53,7 +64,7 @@ const Message: FC<{
   const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
     'en-US',
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-expect-error
     options
   )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
@@ -144,50 +155,80 @@ const EmptyComplaints = () => {
 };
 
 export const ComplaintsWidget = () => {
+  const mounted = useMounted();
+  const dispatch = useDispatch();
+  const currentPage = useSelector(selectCurrentPage);
+  const pageSize = useSelector(selectPageSize);
   const currentMessage = useSelector(selectCurrentMessage);
-  const messageStatus = useSelector( selectMessageStatus );
+  const messageStatus = useSelector(selectMessageStatus);
   const user = useSelector(selectUser);
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
-  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&CreatorElectoralEntityId=${electoralEntityId}` : '';
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&PageNumber=${currentPage}&PageSize=${pageSize}&CreatorElectoralEntityId=${electoralEntityId}`
+      : '';
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
     useComplaintsQuery(electoralEntityIdQuery);
+
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(setTotalPages(data?.totalPages));
+    }
+  }, [isLoading, data, dispatch]);
+
+  useEffect(() => {
+    if (mounted) {
+      dispatch(resetPaginationState());
+    }
+  }, [ mounted ] );
+  
+
   return (
-    <Card className="p-4 flex flex-col lg:flex-row h-screen">
-      <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
-        <Switch>
-          <Match when={isError}>
-            <ErrorCard retry={refetch} />
-          </Match>
-          <Match when={isLoading}>
-            <SkeletonCard />
-          </Match>
-          <Match when={isFetching}>
-            <FetchCard className="w-96 h-48 lg:h-96" />
-          </Match>
-          <Match when={isSuccess}>
-            <MessagesCoaster messages={data?.items} />
-          </Match>
-        </Switch>
-        <Switch>
-          <Match when={!messageStatus}>
-            <div className="px-3 w-full">
-              <Message
-                img={currentMessage.date}
-                title={currentMessage.title}
-                content={currentMessage.description}
-                createdAt={currentMessage.date}
-                creator={currentMessage.sender}
-              />
-            </div>
-          </Match>
-          <Match when={messageStatus}>
-            <EmptyComplaints />
-          </Match>
-        </Switch>
-      </CardContent>
-      <CardHeader className="flex items-center">
-        <Retry refetch={refetch} />
-      </CardHeader>
+    <Card className="p-4 flex flex-col h-screen">
+      <div className='flex flex-col lg:flex-row h-screen'>
+        <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
+          <Switch>
+            <Match when={isError}>
+              <ErrorCard retry={refetch} />
+            </Match>
+            <Match when={isLoading}>
+              <SkeletonCard />
+            </Match>
+            <Match when={isFetching}>
+              <FetchCard className="w-96 h-48 lg:h-96" />
+            </Match>
+            <Match when={isSuccess}>
+              <MessagesCoaster messages={data?.items} />
+            </Match>
+          </Switch>
+          <Switch>
+            <Match when={!messageStatus}>
+              <div className="px-3 w-full">
+                <Message
+                  img={currentMessage.date}
+                  title={currentMessage.title}
+                  content={currentMessage.description}
+                  createdAt={currentMessage.date}
+                  creator={currentMessage.sender}
+                />
+              </div>
+            </Match>
+            <Match when={messageStatus}>
+              <EmptyComplaints />
+            </Match>
+          </Switch>
+        </CardContent>
+        <CardHeader className="flex items-center">
+          <Retry refetch={refetch} />
+        </CardHeader>
+      </div>
+      <Show when={isSuccess && data.items.length > 0}>
+            <CardFooter>
+              <DynamicPagination />
+            </CardFooter>
+          </Show>
     </Card>
   );
 };
