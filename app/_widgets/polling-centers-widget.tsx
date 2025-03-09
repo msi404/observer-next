@@ -28,8 +28,7 @@ import {
   CardTitle
 } from '@/app/_components/ui/card';
 import { Button } from '@/app/_components/ui/button';
-import { motion } from 'motion/react';
-import { RefreshCcw } from 'lucide-react';
+import { Retry } from '@/app/_components/custom/retry';
 import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddPollingCenterForm } from '@/app/_components/forms/add-polling-center-form';
 import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center-fomr'
@@ -102,20 +101,7 @@ export const PollingCentersWidget: FC = () =>
       </CardHeader>
       <Show when={isSuccess && data.items.length > 0}>
         <div>
-          <motion.button
-            onClick={refetch}
-            whileHover={{
-              scale: 1.1,
-              transition: {
-                damping: 0,
-                ease: 'linear',
-                duration: 0.2
-              }
-            }}
-            className="bg-slate-200 p-4 mx-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
-          >
-            <RefreshCcw size="35px" />
-          </motion.button>
+        <Retry refetch={refetch}/>
           <Show when={hasPermission(user, 'view:addPollingCenter')}>
             <AddPollingCenterForm govCenter={id} />
           </Show>

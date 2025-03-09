@@ -7,7 +7,7 @@
 + ✅ **Shadcn ui**
 + ✅ **Storybook**
 + ✅ **Husky**
-+ ✅ **Circle Ci**
++ ✅ **Github Actions**
 + ✅ **Zod validation**
 + ✅ **React-hook-form**
 + ✅ **Motion**

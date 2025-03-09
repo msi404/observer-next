@@ -1,7 +1,9 @@
 'use client';
 import { type FC, useEffect } from 'react';
+import { useMounted } from '@mantine/hooks'
 import { useSelector, useDispatch } from 'react-redux';
-import {selectUser} from '@/app/_lib/features/authSlice'
+import { selectUser } from '@/app/_lib/features/authSlice'
+import {selectCurrentPage, selectPageSize, setTotalPages, resetPaginationState} from '@/app/_lib/features/paginationSlice'
 import {
   selectCurrentNotification,
   selectNotificationStatus,
@@ -20,12 +22,15 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardFooter,
   CardContent
 } from '@/app/_components/ui/card';
 import { Bell } from 'lucide-react';
 import { For } from '@/app/_components/utils/for';
+import {Show} from '@/app/_components/utils/show'
 import { Switch, Match } from '@/app/_components/utils/switch';
 import { Retry } from '@/app/_components/custom/retry';
+import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddNotificationsForm } from '@/app/_components/forms/add-notification-form';
 import Placeholder from '@/app/_assets/images/placeholder.png';
 
@@ -257,22 +262,34 @@ const EmptyComplaints = () => {
 
 export const NotificationsWidget = () =>
 {
-  const user = useSelector(selectUser);
+  const mounted = useMounted()
+  const dispatch = useDispatch()
+  const user = useSelector( selectUser );
+  const currentPage = useSelector(selectCurrentPage);
+  const pageSize = useSelector(selectPageSize);
   const currentNotification = useSelector(selectCurrentNotification);
   const notificationStatus = useSelector( selectNotificationStatus );
   const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
   const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
-    useMyNotificationQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`, {pollingInterval: 10000, skipPollingIfUnfocused: true});
-  useEffect( () =>
-  {
-    if ( !isLoading )
-    {
-      console.log(data);
-    }
-  }, [isLoading, isFetching, data])
+    useMyNotificationQuery( `PageNumber=${currentPage}&PageSize=${pageSize}${ electoralEntityIdQuery }`, { pollingInterval: 10000, skipPollingIfUnfocused: true } );
+  
+    useEffect(() => {
+      if (!isLoading) {
+        dispatch(setTotalPages(data?.totalPages));
+      }
+    }, [ isLoading, data, dispatch ] );
+  
+    useEffect( () =>
+      {
+        if ( mounted )
+        {
+          dispatch(resetPaginationState())
+        }
+      }, [mounted])
   return (
-    <Card className="p-4 flex flex-col lg:flex-row h-screen">
+    <Card className="p-4 flex flex-col h-screen">
+      <div className='flex flex-col lg:flex-row h-screen'>
       <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
         <Switch>
           <Match when={isError}>
@@ -312,6 +329,12 @@ export const NotificationsWidget = () =>
           <AddNotificationsForm />
         </div>
       </CardHeader>
+      </div>
+      <Show when={isSuccess && data.items.length > 0}>
+            <CardFooter>
+              <DynamicPagination />
+            </CardFooter>
+          </Show>
     </Card>
   );
 };
