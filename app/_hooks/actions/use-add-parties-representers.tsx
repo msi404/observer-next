@@ -34,13 +34,17 @@ export const useAddPartiesRepresenters = () => {
   const pageSize = 10; // Fixed page size
 
   const globalPageSize = useSelector(selectPageSize);
-  const globalCurrentPage = useSelector( selectCurrentPage );
-  const [username, setUsername] = useState('')
+  const globalCurrentPage = useSelector(selectCurrentPage);
+  const [username, setUsername] = useState('');
 
   // API Mutations & Queries
-  const [ createUser, { isLoading: isLoadingUser } ] = useCreateUserMutation();
-  
-  const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
+  const [createUser, { isLoading: isLoadingUser }] = useCreateUserMutation();
+
+  const {
+    data: isUsernameTaken,
+    isSuccess: isUsernameTakenSuccess,
+    refetch: refetchIsUsernameTaken
+  } = useIsUsernameTakenQuery(username);
 
   const { refetch } = useUsersQuery(
     `Role=10&PageNumber=${globalCurrentPage}&PageSize=${globalPageSize}`
@@ -75,13 +79,13 @@ export const useAddPartiesRepresenters = () => {
       password: '',
       role: 10
     }
-  } );
-  
-     // Fetch Initial
-     useEffect(() => {
-      fetchElectoralEntities(`PageNumber=1&PageSize=${ pageSize }`);
-     }, [] );
-  
+  });
+
+  // Fetch Initial
+  useEffect(() => {
+    fetchElectoralEntities(`PageNumber=1&PageSize=${pageSize}`);
+  }, []);
+
   // Update When Data Changes
   useEffect(() => {
     if (lazyElectoralEntities) {
@@ -96,19 +100,23 @@ export const useAddPartiesRepresenters = () => {
     }
   }, [lazyElectoralEntities]);
 
-// Scroll Event Handler for Infinite Scroll
-const onElectoralEntitiesScrollEnd = () => {
-  if (electoralEntitiesCurrentPage < electoralEntitiessTotalPages && !isFetchingLazyElectoralEntities) {
-    setElectoralEntitiesCurrentPage((prev) => prev + 1);
-    fetchElectoralEntities(`PageNumber=${ electoralEntitiesCurrentPage + 1}&PageSize=${ pageSize }`);
-  }
-};
-  
-  const onCheckUsernameTaken = () =>
-  {
-    setUsername( form.getValues( 'username' ) )
-    refetchIsUsernameTaken()
-  }
+  // Scroll Event Handler for Infinite Scroll
+  const onElectoralEntitiesScrollEnd = () => {
+    if (
+      electoralEntitiesCurrentPage < electoralEntitiessTotalPages &&
+      !isFetchingLazyElectoralEntities
+    ) {
+      setElectoralEntitiesCurrentPage((prev) => prev + 1);
+      fetchElectoralEntities(
+        `PageNumber=${electoralEntitiesCurrentPage + 1}&PageSize=${pageSize}`
+      );
+    }
+  };
+
+  const onCheckUsernameTaken = () => {
+    setUsername(form.getValues('username'));
+    refetchIsUsernameTaken();
+  };
 
   // Form Submission Handler
   const onSubmit = async () => {
@@ -127,8 +135,8 @@ const onElectoralEntitiesScrollEnd = () => {
       console.log(error);
     } finally {
       refetch();
-      setOpenAdd( false );
-      setUsername('')
+      setOpenAdd(false);
+      setUsername('');
     }
   };
 

@@ -1,9 +1,15 @@
 'use client';
 import { type FC, useEffect } from 'react';
-import { useMounted } from '@mantine/hooks'
+import { useMounted } from '@mantine/hooks';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '@/app/_lib/features/authSlice'
-import {selectCurrentPage, selectPageSize, setTotalPages, resetPaginationState} from '@/app/_lib/features/paginationSlice'
+import {hasPermission} from '@/app/_auth/auth-rbac'
+import { selectUser } from '@/app/_lib/features/authSlice';
+import {
+  selectCurrentPage,
+  selectPageSize,
+  setTotalPages,
+  resetPaginationState
+} from '@/app/_lib/features/paginationSlice';
 import {
   selectCurrentNotification,
   selectNotificationStatus,
@@ -11,7 +17,7 @@ import {
 } from '@/app/_lib/features/notificationsSlice';
 import NextImage from 'next/image';
 import { useMyNotificationQuery } from '@/app/_services/fetchApi';
-import {useSwitchSeenNotificationMutation} from '@/app/_services/mutationApi'
+import { useSwitchSeenNotificationMutation } from '@/app/_services/mutationApi';
 import { ScrollArea, ScrollBar } from '@/app/_components/ui/scroll-area';
 import { Badge } from '@/app/_components/ui/badge';
 import { FetchCard } from '@/app/_components/fetch-card';
@@ -27,7 +33,7 @@ import {
 } from '@/app/_components/ui/card';
 import { Bell } from 'lucide-react';
 import { For } from '@/app/_components/utils/for';
-import {Show} from '@/app/_components/utils/show'
+import { Show } from '@/app/_components/utils/show';
 import { Switch, Match } from '@/app/_components/utils/switch';
 import { Retry } from '@/app/_components/custom/retry';
 import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
@@ -43,7 +49,7 @@ const DisplayedMessage: FC<{
   createdAt: string;
 }> = ({ creator, content, title, createdAt, img, id }) => {
   const dispatch = useDispatch();
-  const [switchSeenNotification] = useSwitchSeenNotificationMutation()
+  const [switchSeenNotification] = useSwitchSeenNotificationMutation();
   function checkURL(url: string) {
     return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
@@ -56,14 +62,14 @@ const DisplayedMessage: FC<{
         description: content,
         title: title,
         id: id
-      } )
+      })
     );
-   await switchSeenNotification(id)
+    await switchSeenNotification(id);
   };
   const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
     'en-US',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-expect-error
     options
   )} - ${new Date(createdAt).toLocaleTimeString('en-US')}`;
@@ -102,7 +108,9 @@ const DisplayedMessage: FC<{
                 </Match>
               </Switch>
               <div>
-                <CardTitle className="text-primary text-xs my-2">{creator}</CardTitle>
+                <CardTitle className="text-primary text-xs my-2">
+                  {creator}
+                </CardTitle>
                 <h1 className="text-sm">{title}</h1>
               </div>
             </div>
@@ -111,29 +119,29 @@ const DisplayedMessage: FC<{
             </div>
           </div>
           <CardDescription className="text-xs">
-            <div>{ content }</div>
+            <div>{content}</div>
             <Switch>
-                <Match when={checkURL(img)}>
-                  <NextImage
-                    blurDataURL={Placeholder.blurDataURL}
-                    className="h-[300px] w-full"
-                    src={img}
-                    width={150}
-                    height={140}
-                    alt="Sender Image"
-                  />
-                </Match>
-                <Match when={!checkURL(img)}>
-                  <NextImage
-                    blurDataURL={Placeholder.blurDataURL}
-                    className="h-[300px] mx-auto mt-12"
-                    src={Placeholder.src}
-                    width={400}
+              <Match when={checkURL(img)}>
+                <NextImage
+                  blurDataURL={Placeholder.blurDataURL}
+                  className="h-[300px] w-full"
+                  src={img}
+                  width={150}
+                  height={140}
+                  alt="Sender Image"
+                />
+              </Match>
+              <Match when={!checkURL(img)}>
+                <NextImage
+                  blurDataURL={Placeholder.blurDataURL}
+                  className="h-[300px] mx-auto mt-12"
+                  src={Placeholder.src}
+                  width={400}
                   height={300}
-                    alt="Sender Image"
-                  />
-                </Match>
-              </Switch>
+                  alt="Sender Image"
+                />
+              </Match>
+            </Switch>
           </CardDescription>
         </div>
       </CardHeader>
@@ -149,7 +157,7 @@ const Message: FC<{
   createdAt: string;
 }> = ({ creator, content, title, createdAt, img, id }) => {
   const dispatch = useDispatch();
-  const [switchSeenNotification] = useSwitchSeenNotificationMutation()
+  const [switchSeenNotification] = useSwitchSeenNotificationMutation();
   function checkURL(url: string) {
     return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
@@ -162,9 +170,9 @@ const Message: FC<{
         description: content,
         title: title,
         id: id
-      } )
+      })
     );
-   await switchSeenNotification(id)
+    await switchSeenNotification(id);
   };
   const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
@@ -208,7 +216,9 @@ const Message: FC<{
                 </Match>
               </Switch>
               <div>
-                <CardTitle className="text-primary text-xs my-2">{creator}</CardTitle>
+                <CardTitle className="text-primary text-xs my-2">
+                  {creator}
+                </CardTitle>
                 <h1 className="text-sm">{title}</h1>
               </div>
             </div>
@@ -260,81 +270,88 @@ const EmptyComplaints = () => {
   );
 };
 
-export const NotificationsWidget = () =>
-{
-  const mounted = useMounted()
-  const dispatch = useDispatch()
-  const user = useSelector( selectUser );
+export const NotificationsWidget = () => {
+  const mounted = useMounted();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   const currentNotification = useSelector(selectCurrentNotification);
-  const notificationStatus = useSelector( selectNotificationStatus );
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
-  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${ electoralEntityId }` : '';
+  const notificationStatus = useSelector(selectNotificationStatus);
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
   const { data, isError, isFetching, isLoading, isSuccess, refetch } =
-    useMyNotificationQuery( `PageNumber=${currentPage}&PageSize=${pageSize}${ electoralEntityIdQuery }`, { pollingInterval: 10000, skipPollingIfUnfocused: true } );
-  
-    useEffect(() => {
-      if (!isLoading) {
-        dispatch(setTotalPages(data?.totalPages));
-      }
-    }, [ isLoading, data, dispatch ] );
-  
-    useEffect( () =>
-      {
-        if ( mounted )
-        {
-          dispatch(resetPaginationState())
-        }
-      }, [mounted])
+    useMyNotificationQuery(
+      `PageNumber=${currentPage}&PageSize=${pageSize}${electoralEntityIdQuery}`,
+      { pollingInterval: 10000, skipPollingIfUnfocused: true }
+    );
+
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(setTotalPages(data?.totalPages));
+    }
+  }, [isLoading, data, dispatch]);
+
+  useEffect(() => {
+    if (mounted) {
+      dispatch(resetPaginationState());
+    }
+  }, [mounted]);
   return (
     <Card className="p-4 flex flex-col h-screen">
-      <div className='flex flex-col lg:flex-row h-screen'>
-      <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
-        <Switch>
-          <Match when={isError}>
-            <ErrorCard retry={refetch} />
-          </Match>
-          <Match when={isLoading}>
-            <SkeletonCard />
-          </Match>
-          <Match when={isFetching}>
-            <FetchCard className="w-96 h-48 lg:h-96" />
-          </Match>
-          <Match when={isSuccess}>
-            <MessagesCoaster messages={data?.items} />
-          </Match>
-        </Switch>
-        <Switch>
-          <Match when={!notificationStatus}>
-            <div className="px-3 w-full">
-              <DisplayedMessage
-                id={currentNotification.id}
-                img={currentNotification.date}
-                title={currentNotification.title}
-                content={currentNotification.description}
-                createdAt={currentNotification.date}
-                creator={currentNotification.sender}
-              />
-            </div>
-          </Match>
-          <Match when={notificationStatus}>
-            <EmptyComplaints />
-          </Match>
-        </Switch>
-      </CardContent>
-      <CardHeader>
-			  <div className="flex items-center justify-center">
-			  <Retry refetch={refetch} />
-          <AddNotificationsForm />
-        </div>
-      </CardHeader>
+      <div className="flex flex-col lg:flex-row h-screen">
+        <CardContent className="flex flex-col w-full lg:flex-row justify-between items-center">
+          <Switch>
+            <Match when={isError}>
+              <ErrorCard retry={refetch} />
+            </Match>
+            <Match when={isLoading}>
+              <SkeletonCard />
+            </Match>
+            <Match when={isFetching}>
+              <FetchCard className="w-96 h-48 lg:h-96" />
+            </Match>
+            <Match when={isSuccess}>
+              <MessagesCoaster messages={data?.items} />
+            </Match>
+          </Switch>
+          <Switch>
+            <Match when={!notificationStatus}>
+              <div className="px-3 w-full">
+                <DisplayedMessage
+                  id={currentNotification.id}
+                  img={currentNotification.date}
+                  title={currentNotification.title}
+                  content={currentNotification.description}
+                  createdAt={currentNotification.date}
+                  creator={currentNotification.sender}
+                />
+              </div>
+            </Match>
+            <Match when={notificationStatus}>
+              <EmptyComplaints />
+            </Match>
+          </Switch>
+        </CardContent>
+        <CardHeader>
+          <div className="flex items-center justify-center">
+            <Retry refetch={refetch} />
+            <Show when={hasPermission(user, 'view:pushNotification')}>
+            <AddNotificationsForm />
+            </Show>
+          </div>
+        </CardHeader>
       </div>
       <Show when={isSuccess && data.items.length > 0}>
-            <CardFooter>
-              <DynamicPagination />
-            </CardFooter>
-          </Show>
+        <CardFooter>
+          <DynamicPagination />
+        </CardFooter>
+      </Show>
     </Card>
   );
 };

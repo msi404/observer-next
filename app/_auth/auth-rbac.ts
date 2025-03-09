@@ -59,6 +59,7 @@ const ROLES = {
     "view:province-admins-tab",
     "view:default-tab-province",
     'view:addGovCenter',
+    'view:pushNotification'
   ],
 
   10: [
@@ -98,6 +99,7 @@ const ROLES = {
     "view:candidate-tab",
     "view:data-entries-tab",
     "view:observers-tab",
+    'view:pushNotification'
   ],
 
   12: [
@@ -121,7 +123,8 @@ const ROLES = {
     "view:observers-tab",
     "view:default-tab-gov",
     "view:addPollingCenter",
-    "view:addStation"
+    "view:addStation",
+    'view:pushNotification'
   ],
 
   100: [
@@ -134,7 +137,8 @@ const ROLES = {
     'view:total-comfirmed-voters',
     'view:total-possible-voters',
     "view:addVoter",
-    "view:addObserver"
+    "view:addObserver",
+    'view:pushNotification'
   ],
 
   102: [
