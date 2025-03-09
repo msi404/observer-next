@@ -25,7 +25,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addObserverSchema } from '@/app/_validation/user';
-import { baseURL } from '@/app/_services/api';
+import { baseURL } from '@/app/_lib/features/apiSlice';
 
 export const useEditObserver = ( { item }: { item: User; } ) =>
 {

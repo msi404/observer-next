@@ -23,7 +23,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addConfirmedVoterSchema } from '@/app/_validation/voter';
-import { baseURL } from '@/app/_services/api';
+import { baseURL } from '@/app/_lib/features/apiSlice';
 
 interface VoterItem {
   id: string;

@@ -18,7 +18,7 @@ import { z } from 'zod';
 import { useToast } from '@/app/_hooks/use-toast';
 
 // API Services
-import { baseURL } from '@/app/_services/api';
+import { baseURL } from '@/app/_lib/features/apiSlice';
 import {
   useUsersQuery,
   useLazyGovCentersQuery,

@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // API Services
-import { baseURL } from '@/app/_services/api';
+import { baseURL } from '@/app/_lib/features/apiSlice';
 
 // Hooks
 import { useToast } from '@/app/_hooks/use-toast';

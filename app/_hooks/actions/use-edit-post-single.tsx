@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addPostSchema } from '@/app/_validation/post';
-import { baseURL } from '@/app/_services/api';
+import { baseURL } from '@/app/_lib/features/apiSlice';
 
 interface PostItem {
   id: string;

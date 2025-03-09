@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { tatweerApi } from '@/app/_services/api';
+import { tatweerApi } from '@/app/_lib/features/apiSlice';
 import authReducer from '@/app/_lib/features/authSlice';
 import editorReducer from '@/app/_lib/features/editorSlice';
 import paginationReucer from '@/app/_lib/features/paginationSlice'

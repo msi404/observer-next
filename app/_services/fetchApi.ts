@@ -1,4 +1,5 @@
-import { tatweerApi } from '@/app/_services/api';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { tatweerApi } from '@/app/_lib/features/apiSlice';
 
 const fetchDataApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {

@@ -1,4 +1,4 @@
-import { tatweerApi } from '@/app/_services/api';
+import { tatweerApi } from '@/app/_lib/features/apiSlice';
 
 export const authApi = tatweerApi.injectEndpoints( {
 	endpoints: ( builder ) => ( {
