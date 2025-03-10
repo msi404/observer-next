@@ -50,7 +50,9 @@ export const AppSidebar = () => {
     '',
     { pollingInterval: 10000, skipPollingIfUnfocused: true }
   );
-  const user = useSelector(selectUser);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const user: Partial<User> = useSelector(selectUser);
   const pathname = usePathname();
 
   return (
@@ -75,7 +77,7 @@ export const AppSidebar = () => {
                       alt="Company Logo"
                     />
                   </Match>
-                  <Match when={user.role !== 0 && user.electoralEntity?.logo}>
+                  <Match when={user.role !== 0 && user.electoralEntity?.logo !== ''}>
                     <Image
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
@@ -92,6 +94,8 @@ export const AppSidebar = () => {
                   <For each={SIDEBAR_ITEMS}>
                     {(item, index) => (
                       <Show
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                         when={hasPermission(user, item.persmission)}
                         key={index}
                       >
