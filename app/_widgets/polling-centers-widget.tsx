@@ -31,7 +31,7 @@ import { Button } from '@/app/_components/ui/button';
 import { Retry } from '@/app/_components/custom/retry';
 import { DynamicPagination } from '@/app/_components/custom/dynamic-pagination';
 import { AddPollingCenterForm } from '@/app/_components/forms/add-polling-center-form';
-import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center-fomr'
+import {EditPollingCenterForm} from '@/app/_components/forms/edit-polling-center-form'
 import { Building } from 'lucide-react';
 import {BackButton} from '@/app/_components/ui/back-button'
 import { Show } from '@/app/_components/utils/show'
@@ -54,7 +54,7 @@ const Details: FC<{
         <h1>{formatter(stations)}</h1>
       </div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
-        <h1>عدد المراقبين للمركز</h1>
+        <h1>عدد الوكلاء للمركز</h1>
         <h1>{formatter(observers)}</h1>
       </div>
       <div className="flex justify-between rounded-lg p-2">

@@ -348,7 +348,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم القائمة <RequiredBadge /></FormLabel>
+                    <FormLabel>رقم المرشح <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="number"

@@ -83,7 +83,8 @@ export const AppSidebar = () => {
                       // @ts-ignore
                       src={user.electoralEntity?.logo}
                       width={40}
-                      height={30}
+                      height={ 30 }
+                      blurDataURL={Logo.blurDataURL}
                       alt="Company Logo"
                     />
                   </Match>

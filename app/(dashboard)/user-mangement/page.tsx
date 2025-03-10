@@ -47,7 +47,7 @@ const UserMangementPage: NextPage = () =>
           </Show>
           <Show when={hasPermission(user, 'view:observers-tab')}>
           <TabsTrigger value="observers">
-            المراقبين
+            وكلاء الكيان
           </TabsTrigger>
           </Show>
         </TabsList>

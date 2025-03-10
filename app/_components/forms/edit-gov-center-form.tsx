@@ -39,6 +39,7 @@ export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -82,6 +83,7 @@ export const EditGovCenterForm = ({ item }: EditGovCenterFormProps) => {
         </DialogFooter>
       </BasicDialog>
       <BasicDialog
+        className='!max-w-[425px]'
         open={openUpdate}
         onOpenChange={setOpenUpdate}
         button={

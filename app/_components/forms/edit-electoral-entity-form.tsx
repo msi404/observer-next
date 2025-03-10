@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { Trash, Pencil } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
-import {Input} from '@/app/_components/ui/input'
+import { Input } from '@/app/_components/ui/input';
 import {
   Form,
   FormControl,
@@ -14,15 +14,18 @@ import {
 } from '@/app/_components/ui/form';
 import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
+import { Show } from '@/app/_components/utils/show';
+import { Dropzone } from '@/app/_components/custom/dropzone';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import {useEditElectoralEntity} from '@/app/_hooks/actions/use-edit-electoral-entity'
-interface EditElectoralEntityFormProps
-{
+import { useEditElectoralEntity } from '@/app/_hooks/actions/use-edit-electoral-entity';
+interface EditElectoralEntityFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
 
-export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) => {
+export const EditElectoralEntityForm = ({
+  item
+}: EditElectoralEntityFormProps) => {
   const {
     openDelete,
     onUpdate,
@@ -32,13 +35,15 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
     isLoadingDelete,
     isLoadingUpdate,
     openUpdate,
-    form
-  } = useEditElectoralEntity( { item } );
-	
+    form,
+    fileRef,
+    isLoadingFile
+  } = useEditElectoralEntity({ item });
+
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
-        className='!max-w-[425px]'
+        className="!max-w-[425px]"
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -58,7 +63,7 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
         }
         title="حذف كيان سياسي"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
-		  >
+      >
         <DialogFooter>
           <div className="flex justify-between w-full">
             <Button
@@ -82,7 +87,7 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
         </DialogFooter>
       </BasicDialog>
       <BasicDialog
-        className='!max-w-[425px]'
+        className="!max-w-[425px]"
         open={openUpdate}
         onOpenChange={setOpenUpdate}
         button={
@@ -107,7 +112,7 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
             <div className="grid gap-4">
-            <FormField
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
@@ -119,7 +124,7 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
                           form.formState.errors.name &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                        disabled={isLoadingUpdate}
+                        disabled={isLoadingUpdate || isLoadingFile}
                         placeholder="اسم الكيان السياسي"
                         {...field}
                       />
@@ -127,6 +132,17 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
                   </FormItem>
                 )}
               />
+              {/* Image Upload */}
+              <Dropzone
+                setFile={(voterFile: any) => (fileRef.current = voterFile)}
+                label="اختيار شعار الكيان"
+                defaultImage={item?.logo}
+              />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">
+                  يجب رفع شعار الكيان
+                </span>
+              </Show>
             </div>
 
             {/* Separator */}
@@ -137,16 +153,22 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
             {/* Form Actions */}
             <DialogFooter>
               <div className="flex justify-between w-full">
-                <Button type="submit" disabled={isLoadingUpdate}>
+                <Button
+                  type="submit"
+                  disabled={isLoadingUpdate || isLoadingFile}
+                >
                   تعديل
-                  {isLoadingUpdate && (
+                  {(isLoadingUpdate || isLoadingFile) && (
                     <div className=" scale-125">
                       <Spinner />
                     </div>
                   )}
                 </Button>
                 <DialogClose asChild aria-label="Close">
-                  <Button variant="outline" disabled={isLoadingUpdate}>
+                  <Button
+                    variant="outline"
+                    disabled={isLoadingUpdate || isLoadingFile}
+                  >
                     الغاء
                   </Button>
                 </DialogClose>

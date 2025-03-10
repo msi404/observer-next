@@ -6,42 +6,45 @@ import {
   selectCurrentPage,
   selectPageSize
 } from '@/app/_lib/features/paginationSlice';
-import
-	{
-	useUpdatePollingCenterMutation,
+import {
+  useUpdatePollingCenterMutation,
   useDeletePollingCenterMutation
 } from '@/app/_services/mutationApi';
-import {usePollingCentersQuery} from '@/app/_services/fetchApi'
+import { usePollingCentersQuery } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addPollingCenterSchema } from '@/app/_validation/polling-center'
+import { addPollingCenterSchema } from '@/app/_validation/polling-center';
 
-export const useEditPollingCenter = ( { item }: { item: PollingCenter} ) =>
-{
+export const useEditPollingCenter = ({ item }: { item: PollingCenter }) => {
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
-const [updateGovCenter, { isLoading: isLoadingUpdate }] = useUpdatePollingCenterMutation();
-  const [deleteGovCenter, { isLoading: isLoadingDelete }] = useDeletePollingCenterMutation();
-	const [ openUpdate, setOpenUpdate ] = useState<boolean>( false );
+  const [updateGovCenter, { isLoading: isLoadingUpdate }] =
+    useUpdatePollingCenterMutation();
+  const [deleteGovCenter, { isLoading: isLoadingDelete }] =
+    useDeletePollingCenterMutation();
+  const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
-	  const { refetch } = usePollingCentersQuery(
-		`PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${item.govCenter.id}`
-	  );
+  const { refetch } = usePollingCentersQuery(
+    `PageNumber=${currentPage}&PageSize=${pageSize}&GovCenterId=${item.govCenter.id}`
+  );
   // Toast Hook
   const { toast } = useToast();
 
-   // Form Setup
-	const form = useForm<z.infer<typeof addPollingCenterSchema>>({
-		resolver: zodResolver(addPollingCenterSchema),
+  // Form Setup
+  const form = useForm<z.infer<typeof addPollingCenterSchema>>({
+    resolver: zodResolver(addPollingCenterSchema),
     defaultValues: {
       serial: item.serial,
       name: item.name,
-		govCenterId: item.govCenter.gov.id
-		}
-	 });
+      govCenterId: item.govCenter.gov.id,
+      address: item.address,
+      region: item.region,
+      judiciary: item.judiciary
+    }
+  });
 
   // Form Submission Handler
   const onUpdate = async () => {
@@ -52,17 +55,15 @@ const [updateGovCenter, { isLoading: isLoadingUpdate }] = useUpdatePollingCenter
       });
     } catch (error: any) {
       console.log(error); // Full error log for debugging
-        toast({
-          title: 'Error',
-          description: error.data?.msg || 'An unexpected error occurred',
-          variant: 'destructive'
-        });
-    }
-    finally
-    {
+      toast({
+        title: 'Error',
+        description: error.data?.msg || 'An unexpected error occurred',
+        variant: 'destructive'
+      });
+    } finally {
       refetch();
-		 setOpenUpdate( false );
-		 form.reset()
+      setOpenUpdate(false);
+      form.reset();
     }
   };
 
@@ -79,6 +80,6 @@ const [updateGovCenter, { isLoading: isLoadingUpdate }] = useUpdatePollingCenter
     onUpdate,
     onDelete,
     isLoadingDelete,
-    isLoadingUpdate,
+    isLoadingUpdate
   };
 };

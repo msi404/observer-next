@@ -52,7 +52,7 @@ const Details: FC<{
         <h1>{formatter(pollingCenters)}</h1>
       </div>
       <div className="flex justify-between bg-slate-100 rounded-lg p-2">
-        <h1>عدد المراقبين للمحافظة</h1>
+        <h1>عدد الوكلاء للمحافظة</h1>
         <h1>{formatter(observers)}</h1>
       </div>
     </div>

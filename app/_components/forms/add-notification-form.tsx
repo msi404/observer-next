@@ -38,6 +38,7 @@ export const AddNotificationsForm = () => {
 
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={openAdd}
       onOpenChange={setOpenAdd}
       button={

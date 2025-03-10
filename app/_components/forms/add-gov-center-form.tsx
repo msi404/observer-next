@@ -35,7 +35,8 @@ export const AddGovCenterForm = () => {
   } = useAddGovCenter();
 
   return (
-      <BasicDialog
+    <BasicDialog
+      className='!max-w-[425px]'
         open={openAdd}
         onOpenChange={setOpenAdd}
         button={

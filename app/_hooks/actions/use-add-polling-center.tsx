@@ -51,7 +51,10 @@ export const useAddPollingCenter = ( govCenterId: string ) =>
     defaultValues: {
       name: '',
       govCenterId: '',
-      serial: ''
+      serial: '',
+      address: '',
+      region: '',
+      judiciary: ''
     }
   });
 

@@ -18,6 +18,7 @@ import {
   FormLabel
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
+import { RequiredBadge } from '@/app/_components/custom/required-badge'
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
@@ -34,7 +35,7 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
   } = useAddPollingCenter(govCenter!);
 
   return (
-      <BasicDialog
+    <BasicDialog
         open={openAdd}
         onOpenChange={setOpenAdd}
         button={
@@ -54,14 +55,14 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم مركز الاقتراع</FormLabel>
+                    <FormLabel>اسم مركز الاقتراع <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -81,7 +82,7 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
                 name="serial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>الرقم التسلسلي</FormLabel>
+                    <FormLabel>الرقم التسلسلي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -96,6 +97,68 @@ export const AddPollingCenterForm: FC<{govCenter: string | undefined}> = ({govCe
                   </FormItem>
                 )}
             />
+              <FormField
+                control={form.control}
+                name='judiciary'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>القضاء <RequiredBadge /></FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.judiciary &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingPollingCenter}
+                        placeholder="القضاء"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+            />
+              <FormField
+                control={form.control}
+                name='region'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الناحية <RequiredBadge /></FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.region &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingPollingCenter}
+                        placeholder="الناحية"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+            />
+            <div className='grid md:col-span-2'>
+            <FormField
+                control={form.control}
+                name='address'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>العنوان <RequiredBadge /></FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.address &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingPollingCenter}
+                        placeholder="العنوان"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+            />
+            </div>
             </div>
 
             {/* Separator */}

@@ -16,7 +16,8 @@ import { Button } from '@/app/_components/ui/button';
 import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { cn } from '@/app/_lib/utils';
-import {useEditPollingCenter} from '@/app/_hooks/actions/use-edit-polling-center'
+import { RequiredBadge } from '@/app/_components/custom/required-badge'
+import { useEditPollingCenter } from '@/app/_hooks/actions/use-edit-polling-center';
 interface EditPollingCenterFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
@@ -37,6 +38,7 @@ export const EditPollingCenterForm = ({ item }: EditPollingCenterFormProps) => {
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -109,7 +111,7 @@ export const EditPollingCenterForm = ({ item }: EditPollingCenterFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم مركز الاقتراع</FormLabel>
+                    <FormLabel>اسم مركز الاقتراع <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -129,13 +131,13 @@ export const EditPollingCenterForm = ({ item }: EditPollingCenterFormProps) => {
                 name="serial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>الرقم التسلسلي</FormLabel>
+                    <FormLabel>الرقم التسلسلي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
                           form.formState.errors.serial &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        ) }
+                        )}
                         disabled={isLoadingUpdate}
                         placeholder="الرقم التسلسلي"
                         {...field}
@@ -144,6 +146,74 @@ export const EditPollingCenterForm = ({ item }: EditPollingCenterFormProps) => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="judiciary"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      القضاء <RequiredBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.judiciary &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUpdate}
+                        placeholder="القضاء"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="region"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      الناحية <RequiredBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.region &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        disabled={isLoadingUpdate}
+                        placeholder="الناحية"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <div className="grid md:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        العنوان <RequiredBadge />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className={cn(
+                            form.formState.errors.address &&
+                              'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                          )}
+                          disabled={isLoadingUpdate}
+                          placeholder="العنوان"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
             {/* Separator */}
