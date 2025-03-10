@@ -23,6 +23,7 @@ import { Show } from '@/app/_components/utils/show';
 import { Dropzone } from '@/app/_components/custom/dropzone';
 import { useEditObserver } from '@/app/_hooks/actions/use-edit-observer';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import {RequiredBadge} from '@/app/_components/custom/required-badge'
 
 interface EditObserverFormProps {
   item: any; // Ideally, replace `any` with a proper interface
@@ -57,6 +58,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -123,14 +125,14 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم الموظف الثلاثي</FormLabel>
+                    <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -150,7 +152,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
+                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
                     <FormControl>
                       <div className="*:not-first:mt-2">
                         <div className="flex rounded-md shadow-xs">
@@ -195,7 +197,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد</FormLabel>
+                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                     <FormControl>
                       <DatePicker
                         className={cn(
@@ -216,7 +218,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="govCenterId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={govCentersSearch}
@@ -243,7 +245,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="pollingCenterId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مركز الاقتراع</FormLabel>
+                    <FormLabel>مركز الاقتراع <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={pollingCentersSearch}
@@ -269,7 +271,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="stationId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>محطة التسجيل</FormLabel>
+                    <FormLabel>محطة التسجيل <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={stationsSearch}
@@ -296,7 +298,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
+                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -318,7 +320,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
+                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(

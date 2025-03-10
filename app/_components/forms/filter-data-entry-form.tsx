@@ -22,6 +22,7 @@ export const FilterDataEntriesForm = (table: Table<any>) => {
   } = useDataEntriesFilter(table);
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

@@ -23,6 +23,7 @@ export const FilterPartiesRepresentersForm = (table: Table<any>) => {
   } = usePartiesRepresentersFilter(table);
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

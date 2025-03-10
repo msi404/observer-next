@@ -21,6 +21,8 @@ import { Combobox } from '@/app/_components/custom/combobox';
 import { cn } from '@/app/_lib/utils';
 import { useEditDataEntry } from '@/app/_hooks/actions/use-edit-data-entry';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import {RequiredBadge} from '@/app/_components/custom/required-badge'
+
 interface EditDataEntryFormProps {
   item: any; // Ideally, replace `any` with a proper interface
 }
@@ -45,6 +47,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -118,7 +121,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم الموظف الثلاثي</FormLabel>
+                    <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -138,7 +141,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
+                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
                     <FormControl>
                       <div className="*:not-first:mt-2">
                         <div className="flex rounded-md shadow-xs">
@@ -191,7 +194,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد</FormLabel>
+                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                     <FormControl>
                       <DatePicker
                         className={cn(
@@ -212,7 +215,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                 name="govCenterId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={govCentersSearch}
@@ -236,7 +239,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
+                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type='number'
@@ -258,7 +261,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
+                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(

@@ -24,6 +24,7 @@ export const FilterPossibleVotersForm = (table: Table<any>) => {
   } = usePossibleVotersFilter(table);
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

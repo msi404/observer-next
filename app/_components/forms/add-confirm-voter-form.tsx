@@ -35,6 +35,8 @@ import { Spinner } from '@/app/_components/spinner';
 import { Dropzone } from '@/app/_components/custom/dropzone';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Show } from '@/app/_components/utils/show';
+import {RequiredBadge} from '@/app/_components/custom/required-badge'
+
 // Utils
 import { cn } from '@/app/_lib/utils';
 export const AddConfirmVoterForm = () => {
@@ -73,14 +75,14 @@ export const AddConfirmVoterForm = () => {
       <Form {...form}>
         <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {/* Form Fields */}
-          <div className="grid gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {/* Name */}
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم الناخب الثلاثي</FormLabel>
+                  <FormLabel>اسم الناخب الثلاثي <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -102,7 +104,7 @@ export const AddConfirmVoterForm = () => {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>العنوان</FormLabel>
+                  <FormLabel>العنوان <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -124,7 +126,7 @@ export const AddConfirmVoterForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد</FormLabel>
+                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -146,7 +148,7 @@ export const AddConfirmVoterForm = () => {
               name="pollingCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مركز الاقتراع</FormLabel>
+                  <FormLabel>مركز الاقتراع <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Combobox
                       options={pollingCentersSearch}
@@ -173,7 +175,7 @@ export const AddConfirmVoterForm = () => {
                   <FormLabel>المرشح</FormLabel>
                   <FormControl>
                     <Combobox
-                      options={ usersSearch }
+                      options={usersSearch}
                       onScrollEnd={onUserScrollEnd}
                       //@ts-ignore
                       value={field.value} // Controlled by React Hook Form
@@ -196,7 +198,7 @@ export const AddConfirmVoterForm = () => {
               name="serial"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم بطاقة الناخب</FormLabel>
+                  <FormLabel>رقم بطاقة الناخب <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -212,42 +214,46 @@ export const AddConfirmVoterForm = () => {
               )}
             />
 
-            {/* Gender */}
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>الجنس</FormLabel>
-                  <FormControl>
-                    <Select
-                      disabled={isLoadingVoter || isLoadingFile}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value?.toString()}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="الجنس" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="0">ذكر</SelectItem>
-                        <SelectItem value="1">انثى</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <div className="grid md:col-span-2">
+              {/* Gender */}
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الجنس <RequiredBadge /></FormLabel>
+                    <FormControl>
+                      <Select
+                        disabled={isLoadingVoter || isLoadingFile}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="الجنس" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">ذكر</SelectItem>
+                          <SelectItem value="1">انثى</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-            {/* Image Upload */}
-            <Dropzone
-              setFile={(voterFile) => (fileRef.current = voterFile)}
-              label="اختيار صورة بطاقة الناخب"
-            />
-            <Show when={fileRef.current === null}>
-              <span className="text-destructive">
-                يجب رفع صورة بطاقة الناخب
-              </span>
-            </Show>
+            <div className="grid md:col-span-2">
+              {/* Image Upload */}
+              <Dropzone
+                setFile={(voterFile) => (fileRef.current = voterFile)}
+                label="اختيار صورة بطاقة الناخب"
+              />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">
+                  يجب رفع صورة بطاقة الناخب
+                </span>
+              </Show>
+            </div>
           </div>
 
           {/* Separator */}

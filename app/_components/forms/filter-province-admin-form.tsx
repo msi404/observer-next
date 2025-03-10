@@ -22,6 +22,7 @@ export const FilterProvinceAdminForm = (table: Table<any>) => {
   } = useProvinceAdminsFilter(table);
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

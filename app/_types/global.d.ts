@@ -38,6 +38,7 @@ type Party = Dateable & Identifiable & {
 
 type ElectoralEntity = Dateable & Identifiable & {
 	name: string;
+	logo: string
 }
 
 type Voter = Dateable & Identifiable & {

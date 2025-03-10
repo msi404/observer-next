@@ -24,6 +24,7 @@ export const FilterConfirmedVotersForm = (table: Table<any>) => {
   } = useConfirmedVotersFilter(table);
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

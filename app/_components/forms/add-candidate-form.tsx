@@ -28,6 +28,7 @@ import { Dropzone } from '@/app/_components/custom/dropzone';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Show } from '@/app/_components/utils/show';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import {RequiredBadge} from '@/app/_components/custom/required-badge'
 
 // Utils
 import { cn } from '@/app/_lib/utils';
@@ -68,14 +69,14 @@ export const AddCandidateForm = () => {
       <Form {...form}>
         <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           {/* Form Fields */}
-          <div className="grid gap-4">
+          <div className="grid md:grid-cols-2 gap-4">
             {/* Name */}
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المرشح</FormLabel>
+                  <FormLabel>اسم المرشح <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -95,7 +96,7 @@ export const AddCandidateForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم</FormLabel>
+                  <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
@@ -143,7 +144,7 @@ export const AddCandidateForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني</FormLabel>
+                  <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -164,7 +165,7 @@ export const AddCandidateForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور</FormLabel>
+                  <FormLabel>كلمة المرور <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -185,10 +186,10 @@ export const AddCandidateForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف</FormLabel>
+                  <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
-                      type='number'
+                      type="number"
                       className={cn(
                         form.formState.errors.phone &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -207,7 +208,7 @@ export const AddCandidateForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد</FormLabel>
+                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -229,7 +230,7 @@ export const AddCandidateForm = () => {
               name="govCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مكتب المحافظة</FormLabel>
+                  <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Combobox
                       options={govCentersSearch}
@@ -254,7 +255,7 @@ export const AddCandidateForm = () => {
               name="candidateSerial"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم المرشح</FormLabel>
+                  <FormLabel>رقم المرشح <RequiredBadge /></FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -263,28 +264,6 @@ export const AddCandidateForm = () => {
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                       )}
                       placeholder="رقم المرشح "
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            {/* Serial Number */}
-            <FormField
-              control={form.control}
-              name="candidateListSerial"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>رقم القائمة</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      className={cn(
-                        form.formState.errors.candidateListSerial &&
-                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      )}
-                      placeholder="رقم القائمة "
                       disabled={isLoadingCandidate || isLoadingFile}
                       {...field}
                     />
@@ -292,14 +271,40 @@ export const AddCandidateForm = () => {
                 </FormItem>
               )}
             />
-            {/* Image Upload */}
-            <Dropzone
-              setFile={(voterFile) => (fileRef.current = voterFile)}
-              label="اختيار صورة الشخصية"
-            />
-            <Show when={fileRef.current === null}>
-              <span className="text-destructive">يجب رفع صورة الشخصية</span>
-            </Show>
+            <div className="grid md:col-span-2">
+              {/* Serial Number */}
+              <FormField
+                control={form.control}
+                name="candidateListSerial"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>رقم القائمة <RequiredBadge /></FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        className={cn(
+                          form.formState.errors.candidateListSerial &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        placeholder="رقم القائمة "
+                        disabled={isLoadingCandidate || isLoadingFile}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid md:col-span-2">
+              {/* Image Upload */}
+              <Dropzone
+                setFile={(voterFile) => (fileRef.current = voterFile)}
+                label="اختيار صورة الشخصية"
+              />
+              <Show when={fileRef.current === null}>
+                <span className="text-destructive">يجب رفع صورة الشخصية</span>
+              </Show>
+            </div>
           </div>
 
           {/* Separator */}

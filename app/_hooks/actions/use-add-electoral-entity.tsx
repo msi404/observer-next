@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   selectCurrentPage,
@@ -16,10 +16,12 @@ import { z } from 'zod';
 import { useToast } from '@/app/_hooks/use-toast';
 
 // API Services
-import { useCreateElectoralEntityMutation } from '@/app/_services/mutationApi';
+import { baseURL } from '@/app/_lib/features/apiSlice';
 import {
-  useElectoralEntitiesQuery
-} from '@/app/_services/fetchApi';
+  useCreateElectoralEntityMutation,
+  useUploadFileMutation
+} from '@/app/_services/mutationApi';
+import { useElectoralEntitiesQuery } from '@/app/_services/fetchApi';
 
 // Validation Schemas
 import { addElectoralEntitySchema } from '@/app/_validation/electoral-entity';
@@ -30,6 +32,7 @@ export const useAddElectoralEntity = () => {
   // API Mutations & Queries
   const [createElectoralEntity, { isLoading: isLoadingElectoralEntity }] =
     useCreateElectoralEntityMutation();
+  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
 
   const [openAdd, setOpenAdd] = useState<boolean>(false);
 
@@ -38,6 +41,8 @@ export const useAddElectoralEntity = () => {
     `PageNumber=${currentPage}&PageSize=${pageSize}`
   );
 
+  // Refs
+  const fileRef = useRef<File | null>(null);
   // Toast Hook
   const { toast } = useToast();
 
@@ -45,13 +50,26 @@ export const useAddElectoralEntity = () => {
   const form = useForm<z.infer<typeof addElectoralEntitySchema>>({
     resolver: zodResolver(addElectoralEntitySchema),
     defaultValues: {
-     name: ''
+      name: '',
+      logo: ''
     }
   });
 
   // Form Submission Handler
   const onSubmit = async () => {
+    if (!fileRef.current) {
+      toast({
+        title: 'لايوجد صورة',
+        description: 'يجب ان ترفع صورة',
+        variant: 'destructive'
+      });
+      return;
+    }
     try {
+      const formData = new FormData();
+      formData.append('file', fileRef.current as File);
+      const response = await uploadFile(formData).unwrap();
+      form.setValue('logo', `${baseURL}/${response?.data}`);
       const result = await createElectoralEntity(
         addElectoralEntitySchema.parse(form.getValues())
       ).unwrap();
@@ -66,8 +84,8 @@ export const useAddElectoralEntity = () => {
       console.log(error);
     } finally {
       refetchElectoralEntities();
-      setOpenAdd( false );
-      form.reset()
+      setOpenAdd(false);
+      form.reset();
     }
   };
 
@@ -77,6 +95,8 @@ export const useAddElectoralEntity = () => {
     form,
     onSubmit,
     isLoadingElectoralEntity,
-    refetchElectoralEntities
+    refetchElectoralEntities,
+    fileRef,
+    isLoadingFile,
   };
 };

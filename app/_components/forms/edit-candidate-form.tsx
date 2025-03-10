@@ -24,6 +24,8 @@ import { Show } from '@/app/_components/utils/show';
 import { Dropzone } from '@/app/_components/custom/dropzone';
 import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-password';
 import { useEditCandidate } from '@/app/_hooks/actions/use-edit-candidate';
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
+
 interface EditDataEntryFormProps {
   item: any;
   id: string; // Ideally, replace `any` with a proper interface
@@ -43,17 +45,18 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
     fileRef,
     govCentersSearch,
     form
-  } = useEditCandidate( { item } );
-    const {
-      isLoadingChangePassword,
-      onPasswordChange,
-      setChangePasswordOpen,
-      changePasswordOpen,
-      changePasswordform
-    } = useChangeUserPassword({ role: item.role, id: item.id });
+  } = useEditCandidate({ item });
+  const {
+    isLoadingChangePassword,
+    onPasswordChange,
+    setChangePasswordOpen,
+    changePasswordOpen,
+    changePasswordform
+  } = useChangeUserPassword({ role: item.role, id: item.id });
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -111,84 +114,85 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
           <Eye size="20px" />
         </motion.button>
       </Link>
-            <BasicDialog
-              open={changePasswordOpen}
-              onOpenChange={setChangePasswordOpen}
-              button={
-                <motion.button
-                  whileHover={{
-                    scale: 1.1,
-                    transition: {
-                      damping: 0,
-                      ease: 'linear',
-                      duration: 0.2
-                    }
-                  }}
-                  className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
-                >
-                  <KeyRound size="20px" />
-                </motion.button>
+      <BasicDialog
+        className='!max-w-[425px]'
+        open={changePasswordOpen}
+        onOpenChange={setChangePasswordOpen}
+        button={
+          <motion.button
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                damping: 0,
+                ease: 'linear',
+                duration: 0.2
               }
-              title="تغيير كلمة المرور"
-              description="ادخل المعطيات الاتية لتغيير كلمة المرور"
-            >
-              <Form {...changePasswordform}>
-                <form
-                  className="grid gap-5"
-                  onSubmit={changePasswordform.handleSubmit(onPasswordChange)}
-                >
-                  {/* Form Fields */}
-                  <div className="grid gap-4">
-                    {/* Name */}
-                    <FormField
-                      control={changePasswordform.control}
-                      name="newPassword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>كلمة المرور الجديدة</FormLabel>
-                          <FormControl>
-                            <Input
-                              type='password'
-                              className={cn(
-                                changePasswordform.formState.errors.newPassword &&
-                                  'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                              )}
-                              disabled={isLoadingChangePassword}
-                              placeholder="******"
-                              {...field}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-      
-                  {/* Separator */}
-                  <div className="relative">
-                    <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
-                  </div>
-      
-                  {/* Form Actions */}
-                  <DialogFooter>
-                    <div className="flex justify-between w-full">
-                      <Button type="submit" disabled={isLoadingChangePassword}>
-                        تغيير
-                        {isLoadingChangePassword && (
-                          <div className=" scale-125">
-                            <Spinner />
-                          </div>
+            }}
+            className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+          >
+            <KeyRound size="20px" />
+          </motion.button>
+        }
+        title="تغيير كلمة المرور"
+        description="ادخل المعطيات الاتية لتغيير كلمة المرور"
+      >
+        <Form {...changePasswordform}>
+          <form
+            className="grid gap-5"
+            onSubmit={changePasswordform.handleSubmit(onPasswordChange)}
+          >
+            {/* Form Fields */}
+            <div className="grid gap-4">
+              {/* Name */}
+              <FormField
+                control={changePasswordform.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>كلمة المرور الجديدة <RequiredBadge /></FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        className={cn(
+                          changePasswordform.formState.errors.newPassword &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
                         )}
-                      </Button>
-                      <DialogClose asChild aria-label="Close">
-                        <Button variant="outline" disabled={isLoadingChangePassword}>
-                          الغاء
-                        </Button>
-                      </DialogClose>
+                        disabled={isLoadingChangePassword}
+                        placeholder="******"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Separator */}
+            <div className="relative">
+              <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
+            </div>
+
+            {/* Form Actions */}
+            <DialogFooter>
+              <div className="flex justify-between w-full">
+                <Button type="submit" disabled={isLoadingChangePassword}>
+                  تغيير
+                  {isLoadingChangePassword && (
+                    <div className=" scale-125">
+                      <Spinner />
                     </div>
-                  </DialogFooter>
-                </form>
-              </Form>
-            </BasicDialog>
+                  )}
+                </Button>
+                <DialogClose asChild aria-label="Close">
+                  <Button variant="outline" disabled={isLoadingChangePassword}>
+                    الغاء
+                  </Button>
+                </DialogClose>
+              </div>
+            </DialogFooter>
+          </form>
+        </Form>
+      </BasicDialog>
       <BasicDialog
         open={openUpdate}
         onOpenChange={setOpenUpdate}
@@ -213,15 +217,14 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
-              {/* Name */}
+            <div className="grid md:grid-cols-2 gap-4">
               {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المرشح</FormLabel>
+                    <FormLabel>اسم المرشح <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -241,7 +244,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
+                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="username"
@@ -262,7 +265,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
+                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -283,7 +286,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
+                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -305,7 +308,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد</FormLabel>
+                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                     <FormControl>
                       <DatePicker
                         disabled={isLoadingUpdate || isLoadingFile}
@@ -322,7 +325,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="govCenterId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={govCentersSearch}
@@ -345,7 +348,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم القائمة</FormLabel>
+                    <FormLabel>رقم القائمة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -372,7 +375,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateListSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم القائمة</FormLabel>
+                    <FormLabel>رقم القائمة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -393,17 +396,19 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(voterFile: any) => (fileRef.current = voterFile)}
-                label="اختيار صورة بطاقة الناخب"
-                defaultImage={item.profileImg}
-              />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">
-                  يجب رفع صورة بطاقة الناخب
-                </span>
-              </Show>
+              <div className='grid md:col-span-2'>
+                {/* Image Upload */}
+                <Dropzone
+                  setFile={(voterFile: any) => (fileRef.current = voterFile)}
+                  label="اختيار صورة بطاقة الناخب"
+                  defaultImage={item.profileImg}
+                />
+                <Show when={fileRef.current === null}>
+                  <span className="text-destructive">
+                    يجب رفع صورة بطاقة الناخب
+                  </span>
+                </Show>
+              </div>
             </div>
 
             {/* Separator */}

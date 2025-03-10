@@ -23,6 +23,7 @@ export const FilterObserversForm = (table: Table<any>) => {
 	
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

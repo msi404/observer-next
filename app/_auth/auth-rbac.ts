@@ -27,10 +27,20 @@ const ROLES = {
   0: [
     'view:home',
     'view:voters',
-    // review
+    // fix
     'view:addObserver',
-    // review
+    // fix
     'view:addPollingCenter',
+    // fix
+    'view:addCandidate',
+    // fix
+    "view:editCandidate",
+    // fix
+    'view:addProvinceAdmin',
+    // fix
+    'view:addDataEntry',
+    // fix
+    'view:addVoter',
     'view:addElectoralEnttity',
     'view:addElectoralEntityAdmin',
     'view:polling-management',
@@ -68,7 +78,6 @@ const ROLES = {
 
   10: [
     'view:home',
-    'view:addPronviceAdmin',
     'view:addPollingCenter',
     'view:voters',
     'view:addCandidate',

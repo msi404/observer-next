@@ -16,7 +16,7 @@ import {
 import { hasPermission } from '@/app/_auth/auth-rbac';
 import { SIDEBAR_ITEMS } from '@/app/_constants/sidebar.constant';
 import CompanyLogo from '@/app/_assets/tatweer.png';
-import Logo from '@/app/_assets/logo.png'
+import Logo from '@/app/_assets/logo.png';
 
 import {
   Sidebar,
@@ -41,8 +41,7 @@ import { For } from '@/app/_components/utils/for';
 import { Switch, Match } from '@/app/_components/utils/switch';
 import { Dynamic } from '@/app/_components/utils/dynamic';
 import { motion } from 'motion/react';
-export const AppSidebar = () =>
-{
+export const AppSidebar = () => {
   const isFullScreen = useSelector(selectIsFullScreen);
   const dispatch = useDispatch();
   const { data, isLoading, isError, isSuccess, isFetching, refetch } =
@@ -62,99 +61,115 @@ export const AppSidebar = () =>
       }}
     >
       <Show when={!isFullScreen}>
-      <Sidebar collapsible="icon" side="right">
-        <SidebarHeader />
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex  items-center mb-6">
-              <Image
-                src={Logo.src}
-                width={40}
-                height={30}
-                alt="Company Logo"
-              />
-            </SidebarGroupLabel>
-            <SidebarContent>
-              <SidebarMenu className="overflow-x-hidden">
-                <For each={SIDEBAR_ITEMS}>
-                  {(item, index) => (
-                    <Show
-                      when={hasPermission(user, item.persmission)}
-                      key={index}
-                    >
-                      <SidebarMenuItem>
-                        <motion.div
-                          whileHover={{
-                            scale: 1.1,
-                            transition: {
-                              damping: 0,
-                              ease: 'linear',
-                              duration: 0.2
-                            }
-                          }}
-                        >
-                          <SidebarMenuButton size="lg" asChild>
-                            <Link
-                              className={`${
-                                pathname === item.url ? 'bg-slate-400/20' : ''
-                              } hover:bg-slate-200/20`}
-                              href={item.url}
-                            >
-                              <Show
-                                when={
-                                  item.isNotes &&
-                                  notes?.data > 0 &&
-                                  isSuccessNotes
-                                }
+        <Sidebar collapsible="icon" side="right">
+          <SidebarHeader />
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel className="flex  items-center mb-6">
+                <Switch>
+                  <Match when={user.role == 0}>
+                    <Image
+                      src={Logo.src}
+                      width={40}
+                      height={30}
+                      alt="Company Logo"
+                    />
+                  </Match>
+                  <Match when={user.role !== 0 && user.electoralEntity?.logo}>
+                    <Image
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      src={user.electoralEntity?.logo}
+                      width={40}
+                      height={30}
+                      alt="Company Logo"
+                    />
+                  </Match>
+                </Switch>
+              </SidebarGroupLabel>
+              <SidebarContent>
+                <SidebarMenu className="overflow-x-hidden">
+                  <For each={SIDEBAR_ITEMS}>
+                    {(item, index) => (
+                      <Show
+                        when={hasPermission(user, item.persmission)}
+                        key={index}
+                      >
+                        <SidebarMenuItem>
+                          <motion.div
+                            whileHover={{
+                              scale: 1.1,
+                              transition: {
+                                damping: 0,
+                                ease: 'linear',
+                                duration: 0.2
+                              }
+                            }}
+                          >
+                            <SidebarMenuButton size="lg" asChild>
+                              <Link
+                                className={`${
+                                  pathname === item.url ? 'bg-slate-400/20' : ''
+                                } hover:bg-slate-200/20`}
+                                href={item.url}
                               >
-                                <Badge className="bg-red-500">
-                                  {notes?.data}
-                                </Badge>
-                              </Show>
-                              <Dynamic
-                                component={item.icon}
-                                className="mx-2"
-                                size={50}
-                              />
-                              <span className='font-medium'>{item.title}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </motion.div>
-                      </SidebarMenuItem>
-                    </Show>
-                  )}
+                                <Show
+                                  when={
+                                    item.isNotes &&
+                                    notes?.data > 0 &&
+                                    isSuccessNotes
+                                  }
+                                >
+                                  <Badge className="bg-red-500">
+                                    {notes?.data}
+                                  </Badge>
+                                </Show>
+                                <Dynamic
+                                  component={item.icon}
+                                  className="mx-2"
+                                  size={50}
+                                />
+                                <span className="font-medium">
+                                  {item.title}
+                                </span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </motion.div>
+                        </SidebarMenuItem>
+                      </Show>
+                    )}
                   </For>
-              </SidebarMenu>
-            </SidebarContent>
-          </SidebarGroup>
+                </SidebarMenu>
+              </SidebarContent>
+            </SidebarGroup>
           </SidebarContent>
-        <Separator />
-        <SidebarFooter>
-          <Switch>
-            <Match when={isLoading}>
-              <SkeletonUser />
-            </Match>
-            <Match when={isError}>
-              <ErrorUser retry={refetch} />
-            </Match>
-            <Match when={isSuccess}>
-              <User user={data?.data} />
-            </Match>
-            <Match when={isFetching}>
-              <FetchUser />
-            </Match>
-          </Switch>
+          <Separator />
+          <SidebarFooter>
+            <Switch>
+              <Match when={isLoading}>
+                <SkeletonUser />
+              </Match>
+              <Match when={isError}>
+                <ErrorUser retry={refetch} />
+              </Match>
+              <Match when={isSuccess}>
+                <User user={data?.data} />
+              </Match>
+              <Match when={isFetching}>
+                <FetchUser />
+              </Match>
+            </Switch>
           </SidebarFooter>
-          <div className='flex justify-center items-center mb-6'>
-          <Image
-                src={CompanyLogo.src}
-                width={120}
-                height={100}
-                alt="Company Logo"
-              />
-         </div>
-        <SidebarRail />
-      </Sidebar>
+          <div className="flex justify-center items-center mb-6">
+            <Image
+              src={CompanyLogo.src}
+              width={120}
+              height={100}
+              alt="Company Logo"
+            />
+          </div>
+          <SidebarRail />
+        </Sidebar>
       </Show>
     </DocumentFullScreen>
   );

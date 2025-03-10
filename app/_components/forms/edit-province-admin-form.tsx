@@ -23,6 +23,7 @@ import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-pass
 import { useEditProvinceAdmins } from '@/app/_hooks/actions/use-edit-province-admin';
 import { Show } from '@/app/_components/utils/show';
 import { Switch, Match } from '@/app/_components/utils/switch';
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 
 interface EditProvinceAdminsFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,6 +62,7 @@ export const EditProvniceAdminForm = ({
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -104,6 +106,7 @@ export const EditProvniceAdminForm = ({
         </DialogFooter>
       </BasicDialog>
       <BasicDialog
+        className='!max-w-[425px]'
         open={changePasswordOpen}
         onOpenChange={setChangePasswordOpen}
         button={
@@ -137,10 +140,10 @@ export const EditProvniceAdminForm = ({
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>كلمة المرور الجديدة</FormLabel>
+                    <FormLabel>كلمة المرور الجديدة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
-                        type='password'
+                        type="password"
                         className={cn(
                           changePasswordform.formState.errors.newPassword &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -206,14 +209,14 @@ export const EditProvniceAdminForm = ({
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               {/* Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم الموظف الثلاثي</FormLabel>
+                    <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -233,7 +236,7 @@ export const EditProvniceAdminForm = ({
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم</FormLabel>
+                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
                     <FormControl>
                       <div className="*:not-first:mt-2">
                         <div className="flex rounded-md shadow-xs">
@@ -286,7 +289,7 @@ export const EditProvniceAdminForm = ({
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد</FormLabel>
+                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
                     <FormControl>
                       <DatePicker
                         className={cn(
@@ -307,7 +310,7 @@ export const EditProvniceAdminForm = ({
                 name="govCenterId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مكتب المحافظة</FormLabel>
+                    <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Combobox
                         options={govCentersSearch}
@@ -330,7 +333,7 @@ export const EditProvniceAdminForm = ({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف</FormLabel>
+                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -352,7 +355,7 @@ export const EditProvniceAdminForm = ({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني</FormLabel>
+                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -367,15 +370,17 @@ export const EditProvniceAdminForm = ({
                   </FormItem>
                 )}
               />
-              {/* Image Upload */}
-              <Dropzone
-                setFile={(file) => (fileRef.current = file)}
-                label="اختيار صورة الشخصية"
-                defaultImage={item.profileImg}
-              />
-              <Show when={fileRef.current === null}>
-                <span className="text-destructive">يجب رفع صورة الشخصية</span>
-              </Show>
+              <div className='grid md:col-span-2'>
+                {/* Image Upload */}
+                <Dropzone
+                  setFile={(file) => (fileRef.current = file)}
+                  label="اختيار صورة الشخصية"
+                  defaultImage={item.profileImg}
+                />
+                <Show when={fileRef.current === null}>
+                  <span className="text-destructive">يجب رفع صورة الشخصية</span>
+                </Show>
+              </div>
             </div>
 
             {/* Separator */}

@@ -22,6 +22,7 @@ export const FilterCandidateForm = (table: Table<any>) => {
   } = useCandidatesFilter(table);
   return (
     <BasicDialog
+      className='!max-w-[425px]'
       open={open}
       onOpenChange={setOpen}
       button={

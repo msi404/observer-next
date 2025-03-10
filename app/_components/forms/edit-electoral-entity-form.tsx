@@ -38,6 +38,7 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
+        className='!max-w-[425px]'
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -81,6 +82,7 @@ export const EditElectoralEntityForm = ({ item }: EditElectoralEntityFormProps) 
         </DialogFooter>
       </BasicDialog>
       <BasicDialog
+        className='!max-w-[425px]'
         open={openUpdate}
         onOpenChange={setOpenUpdate}
         button={
