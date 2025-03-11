@@ -2,6 +2,9 @@
 import { usePathname } from 'next/navigation';
 import { Zoom } from '@/app/_components/custom/zoom';
 import { type FC } from 'react';
+import { useSelector } from 'react-redux';
+import {selectUser} from '@/app/_lib/features/authSlice'
+import {hasPermission} from '@/app/_auth/auth-rbac'
 import { FetchCard } from '@/app/_components/fetch-card';
 import { ErrorCard } from '@/app/_components/error-card';
 import { SkeletonCard } from '@/app/_components/skeleton-card';
@@ -16,7 +19,9 @@ import { Calendar } from 'lucide-react';
 import { Post } from '@/app/_components/custom/post';
 import { formatDate } from '@/app/_utils/format-date';
 
-export const PostWidget: FC = () => {
+export const PostWidget: FC = () =>
+{
+    const user = useSelector(selectUser)
   const pathname = usePathname();
   const id = pathname.split('/').reverse().at(0);
   const { data, isLoading, isError, isFetching, isSuccess, refetch } =
@@ -82,9 +87,11 @@ export const PostWidget: FC = () => {
                 }
                 Footer={
                   <div className="flex w-full">
+                    <Show when={hasPermission(user, 'view:editPost')}>
                     <div>
                       <EditPostFormSingle item={data} />
                     </div>
+                   </Show>
                   </div>
                 }
               />

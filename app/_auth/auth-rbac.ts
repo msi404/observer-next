@@ -157,6 +157,7 @@ const ROLES = {
   102: [
     'view:home',
     'view:voters',
+    'view:editPost',
     'view:addPost',
     'view:profile',
     'view:observers',

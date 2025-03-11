@@ -2,7 +2,7 @@
 'use client';
 import { motion } from 'motion/react';
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
-import { Trash, Pencil } from 'lucide-react';
+import { Trash, Pencil, KeyRound } from 'lucide-react';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
   Form,
@@ -19,6 +19,7 @@ import { Separator } from '@/app/_components/ui/separator';
 import { Spinner } from '@/app/_components/spinner';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { cn } from '@/app/_lib/utils';
+import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-password';
 import { useEditDataEntry } from '@/app/_hooks/actions/use-edit-data-entry';
 import { Switch, Match } from '@/app/_components/utils/switch';
 import {RequiredBadge} from '@/app/_components/custom/required-badge'
@@ -43,7 +44,14 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
     onCheckUsernameTaken,
     onGovCenterScrollEnd,
     form
-  } = useEditDataEntry({ item });
+  } = useEditDataEntry( { item } );
+    const {
+      isLoadingChangePassword,
+      onPasswordChange,
+      setChangePasswordOpen,
+      changePasswordOpen,
+      changePasswordform
+    } = useChangeUserPassword({ role: item.role, id: item.id });
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
@@ -90,6 +98,87 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
           </div>
         </DialogFooter>
       </BasicDialog>
+            <BasicDialog
+              className="!max-w-[425px]"
+              open={changePasswordOpen}
+              onOpenChange={setChangePasswordOpen}
+              button={
+                <motion.button
+                  whileHover={{
+                    scale: 1.1,
+                    transition: {
+                      damping: 0,
+                      ease: 'linear',
+                      duration: 0.2
+                    }
+                  }}
+                  className="bg-slate-200 p-2 cursor-pointer rounded-full text-gray-500 hover:text-primary"
+                >
+                  <KeyRound size="20px" />
+                </motion.button>
+              }
+              title="تغيير كلمة المرور"
+              description="ادخل المعطيات الاتية لتغيير كلمة المرور"
+            >
+              <Form {...changePasswordform}>
+                <form
+                  className="grid gap-5"
+                  onSubmit={changePasswordform.handleSubmit(onPasswordChange)}
+                >
+                  {/* Form Fields */}
+                  <div className="grid gap-4">
+                    {/* Name */}
+                    <FormField
+                      control={changePasswordform.control}
+                      name="newPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            كلمة المرور الجديدة <RequiredBadge />
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              className={cn(
+                                changePasswordform.formState.errors.newPassword &&
+                                  'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                              )}
+                              disabled={isLoadingChangePassword}
+                              placeholder="******"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+      
+                  {/* Separator */}
+                  <div className="relative">
+                    <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
+                  </div>
+      
+                  {/* Form Actions */}
+                  <DialogFooter>
+                    <div className="flex justify-between w-full">
+                      <Button type="submit" disabled={isLoadingChangePassword}>
+                        تغيير
+                        {isLoadingChangePassword && (
+                          <div className=" scale-125">
+                            <Spinner />
+                          </div>
+                        )}
+                      </Button>
+                      <DialogClose asChild aria-label="Close">
+                        <Button variant="outline" disabled={isLoadingChangePassword}>
+                          الغاء
+                        </Button>
+                      </DialogClose>
+                    </div>
+                  </DialogFooter>
+                </form>
+              </Form>
+            </BasicDialog>
       <BasicDialog
         open={openUpdate}
         onOpenChange={setOpenUpdate}
@@ -114,7 +203,7 @@ export const EditDataEntryForm = ({ item }: EditDataEntryFormProps) => {
         <Form {...form}>
           <form className="grid gap-5" onSubmit={form.handleSubmit(onUpdate)}>
             {/* Form Fields */}
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               {/* Name */}
               <FormField
                 control={form.control}

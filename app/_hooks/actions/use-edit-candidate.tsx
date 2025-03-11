@@ -13,7 +13,7 @@ import {
   useDeleteUserMutation,
   useUploadFileMutation
 } from '@/app/_services/mutationApi';
-import { useUsersQuery, useGovCentersQuery } from '@/app/_services/fetchApi';
+import { useUsersQuery, useGovCentersQuery, useIsUsernameTakenQuery } from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -24,7 +24,9 @@ import { baseURL } from '@/app/_lib/features/apiSlice';
 export const useEditCandidate = ({ item }: { item: User }) => {
   const user = useSelector(selectUser);
   const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
+  const pageSize = useSelector( selectPageSize );
+    const [username, setUsername] = useState('')
+  
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
@@ -40,6 +42,8 @@ export const useEditCandidate = ({ item }: { item: User }) => {
   const { refetch } = useUsersQuery(
     `Role=102&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
+    const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
+  
 
   // State Management
   const [govCentersSearch, setGovCentersSearch] = useState<
@@ -78,7 +82,13 @@ export const useEditCandidate = ({ item }: { item: User }) => {
       profileImg: item.profileImg,
       role: 102
     }
-  });
+  } );
+  
+  const onCheckUsernameTaken = () =>
+    {
+      setUsername( form.getValues( 'username' ) )
+      refetchIsUsernameTaken()
+    }
 
   // Form Submission Handler
   const onUpdate = async () => {
@@ -138,6 +148,9 @@ export const useEditCandidate = ({ item }: { item: User }) => {
     isLoadingDelete,
     isLoadingUpdate,
     fileRef,
+    isUsernameTaken,
+    isUsernameTakenSuccess,
+    onCheckUsernameTaken,
     govCentersSearch,
     isLoadingFile
   };
