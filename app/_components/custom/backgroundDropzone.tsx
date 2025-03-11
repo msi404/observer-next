@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import Image from 'next/image';
 import { FC, useMemo, useState, useEffect } from 'react';
@@ -56,6 +57,7 @@ export const BackgroundDropzone: FC<DropzoneProps> = ({ label, setFile, error, d
     },
   });
 
+  // @ts-expect-error
   const style: React.CSSProperties = useMemo(
     () => ({
       ...baseStyle,
