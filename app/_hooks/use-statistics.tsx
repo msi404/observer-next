@@ -39,7 +39,7 @@ export const useStatistics = () =>
       url: '/observers',
       total: data?.totalObservers,
       icon: <Eye />,
-      description: 'اجمالي عدد المراقبين'
+      description: 'اجمالي عدد الوكلاء'
     },
     {
     	permission: hasPermission( user, 'view:total-complaints' ),

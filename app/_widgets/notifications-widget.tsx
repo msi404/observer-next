@@ -120,28 +120,6 @@ const DisplayedMessage: FC<{
           </div>
           <CardDescription className="text-xs">
             <div>{content}</div>
-            <Switch>
-              <Match when={checkURL(img)}>
-                <NextImage
-                  blurDataURL={Placeholder.blurDataURL}
-                  className="h-[300px] w-full"
-                  src={img}
-                  width={150}
-                  height={140}
-                  alt="Sender Image"
-                />
-              </Match>
-              <Match when={!checkURL(img)}>
-                <NextImage
-                  blurDataURL={Placeholder.blurDataURL}
-                  className="h-[300px] mx-auto mt-12"
-                  src={Placeholder.src}
-                  width={400}
-                  height={300}
-                  alt="Sender Image"
-                />
-              </Match>
-            </Switch>
           </CardDescription>
         </div>
       </CardHeader>

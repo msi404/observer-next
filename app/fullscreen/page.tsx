@@ -1,10 +1,10 @@
 import { type NextPage } from 'next';
 import { Container } from '@/app/_components/containers/container';
-import { ComplaintsChartWidget } from '@/app/_widgets/complaints-chart-widget';
-import { GenderChartWidget } from '@/app/_widgets/gender-chart-widget';
-import { VoterStatesChartWidget } from '@/app/_widgets/voter-states-chart-widget';
-import { VotersByAgeChartWidget } from '@/app/_widgets/voters-by-age-chart-widget';
-import { CandidatesActivitiesChartWidget } from '@/app/_widgets/candidates-activities-chart';
+import { ComplaintsChartWidget } from '@/app/_widgets/fullscreen/complaints-chart-widget';
+import { GenderChartWidget } from '@/app/_widgets/fullscreen/gender-chart-widget';
+import { VoterStatesChartWidget } from '@/app/_widgets/fullscreen/voter-states-chart-widget';
+import { VotersByAgeChartWidget } from '@/app/_widgets/fullscreen/voters-by-age-chart-widget';
+import { CandidatesActivitiesChartWidget } from '@/app/_widgets/fullscreen/candidates-activities-chart';
 
 const FullscreenPage: NextPage = () => {
   return (
@@ -17,7 +17,7 @@ const FullscreenPage: NextPage = () => {
         <VotersByAgeChartWidget />
         <CandidatesActivitiesChartWidget />
       </section>
-      <section>
+      <section className='grid gap-4'>
         <VoterStatesChartWidget />
       </section>
     </Container>

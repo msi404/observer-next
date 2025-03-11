@@ -2,7 +2,6 @@
 import { z } from 'zod';
 import { calcAge } from '@/app/_utils/calc-age'
 
-
 enum VoterState {
 	Inactive = 0,
 	Active = 2

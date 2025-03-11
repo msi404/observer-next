@@ -70,6 +70,8 @@ type User = Dateable & Identifiable & {
 	profileImg: string;
 	coverImg: string;
 	dateOfBirth: Date;
+	ethnicity: number,
+	religion: number,
 	candidateSerial: number;
 	candidateListSerial: number;
 	totalPosts: number;

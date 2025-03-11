@@ -22,7 +22,9 @@ export const addUserSchema = z.object({
 export const addCandidateSchema = z.object({
   name: z.string().min(3),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المرشح لا يقل عن 18 عام'}),
-  govCenterId: z.string().min(3),
+  govCenterId: z.string().min( 3 ),
+  ethnicity: z.enum(['0', '1', '3', '6']).transform((val) => Number(val)),
+  religion: z.enum(['0', '2', '4']).transform((val) => Number(val)),
   pollingCenterId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -82,7 +84,9 @@ export const editCandidateSchema = z.object({
       {
         return value
       }
-    }).optional(),
+  } ).optional(),
+  ethnicity: z.enum(['0', '1', '3', '6']).transform((val) => Number(val)),
+  religion: z.enum(['0', '2', '4']).transform((val) => Number(val)),
   username: z.string().min(3).max(16),
   password: z.string().min(6).optional(),
   profileImg: z.string().optional(),

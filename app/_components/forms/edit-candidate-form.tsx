@@ -13,6 +13,13 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/custom/date-picker';
@@ -56,7 +63,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
-        className='!max-w-[425px]'
+        className="!max-w-[425px]"
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -115,7 +122,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
         </motion.button>
       </Link>
       <BasicDialog
-        className='!max-w-[425px]'
+        className="!max-w-[425px]"
         open={changePasswordOpen}
         onOpenChange={setChangePasswordOpen}
         button={
@@ -149,7 +156,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>كلمة المرور الجديدة <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      كلمة المرور الجديدة <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -224,7 +233,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المرشح <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      اسم المرشح <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -244,7 +255,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      اسم المستخدم <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="username"
@@ -265,7 +278,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      البريد الالكتروني <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -286,7 +301,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      رقم الهاتف <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -302,13 +319,70 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-              {/* Date of Birth */}
               <FormField
+                control={form.control}
+                name="religion"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      الديانة <RequiredBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="الديانة" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">مسلم</SelectItem>
+                          <SelectItem value="2">مسيحي</SelectItem>
+                          <SelectItem value="4">ايزيدي</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="ethnicity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      القومية <RequiredBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="القومية" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">عربي</SelectItem>
+                          <SelectItem value="2">كردي</SelectItem>
+                          <SelectItem value="4">صابئي</SelectItem>
+                          <SelectItem value="6">شبكي</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+                            {/* Date of Birth */}
+                            <FormField
                 control={form.control}
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      تاريخ الميلاد <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <DatePicker
                         disabled={isLoadingUpdate || isLoadingFile}
@@ -325,7 +399,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="govCenterId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      مكتب المحافظة <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Combobox
                         options={govCentersSearch}
@@ -348,7 +424,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم المرشح <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      رقم المرشح <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -375,7 +453,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 name="candidateListSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم القائمة <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      رقم القائمة <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -396,7 +476,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-              <div className='grid md:col-span-2'>
+              <div className="grid md:col-span-2">
                 {/* Image Upload */}
                 <Dropzone
                   setFile={(voterFile: any) => (fileRef.current = voterFile)}

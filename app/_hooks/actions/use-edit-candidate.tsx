@@ -3,7 +3,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {selectUser} from '@/app/_lib/features/authSlice'
+import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentPage,
   selectPageSize
@@ -21,15 +21,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { editCandidateSchema } from '@/app/_validation/user';
 import { baseURL } from '@/app/_lib/features/apiSlice';
 
-export const useEditCandidate = ( { item }: { item: User; } ) =>
-{
-  const user = useSelector(selectUser)
+export const useEditCandidate = ({ item }: { item: User }) => {
+  const user = useSelector(selectUser);
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
-  const [ uploadFile, { isLoading: isLoadingFile } ] = useUploadFileMutation();
+  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const electoralEntityId = (
     user?.electoralEntity as unknown as ElectoralEntity
   )?.id;
@@ -37,7 +36,7 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
     electoralEntityId !== undefined
       ? `&ElectoralEntityId=${electoralEntityId}`
       : '';
-  
+
   const { refetch } = useUsersQuery(
     `Role=102&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
@@ -71,9 +70,13 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
       candidateListSerial: item.candidateListSerial,
       govCenterId: item.govCenter.id,
       // @ts-ignore
+      religion: String(item.ethnicity),
+      // @ts-ignore
+      ethnicity: String(item.ethnicity),
+      // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
       profileImg: item.profileImg,
-      role: 102,
+      role: 102
     }
   });
 
@@ -96,11 +99,11 @@ export const useEditCandidate = ( { item }: { item: User; } ) =>
       });
     } catch (error: any) {
       console.log(error);
-        toast({
-          title: 'Error',
-          description: error.data?.msg || 'An unexpected error occurred',
-          variant: 'destructive'
-        });
+      toast({
+        title: 'Error',
+        description: error.data?.msg || 'An unexpected error occurred',
+        variant: 'destructive'
+      });
     } finally {
       refetch();
       setOpenUpdate(false);

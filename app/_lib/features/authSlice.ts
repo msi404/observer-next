@@ -39,7 +39,14 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, { payload }) => {
-      Object.assign(state, payload); // Update state with user payload
+      {
+        if (typeof window !== 'undefined') {
+          const user = JSON.parse(localStorage.getItem( 'user' )!);
+          Object.assign( user,  payload )
+          localStorage.setItem('user', JSON.stringify(user))
+        }
+        Object.assign(state, payload);
+      }
     },
     logout: (state) => {
       if (typeof window !== 'undefined') {

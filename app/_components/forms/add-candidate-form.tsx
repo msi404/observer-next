@@ -19,6 +19,13 @@ import {
   FormMessage
 } from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
@@ -28,7 +35,7 @@ import { Dropzone } from '@/app/_components/custom/dropzone';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Show } from '@/app/_components/utils/show';
 import { Switch, Match } from '@/app/_components/utils/switch';
-import {RequiredBadge} from '@/app/_components/custom/required-badge'
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 
 // Utils
 import { cn } from '@/app/_lib/utils';
@@ -76,7 +83,9 @@ export const AddCandidateForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المرشح <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    اسم المرشح <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -96,7 +105,9 @@ export const AddCandidateForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    اسم المستخدم <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
@@ -144,7 +155,9 @@ export const AddCandidateForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    البريد الالكتروني <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -165,7 +178,9 @@ export const AddCandidateForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    كلمة المرور <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -186,7 +201,9 @@ export const AddCandidateForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    رقم الهاتف <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -208,7 +225,9 @@ export const AddCandidateForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    تاريخ الميلاد <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -224,13 +243,69 @@ export const AddCandidateForm = () => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="religion"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    الديانة <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="الديانة" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">مسلم</SelectItem>
+                        <SelectItem value="2">مسيحي</SelectItem>
+                        <SelectItem value="4">ايزيدي</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='ethnicity'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    القومية <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="القومية" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">عربي</SelectItem>
+                        <SelectItem value="2">كردي</SelectItem>
+                        <SelectItem value="4">صابئي</SelectItem>
+                        <SelectItem value="6">شبكي</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="govCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    مكتب المحافظة <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Combobox
                       options={govCentersSearch}
@@ -255,7 +330,9 @@ export const AddCandidateForm = () => {
               name="candidateSerial"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم المرشح <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    رقم المرشح <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -278,7 +355,9 @@ export const AddCandidateForm = () => {
                 name="candidateListSerial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم القائمة <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      رقم القائمة <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"

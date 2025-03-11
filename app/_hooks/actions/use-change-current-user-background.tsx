@@ -1,22 +1,33 @@
 'use client'
 
 import { useRef } from 'react';
+import {useDispatch} from 'react-redux'
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/app/_hooks/use-toast';
-import {baseURL} from '@/app/_lib/features/apiSlice'
-import { usePatchCurrentUserMutation, useUploadFileMutation } from '@/app/_services/mutationApi'
+import { baseURL } from '@/app/_lib/features/apiSlice'
+import {setUser} from '@/app/_lib/features/authSlice'
+import { useUpdateCurrentUserMutation, useUploadFileMutation } from '@/app/_services/mutationApi'
 
 export const useChangeCurrentUserBackground = () =>
 {
+	const dispatch = useDispatch()
 	const [uploadFile] = useUploadFileMutation()
-	const [ changeCurrentUserBackground ] = usePatchCurrentUserMutation()
+	const [ changeCurrentUserBackground ] = useUpdateCurrentUserMutation()
 	
 	const fileRef = useRef<File | null>( null );
 	const { toast } = useToast();
 
 	const form = useForm( {
 		defaultValues: {
-			coverImg: ''
+			coverImg: '',
+			name: null,
+			username: null,
+			password: null,
+			email: null,
+			govCenterId: null,
+			dateOfBirth: null,
+			profileImg: null,
+			role: null,
 		}
 	})
 	
@@ -29,7 +40,8 @@ export const useChangeCurrentUserBackground = () =>
 			const response = await uploadFile( formData ).unwrap()
 			form.setValue( 'coverImg', `${ baseURL }/${ response?.data }` )
 			const result = await changeCurrentUserBackground( { user: form.getValues() } ).unwrap()
-			console.log(result);
+			dispatch(setUser({coverImg: form.getValues('coverImg')}))
+			console.log(result, form.getValues('coverImg'));
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch ( error: any )
 		{
