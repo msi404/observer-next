@@ -8,7 +8,6 @@
 + ✅ **Storybook**
 + ✅ **Husky**
 + ✅ **Github Actions**
-+ ✅ **OpenAPI Generator**
 + ✅ **Zod validation**
 + ✅ **React-hook-form**
 + ✅ **Motion**

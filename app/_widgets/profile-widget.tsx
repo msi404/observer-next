@@ -28,7 +28,7 @@ export const ProfileWidget: FC = () =>
       <Match when={isSuccess}>
         <Card className="p-6 flex flex-col gap-24 overflow-hidden">
           <div className="relative mb-12">
-            <Background className="rounded-md" />
+            <Background background={data?.data?.coverImg} className="rounded-md" />
             <div className="absolute -bottom-16 right-14 flex justify-center items-center gap-4">
               <Profile image={data?.data?.profileImg} className="border-4 border-white" />
               <div className="flex flex-col">

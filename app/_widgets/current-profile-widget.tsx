@@ -28,7 +28,7 @@ export const CurrentProfileWidget: FC = () => {
             <div className="absolute -bottom-16 right-14 flex justify-center items-center gap-4">
               <Profile image={data?.data?.profileImg} className="border-4 border-white" />
               <div className="flex flex-col">
-                <h1>{data.data.name}</h1>
+                <h1>{data?.data?.name}</h1>
                 <p className="text-xs text-gray-600 mt-1">مرشح بغداد - الكرادة</p>
               </div>
             </div>

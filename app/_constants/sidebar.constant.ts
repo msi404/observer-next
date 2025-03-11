@@ -61,7 +61,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     persmission: 'view:observers',
-    title: 'المراقبين',
+    title: 'الوكلاء',
     url: '/observers',
     icon: Eye
   },
