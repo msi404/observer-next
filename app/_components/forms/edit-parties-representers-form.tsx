@@ -11,6 +11,13 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/custom/date-picker';
@@ -21,7 +28,7 @@ import { cn } from '@/app/_lib/utils';
 import { useChangeUserPassword } from '@/app/_hooks/actions/use-change-user-password';
 import { useEditPartiesRepresenters } from '@/app/_hooks/actions/use-edit-parties-representers';
 import { Switch, Match } from '@/app/_components/utils/switch';
-import {RequiredBadge} from '@/app/_components/custom/required-badge'
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 interface EditPartiesRepresentersProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any; // Ideally, replace `any` with a proper interface
@@ -45,19 +52,19 @@ export const EditPartiesRepresentersForm = ({
     isUsernameTakenSuccess,
     onCheckUsernameTaken,
     form
-  } = useEditPartiesRepresenters( { item } );
-  
-    const {
-      isLoadingChangePassword,
-      onPasswordChange,
-      setChangePasswordOpen,
-      changePasswordOpen,
-      changePasswordform
-    } = useChangeUserPassword({ role: item.role, id: item.id });
+  } = useEditPartiesRepresenters({ item });
+
+  const {
+    isLoadingChangePassword,
+    onPasswordChange,
+    setChangePasswordOpen,
+    changePasswordOpen,
+    changePasswordform
+  } = useChangeUserPassword({ role: item.role, id: item.id });
   return (
     <div className="flex gap-4 items-center">
       <BasicDialog
-        className='!max-w-[425px]'
+        className="!max-w-[425px]"
         open={openDelete}
         onOpenChange={setOpenDelete}
         button={
@@ -101,7 +108,7 @@ export const EditPartiesRepresentersForm = ({
         </DialogFooter>
       </BasicDialog>
       <BasicDialog
-        className='!max-w-[425px]'
+        className="!max-w-[425px]"
         open={changePasswordOpen}
         onOpenChange={setChangePasswordOpen}
         button={
@@ -135,10 +142,12 @@ export const EditPartiesRepresentersForm = ({
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>كلمة المرور الجديدة <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      كلمة المرور الجديدة <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        type='password'
+                        type="password"
                         className={cn(
                           changePasswordform.formState.errors.newPassword &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -210,7 +219,9 @@ export const EditPartiesRepresentersForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم الثلاثي <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      اسم المستخدم الثلاثي <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className={cn(
@@ -230,7 +241,9 @@ export const EditPartiesRepresentersForm = ({
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      اسم المستخدم <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <div className="*:not-first:mt-2">
                         <div className="flex rounded-md shadow-xs">
@@ -283,7 +296,9 @@ export const EditPartiesRepresentersForm = ({
                 name="dateOfBirth"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      تاريخ الميلاد <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <DatePicker
                         className={cn(
@@ -304,7 +319,9 @@ export const EditPartiesRepresentersForm = ({
                 name="electoralEntityId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>الكيان السياسي <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      الكيان السياسي <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Combobox
                         options={electoralEntitiesSearch}
@@ -327,10 +344,12 @@ export const EditPartiesRepresentersForm = ({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
+                    <FormLabel>
+                      رقم الهاتف <RequiredBadge />
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        type='number'
+                        type="number"
                         className={cn(
                           form.formState.errors.phone &&
                             'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -343,27 +362,55 @@ export const EditPartiesRepresentersForm = ({
                   </FormItem>
                 )}
               />
-
+              {/* Gender */}
               <FormField
                 control={form.control}
-                name="email"
+                name="gender"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
+                    <FormLabel>الجنس</FormLabel>
                     <FormControl>
-                      <Input
-                        className={cn(
-                          form.formState.errors.email &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="البريد الالكتروني"
+                      <Select
                         disabled={isLoadingUpdate}
-                        {...field}
-                      />
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="الجنس" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">ذكر</SelectItem>
+                          <SelectItem value="1">انثى</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                   </FormItem>
                 )}
               />
+              <div className="grid md:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        البريد الالكتروني <RequiredBadge />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className={cn(
+                            form.formState.errors.email &&
+                              'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                          )}
+                          placeholder="البريد الالكتروني"
+                          disabled={isLoadingUpdate}
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
             {/* Separator */}

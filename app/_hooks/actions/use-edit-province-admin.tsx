@@ -25,10 +25,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addProvinceAdminSchema } from '@/app/_validation/user';
 import { baseURL } from '@/app/_lib/features/apiSlice';
 
-export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
-{
-    const user = useSelector(selectUser)
-  
+export const useEditProvinceAdmins = ({ item }: { item: User }) => {
+  const user = useSelector(selectUser);
+
   const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
   const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
   const pageSize = 10; // Fixed page size
@@ -41,8 +40,13 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
   const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
-  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
   const { refetch } = useUsersQuery(
     `Role=12&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
@@ -77,6 +81,8 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
     defaultValues: {
       name: item.name,
       // @ts-ignore
+      gender: String(item.gender), // ✅ Convert to string
+      // @ts-ignore
       dateOfBirth: new Date(item.dateOfBirth),
       govCenterId: item.govCenter?.id,
       electoralEntityId: item.electoralEntity?.id,
@@ -99,7 +105,7 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
       setGovCentersSearch((prev) => {
         // Convert previous values to a Map for quick lookup
         const existingItemsMap = new Map(prev.map((pc) => [pc.value, pc]));
-  
+
         // Add new unique items from API response
         lazyGovCenters.items.forEach((govCenter: any) => {
           if (!existingItemsMap.has(govCenter.id)) {
@@ -109,7 +115,7 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
             });
           }
         });
-  
+
         // Ensure the selected gov center is included without duplication
         if (item.govCenter && !existingItemsMap.has(item.govCenter.id)) {
           existingItemsMap.set(item.govCenter.id, {
@@ -117,18 +123,23 @@ export const useEditProvinceAdmins = ( { item }: { item: User; } ) =>
             label: item.govCenter.name
           });
         }
-  
+
         return Array.from(existingItemsMap.values());
       });
-  
+
       setGovCentersTotalPages(lazyGovCenters.totalPages);
     }
   }, [lazyGovCenters, item.govCenter]);
   // Scroll Event Handler for Infinite Scroll
   const onGovCenterScrollEnd = () => {
-    if (govCentersCurrentPage < govCentersTotalPages && !isFetchingLazyGovCenter) {
+    if (
+      govCentersCurrentPage < govCentersTotalPages &&
+      !isFetchingLazyGovCenter
+    ) {
       setGovCentersCurrentPage((prev) => prev + 1);
-      fetchGovCenters(`PageNumber=${ govCentersCurrentPage + 1}&PageSize=${ pageSize }`);
+      fetchGovCenters(
+        `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+      );
     }
   };
 

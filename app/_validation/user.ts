@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { calcAge } from '@/app/_utils/calc-age'
 
 export const addUserSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المسخدم لا يقل عن 18 عام'}),
   govId: z.string().min(3),
   pollingCenterId: z.string().min(3),
@@ -20,7 +21,8 @@ export const addUserSchema = z.object({
 } );
 
 export const addCandidateSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المرشح لا يقل عن 18 عام'}),
   govCenterId: z.string().min( 3 ),
   ethnicity: z.enum(['0', '1', '3', '6']).transform((val) => Number(val)),
@@ -62,7 +64,8 @@ export const addCandidateSchema = z.object({
     }),
 } );
 export const editCandidateSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المرشح لا يقل عن 18 عام'}),
   govCenterId: z.string().min(3),
   pollingCenterId: z.string().transform( ( value ) =>
@@ -105,7 +108,8 @@ export const editCandidateSchema = z.object({
 } );
 
 export const addDataEntrySchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر مدخل البيانات لا يقل عن 18 عام'}),
   govCenterId:z.string().min(3),
   electoralEntityId: z.string().transform( ( value ) =>
@@ -128,7 +132,8 @@ export const addDataEntrySchema = z.object({
 } );
 
 export const addObserverSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المراقب لا يقل عن 18 عام'}),
   govCenterId:z.string().min(3),
   pollingCenterId: z.string().min( 3 ),
@@ -153,7 +158,8 @@ export const addObserverSchema = z.object({
 } );
 
 export const addElectralAdminSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر ممثل الكيان لا يقل عن 18 عام'}),
   electoralEntityId: z.string().min(3),
   username: z.string().min(3).max(16),
@@ -166,7 +172,8 @@ export const addElectralAdminSchema = z.object({
 } );
 
 export const addProvinceAdminSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min( 3 ),
+  gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر مدير المحافظة لا يقل عن 18 عام'}),
   govCenterId :z.string().min(3),
   electoralEntityId: z.string().transform( ( value ) =>

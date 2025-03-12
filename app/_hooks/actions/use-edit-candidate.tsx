@@ -72,6 +72,8 @@ export const useEditCandidate = ({ item }: { item: User }) => {
       email: item.email,
       candidateSerial: item.candidateSerial,
       candidateListSerial: item.candidateListSerial,
+      // @ts-ignore
+      gender: String(item.gender), // ✅ Convert to string
       govCenterId: item.govCenter.id,
       // @ts-ignore
       religion: String(item.ethnicity),

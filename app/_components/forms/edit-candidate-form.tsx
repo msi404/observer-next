@@ -254,56 +254,60 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-                        <FormField
-                           control={form.control}
-                           name="username"
-                           render={({ field }) => (
-                             <FormItem>
-                               <FormLabel>
-                                 اسم المستخدم <RequiredBadge />
-                               </FormLabel>
-                               <FormControl>
-                                 <div className="*:not-first:mt-2">
-                                   <div className="flex rounded-md shadow-xs">
-                                     <Input
-                                       className={cn(
-                                         form.formState.errors.username &&
-                                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
-                                         '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
-                                       )}
-                                       disabled={isLoadingUpdate || isLoadingFile}
-                                       placeholder="اسم المستخدم"
-                                       {...field}
-                                     />
-                                     <button
-                                       onClick={onCheckUsernameTaken}
-                                       type="button"
-                                       className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
-                                     >
-                                       التحقق
-                                     </button>
-                                   </div>
-                                 </div>
-                               </FormControl>
-                               <Switch>
-                                 <Match
-                                   when={isUsernameTaken === true && isUsernameTakenSuccess}
-                                 >
-                                   <p className="text-destructive font-medium text-xs">
-                                     اسم المستخدم قيد الاستخدام
-                                   </p>
-                                 </Match>
-                                 <Match
-                                   when={isUsernameTaken === false && isUsernameTakenSuccess}
-                                 >
-                                   <p className="text-green-600 font-medium text-xs">
-                                     اسم المستخدم متاح
-                                   </p>
-                                 </Match>
-                               </Switch>
-                             </FormItem>
-                           )}
-                         />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      اسم المستخدم <RequiredBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <div className="*:not-first:mt-2">
+                        <div className="flex rounded-md shadow-xs">
+                          <Input
+                            className={cn(
+                              form.formState.errors.username &&
+                                'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                              '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
+                            )}
+                            disabled={isLoadingUpdate || isLoadingFile}
+                            placeholder="اسم المستخدم"
+                            {...field}
+                          />
+                          <button
+                            onClick={onCheckUsernameTaken}
+                            type="button"
+                            className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            التحقق
+                          </button>
+                        </div>
+                      </div>
+                    </FormControl>
+                    <Switch>
+                      <Match
+                        when={
+                          isUsernameTaken === true && isUsernameTakenSuccess
+                        }
+                      >
+                        <p className="text-destructive font-medium text-xs">
+                          اسم المستخدم قيد الاستخدام
+                        </p>
+                      </Match>
+                      <Match
+                        when={
+                          isUsernameTaken === false && isUsernameTakenSuccess
+                        }
+                      >
+                        <p className="text-green-600 font-medium text-xs">
+                          اسم المستخدم متاح
+                        </p>
+                      </Match>
+                    </Switch>
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -405,8 +409,34 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-                            {/* Date of Birth */}
-                            <FormField
+
+              {/* Gender */}
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الجنس</FormLabel>
+                    <FormControl>
+                      <Select
+                        disabled={isLoadingUpdate || isLoadingFile}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="الجنس" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">ذكر</SelectItem>
+                          <SelectItem value="1">انثى</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              {/* Date of Birth */}
+              <FormField
                 control={form.control}
                 name="dateOfBirth"
                 render={({ field }) => (
@@ -479,6 +509,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                 )}
               />
               {/* Serial Number */}
+              <div className='grid md:col-span-2'>
               <FormField
                 control={form.control}
                 name="candidateListSerial"
@@ -507,6 +538,7 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
+                </div>
               <div className="grid md:col-span-2">
                 {/* Image Upload */}
                 <Dropzone

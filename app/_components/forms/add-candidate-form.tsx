@@ -272,7 +272,7 @@ export const AddCandidateForm = () => {
             />
             <FormField
               control={form.control}
-              name='ethnicity'
+              name="ethnicity"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
@@ -292,6 +292,33 @@ export const AddCandidateForm = () => {
                         <SelectItem value="2">كردي</SelectItem>
                         <SelectItem value="4">صابئي</SelectItem>
                         <SelectItem value="6">شبكي</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            {/* Gender */}
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    الجنس <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="الجنس" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">ذكر</SelectItem>
+                        <SelectItem value="1">انثى</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -348,32 +375,30 @@ export const AddCandidateForm = () => {
                 </FormItem>
               )}
             />
-            <div className="grid md:col-span-2">
-              {/* Serial Number */}
-              <FormField
-                control={form.control}
-                name="candidateListSerial"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      رقم القائمة <RequiredBadge />
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        className={cn(
-                          form.formState.errors.candidateListSerial &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                        )}
-                        placeholder="رقم القائمة "
-                        disabled={isLoadingCandidate || isLoadingFile}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* Serial Number */}
+            <FormField
+              control={form.control}
+              name="candidateListSerial"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    رقم القائمة <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className={cn(
+                        form.formState.errors.candidateListSerial &&
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
+                      placeholder="رقم القائمة "
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <div className="grid md:col-span-2">
               {/* Image Upload */}
               <Dropzone

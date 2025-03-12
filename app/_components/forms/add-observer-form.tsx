@@ -18,6 +18,13 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Separator } from '@/app/_components/ui/separator';
 
@@ -28,7 +35,7 @@ import { Show } from '@/app/_components/utils/show';
 import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
 import { Switch, Match } from '@/app/_components/utils/switch';
-import {RequiredBadge} from '@/app/_components/custom/required-badge'
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 
 // Utils
 import { cn } from '@/app/_lib/utils';
@@ -84,7 +91,9 @@ export const AddObserverForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم الموظف الثلاثي <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    اسم الموظف الثلاثي <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -104,7 +113,9 @@ export const AddObserverForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    اسم المستخدم <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
@@ -153,7 +164,9 @@ export const AddObserverForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    كلمة المرور <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -176,7 +189,9 @@ export const AddObserverForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    تاريخ الميلاد <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -197,7 +212,9 @@ export const AddObserverForm = () => {
               name="govCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مكتب المحافظة <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    مكتب المحافظة <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Combobox
                       options={govCentersSearch}
@@ -225,7 +242,9 @@ export const AddObserverForm = () => {
               name="pollingCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مركز الاقتراع <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    مركز الاقتراع <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Combobox
                       options={pollingCentersSearch}
@@ -253,7 +272,9 @@ export const AddObserverForm = () => {
               name="stationId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>محطة التسجيل <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    محطة التسجيل <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Combobox
                       options={stationsSearch}
@@ -278,7 +299,9 @@ export const AddObserverForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    رقم الهاتف <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -294,14 +317,42 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
+            {/* Gender */}
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    الجنس <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isLoadingUser}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="الجنس" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">ذكر</SelectItem>
+                        <SelectItem value="1">انثى</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-            <div className='grid md:col-span-2'>
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    البريد الالكتروني <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -316,8 +367,7 @@ export const AddObserverForm = () => {
                 </FormItem>
               )}
             />
-              </div>
-            <div className='grid md:col-span-2'>
+            <div className="grid md:col-span-2">
               {/* Image Upload */}
               <Dropzone
                 setFile={(voterFile) => (fileRef.current = voterFile)}

@@ -19,16 +19,23 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
 import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
-import { Switch, Match } from '@/app/_components/utils/switch'
+import { Switch, Match } from '@/app/_components/utils/switch';
 // Utils
 import { cn } from '@/app/_lib/utils';
-import { RequiredBadge } from '@/app/_components/custom/required-badge'
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 
 export const AddPartiesRepresentersForm = () => {
   const {
@@ -72,7 +79,9 @@ export const AddPartiesRepresentersForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    اسم الموظف الثلاثي <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -92,34 +101,48 @@ export const AddPartiesRepresentersForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم <RequiredBadge/></FormLabel>
+                  <FormLabel>
+                    اسم المستخدم <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
-                      <Input
-                      className={cn(
-                        form.formState.errors.username &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
-                        '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
-                      )}
-                      disabled={isLoadingUser}
-                      placeholder="اسم المستخدم"
-                      {...field}
-                    />
-                    <button onClick={onCheckUsernameTaken} type='button' className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50">
-                      التحقق
-                      </button>
+                        <Input
+                          className={cn(
+                            form.formState.errors.username &&
+                              'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                            '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
+                          )}
+                          disabled={isLoadingUser}
+                          placeholder="اسم المستخدم"
+                          {...field}
+                        />
+                        <button
+                          onClick={onCheckUsernameTaken}
+                          type="button"
+                          className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          التحقق
+                        </button>
                       </div>
-                   </div>
+                    </div>
                   </FormControl>
                   <Switch>
-                  <Match when={isUsernameTaken === true && isUsernameTakenSuccess}>
-                      <p className='text-destructive font-medium text-xs'>اسم المستخدم قيد الاستخدام</p>
-                  </Match>
-                  <Match when={isUsernameTaken === false && isUsernameTakenSuccess}>
-                      <p className='text-green-600 font-medium text-xs'>اسم المستخدم متاح</p>
-                  </Match>
-                    </Switch>
+                    <Match
+                      when={isUsernameTaken === true && isUsernameTakenSuccess}
+                    >
+                      <p className="text-destructive font-medium text-xs">
+                        اسم المستخدم قيد الاستخدام
+                      </p>
+                    </Match>
+                    <Match
+                      when={isUsernameTaken === false && isUsernameTakenSuccess}
+                    >
+                      <p className="text-green-600 font-medium text-xs">
+                        اسم المستخدم متاح
+                      </p>
+                    </Match>
+                  </Switch>
                 </FormItem>
               )}
             />
@@ -129,7 +152,9 @@ export const AddPartiesRepresentersForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    كلمة المرور <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -152,7 +177,9 @@ export const AddPartiesRepresentersForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    تاريخ الميلاد <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -173,7 +200,9 @@ export const AddPartiesRepresentersForm = () => {
               name="electoralEntityId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>الكيان السياسي <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    الكيان السياسي <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Combobox
                       options={electoralEntitiesSearch}
@@ -196,10 +225,12 @@ export const AddPartiesRepresentersForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    رقم الهاتف <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      type='number'
+                      type="number"
                       className={cn(
                         form.formState.errors.phone &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -212,13 +243,41 @@ export const AddPartiesRepresentersForm = () => {
                 </FormItem>
               )}
             />
-            <div className='grid md:col-span-2'>
+            {/* Gender */}
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    الجنس <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isLoadingUser}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="الجنس" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">ذكر</SelectItem>
+                        <SelectItem value="1">انثى</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    البريد الالكتروني <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -233,7 +292,6 @@ export const AddPartiesRepresentersForm = () => {
                 </FormItem>
               )}
             />
-           </div>
           </div>
 
           {/* Separator */}

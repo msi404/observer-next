@@ -18,6 +18,13 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 import { Separator } from '@/app/_components/ui/separator';
 
 // Shared Components
@@ -26,7 +33,7 @@ import { DatePicker } from '@/app/_components/custom/date-picker';
 import { Spinner } from '@/app/_components/spinner';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Switch, Match } from '@/app/_components/utils/switch';
-import {RequiredBadge} from '@/app/_components/custom/required-badge'
+import { RequiredBadge } from '@/app/_components/custom/required-badge';
 
 // Utils
 import { cn } from '@/app/_lib/utils';
@@ -72,7 +79,9 @@ export const AddDataEntryForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم الموظف الثلاثي <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    اسم الموظف الثلاثي <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className={cn(
@@ -92,7 +101,9 @@ export const AddDataEntryForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>اسم المستخدم <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    اسم المستخدم <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
@@ -141,7 +152,9 @@ export const AddDataEntryForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>كلمة المرور <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    كلمة المرور <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -164,7 +177,9 @@ export const AddDataEntryForm = () => {
               name="dateOfBirth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>تاريخ الميلاد <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    تاريخ الميلاد <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <DatePicker
                       className={cn(
@@ -186,7 +201,9 @@ export const AddDataEntryForm = () => {
               name="govCenterId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>مكتب المحافظة <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    مكتب المحافظة <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Combobox
                       options={govCentersSearch}
@@ -209,10 +226,12 @@ export const AddDataEntryForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>رقم الهاتف <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    رقم الهاتف <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      type='number'
+                      type="number"
                       className={cn(
                         form.formState.errors.phone &&
                           'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
@@ -226,29 +245,56 @@ export const AddDataEntryForm = () => {
               )}
             />
 
-            <div className='grid md:col-span-2'>
+            {/* Gender */}
             <FormField
               control={form.control}
-              name="email"
+              name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>البريد الالكتروني <RequiredBadge /></FormLabel>
+                  <FormLabel>
+                    الجنس <RequiredBadge />
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      className={cn(
-                        form.formState.errors.email &&
-                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      )}
-                      placeholder="البريد الالكتروني"
+                    <Select
                       disabled={isLoadingUser}
-                      {...field}
-                    />
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="الجنس" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">ذكر</SelectItem>
+                        <SelectItem value="1">انثى</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                 </FormItem>
               )}
             />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      البريد الالكتروني <RequiredBadge />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          form.formState.errors.email &&
+                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                        )}
+                        placeholder="البريد الالكتروني"
+                        disabled={isLoadingUser}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
 
           {/* Separator */}
           <div className="relative">

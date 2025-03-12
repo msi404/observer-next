@@ -11,6 +11,13 @@ import {
   FormLabel,
   FormMessage
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 import { Combobox } from '@/app/_components/custom/combobox';
 import { Input } from '@/app/_components/ui/input';
 import { DatePicker } from '@/app/_components/custom/date-picker';
@@ -349,7 +356,32 @@ export const EditProvniceAdminForm = ({
                   </FormItem>
                 )}
               />
-
+       {/* Gender */}
+       <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>الجنس</FormLabel>
+                    <FormControl>
+                      <Select
+                        disabled={isLoadingUpdate}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value?.toString()}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="الجنس" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0">ذكر</SelectItem>
+                          <SelectItem value="1">انثى</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <div className='grid md:col-span-2'>
               <FormField
                 control={form.control}
                 name="email"
@@ -370,6 +402,7 @@ export const EditProvniceAdminForm = ({
                   </FormItem>
                 )}
               />
+            </div>
               <div className='grid md:col-span-2'>
                 {/* Image Upload */}
                 <Dropzone
