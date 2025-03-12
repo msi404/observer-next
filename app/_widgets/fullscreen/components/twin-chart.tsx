@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+
 import { type FC } from 'react';
+import { useRouter } from 'next/navigation';
 import { TrendingUp } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
@@ -22,7 +25,7 @@ interface TwinChartProps {
   title: string;
   description: string;
   chartConfig: ChartConfig;
-  chartData: unknown[];
+  chartData: { [key: string]: any }[]; // Ensuring it's an array of objects
   dataKey: string;
   nameKeyOne: string;
   nameKeyTwo: string;
@@ -39,11 +42,20 @@ export const TwinChart: FC<TwinChartProps> = ({
   nameKeyTwo,
   formatLabel = true,
 }) => {
+  const router = useRouter();
+
+  // Click handler function
+  const handleBarClick = (data: any, key: string) => {
+    if (data && data[key]) {
+      router.push(`/details/${data[key]}`); // Adjust the route as needed
+    }
+  };
+
   return (
-    <Card className='shadow-none dark'>
+    <Card className="shadow-none dark">
       <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -66,11 +78,15 @@ export const TwinChart: FC<TwinChartProps> = ({
               dataKey={nameKeyOne}
               fill={`var(--color-${nameKeyOne}`}
               radius={4}
+              onClick={(e) => handleBarClick(e, dataKey)}
+              style={{ cursor: 'pointer' }}
             />
             <Bar
               dataKey={nameKeyTwo}
               fill={`var(--color-${nameKeyTwo}`}
               radius={4}
+              onClick={(e) => handleBarClick(e, dataKey)}
+              style={{ cursor: 'pointer' }}
             />
           </BarChart>
         </ChartContainer>
