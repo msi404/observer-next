@@ -3,17 +3,23 @@ import { type NextPage } from 'next';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { selectToken } from '@/app/_lib/features/authSlice';
+import { selectToken, selectUser } from '@/app/_lib/features/authSlice';
 
 import { Container } from '@/app/_components/containers/container';
 import { LoginForm } from '@/app/_components/forms/login-form';
 import Logo from '@/app/_assets/logo.png';
 import CompanyLogo from '@/app/_assets/tatweer.png';
 
-const SignInPage: NextPage = () => {
-  const token = useSelector(selectToken);
+const SignInPage: NextPage = () =>
+{
+  const token = useSelector( selectToken );
+  const user = useSelector( selectUser );
+  if ( user.role === 104 )
+  {
+    return redirect( '/qr-code' )
+  } 
 
-  if (token) return redirect('/');
+  if (token) return redirect('/')
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -24,9 +30,9 @@ const SignInPage: NextPage = () => {
           <div className="flex justify-center gap-2 md:justify-start translate-y-40">
             <div className="flex items-center justify-center rounded-md text-primary-foreground">
               <Image
-                src={CompanyLogo.src}
-                width={100}
-                height={100}
+                src={ CompanyLogo.src }
+                width={ 100 }
+                height={ 100 }
                 alt="Logo"
               />
             </div>
@@ -35,15 +41,15 @@ const SignInPage: NextPage = () => {
         </Container>
       </div>
       <div className="relative hidden bg-muted lg:block">
-		<div className='absolute inset-0 left-1/3 right-1/3 top-1/3 translate-y-1/3 h-1/3 w-1/3 object-cover 
+        <div className='absolute inset-0 left-1/3 right-1/3 top-1/3 translate-y-1/3 h-1/3 w-1/3 object-cover 
 					dark:brightness-[0.2] dark:grayscale'>
-				  <div className="flex flex-col justify-center items-center gap-2 md:justify-start">
+          <div className="flex flex-col justify-center items-center gap-2 md:justify-start">
             <div className="flex items-center justify-center rounded-md text-primary-foreground">
-              <Image src={Logo.src} width={120} height={120} alt="Logo" />
+              <Image src={ Logo.src } width={ 120 } height={ 120 } alt="Logo" />
             </div>
             <span className="text-slate-400">نظام المراقب</span>
           </div>
-			</div>
+        </div>
       </div>
     </div>
   );
