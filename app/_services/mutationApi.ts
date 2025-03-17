@@ -3,6 +3,13 @@ import { tatweerApi } from '@/app/_lib/features/apiSlice';
 
 const mutationApi = tatweerApi.injectEndpoints({
   endpoints: ( builder ) => ( {
+    sendQrCode: builder.mutation({
+      query: (data) => ({
+        url: 'votes/qr',
+        method: 'POST',
+        body: data
+      })
+    }),
     createElectoralEntity: builder.mutation({
       query: (item) => ({
         url: 'electoralentities',
@@ -223,5 +230,6 @@ export const {
   useUpdateCurrentUserMutation,
   useUpdateComplaintMutation,
   useChangeUserPasswordMutation,
-  usePatchCurrentUserMutation
+  usePatchCurrentUserMutation,
+  useSendQrCodeMutation
 } = mutationApi;
