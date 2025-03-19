@@ -78,7 +78,7 @@ export const AddObserverForm = () => {
           <PenSquare size="25px" />
         </motion.button>
       }
-      title="اضافة مراقب"
+      title="اضافة وكيل"
       description="ادخل المعطيات الاتية لاضافة عنصر"
     >
       <Form {...form}>

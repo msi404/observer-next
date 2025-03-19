@@ -76,7 +76,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
             <Trash size="20px" />
           </motion.button>
         }
-        title="حذف مراقب"
+        title="حذف وكيل"
         description="هل انت متأكد من انك تريد حذف العنصر؟"
       >
         <DialogFooter>
@@ -119,7 +119,7 @@ export const EditObserverForm = ({ item }: EditObserverFormProps) => {
             <Pencil size="20px" />
           </motion.button>
         }
-        title="تعديل مراقب"
+        title="تعديل وكيل"
         description="ادخل المعطيات الاتية لتعديل عنصر"
       >
         <Form {...form}>

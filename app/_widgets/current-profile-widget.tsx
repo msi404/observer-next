@@ -29,7 +29,7 @@ export const CurrentProfileWidget: FC = () => {
               <Profile image={data?.data?.profileImg} className="border-4 border-white" />
               <div className="flex flex-col">
                 <h1>{data?.data?.name}</h1>
-                <p className="text-xs text-gray-600 mt-1">مرشح بغداد - الكرادة</p>
+                <p className="text-xs text-gray-600 mt-1">{data?.data?.govCenter.gov.name}</p>
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@ export const CurrentProfileWidget: FC = () => {
             <div className='space-y-4 bg-secondary p-3 rounded-md'>
             <div className='flex gap-4'>
               <Building2 />
-              <h1>الكرادة</h1>
+                    <h1>{data?.data?.govCenter.gov.name}</h1>
             </div>
             <div className='flex gap-4'>
               <Phone />

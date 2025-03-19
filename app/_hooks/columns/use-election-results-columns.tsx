@@ -63,7 +63,7 @@ export const useElectionsResultsColumns = () => {
       cell: ({ row }: { row: any }) => {
         return (
           <div>
-            <h1 className="text-lg text-primary">{row.original.name}</h1>
+            <h1 className="text-lg text-primary">{row.original.pollingCenter ?? 'لا يوجد'}</h1>
             <span className="text-xs text-gray-600">
               رقم القائمة: {row.original.candidateListSerial}
             </span>
@@ -96,12 +96,12 @@ export const useElectionsResultsColumns = () => {
     },
     {
       id: 'list',
-      accessorKey: 'totalVoters',
+      accessorKey: 'candidateListSerial',
       header: 'تسلسل القائمة',
-      cell: ({ cell }: { cell: any }) => {
+      cell: ({row }: { row: any }) => {
         return (
           <div className='text-center'>
-          <h1 className="text-lg text-primary">{cell.getValue() ?? 'لا يوجد'}</h1>
+          <h1 className="text-lg text-primary">{row.original.candidateListSerial ?? 'لا يوجد'}</h1>
           <span className="text-xs text-gray-600">
             تسلسل القائمة
           </span>

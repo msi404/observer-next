@@ -133,12 +133,28 @@ const Message: FC<{
   content: string;
   img: string;
   createdAt: string;
-}> = ({ creator, content, title, createdAt, img, id }) => {
+  isSeen: boolean;
+}> = ({ creator, content, title, createdAt, img, id, isSeen }) => {
   const dispatch = useDispatch();
   const [switchSeenNotification] = useSwitchSeenNotificationMutation();
   function checkURL(url: string) {
     return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
+  const user = useSelector(selectUser);
+  const currentPage = useSelector(selectCurrentPage);
+  const pageSize = useSelector(selectPageSize);
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
+  const { refetch } =
+    useMyNotificationQuery(
+      `PageNumber=${currentPage}&PageSize=${pageSize}${electoralEntityIdQuery}`,
+      { pollingInterval: 10000, skipPollingIfUnfocused: true }
+    );
   const onMessageClick = async () => {
     dispatch(
       setNotification({
@@ -150,7 +166,12 @@ const Message: FC<{
         id: id
       })
     );
-    await switchSeenNotification(id);
+    console.log(isSeen);
+    if ( isSeen === false )
+    {
+      await switchSeenNotification( id );
+      refetch()
+    }
   };
   const options = { weekday: 'short' };
   const date = `${new Date(createdAt).toLocaleDateString(
@@ -164,9 +185,11 @@ const Message: FC<{
       className="h-44 w-full flex relative cursor-pointer"
       onClick={onMessageClick}
     >
+      <Show when={isSeen === false}>
       <Badge variant="destructive" className="absolute -top-2 right-0">
-        اشعار
+        جديد
       </Badge>
+     </Show>
       <CardHeader className="w-full">
         <div className="flex flex-col gap-2 justify-between w-full">
           <div className="flex gap-2">
@@ -222,6 +245,7 @@ const MessagesCoaster: FC<{ messages: any[] }> = ({ messages }) => {
         <For each={messages}>
           {(item) => (
             <Message
+              isSeen={item.isSeen}
               id={item.id}
               title={item.title}
               content={item.content}

@@ -82,7 +82,7 @@ export const AddNotificationsForm = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="102">المرشحين</SelectItem>
-                        <SelectItem value="104">المراقبين</SelectItem>
+                        <SelectItem value="104">الوكلاء</SelectItem>
                         <SelectItem value="12">مدراء المحافظة</SelectItem>
                         <SelectItem value="10">ممثلين الكيان</SelectItem>
                         <SelectItem value="100">مدخلين البيانات</SelectItem>
