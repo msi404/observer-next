@@ -58,6 +58,7 @@ export const useConfirmedVotersTable = () => {
     onColumnFiltersChange: setConfirmedVotersColumnFilter,
     onSortingChange: setConfirmedVotersSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: confirmedVotersColumnFilter,
       sorting: confirmedVotersSorting

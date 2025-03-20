@@ -41,6 +41,7 @@ export const usePartiesRepresentersTable = () => {
     onColumnFiltersChange: setPartiesRepresentersColumnFilter,
     onSortingChange: setPartiesRepresentersSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: partiesRepresentersColumnFilter,
       sorting: partiesRepresenterssSorting,

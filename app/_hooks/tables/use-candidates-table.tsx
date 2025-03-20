@@ -2,7 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
-import { selectCurrentPage, selectPageSize, setTotalPages } from '@/app/_lib/features/paginationSlice';
+import {
+  selectCurrentPage,
+  selectPageSize,
+  setTotalPages
+} from '@/app/_lib/features/paginationSlice';
 import {
   useReactTable,
   getCoreRowModel,
@@ -13,25 +17,39 @@ import {
   type SortingState
 } from '@tanstack/react-table';
 
-import { useCandidateColumns } from '@/app/_hooks/columns/use-candidate-columns'
-import {useCandidatesFilter} from '@/app/_hooks/filters/use-candidates-filter'
-import { useUsersQuery } from '@/app/_services/fetchApi'
+import { useCandidateColumns } from '@/app/_hooks/columns/use-candidate-columns';
+import { useCandidatesFilter } from '@/app/_hooks/filters/use-candidates-filter';
+import { useUsersQuery } from '@/app/_services/fetchApi';
 
 export const useCandidatesTable = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
   const currentPage = useSelector(selectCurrentPage);
   const pageSize = useSelector(selectPageSize);
-  const electoralEntityId = (user?.electoralEntity as unknown as ElectoralEntity)?.id
-  const electoralEntityIdQuery = electoralEntityId !== undefined ? `&ElectoralEntityId=${electoralEntityId}` : '';
-  const { data: users, isLoading, isError, isFetching, isSuccess, refetch } =
-    useUsersQuery( `Role=102&PageNumber=${ currentPage }${electoralEntityIdQuery}&PageSize=${ pageSize }` );
-  
-  const [ candidates, setCandidates ] = useState( [] );
-  
+  const electoralEntityId = (
+    user?.electoralEntity as unknown as ElectoralEntity
+  )?.id;
+  const electoralEntityIdQuery =
+    electoralEntityId !== undefined
+      ? `&ElectoralEntityId=${electoralEntityId}`
+      : '';
+  const {
+    data: users,
+    isLoading,
+    isError,
+    isFetching,
+    isSuccess,
+    refetch
+  } = useUsersQuery(
+    `Role=102&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+  );
+
+  const [candidates, setCandidates] = useState([]);
+
   const { candidatesColumns } = useCandidateColumns();
-    
-  const [candidatesColumnFilter, setCandidatesColumnFilter] = useState<ColumnFiltersState>([]);
+
+  const [candidatesColumnFilter, setCandidatesColumnFilter] =
+    useState<ColumnFiltersState>([]);
   const [candidatesSorting, setCandidatesSorting] = useState<SortingState>([]);
 
   const candidatesTable = useReactTable({
@@ -43,24 +61,24 @@ export const useCandidatesTable = () => {
     onColumnFiltersChange: setCandidatesColumnFilter,
     onSortingChange: setCandidatesSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: candidatesColumnFilter,
-      sorting: candidatesSorting,
-    },
-  } );
+      sorting: candidatesSorting
+    }
+  });
 
   // ✅ Move the hook here (outside the regular function)
-  const { clearFilters: clearCandidatesFilter } = useCandidatesFilter(candidatesTable);
-  
-  useEffect( () =>
-  {
-    if ( !isLoading )
-    {
-      const candidatesExtracted = users?.data?.items     
-      setCandidates( candidatesExtracted )
+  const { clearFilters: clearCandidatesFilter } =
+    useCandidatesFilter(candidatesTable);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const candidatesExtracted = users?.data?.items;
+      setCandidates(candidatesExtracted);
     }
-  }, [ isLoading, users, isFetching ] )
-  
+  }, [isLoading, users, isFetching]);
+
   useEffect(() => {
     if (!isLoading) {
       dispatch(setTotalPages(users?.data?.totalPages));
@@ -76,6 +94,6 @@ export const useCandidatesTable = () => {
     refetch,
     candidatesColumnFilter,
     clearCandidatesFilter,
-	  candidatesTable,
+    candidatesTable
   };
 };

@@ -43,6 +43,7 @@ export const useDataEntriesTable = () => {
     onColumnFiltersChange: setDataEntriesColumnFilter,
     onSortingChange: setDataEntriesSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: dataEntriesColumnFilter,
       sorting: dataEntriesSorting,

@@ -44,6 +44,7 @@ export const useProvinceAdminsTable = () => {
     onColumnFiltersChange: setProvinceAdminsColumnFilter,
     onSortingChange: setProvinceAdminsSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: provinceAdminsColumnFilter,
       sorting: provinceAdminsSorting,

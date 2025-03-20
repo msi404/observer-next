@@ -43,6 +43,7 @@ export const useObserversTable = () => {
     onColumnFiltersChange: setObserversColumnFilter,
     onSortingChange: setObserversSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: observersColumnFilter,
       sorting: observersSorting,

@@ -43,6 +43,7 @@ export const useElectionResultsTable = () => {
     onColumnFiltersChange: setElectionResultsColumnFilter,
     onSortingChange: setElectionResultsSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: electionResultsColumnFilter,
       sorting: electionResultsSorting,

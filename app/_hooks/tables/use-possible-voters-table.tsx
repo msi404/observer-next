@@ -59,6 +59,7 @@ export const usePossibleVotersTable = () => {
     onColumnFiltersChange: setPossibleVotersColumnFilter,
     onSortingChange: setPossibleVotersSorting,
     getSortedRowModel: getSortedRowModel(),
+    renderFallbackValue: <h1>لا يوجد</h1>,
     state: {
       columnFilters: possibleVotersColumnFilter,
       sorting: possibleVotersSorting
