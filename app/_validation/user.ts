@@ -25,8 +25,8 @@ export const addCandidateSchema = z.object({
   gender: z.enum(['0', '1']).transform((val) => Number(val)),
   dateOfBirth: z.date().refine((d) => Number(calcAge(String(d))) >= 18, {message:'يجب ان يكون عمر المرشح لا يقل عن 18 عام'}),
   govCenterId: z.string().min( 3 ),
-  ethnicity: z.enum(['0', '1', '3', '6']).transform((val) => Number(val)),
-  religion: z.enum(['0', '2', '4']).transform((val) => Number(val)),
+  ethnicity: z.enum(['0', '2', '6']).transform((val) => Number(val)).default('0').optional(),
+  religion: z.enum(['0', '2', '4', '6']).transform((val) => Number(val)).default('0').optional(),
   pollingCenterId: z.string().transform( ( value ) =>
     {
       if ( value === '' )
@@ -88,8 +88,8 @@ export const editCandidateSchema = z.object({
         return value
       }
   } ).optional(),
-  ethnicity: z.enum(['0', '1', '3', '6']).transform((val) => Number(val)),
-  religion: z.enum(['0', '2', '4']).transform((val) => Number(val)),
+  ethnicity: z.enum(['0', '2', '6']).transform((val) => Number(val)).default('0').optional(),
+  religion: z.enum(['0', '2', '4', '6']).transform((val) => Number(val)).default('0').optional(),
   username: z.string().min(3).max(16),
   password: z.string().min(6).optional(),
   profileImg: z.string().optional(),

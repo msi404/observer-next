@@ -180,6 +180,9 @@ const fetchDataApi = tatweerApi.injectEndpoints({
         };
       }
     }),
+    govCenter: builder.query({
+      query: (id) => `govcenters/${id}`,
+    }),
     users: builder.query({
       query: (query) => `users?${query}`
     } ),
@@ -261,5 +264,7 @@ export const {
   useUserQuery,
   usePostsQuery,
   usePostQuery,
-  useIsUsernameTakenQuery
+  useIsUsernameTakenQuery,
+  useGovCenterQuery,
+  useLazyGovCenterQuery
 } = fetchDataApi;

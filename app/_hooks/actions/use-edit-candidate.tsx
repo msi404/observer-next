@@ -13,7 +13,12 @@ import {
   useDeleteUserMutation,
   useUploadFileMutation
 } from '@/app/_services/mutationApi';
-import { useUsersQuery, useGovCentersQuery, useIsUsernameTakenQuery } from '@/app/_services/fetchApi';
+import {
+  useUsersQuery,
+  useLazyGovCentersQuery,
+  useIsUsernameTakenQuery,
+  useLazyGovCenterQuery
+} from '@/app/_services/fetchApi';
 import { useToast } from '@/app/_hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -23,10 +28,14 @@ import { baseURL } from '@/app/_lib/features/apiSlice';
 
 export const useEditCandidate = ({ item }: { item: User }) => {
   const user = useSelector(selectUser);
-  const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector( selectPageSize );
-    const [username, setUsername] = useState('')
-  
+  const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
+  const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
+  const pageSize = 10; // Fixed page size
+
+  const globalPageSize = useSelector(selectPageSize);
+  const globalCurrentPage = useSelector(selectCurrentPage);
+  const [username, setUsername] = useState('');
+
   // API Mutations & Queries
   const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMutation();
@@ -40,22 +49,34 @@ export const useEditCandidate = ({ item }: { item: User }) => {
       : '';
 
   const { refetch } = useUsersQuery(
-    `Role=102&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
+    `Role=102&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
-    const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
-  
+  const {
+    data: isUsernameTaken,
+    isSuccess: isUsernameTakenSuccess,
+    refetch: refetchIsUsernameTaken
+  } = useIsUsernameTakenQuery(username);
+  const [selectedGovCenter, setSelectedGovCenter] = useState<string | null>(
+    null
+  );
+  const [selectedCuta, setSelectedCuta] = useState<
+    { religion: number | null; ethnicity: number | null }[] | []
+  >([]);
 
   // State Management
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
   >([]);
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-  const [openDelete, setOpenDelete] = useState<boolean>(false);
-  const {
-    data: govCenters,
-    isLoading: isLoadingGovCenters,
-    refetch: refetchGovCenters
-  } = useGovCentersQuery(`PageNumber=1&PageSize=30${electoralEntityIdQuery}`);
+  const [ openDelete, setOpenDelete ] = useState<boolean>( false );
+  
+  const [
+    fetchGovCenters,
+    { data: lazyGovCenters, isFetching: isFetchingLazyGovCenter }
+  ] = useLazyGovCentersQuery();
+
+  const [fetchGovCenter, { data: govCenter, isLoading: isLoadingGovCenter }] =
+    useLazyGovCenterQuery();
 
   const fileRef = useRef<File | null>(null);
 
@@ -76,7 +97,7 @@ export const useEditCandidate = ({ item }: { item: User }) => {
       gender: String(item.gender), // ✅ Convert to string
       govCenterId: item.govCenter.id,
       // @ts-ignore
-      religion: String(item.ethnicity),
+      religion: String(item.religion),
       // @ts-ignore
       ethnicity: String(item.ethnicity),
       // @ts-ignore
@@ -85,12 +106,69 @@ export const useEditCandidate = ({ item }: { item: User }) => {
       role: 102
     }
   } );
+    // Fetch Initial
+    useEffect(() => {
+      fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+    }, [] );
   
-  const onCheckUsernameTaken = () =>
+  useEffect( () =>
+  {
+    if ( item.govCenter )
     {
-      setUsername( form.getValues( 'username' ) )
-      refetchIsUsernameTaken()
+      setSelectedGovCenter(item.govCenter.id)
     }
+  }, [item.govCenter])
+  
+    useEffect(() => {
+      if (selectedGovCenter) {
+        fetchGovCenter(selectedGovCenter);
+      }
+    }, [fetchGovCenter, selectedGovCenter]);
+  
+    useEffect(() => {
+      if (!isLoadingGovCenter) {
+        const cutas = govCenter?.data?.gov?.cutasSpecifications.map(
+          (cuta: any) => {
+            return {
+              ethnicity: cuta?.ethnicity,
+              religion: cuta?.religion
+            };
+          }
+        );
+        setSelectedCuta(cutas);
+      }
+    }, [govCenter?.data?.gov?.cutasSpecifications, isLoadingGovCenter]);
+  
+    useEffect(() => {
+      if (lazyGovCenters) {
+        setGovCentersSearch((prev) => [
+          ...prev,
+          ...lazyGovCenters.items.map((govCenter: any) => ({
+            value: govCenter.id,
+            label: govCenter.name
+          }))
+        ]);
+        setGovCentersTotalPages(lazyGovCenters.totalPages);
+      }
+    }, [lazyGovCenters]);
+    // Scroll Event Handler for Infinite Scroll
+    const onGovCenterScrollEnd = () => {
+      if (
+        govCentersCurrentPage < govCentersTotalPages &&
+        !isFetchingLazyGovCenter
+      ) {
+        setGovCentersCurrentPage((prev) => prev + 1);
+        fetchGovCenters(
+          `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+        );
+      }
+    };
+  
+
+  const onCheckUsernameTaken = () => {
+    setUsername(form.getValues('username'));
+    refetchIsUsernameTaken();
+  };
 
   // Form Submission Handler
   const onUpdate = async () => {
@@ -122,19 +200,6 @@ export const useEditCandidate = ({ item }: { item: User }) => {
     }
   };
 
-  // Effect to Update Search Options
-  useEffect(() => {
-    refetchGovCenters();
-    if (!isLoadingGovCenters) {
-      setGovCentersSearch(
-        govCenters?.items.map((govCenter: any) => ({
-          value: govCenter.id,
-          label: govCenter.name
-        }))
-      );
-    }
-  }, [govCenters, isLoadingGovCenters, openUpdate]);
-
   const onDelete = async () => {
     await deleteUser(item.id);
     refetch();
@@ -154,6 +219,9 @@ export const useEditCandidate = ({ item }: { item: User }) => {
     isUsernameTakenSuccess,
     onCheckUsernameTaken,
     govCentersSearch,
+    setSelectedGovCenter,
+    onGovCenterScrollEnd,
+    selectedCuta,
     isLoadingFile
   };
 };

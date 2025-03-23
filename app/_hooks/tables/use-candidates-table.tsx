@@ -5,7 +5,8 @@ import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentPage,
   selectPageSize,
-  setTotalPages
+  setTotalPages,
+  setCurrentPage
 } from '@/app/_lib/features/paginationSlice';
 import {
   useReactTable,
@@ -58,14 +59,18 @@ export const useCandidatesTable = () => {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
     onColumnFiltersChange: setCandidatesColumnFilter,
     onSortingChange: setCandidatesSorting,
     getSortedRowModel: getSortedRowModel(),
     renderFallbackValue: <h1>لا يوجد</h1>,
+    pageCount: users?.totalPages,
     state: {
+      pagination: { pageIndex: currentPage, pageSize },
       columnFilters: candidatesColumnFilter,
       sorting: candidatesSorting
-    }
+    },
+    onPaginationChange: setCurrentPage,
   });
 
   // ✅ Move the hook here (outside the regular function)

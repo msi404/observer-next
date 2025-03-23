@@ -10,24 +10,22 @@ import { useAddCandidate } from '@/app/_hooks/actions/use-add-candidate';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import { Button } from '@/app/_components/ui/button';
 import { Input } from '@/app/_components/ui/input';
-import
-  {
-    Form,
-    FormControl,
-    FormItem,
-    FormField,
-    FormLabel,
-    FormMessage
-  } from '@/app/_components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormItem,
+  FormField,
+  FormLabel,
+  FormMessage
+} from '@/app/_components/ui/form';
 import { Separator } from '@/app/_components/ui/separator';
-import
-  {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-  } from '@/app/_components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/app/_components/ui/select';
 
 // Shared Components
 import { BasicDialog } from '@/app/_components/custom/basic-dialog';
@@ -41,8 +39,7 @@ import { RequiredBadge } from '@/app/_components/custom/required-badge';
 
 // Utils
 import { cn } from '@/app/_lib/utils';
-export const AddCandidateForm = () =>
-{
+export const AddCandidateForm = () => {
   const {
     openAdd,
     setOpenAdd,
@@ -55,19 +52,21 @@ export const AddCandidateForm = () =>
     isUsernameTakenSuccess,
     onCheckUsernameTaken,
     onGovCenterScrollEnd,
+    setSelectedGovCenter,
+    selectedCuta,
     fileRef
   } = useAddCandidate();
 
   return (
     <BasicDialog
-      open={ openAdd }
-      onOpenChange={ setOpenAdd }
+      open={openAdd}
+      onOpenChange={setOpenAdd}
       button={
         <motion.button
-          whileHover={ {
+          whileHover={{
             scale: 1.1,
             transition: { damping: 0, ease: 'linear', duration: 0.2 }
-          } }
+          }}
           className="bg-slate-200 p-4 cursor-pointer rounded-full text-gray-500 hover:text-primary"
         >
           <PenSquare size="25px" />
@@ -76,37 +75,37 @@ export const AddCandidateForm = () =>
       title="اضافة مرشح"
       description="ادخل المعطيات الاتية لاضافة عنصر"
     >
-      <Form { ...form }>
-        <form className="grid gap-5" onSubmit={ form.handleSubmit( onSubmit ) }>
-          {/* Form Fields */ }
+      <Form {...form}>
+        <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+          {/* Form Fields */}
           <div className="grid md:grid-cols-2 gap-4">
-            {/* Name */ }
+            {/* Name */}
             <FormField
-              control={ form.control }
+              control={form.control}
               name="name"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     اسم المرشح <RequiredBadge />
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.name &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
-                      disabled={ isLoadingFile || isLoadingCandidate }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
+                      disabled={isLoadingFile || isLoadingCandidate}
                       placeholder="اسم المرشح"
-                      { ...field }
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="username"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     اسم المستخدم <RequiredBadge />
@@ -115,17 +114,17 @@ export const AddCandidateForm = () =>
                     <div className="*:not-first:mt-2">
                       <div className="flex rounded-md shadow-xs">
                         <Input
-                          className={ cn(
+                          className={cn(
                             form.formState.errors.username &&
-                            'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
+                              'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive',
                             '-me-px flex-1 rounded-e-none shadow-none focus-visible:z-10'
-                          ) }
-                          disabled={ isLoadingCandidate || isLoadingFile }
+                          )}
+                          disabled={isLoadingCandidate || isLoadingFile}
                           placeholder="اسم المستخدم"
-                          { ...field }
+                          {...field}
                         />
                         <button
-                          onClick={ onCheckUsernameTaken }
+                          onClick={onCheckUsernameTaken}
                           type="button"
                           className="border-input bg-background text-foreground hover:bg-accent hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center rounded-e-md border px-3 text-sm font-medium transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
                         >
@@ -136,14 +135,14 @@ export const AddCandidateForm = () =>
                   </FormControl>
                   <Switch>
                     <Match
-                      when={ isUsernameTaken === true && isUsernameTakenSuccess }
+                      when={isUsernameTaken === true && isUsernameTakenSuccess}
                     >
                       <p className="text-destructive font-medium text-xs">
                         اسم المستخدم قيد الاستخدام
                       </p>
                     </Match>
                     <Match
-                      when={ isUsernameTaken === false && isUsernameTakenSuccess }
+                      when={isUsernameTaken === false && isUsernameTakenSuccess}
                     >
                       <p className="text-green-600 font-medium text-xs">
                         اسم المستخدم متاح
@@ -151,12 +150,12 @@ export const AddCandidateForm = () =>
                     </Match>
                   </Switch>
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="email"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     البريد الالكتروني <RequiredBadge />
@@ -164,22 +163,22 @@ export const AddCandidateForm = () =>
                   <FormControl>
                     <Input
                       type="email"
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.email &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
-                      disabled={ isLoadingFile || isLoadingCandidate }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
+                      disabled={isLoadingFile || isLoadingCandidate}
                       placeholder="البريد الالكتروني"
-                      { ...field }
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="password"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     كلمة المرور <RequiredBadge />
@@ -187,22 +186,22 @@ export const AddCandidateForm = () =>
                   <FormControl>
                     <Input
                       type="password"
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.password &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
-                      disabled={ isLoadingFile || isLoadingCandidate }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
+                      disabled={isLoadingFile || isLoadingCandidate}
                       placeholder="******"
-                      { ...field }
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="phone"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     رقم الهاتف <RequiredBadge />
@@ -210,136 +209,189 @@ export const AddCandidateForm = () =>
                   <FormControl>
                     <Input
                       type="number"
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.phone &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
-                      disabled={ isLoadingFile || isLoadingCandidate }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
+                      disabled={isLoadingFile || isLoadingCandidate}
                       placeholder="رقم الهاتف"
-                      { ...field }
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
-            {/* Date of Birth */ }
+            {/* Date of Birth */}
             <FormField
-              control={ form.control }
+              control={form.control}
               name="dateOfBirth"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     تاريخ الميلاد <RequiredBadge />
                   </FormLabel>
                   <FormControl>
                     <DatePicker
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.dateOfBirth &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      value={ field.value }
-                      onChange={ field.onChange }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="govCenterId"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     مكتب المحافظة <RequiredBadge />
                   </FormLabel>
                   <FormControl>
                     <Combobox
-                      options={ govCentersSearch }
-                      value={ field.value } // Controlled by React Hook Form
-                      onChange={ field.onChange } // Updates React Hook Form on change
-                      onScrollEnd={ onGovCenterScrollEnd }
+                      options={govCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={(value) => {
+                        field.onChange(value);
+                        setSelectedGovCenter(value);
+                      }} // Updates React Hook Form on change
+                      onScrollEnd={onGovCenterScrollEnd}
                       label="اختيار مكتب المحافظة"
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      className={ cn(
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      className={cn(
                         form.formState.errors.govCenterId &&
-                        'border-destructive focus:border-destructive focus:ring-destructive'
-                      ) }
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="religion"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    الديانة <RequiredBadge />
+                    الديانة
                   </FormLabel>
                   <FormControl>
                     <Select
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      onValueChange={ field.onChange }
-                      defaultValue={ field.value?.toString() }
+                      disabled={
+                        isLoadingCandidate ||
+                        isLoadingFile ||
+                        !selectedCuta ||
+                        selectedCuta?.every((value) => value?.religion === null)
+                      }
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="الديانة" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="0">مسلم</SelectItem>
-                        <SelectItem value="2">مسيحي</SelectItem>
-                        <SelectItem value="4">ايزيدي</SelectItem>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.religion === 2
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="2">مسيحي</SelectItem>
+                        </Show>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.religion === 4
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="4">ايزيدي</SelectItem>
+                        </Show>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.religion === 6
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="6">صابئي</SelectItem>
+                        </Show>
                       </SelectContent>
                     </Select>
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
             <FormField
-              control={ form.control }
+              control={form.control}
               name="ethnicity"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    القومية <RequiredBadge />
+                    القومية
                   </FormLabel>
                   <FormControl>
                     <Select
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      onValueChange={ field.onChange }
-                      defaultValue={ field.value?.toString() }
+                      disabled={
+                        isLoadingCandidate ||
+                        isLoadingFile ||
+                        !selectedCuta ||
+                        selectedCuta?.every(
+                          (value) => value?.ethnicity === null
+                        )
+                      }
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="القومية" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="0">عربي</SelectItem>
-                        <SelectItem value="2">كردي</SelectItem>
-                        <SelectItem value="4">صابئي</SelectItem>
-                        <SelectItem value="6">شبكي</SelectItem>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.ethnicity === 2
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="2">كردي</SelectItem>
+                        </Show>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.ethnicity === 6
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="6">شبكي</SelectItem>
+                        </Show>
                       </SelectContent>
                     </Select>
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
-            {/* Gender */ }
+            {/* Gender */}
             <FormField
-              control={ form.control }
+              control={form.control}
               name="gender"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     الجنس <RequiredBadge />
                   </FormLabel>
                   <FormControl>
                     <Select
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      onValueChange={ field.onChange }
-                      defaultValue={ field.value?.toString() }
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="الجنس" />
@@ -351,13 +403,13 @@ export const AddCandidateForm = () =>
                     </Select>
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
-            {/* Serial Number */ }
+            {/* Serial Number */}
             <FormField
-              control={ form.control }
+              control={form.control}
               name="candidateSerial"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     رقم المرشح <RequiredBadge />
@@ -365,23 +417,23 @@ export const AddCandidateForm = () =>
                   <FormControl>
                     <Input
                       type="number"
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.candidateSerial &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
                       placeholder="رقم المرشح "
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      { ...field }
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
-            {/* Serial Number */ }
+            {/* Serial Number */}
             <FormField
-              control={ form.control }
+              control={form.control}
               name="candidateListSerial"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>
                     رقم القائمة <RequiredBadge />
@@ -389,53 +441,53 @@ export const AddCandidateForm = () =>
                   <FormControl>
                     <Input
                       type="number"
-                      className={ cn(
+                      className={cn(
                         form.formState.errors.candidateListSerial &&
-                        'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
-                      ) }
+                          'border-destructive focus-visible:border-destructive focus-visible:ring-destructive placeholder:text-destructive'
+                      )}
                       placeholder="رقم القائمة "
-                      disabled={ isLoadingCandidate || isLoadingFile }
-                      { ...field }
+                      disabled={isLoadingCandidate || isLoadingFile}
+                      {...field}
                     />
                   </FormControl>
                 </FormItem>
-              ) }
+              )}
             />
             <div className="grid md:col-span-2">
-              {/* Image Upload */ }
+              {/* Image Upload */}
               <Dropzone
-                setFile={ ( voterFile ) => ( fileRef.current = voterFile ) }
+                setFile={(voterFile) => (fileRef.current = voterFile)}
                 label="اختيار صورة الشخصية"
               />
-              <Show when={ fileRef.current === null }>
+              <Show when={fileRef.current === null}>
                 <span className="text-destructive">يجب رفع صورة الشخصية</span>
               </Show>
             </div>
           </div>
 
-          {/* Separator */ }
+          {/* Separator */}
           <div className="relative">
             <Separator className="absolute bottom-1/4 left-1/2 right-1/2 rtl:translate-x-1/2 ltr:-translate-x-1/2 w-screen" />
           </div>
 
-          {/* Form Actions */ }
+          {/* Form Actions */}
           <DialogFooter>
             <div className="flex justify-between w-full">
               <Button
                 type="submit"
-                disabled={ isLoadingCandidate || isLoadingFile }
+                disabled={isLoadingCandidate || isLoadingFile}
               >
                 اضافة
-                { ( isLoadingCandidate || isLoadingFile ) && (
+                {(isLoadingCandidate || isLoadingFile) && (
                   <div className=" scale-125">
                     <Spinner />
                   </div>
-                ) }
+                )}
               </Button>
               <DialogClose asChild aria-label="Close">
                 <Button
                   variant="outline"
-                  disabled={ isLoadingCandidate || isLoadingFile }
+                  disabled={isLoadingCandidate || isLoadingFile}
                 >
                   الغاء
                 </Button>

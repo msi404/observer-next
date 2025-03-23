@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import {selectUser} from '@/app/_lib/features/authSlice'
+import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentPage,
   selectPageSize
@@ -22,6 +22,7 @@ import { baseURL } from '@/app/_lib/features/apiSlice';
 import {
   useUsersQuery,
   useLazyGovCentersQuery,
+  useLazyGovCenterQuery,
   useIsUsernameTakenQuery
 } from '@/app/_services/fetchApi';
 import {
@@ -32,20 +33,26 @@ import {
 // Validation Schemas
 import { addCandidateSchema } from '@/app/_validation/user';
 
-export const useAddCandidate = () =>
-{
-  const user = useSelector(selectUser)
+export const useAddCandidate = () => {
+  const user = useSelector(selectUser);
   const [govCentersCurrentPage, setGovCentersCurrentPage] = useState(1);
   const [govCentersTotalPages, setGovCentersTotalPages] = useState(1);
   const pageSize = 10; // Fixed page size
 
   const globalPageSize = useSelector(selectPageSize);
-  const globalCurrentPage = useSelector( selectCurrentPage );
-  const [username, setUsername] = useState('')
+  const globalCurrentPage = useSelector(selectCurrentPage);
+  const [username, setUsername] = useState('');
+  const [selectedGovCenter, setSelectedGovCenter] = useState<string | null>(
+    null
+  );
+  const [selectedCuta, setSelectedCuta] = useState<
+    { religion: number | null; ethnicity: number | null }[] | []
+  >([]);
+
   // API Mutations & Queries
   const [createVoter, { isLoading: isLoadingCandidate }] =
     useCreateUserMutation();
-  const [ uploadFile, { isLoading: isLoadingFile } ] = useUploadFileMutation();
+  const [uploadFile, { isLoading: isLoadingFile }] = useUploadFileMutation();
   const electoralEntityId = (
     user?.electoralEntity as unknown as ElectoralEntity
   )?.id;
@@ -57,13 +64,20 @@ export const useAddCandidate = () =>
     `Role=102&PageNumber=${globalCurrentPage}${electoralEntityIdQuery}&PageSize=${globalPageSize}`
   );
 
-  const {data: isUsernameTaken, isSuccess: isUsernameTakenSuccess, refetch: refetchIsUsernameTaken} = useIsUsernameTakenQuery(username)
+  const [fetchGovCenter, { data: govCenter, isLoading: isLoadingGovCenter }] =
+    useLazyGovCenterQuery();
+
+  const {
+    data: isUsernameTaken,
+    isSuccess: isUsernameTakenSuccess,
+    refetch: refetchIsUsernameTaken
+  } = useIsUsernameTakenQuery(username);
 
   // State Management
   const [govCentersSearch, setGovCentersSearch] = useState<
     { value: string; label: string }[]
-    >( [] );
-  
+  >([]);
+
   const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [
     fetchGovCenters,
@@ -88,46 +102,63 @@ export const useAddCandidate = () =>
       // @ts-ignore
       dateOfBirth: '',
       profileImg: '',
-      role: 102,
+      role: 102
     }
   });
-    // Fetch Initial
-    useEffect( () =>
-      {
-        fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
-      }, []);
-  
-  
-      useEffect(() => {
-        if (lazyGovCenters) {
-          setGovCentersSearch((prev) => [
-            ...prev,
-            ...lazyGovCenters.items.map((govCenter: any) => ({
-              value: govCenter.id,
-              label: govCenter.name
-            }))
-          ]);
-          setGovCentersTotalPages(lazyGovCenters.totalPages);
+  // Fetch Initial
+  useEffect(() => {
+    fetchGovCenters(`PageNumber=1&PageSize=${pageSize}`);
+  }, []);
+
+  useEffect(() => {
+    if (selectedGovCenter) {
+      fetchGovCenter(selectedGovCenter);
+    }
+  }, [fetchGovCenter, selectedGovCenter]);
+
+  useEffect(() => {
+    if (!isLoadingGovCenter) {
+      const cutas = govCenter?.data?.gov?.cutasSpecifications.map(
+        (cuta: any) => {
+          return {
+            ethnicity: cuta?.ethnicity,
+            religion: cuta?.religion
+          };
         }
-      }, [ lazyGovCenters ] );
-    // Scroll Event Handler for Infinite Scroll
-    const onGovCenterScrollEnd = () => {
-      if (
-        govCentersCurrentPage < govCentersTotalPages &&
-        !isFetchingLazyGovCenter
-      ) {
-        setGovCentersCurrentPage((prev) => prev + 1);
-        fetchGovCenters(
-          `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
-        );
-      }
-    };
-  
-    const onCheckUsernameTaken = () =>
-      {
-        setUsername( form.getValues( 'username' ) )
-        refetchIsUsernameTaken()
-      }
+      );
+      setSelectedCuta(cutas);
+    }
+  }, [govCenter?.data?.gov?.cutasSpecifications, isLoadingGovCenter]);
+
+  useEffect(() => {
+    if (lazyGovCenters) {
+      setGovCentersSearch((prev) => [
+        ...prev,
+        ...lazyGovCenters.items.map((govCenter: any) => ({
+          value: govCenter.id,
+          label: govCenter.name
+        }))
+      ]);
+      setGovCentersTotalPages(lazyGovCenters.totalPages);
+    }
+  }, [lazyGovCenters]);
+  // Scroll Event Handler for Infinite Scroll
+  const onGovCenterScrollEnd = () => {
+    if (
+      govCentersCurrentPage < govCentersTotalPages &&
+      !isFetchingLazyGovCenter
+    ) {
+      setGovCentersCurrentPage((prev) => prev + 1);
+      fetchGovCenters(
+        `PageNumber=${govCentersCurrentPage + 1}&PageSize=${pageSize}`
+      );
+    }
+  };
+
+  const onCheckUsernameTaken = () => {
+    setUsername(form.getValues('username'));
+    refetchIsUsernameTaken();
+  };
   // Form Submission Handler
   const onSubmit = async () => {
     if (!fileRef.current) {
@@ -174,6 +205,9 @@ export const useAddCandidate = () =>
     isUsernameTakenSuccess,
     onCheckUsernameTaken,
     onGovCenterScrollEnd,
+    setSelectedGovCenter,
+    selectedGovCenter,
+    selectedCuta,
     fileRef
   };
 };

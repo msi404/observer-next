@@ -53,6 +53,9 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
     isUsernameTaken,
     isUsernameTakenSuccess,
     onCheckUsernameTaken,
+    selectedCuta,
+    setSelectedGovCenter,
+    onGovCenterScrollEnd,
     fileRef,
     govCentersSearch,
     form
@@ -354,62 +357,6 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="religion"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      الديانة <RequiredBadge />
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="الديانة" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0">مسلم</SelectItem>
-                          <SelectItem value="2">مسيحي</SelectItem>
-                          <SelectItem value="4">ايزيدي</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ethnicity"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      القومية <RequiredBadge />
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="القومية" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0">عربي</SelectItem>
-                          <SelectItem value="2">كردي</SelectItem>
-                          <SelectItem value="4">صابئي</SelectItem>
-                          <SelectItem value="6">شبكي</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
               {/* Gender */}
               <FormField
                 control={form.control}
@@ -455,30 +402,141 @@ export const EditCandidateForm = ({ item, id }: EditDataEntryFormProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="govCenterId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      مكتب المحافظة <RequiredBadge />
-                    </FormLabel>
-                    <FormControl>
-                      <Combobox
-                        options={govCentersSearch}
-                        value={field.value} // Controlled by React Hook Form
-                        onChange={field.onChange} // Updates React Hook Form on change
-                        label="اختيار مكتب المحافظة"
-                        disabled={isLoadingUpdate || isLoadingFile}
-                        className={cn(
-                          form.formState.errors.govCenterId &&
-                            'border-destructive focus:border-destructive focus:ring-destructive'
-                        )}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="govCenterId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    مكتب المحافظة <RequiredBadge />
+                  </FormLabel>
+                  <FormControl>
+                    <Combobox
+                      options={govCentersSearch}
+                      value={field.value} // Controlled by React Hook Form
+                      onChange={(value) => {
+                        field.onChange(value);
+                        setSelectedGovCenter(value);
+                      }} // Updates React Hook Form on change
+                      onScrollEnd={onGovCenterScrollEnd}
+                      label="اختيار مكتب المحافظة"
+                      disabled={isLoadingUpdate || isLoadingFile}
+                      className={cn(
+                        form.formState.errors.govCenterId &&
+                          'border-destructive focus:border-destructive focus:ring-destructive'
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="religion"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    الديانة
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={
+                        isLoadingUpdate ||
+                        isLoadingFile ||
+                        !selectedCuta ||
+                        selectedCuta?.every((value) => value?.religion === null)
+                      }
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="الديانة" />
+                      </SelectTrigger>
+                      <SelectContent>
+                      <SelectItem value="0">مسلم</SelectItem>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.religion === 2
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="2">مسيحي</SelectItem>
+                        </Show>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.religion === 4
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="4">ايزيدي</SelectItem>
+                        </Show>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.religion === 6
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="6">صابئي</SelectItem>
+                        </Show>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ethnicity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    القومية
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={
+                        isLoadingUpdate ||
+                        isLoadingFile ||
+                        !selectedCuta ||
+                        selectedCuta?.every(
+                          (value) => value?.ethnicity === null
+                        )
+                      }
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="القومية" />
+                      </SelectTrigger>
+                      <SelectContent>
+                      <SelectItem value="0">عربي</SelectItem>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.ethnicity === 2
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="2">كردي</SelectItem>
+                        </Show>
+                        <Show
+                          when={
+                            selectedCuta?.find(
+                              (cuta) => cuta.ethnicity === 6
+                            ) !== undefined
+                          }
+                        >
+                          <SelectItem value="6">شبكي</SelectItem>
+                        </Show>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
               {/* Serial Number */}
               <FormField
                 control={form.control}
