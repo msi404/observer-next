@@ -18,7 +18,7 @@ import {
   useIsUsernameTakenQuery,
   useUsersQuery
 } from '@/app/_services/fetchApi';
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -71,9 +71,6 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
 
   // Refs
   const fileRef = useRef<File | null>(null);
-
-  // Toast Hook
-  const { toast } = useToast();
 
   // Form Setup
   const form = useForm<z.infer<typeof addProvinceAdminSchema>>({
@@ -154,7 +151,6 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
       if (fileRef.current) {
         const formData = new FormData();
         formData.append('file', fileRef.current as File);
-
         const response = await uploadFile(formData).unwrap();
         form.setValue('profileImg', `${baseURL}/${response?.data}`);
       } else {
@@ -169,19 +165,11 @@ export const useEditProvinceAdmins = ({ item }: { item: User }) => {
       console.log(error); // Full error log for debugging
 
       if (error instanceof z.ZodError) {
-        toast({
-          title: 'Validation Error',
-          description: error.issues
-            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-            .join(', '),
-          variant: 'destructive'
-        });
+        toast.error( error.issues
+          .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+          .join(', '),);
       } else {
-        toast({
-          title: 'Error',
-          description: error.data?.msg || 'An unexpected error occurred',
-          variant: 'destructive'
-        });
+        toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       }
     } finally {
       refetch();

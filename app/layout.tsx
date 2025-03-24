@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Noto_Kufi_Arabic } from 'next/font/google';
 import { Providers } from '@/app/_providers/providers';
-import { Toaster } from '@/app/_components/ui/toaster';
+import { Toaster } from '@/app/_components/ui/sonner';
 import './_style/globals.css';
 
 const inter = Inter({
@@ -81,7 +81,7 @@ export default async function RootLayout({
       <body className={ `${ noto.className } ${ inter.className } antialiased` }>
         <Providers>
           <main className="w-full" dir='rtl'>{children}</main>
-          <Toaster />
+          <Toaster  richColors />
         </Providers>
       </body>
     </html>

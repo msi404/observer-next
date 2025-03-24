@@ -19,7 +19,7 @@ import {
   useIsUsernameTakenQuery,
   useLazyGovCenterQuery
 } from '@/app/_services/fetchApi';
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -79,10 +79,6 @@ export const useEditCandidate = ({ item }: { item: User }) => {
     useLazyGovCenterQuery();
 
   const fileRef = useRef<File | null>(null);
-
-  // Toast Hook
-  const { toast } = useToast();
-
   // Form Setup
   const form = useForm<z.infer<typeof editCandidateSchema>>({
     resolver: zodResolver(editCandidateSchema),
@@ -189,11 +185,7 @@ export const useEditCandidate = ({ item }: { item: User }) => {
       });
     } catch (error: any) {
       console.log(error);
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
     } finally {
       refetch();
       setOpenUpdate(false);

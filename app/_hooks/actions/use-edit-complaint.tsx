@@ -8,7 +8,7 @@ import {
   useUpdateComplaintMutation
 } from '@/app/_services/mutationApi';
 import { useComplaintsQuery } from '@/app/_services/fetchApi';
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,9 +35,6 @@ export const useEditComplaint = () => {
   // Refs
 	const fileRef = useRef<File | null>( null );
 	
-  // Toast Hook
-  const { toast } = useToast();
-
   // Form Setup
   const form = useForm<z.infer<typeof editComplaintSchema>>({
     resolver: zodResolver(editComplaintSchema),
@@ -53,11 +50,7 @@ export const useEditComplaint = () => {
   // Form Submission Handler
   const onUpdate = async () => {
    if (!fileRef.current) {
-			toast({
-			  title: 'لايوجد صورة',
-			  description: 'يجب ان ترفع صورة',
-			  variant: 'destructive'
-			});
+			toast.error('يجب ان ترفع صورة');
 			return;
 		 }
 		 try {
@@ -72,18 +65,12 @@ export const useEditComplaint = () => {
 	
 			console.log(result);
 		 } catch (error: any) {
-			toast({
-			  title: 'Error',
-			  description: error.data.title,
-			  variant: 'destructive'
-			});
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
 		 } finally {
 			refetch();
 			setOpenUpdate(false);
 		 }
   };
-
-
   return {
     openUpdate,
     setOpenUpdate,

@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // Hooks
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 
 // API Services
 import { baseURL } from '@/app/_lib/features/apiSlice';
@@ -43,8 +43,6 @@ export const useAddElectoralEntity = () => {
 
   // Refs
   const fileRef = useRef<File | null>(null);
-  // Toast Hook
-  const { toast } = useToast();
 
   // Form Setup
   const form = useForm<z.infer<typeof addElectoralEntitySchema>>({
@@ -58,11 +56,7 @@ export const useAddElectoralEntity = () => {
   // Form Submission Handler
   const onSubmit = async () => {
     if (!fileRef.current) {
-      toast({
-        title: 'لايوجد صورة',
-        description: 'يجب ان ترفع صورة',
-        variant: 'destructive'
-      });
+      toast.error('يجب ان ترفع صورة');
       return;
     }
     try {
@@ -76,11 +70,7 @@ export const useAddElectoralEntity = () => {
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetchElectoralEntities();

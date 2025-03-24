@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useChangeUserPasswordMutation } from '@/app/_services/mutationApi';
 import { useUsersQuery } from '@/app/_services/fetchApi';
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 import { changePasswordSchema } from '@/app/_validation/user';
 
 export const useChangeUserPassword = ({
@@ -41,8 +41,6 @@ export const useChangeUserPassword = ({
   const { refetch } = useUsersQuery(
     `Role=${role}&PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
-  const { toast } = useToast();
-
   // Form Setup
   const changePasswordform = useForm<z.infer<typeof changePasswordSchema>>({
     resolver: zodResolver(changePasswordSchema),
@@ -62,11 +60,7 @@ export const useChangeUserPassword = ({
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetch();

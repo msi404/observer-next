@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // Hooks
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 
 // API Services
 import { useCreateNotificationMutation } from '@/app/_services/mutationApi';
@@ -45,8 +45,6 @@ export const useAddNotification = () =>
   const { refetch: refetchNotifications } = useMyNotificationQuery(
     `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
-  // Toast Hook
-  const { toast } = useToast();
 
   // Form Setup
   const form = useForm<z.infer<typeof addNotificationSchema>>({
@@ -66,11 +64,7 @@ export const useAddNotification = () =>
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetchNotifications();

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useLoginMutation } from "@/app/_services/authApi";
-import { useToast } from "@/app/_hooks/use-toast";
+import {toast} from 'sonner'
 import { cn } from "@/app/_lib/utils";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -24,7 +24,6 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 	...props
 }) => {
 	const [login, { isLoading }] = useLoginMutation();
-	const { toast } = useToast();
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -36,15 +35,11 @@ export const LoginForm: FC<ComponentPropsWithoutRef<"div">> = ({
 	const onSubmit = async (values: z.infer<typeof loginSchema>) => {
 		try {
 			const response = await login( values ).unwrap();
-			if (response) return window.location.replace("/");
+			if ( response ) return window.location.replace( "/" );
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch ( error: any )
 		{
-			toast({
-				title: "Error",
-				description: error.data?.msg || 'An unexpected error occurred',
-				variant: "destructive",
-			});
+			toast.error(error.data?.msg || 'حدث خطأ يرجى المحاولة مجدداً لاحقاً.');
 		}
 	};
 

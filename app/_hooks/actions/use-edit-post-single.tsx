@@ -7,7 +7,7 @@ import {
   useUploadFileMutation
 } from '@/app/_services/mutationApi';
 import { usePostQuery } from '@/app/_services/fetchApi';
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,14 +34,11 @@ export const useEditPostSingle = ( { item }: { item: PostItem; } ) =>
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
-  // Query Data
-  const { refetch } = usePostQuery(item.id);
+// Query Data
+const { refetch } = usePostQuery(item.id);
 
-    // Refs
-    const fileRef = useRef<File | null>(null);
-
-  // Toast Hook
-  const { toast } = useToast();
+// Refs
+const fileRef = useRef<File | null>(null);
 
   // Form Setup
   const form = useForm<z.infer<typeof addPostSchema>>({
@@ -70,11 +67,7 @@ export const useEditPostSingle = ( { item }: { item: PostItem; } ) =>
          });
        // eslint-disable-next-line @typescript-eslint/no-explicit-any
        } catch (error: any) {
-         toast({
-           title: 'Error',
-           description: error.data?.msg || 'An unexpected error occurred',
-           variant: 'destructive'
-         });
+         toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
          console.log(error);
        } finally {
          refetch();

@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // Hooks
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 
 // API Services
 import { useCreateGovCenterMutation } from '@/app/_services/mutationApi';
@@ -51,8 +51,6 @@ export const useAddGovCenter = () =>
   const { data: provinces, isLoading: isLoadingProvinces } =
     useProvincesQuery('');
 
-  // Toast Hook
-  const { toast } = useToast();
 
   // Form Setup
   const form = useForm<z.infer<typeof addGovCenterSchema>>({
@@ -73,11 +71,7 @@ export const useAddGovCenter = () =>
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetchGovCenters();

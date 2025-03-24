@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '@/app/_lib/features/authSlice';
 import {
   selectCurrentPage,
-  selectPageSize,
+  selectPageSize
 } from '@/app/_lib/features/paginationSlice';
 // External libraries
 import { useForm } from 'react-hook-form';
@@ -15,8 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // Hooks
-import { useToast } from '@/app/_hooks/use-toast';
-
+import { toast } from 'sonner';
 // API Services
 import { baseURL } from '@/app/_lib/features/apiSlice';
 import {
@@ -32,9 +31,8 @@ import {
 // Validation Schemas
 import { addConfirmedVoterSchema } from '@/app/_validation/voter';
 
-export const useAddConfirmedVoter = () =>
-{
-  const user = useSelector( selectUser );
+export const useAddConfirmedVoter = () => {
+  const user = useSelector(selectUser);
   const [pollingCentersCurrentPage, setPollingCentersCurrentPage] = useState(1);
   const [pollingCentersTotalPages, setPollingCentersTotalPages] = useState(1);
   const [candidatesCurrentPage, setCandidatesCurrentPage] = useState(1);
@@ -70,19 +68,14 @@ export const useAddConfirmedVoter = () =>
   // Lazy Query for Polling Centers
   const [
     fetchPollingCenters,
-    {
-      data: lazyPollingCenters,
-      isFetching: isFetchingLazyPollingCenter,
-    }
+    { data: lazyPollingCenters, isFetching: isFetchingLazyPollingCenter }
   ] = useLazyPollingCentersQuery();
 
-  const [fetchUsers, {data: lazyUsers, isFetching: isFetchingLazyUsers}] = useLazyUsersQuery();
+  const [fetchUsers, { data: lazyUsers, isFetching: isFetchingLazyUsers }] =
+    useLazyUsersQuery();
 
   // Refs
   const fileRef = useRef<File | null>(null);
-
-  // Toast Hook
-  const { toast } = useToast();
 
   // Form Setup
   const form = useForm<z.infer<typeof addConfirmedVoterSchema>>({
@@ -98,30 +91,33 @@ export const useAddConfirmedVoter = () =>
       candidateId: '',
       serial: ''
     }
-  } );
+  });
 
-    // Fetch Initial
-    useEffect(() => {
-      fetchPollingCenters( `PageNumber=1&PageSize=${ pageSize }${ electoralEntityIdQuery }` );
-      fetchUsers( `Role=102&PageNumber=1&PageSize=${pageSize}${electoralEntityIdQuery}`)
-    }, []);
-  
-    // Update When Data Changes
-    useEffect(() => {
-      if (lazyPollingCenters) {
-        setPollingCentersSearch((prev) => [
-          ...prev,
-          ...lazyPollingCenters.items.map((pollingCenter: any) => ({
-            value: pollingCenter.id,
-            label: pollingCenter.name
-          }))
-        ]);
-        setPollingCentersTotalPages(lazyPollingCenters.totalPages);
-      }
-    }, [ lazyPollingCenters ] );
-  
-  useEffect( () =>
-  {
+  // Fetch Initial
+  useEffect(() => {
+    fetchPollingCenters(
+      `PageNumber=1&PageSize=${pageSize}${electoralEntityIdQuery}`
+    );
+    fetchUsers(
+      `Role=102&PageNumber=1&PageSize=${pageSize}${electoralEntityIdQuery}`
+    );
+  }, []);
+
+  // Update When Data Changes
+  useEffect(() => {
+    if (lazyPollingCenters) {
+      setPollingCentersSearch((prev) => [
+        ...prev,
+        ...lazyPollingCenters.items.map((pollingCenter: any) => ({
+          value: pollingCenter.id,
+          label: pollingCenter.name
+        }))
+      ]);
+      setPollingCentersTotalPages(lazyPollingCenters.totalPages);
+    }
+  }, [lazyPollingCenters]);
+
+  useEffect(() => {
     if (lazyUsers) {
       setUsersSearch((prev) => [
         ...prev,
@@ -132,31 +128,41 @@ export const useAddConfirmedVoter = () =>
       ]);
       setCandidatesTotalPages(lazyUsers.totalPages);
     }
-  }, [lazyUsers])
+  }, [lazyUsers]);
 
   // Scroll Event Handler for Infinite Scroll
   const onPollingCenterScrollEnd = () => {
-    if (pollingCentersCurrentPage < pollingCentersTotalPages && !isFetchingLazyPollingCenter) {
+    if (
+      pollingCentersCurrentPage < pollingCentersTotalPages &&
+      !isFetchingLazyPollingCenter
+    ) {
       setPollingCentersCurrentPage((prev) => prev + 1);
-      fetchPollingCenters(`PageNumber=${pollingCentersCurrentPage + 1}&PageSize=${pageSize}${electoralEntityIdQuery}`);
+      fetchPollingCenters(
+        `PageNumber=${
+          pollingCentersCurrentPage + 1
+        }&PageSize=${pageSize}${electoralEntityIdQuery}`
+      );
     }
   };
 
   const onUserScrollEnd = () => {
-    if (candidatesCurrentPage < candidatesCentersTotalPages && !isFetchingLazyUsers) {
+    if (
+      candidatesCurrentPage < candidatesCentersTotalPages &&
+      !isFetchingLazyUsers
+    ) {
       setCandidatesCurrentPage((prev) => prev + 1);
-      fetchUsers(`PageNumber=${candidatesCurrentPage + 1}&PageSize=${pageSize}${electoralEntityIdQuery}`);
+      fetchUsers(
+        `PageNumber=${
+          candidatesCurrentPage + 1
+        }&PageSize=${pageSize}${electoralEntityIdQuery}`
+      );
     }
   };
 
   // Form Submission Handler
   const onSubmit = async () => {
     if (!fileRef.current) {
-      toast({
-        title: 'لايوجد صورة',
-        description: 'يجب ان ترفع صورة',
-        variant: 'destructive'
-      });
+      toast.error('يجب ان ترفع صورة');
       return;
     }
     try {
@@ -172,11 +178,7 @@ export const useAddConfirmedVoter = () =>
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data.title,
-        variant: 'destructive'
-      });
+      toast.error(error.data.title);
     } finally {
       refetch();
       setOpenAdd(false);

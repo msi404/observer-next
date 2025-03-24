@@ -12,7 +12,7 @@ import
   useDeleteStationMutation
 } from '@/app/_services/mutationApi';
 import {useStationsQuery} from '@/app/_services/fetchApi'
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,7 +25,6 @@ export const useEditStation = ( { item }: { item: Station} ) =>
   const [updateStation, { isLoading: isLoadingUpdate }] = useUpdateStationMutation();
   const [deleteStation, { isLoading: isLoadingDelete }] = useDeleteStationMutation();
 
-
   // State Management
   const [openUpdate, setOpenUpdate] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
@@ -34,9 +33,6 @@ export const useEditStation = ( { item }: { item: Station} ) =>
   const { refetch } = useStationsQuery(
 	`PageNumber=${currentPage}&PageSize=${pageSize}&PollingCenterId=${item.pollingCenter.id}`
   );
-
-  // Toast Hook
-  const { toast } = useToast();
 
    // Form Setup
 	const form = useForm<z.infer<typeof addStationSchema>>({
@@ -56,11 +52,7 @@ export const useEditStation = ( { item }: { item: Station} ) =>
       });
     } catch (error: any) {
       console.log(error); // Full error log for debugging
-        toast({
-          title: 'Error',
-          description: error.data?.msg || 'An unexpected error occurred',
-          variant: 'destructive'
-        });
+        toast.error( error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
     }
     finally
     {

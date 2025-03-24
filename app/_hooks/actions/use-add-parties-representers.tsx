@@ -12,10 +12,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
-// Hooks
-import { useToast } from '@/app/_hooks/use-toast';
-
+import {toast} from 'sonner'
 import {
   useUsersQuery,
   useLazyElectoralEntitiesQuery,
@@ -60,10 +57,6 @@ export const useAddPartiesRepresenters = () => {
     fetchElectoralEntities,
     { data: lazyElectoralEntities, isFetching: isFetchingLazyElectoralEntities }
   ] = useLazyElectoralEntitiesQuery();
-
-  // Toast Hook
-  const { toast } = useToast();
-
   // Form Setup
   const form = useForm<z.infer<typeof addElectralAdminSchema>>({
     resolver: zodResolver(addElectralAdminSchema),
@@ -127,11 +120,7 @@ export const useAddPartiesRepresenters = () => {
       ).unwrap();
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetch();

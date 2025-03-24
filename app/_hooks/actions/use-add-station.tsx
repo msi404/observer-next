@@ -13,8 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 // Hooks
-import { useToast } from '@/app/_hooks/use-toast';
-
+import {toast} from 'sonner'
 // API Services
 import { useCreateStationMutation } from '@/app/_services/mutationApi';
 import {
@@ -36,9 +35,6 @@ export const useAddStation = (pollingCenterId: string) => {
   const { refetch: refetchStations } = useStationsQuery(
     `PageNumber=${currentPage}&PageSize=${pageSize}&PollingCenterId=${pollingCenterId}`
   );
-  // Toast Hook
-  const { toast } = useToast();
-
   // Form Setup
   const form = useForm<z.infer<typeof addStationSchema>>({
     resolver: zodResolver(addStationSchema),
@@ -59,11 +55,7 @@ export const useAddStation = (pollingCenterId: string) => {
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetchStations();

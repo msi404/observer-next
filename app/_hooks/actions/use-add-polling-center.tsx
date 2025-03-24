@@ -12,10 +12,7 @@ import {selectUser} from '@/app/_lib/features/authSlice'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
-// Hooks
-import { useToast } from '@/app/_hooks/use-toast';
-
+import {toast} from 'sonner'
 // API Services
 import { useCreatePollingCenterMutation } from '@/app/_services/mutationApi';
 import {
@@ -42,9 +39,6 @@ export const useAddPollingCenter = ( govCenterId: string ) =>
   const { refetch: refetchPollingCenters } = usePollingCentersQuery(
     `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}&GovCenterId=${govCenterId}`
   );
-  // Toast Hook
-  const { toast } = useToast();
-
   // Form Setup
   const form = useForm<z.infer<typeof addPollingCenterSchema>>({
     resolver: zodResolver(addPollingCenterSchema),
@@ -69,11 +63,7 @@ export const useAddPollingCenter = ( govCenterId: string ) =>
 
       console.log(result);
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetchPollingCenters();

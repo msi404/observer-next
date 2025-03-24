@@ -17,7 +17,7 @@ import {
   useLazyPollingCentersQuery,
   useLazyUsersQuery
 } from '@/app/_services/fetchApi';
-import {useToast} from '@/app/_hooks/use-toast'
+import {toast} from 'sonner'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -80,10 +80,6 @@ export const useEditPossibleVoter = ( { item }: { item: VoterItem; } ) =>
 ] = useLazyPollingCentersQuery();
 
 const [fetchUsers, {data: lazyUsers, isFetching: isFetchingLazyUsers}] = useLazyUsersQuery();
-
-
-  // Toast Hook
-  const { toast } = useToast();
 
   // Form Setup
   const form = useForm<z.infer<typeof addPossibleVoterSchema>>({
@@ -187,11 +183,7 @@ const onUserScrollEnd = () => {
         id: item.id
       });
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.data?.msg || 'An unexpected error occurred',
-        variant: 'destructive'
-      });
+      toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
       console.log(error);
     } finally {
       refetch();

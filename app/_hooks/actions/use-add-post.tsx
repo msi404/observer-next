@@ -13,9 +13,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
-// Hooks
-import { useToast } from '@/app/_hooks/use-toast';
+import {toast} from 'sonner'
 
 // API Services
 import { baseURL } from '@/app/_lib/features/apiSlice';
@@ -46,8 +44,6 @@ export const useAddPost = () =>
   const { refetch: refetchPosts } = usePostsQuery(
     `PageNumber=${currentPage}${electoralEntityIdQuery}&PageSize=${pageSize}`
   );
-  // Toast Hook
-  const { toast } = useToast();
 
   // Refs
   const fileRef = useRef<File | null>(null);
@@ -64,11 +60,7 @@ export const useAddPost = () =>
   // Form Submission Handler
   const onSubmit = async () => {
      if (!fileRef.current) {
-          toast({
-            title: 'لايوجد صورة',
-            description: 'يجب ان ترفع صورة',
-            variant: 'destructive'
-          });
+          toast.error('يجب ان ترفع صورة.')
           return;
         }
         try {
@@ -83,11 +75,7 @@ export const useAddPost = () =>
     
           console.log(result);
         } catch (error: any) {
-          toast({
-            title: 'Error',
-            description: error.data?.msg,
-            variant: 'destructive'
-          });
+          toast.error(error.data?.msg || 'حدث خطأ، يرجى المحاولة مجدداً.');
         } finally
         {
           form.reset()
