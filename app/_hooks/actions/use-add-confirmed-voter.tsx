@@ -118,17 +118,21 @@ export const useAddConfirmedVoter = () =>
         ]);
         setPollingCentersTotalPages(lazyPollingCenters.totalPages);
       }
-      if (lazyUsers) {
-        setUsersSearch((prev) => [
-          ...prev,
-          ...lazyUsers.data.items.map((user: any) => ({
-            value: user.id,
-            label: user.name
-          }))
-        ]);
-        setCandidatesTotalPages(lazyUsers.totalPages);
-      }
-    }, [lazyPollingCenters, lazyUsers]);
+    }, [ lazyPollingCenters ] );
+  
+  useEffect( () =>
+  {
+    if (lazyUsers) {
+      setUsersSearch((prev) => [
+        ...prev,
+        ...lazyUsers.data.items.map((user: any) => ({
+          value: user.id,
+          label: user.name
+        }))
+      ]);
+      setCandidatesTotalPages(lazyUsers.totalPages);
+    }
+  }, [lazyUsers])
 
   // Scroll Event Handler for Infinite Scroll
   const onPollingCenterScrollEnd = () => {

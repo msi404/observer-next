@@ -140,21 +140,21 @@ const Message: FC<{
   function checkURL(url: string) {
     return url?.match(/\.(jpeg|jpg|gif|png)$/) != null;
   }
-  const user = useSelector(selectUser);
-  const currentPage = useSelector(selectCurrentPage);
-  const pageSize = useSelector(selectPageSize);
-  const electoralEntityId = (
-    user?.electoralEntity as unknown as ElectoralEntity
-  )?.id;
-  const electoralEntityIdQuery =
-    electoralEntityId !== undefined
-      ? `&ElectoralEntityId=${electoralEntityId}`
-      : '';
-  const { refetch } =
-    useMyNotificationQuery(
-      `PageNumber=${currentPage}&PageSize=${pageSize}${electoralEntityIdQuery}`,
-      { pollingInterval: 10000, skipPollingIfUnfocused: true }
-    );
+  // const user = useSelector(selectUser);
+  // const currentPage = useSelector(selectCurrentPage);
+  // const pageSize = useSelector(selectPageSize);
+  // const electoralEntityId = (
+  //   user?.electoralEntity as unknown as ElectoralEntity
+  // )?.id;
+  // const electoralEntityIdQuery =
+  //   electoralEntityId !== undefined
+  //     ? `&ElectoralEntityId=${electoralEntityId}`
+  //     : '';
+  // const { refetch } =
+  //   useMyNotificationQuery(
+  //     `PageNumber=${currentPage}&PageSize=${pageSize}${electoralEntityIdQuery}`,
+  //     { pollingInterval: 10000, skipPollingIfUnfocused: true }
+  //   );
   const onMessageClick = async () => {
     dispatch(
       setNotification({
@@ -166,11 +166,9 @@ const Message: FC<{
         id: id
       })
     );
-    console.log(isSeen);
     if ( isSeen === false )
     {
       await switchSeenNotification( id );
-      refetch()
     }
   };
   const options = { weekday: 'short' };
