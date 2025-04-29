@@ -2,7 +2,7 @@
 'use client';
 
 import { type FC } from 'react';
-import { RefreshCcw, TrendingUp } from 'lucide-react';
+import { RefreshCcw, TrendingUp, ChartPie } from 'lucide-react';
 import { Label, Pie, PieChart } from 'recharts';
 
 import {
@@ -74,9 +74,14 @@ export const PiChart: FC<PiChartProps> = ({
       <CardContent className="flex-1 pb-0 py-12">
         {isDataZero ? (
           // Show message if no data
-          <h1 className="text-center text-xl font-bold text-gray-500">
+          <div className='flex justify-center items-center flex-col gap-10'>
+            <h1 className="text-center text-xl font-bold text-gray-500">
             لا توجد بيانات
-          </h1>
+            </h1>
+            <div className='p-4 rounded-full bg-blue-100'>
+            <ChartPie size={50} color='blue'/>
+            </div>
+          </div>
         ) : (
           // Show the chart if data exists
           <ChartContainer

@@ -10,6 +10,7 @@ import {
 	CardFooter
 } from "@/app/_components/ui/card";
 import {Show} from '@/app/_components/utils/show'
+import { Button } from "../ui/button";
 
 export const StatisticsCard: FC<{
 	icon: ReactNode;
@@ -21,16 +22,18 @@ export const StatisticsCard: FC<{
 			<Card className="flex flex-col justify-between items-center">
 			<div className="flex justify-between w-full items-center">
 			<CardHeader>
-				<CardTitle className="text-3xl">{total}</CardTitle>
-				<CardDescription>{description}</CardDescription>
+				<CardTitle className="text-4xl font-bold">{total}</CardTitle>
+				<CardDescription className="font-bold">{description}</CardDescription>
 			</CardHeader>
 			<CardContent className="text-primary">{ icon }</CardContent>
 			</div>
 			<Show when={ url }>
 			<Link href={url!} className="w-full p-2 border-t flex items-center">
-			<CardFooter className="flex justify-between items-center w-full">
-					<ArrowRight />
-				<span>عرض الصفحة</span>
+			<CardFooter className="flex mt-3 justify-between items-center w-full">
+						<Button className="rounded-full w-full">
+						<ArrowRight />
+						<span>عرض</span>
+					</Button>
 			</CardFooter>
 			</Link>
 			</Show>

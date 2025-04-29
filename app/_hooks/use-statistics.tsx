@@ -27,7 +27,9 @@ export const useStatistics = () =>
       isFetching,
       url: '/candidates',
       total: data?.totalCandidates,
-      icon: <UsersRound />,
+      icon: <div className='rounded-full bg-green-100 p-2'>
+        <UsersRound size={30} color='green' />
+      </div>,
       description: 'اجمالي عدد المرشحين'
     },
     {
@@ -38,7 +40,9 @@ export const useStatistics = () =>
       isFetching,
       url: '/observers',
       total: data?.totalObservers,
-      icon: <Eye />,
+      icon:<div className='rounded-full bg-blue-100 p-2'>
+        <Eye color='blue' size={30} />
+      </div>,
       description: 'اجمالي عدد الوكلاء'
     },
     {
@@ -49,7 +53,9 @@ export const useStatistics = () =>
       isFetching,
       url: '/issues',
       total: data?.totalComplaints,
-      icon: <CircleAlert />,
+      icon: <div className='rounded-full bg-red-100 p-2'>
+        <CircleAlert size={30} color='red' />
+      </div>,
       description: 'اجمالي عدد الشكاوى'
     },
     {
@@ -60,7 +66,9 @@ export const useStatistics = () =>
       isFetching,
       url: '/election-base',
       total: data?.totalConfirmedVoters,
-      icon: <UserRoundCheck />,
+      icon: <div className='rounded-full bg-green-100 p-2'>
+        <UserRoundCheck size={30} color='green' />
+      </div>,
       description: 'اجمالي عدد الناخبين المؤكدين'
     },
     {
@@ -71,7 +79,9 @@ export const useStatistics = () =>
       isFetching,
       url: '/election-base',
       total: data?.totalPendingVoters,
-      icon: <UserRoundSearch />,
+      icon: <div className='rounded-full bg-blue-100 p-2'>
+        <UserRoundSearch size={30} color='blue' />
+      </div>,
       description: 'اجمالي عدد الناخبين المحتملين'
     },
   ];

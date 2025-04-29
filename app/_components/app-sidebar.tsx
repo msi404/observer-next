@@ -77,16 +77,18 @@ export const AppSidebar = () => {
                       alt="Company Logo"
                     />
                   </Match>
-                  <Match when={user.role !== 0 && user.electoralEntity?.logo !== ''}>
-                    <Image
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore
-                      src={user.electoralEntity?.logo}
-                      width={40}
-                      height={ 30 }
-                      blurDataURL={Logo.blurDataURL}
-                      alt="Company Logo"
-                    />
+                  <Match
+                    when={user.role !== 0 && user.electoralEntity?.logo !== ''}
+                  >
+                    {user.electoralEntity?.logo ? (
+                      <Image
+                        src={user.electoralEntity.logo}
+                        width={40}
+                        height={30}
+                        blurDataURL={Logo.blurDataURL}
+                        alt="Company Logo"
+                      />
+                    ) : null}
                   </Match>
                 </Switch>
               </SidebarGroupLabel>
@@ -114,7 +116,7 @@ export const AppSidebar = () => {
                             <SidebarMenuButton size="lg" asChild>
                               <Link
                                 className={`${
-                                  pathname === item.url ? 'bg-slate-400/20' : ''
+                                  pathname === item.url ? 'bg-blue-400/20 text-blue-700' : ''
                                 } hover:bg-slate-200/20`}
                                 href={item.url}
                               >
